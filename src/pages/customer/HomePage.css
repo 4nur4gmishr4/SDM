@@ -1,0 +1,157 @@
+/* ============================================================
+   Home Page
+   ============================================================ */
+
+.home-page {
+  padding-bottom: var(--md-sys-spacing-8);
+}
+
+/* --------------------------------------------------------
+   Hero Section
+   -------------------------------------------------------- */
+
+.home-page__hero {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--md-sys-color-surface-container-high);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--md-sys-spacing-6);
+}
+
+@media (min-width: 600px) {
+  .home-page__hero {
+    aspect-ratio: 21 / 9;
+    border-radius: var(--md-sys-shape-corner-medium);
+    margin-top: var(--md-sys-spacing-4);
+  }
+}
+
+@media (min-width: 905px) {
+  .home-page__hero {
+    aspect-ratio: 3 / 1;
+  }
+}
+
+.home-page__hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-page__hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--md-sys-spacing-4);
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  color: white;
+}
+
+.home-page__hero-title {
+  font-size: var(--md-sys-typescale-display-small-size);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+  margin-bottom: var(--md-sys-spacing-1);
+}
+
+/* --------------------------------------------------------
+   Sections
+   -------------------------------------------------------- */
+
+.home-page__section {
+  margin-bottom: var(--md-sys-spacing-8);
+}
+
+.home-page__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--md-sys-spacing-4);
+}
+
+.home-page__section-title {
+  font-size: var(--md-sys-typescale-headline-small-size);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.home-page__section-link {
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.home-page__section-link:hover {
+  text-decoration: underline;
+}
+
+/* Search Bar Section */
+.home-page__search-section {
+  margin-top: var(--md-sys-spacing-4, 16px);
+  margin-bottom: var(--md-sys-spacing-4, 16px);
+}
+
+/* --------------------------------------------------------
+   Hero Split Section (Left Store Landing Hero + Right Banner Carousel)
+   -------------------------------------------------------- */
+
+.home-page__hero-split-section {
+  width: 100%;
+  position: relative;
+  margin-top: var(--md-sys-spacing-3, 12px);
+  margin-bottom: var(--md-sys-spacing-8, 32px);
+}
+
+@media (max-width: 1023px) {
+  .home-page__hero-split-section {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .home-page__hero-banner-wrap {
+    width: 100%;
+  }
+
+  .home-page__hero-banner-wrap .ios-banner-container {
+    max-width: 100%;
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-page__hero-split-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .home-page__hero-banner-wrap {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .home-page__hero-banner-wrap .ios-banner-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-page__hero-banner-wrap .ios-banner-card {
+    height: 100%;
+    justify-content: space-between;
+  }
+}
+

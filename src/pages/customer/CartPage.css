@@ -1,0 +1,87 @@
+/* ============================================================
+   Cart Page
+   ============================================================ */
+
+.cart-page {
+  padding-bottom: var(--md-sys-spacing-8);
+}
+
+.cart-page__header {
+  padding: var(--md-sys-spacing-4) 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: var(--md-sys-spacing-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-page__title {
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.cart-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-6);
+}
+
+@media (min-width: 905px) {
+  .cart-page__content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.cart-page__list {
+  flex: 1;
+}
+
+.cart-page__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--md-sys-spacing-16) var(--md-sys-spacing-4);
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: var(--md-sys-color-surface-container-low);
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+
+.cart-page__empty-icon {
+  font-size: 64px;
+  margin-bottom: var(--md-sys-spacing-4);
+  opacity: 0.5;
+}
+
+.cart-page__empty-title {
+  font-size: var(--md-sys-typescale-title-large-size);
+  margin-bottom: var(--md-sys-spacing-2);
+  color: var(--md-sys-color-on-surface);
+}
+
+.cart-page__sidebar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-4);
+}
+
+@media (min-width: 905px) {
+  .cart-page__sidebar {
+    width: 320px;
+    position: sticky;
+    top: 80px;
+  }
+}
+
+.cart-page__checkout-btn {
+  width: 100%;
+  --md-filled-button-container-height: 46px;
+  --md-filled-button-container-shape: 10px;
+  --md-filled-button-label-text-weight: 600;
+  --md-filled-button-label-text-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}

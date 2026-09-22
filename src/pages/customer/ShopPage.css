@@ -1,0 +1,321 @@
+/* ============================================================
+   Shop Page - Clean Google Material 3 Design
+   ============================================================ */
+
+.shop-page {
+  padding-bottom: var(--md-sys-spacing-8);
+}
+
+.shop-page__header {
+  padding-top: var(--md-sys-spacing-3);
+  margin-bottom: var(--md-sys-spacing-3);
+}
+
+.shop-page__title {
+  font-size: clamp(1.4rem, 3vw, 1.875rem);
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #1f1f1f);
+  margin-bottom: var(--md-sys-spacing-1);
+}
+
+.shop-page__offer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--md-sys-color-error-container, #ffdad6);
+  color: var(--md-sys-color-on-error-container, #410002);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.shop-page__category-desc {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
+  margin-top: 4px;
+  max-width: 600px;
+}
+
+.shop-category-badge--offer {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  background-color: var(--md-sys-color-error, #ba1a1a);
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.shop-category-chip--offer {
+  border-color: var(--md-sys-color-error, #ba1a1a);
+  color: var(--md-sys-color-error, #ba1a1a);
+}
+
+.shop-page__search-container {
+  margin-bottom: var(--md-sys-spacing-3);
+  width: 100%;
+}
+
+/* Horizontal Category Carousel for Mobile & Tablet */
+.shop-page__mobile-categories {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  padding-bottom: 8px;
+  margin-bottom: var(--md-sys-spacing-3);
+}
+
+.shop-page__mobile-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.shop-category-chip {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 7px 16px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-surface-container-low, #f1f3f4);
+  color: var(--md-sys-color-on-surface-variant, #444746);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 180ms ease;
+  flex-shrink: 0;
+}
+
+.shop-category-chip:hover {
+  background-color: var(--md-sys-color-surface-container-high, #e8eaed);
+  color: var(--md-sys-color-on-surface, #1f1f1f);
+}
+
+.shop-category-chip--active {
+  background-color: #1E8E3E !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(30, 142, 62, 0.25);
+}
+
+/* Layout Grid */
+.shop-page__layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-4);
+}
+
+@media (min-width: 905px) {
+  .shop-page__mobile-categories {
+    display: none;
+  }
+
+  .shop-page__layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    align-items: start;
+    gap: var(--md-sys-spacing-6);
+  }
+}
+
+/* Desktop Sidebar */
+.shop-page__sidebar {
+  display: none;
+}
+
+@media (min-width: 905px) {
+  .shop-page__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-sys-spacing-4);
+    background-color: var(--md-sys-color-surface-container-lowest, #ffffff);
+    border: 1px solid var(--md-sys-color-outline-variant, #e0e0e0);
+    border-radius: 16px;
+    padding: var(--md-sys-spacing-4);
+    position: sticky;
+    top: 80px;
+  }
+}
+
+.shop-page__sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-2);
+}
+
+.shop-page__sidebar-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface, #1f1f1f);
+  margin-bottom: var(--md-sys-spacing-1);
+}
+
+.shop-page__category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shop-page__category-link {
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--md-sys-color-on-surface-variant, #444746);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 150ms ease;
+}
+
+.shop-page__category-link:hover {
+  background-color: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.04));
+  color: var(--md-sys-color-on-surface, #1f1f1f);
+}
+
+.shop-page__category-link--active {
+  background-color: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  color: var(--md-sys-color-on-primary-container, #137333);
+  font-weight: 600;
+}
+
+/* Main Content Area */
+.shop-page__main {
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-page__results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: var(--md-sys-spacing-4);
+}
+
+.shop-page__results-count {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
+}
+
+.shop-page__filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* In-Stock Pill Chip */
+.shop-pill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-surface-container-low, #f1f3f4);
+  color: var(--md-sys-color-on-surface-variant, #444746);
+  border: 1px solid var(--md-sys-color-outline-variant, #e0e0e0);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 180ms cubic-bezier(0.2, 0, 0, 1);
+  outline: none !important;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.shop-pill-chip:hover {
+  background-color: var(--md-sys-color-surface-container-high, #e8eaed);
+  border-color: #c4c7c5;
+}
+
+.shop-pill-chip--active {
+  background-color: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  color: var(--md-sys-color-on-primary-container, #137333);
+  font-weight: 600;
+}
+
+.shop-pill-chip--active .material-symbols-outlined {
+  color: var(--md-sys-color-on-primary-container, #1E8E3E);
+}
+
+/* Sort & Category Select Pills */
+.shop-select-wrap,
+.shop-sort-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.shop-category-select-wrap {
+  display: inline-flex;
+}
+
+@media (min-width: 905px) {
+  /* On desktop, categories are already featured in the dedicated left sidebar */
+  .shop-category-select-wrap {
+    display: none;
+  }
+}
+
+.shop-select-icon,
+.shop-sort-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 18px;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
+  pointer-events: none;
+}
+
+.shop-select-input,
+.shop-sort-select {
+  height: 38px;
+  padding: 0 32px 0 36px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-surface-container-low, #f1f3f4);
+  color: var(--md-sys-color-on-surface, #1f1f1f);
+  border: 1px solid var(--md-sys-color-outline-variant, #e0e0e0);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%235f6368%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: all 180ms ease;
+  max-width: 175px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shop-select-input:hover,
+.shop-sort-select:hover {
+  background-color: var(--md-sys-color-surface-container-high, #e8eaed);
+  border-color: #c4c7c5;
+}
+
+.shop-select-input:focus,
+.shop-sort-select:focus {
+  border-color: #1E8E3E;
+  box-shadow: 0 0 0 1px #1E8E3E;
+}
+
+/* Active Highlight when a specific category is chosen */
+.shop-select-input--active {
+  background-color: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  color: var(--md-sys-color-on-primary-container, #137333);
+  font-weight: 600;
+}
+
+.shop-category-select-wrap:has(.shop-select-input--active) .shop-select-icon {
+  color: var(--md-sys-color-primary, #1E8E3E);
+}
