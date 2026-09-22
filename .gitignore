@@ -1,0 +1,63 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies and build artifacts
+node_modules/
+dist/
+dist-ssr/
+build/
+out/
+.next/
+
+# Environment files
+*.local
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Database and migration scripts
+supabase/
+*.sql
+
+# Confidential store data
+main_data/
+main_data
+*.xlsx
+*.xls
+*.csv
+
+# Media and asset binaries — strictly hosted on Supabase Storage, never in Git
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.mp4
+*.mov
+!public/favicon.ico
+!public/apple-touch-icon.png
+!public/pwa-*.png
+!public/sai-darshan-upi-qr.png
+public/uploads/
+public/images/
+
+# Test results and artifacts
+test-results/
+process_photos.py
