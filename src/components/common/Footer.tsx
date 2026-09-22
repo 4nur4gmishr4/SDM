@@ -149,7 +149,7 @@ export function Footer() {
             &copy; {currentYear} Sai Darshan Mart. All rights reserved. Jabalpur, MP.
           </div>
           <div className="sdm-footer__meta">
-            <span className="sdm-footer__m3-badge">Material 3 Design System</span>
+            <span>Fresh Supermarket & Daily Essentials</span>
           </div>
         </div>
       </div>
