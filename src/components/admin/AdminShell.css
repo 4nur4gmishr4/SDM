@@ -1,0 +1,375 @@
+/* ============================================================
+   AdminShell — Admin Layout
+   ============================================================
+   M3 Navigation Rail / Drawer + Content Area
+   ============================================================ */
+
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+/* --------------------------------------------------------
+   Navigation Drawer (Mobile) / Rail (Desktop)
+   -------------------------------------------------------- */
+
+.admin-shell__nav {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--md-sys-color-surface-container-low);
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  width: 80px; /* Nav Rail width on desktop by default */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+  flex-shrink: 0;
+  align-self: flex-start;
+  transition: width var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.admin-shell__nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  padding: 0 var(--md-sys-spacing-2);
+}
+
+.admin-shell__brand-icon {
+  color: var(--md-sys-color-primary);
+  font-size: 32px;
+}
+
+.admin-shell__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-2);
+  padding: var(--md-sys-spacing-2) 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.admin-shell__nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface-variant);
+  min-height: 56px;
+  padding: var(--md-sys-spacing-1) 0;
+  position: relative;
+}
+
+.admin-shell__nav-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-large);
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.admin-shell__nav-item:hover .admin-shell__nav-icon-wrapper {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .admin-shell__nav-item:hover .admin-shell__nav-icon-wrapper {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.admin-shell__nav-item--active {
+  color: var(--md-sys-color-primary);
+}
+
+.admin-shell__nav-item--active .admin-shell__nav-icon-wrapper {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.admin-shell__nav-item:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+}
+
+.admin-shell__nav-label {
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  text-align: center;
+  display: block;
+}
+
+/* --------------------------------------------------------
+   Main Content Area
+   -------------------------------------------------------- */
+
+.admin-shell__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Prevent flex overflow */
+}
+
+/* --------------------------------------------------------
+   Top Header Bar
+   -------------------------------------------------------- */
+
+.admin-shell__top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 var(--md-sys-spacing-4);
+  background-color: var(--md-sys-color-surface);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  gap: 16px;
+  flex-wrap: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+
+/* Left: Store Branding */
+.admin-shell__top-bar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.admin-shell__brand-icon-mini {
+  font-size: 20px;
+  color: var(--md-sys-color-primary, #1e8e3e);
+  background: rgba(30, 142, 62, 0.1);
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.admin-shell__brand-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-shell__brand-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.admin-shell__brand-subtitle {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Right: Top Bar Actions */
+.admin-shell__top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+/* --------------------------------------------------------
+   3-Option Segmented Theme Switcher (System / Light / Dark)
+   -------------------------------------------------------- */
+
+.admin-theme-segmented {
+  display: inline-flex;
+  align-items: center;
+  background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.05));
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.1));
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
+}
+
+[data-theme="dark"] .admin-theme-segmented {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.admin-theme-segment-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.admin-theme-segment-btn:hover {
+  color: var(--md-sys-color-on-surface);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .admin-theme-segment-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-theme-segment-btn.active {
+  background: var(--md-sys-color-surface, #ffffff);
+  color: var(--md-sys-color-primary, #1e8e3e);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .admin-theme-segment-btn.active {
+  background: var(--md-sys-color-surface-container-high, #2b2b2b);
+  color: #81c995;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* --------------------------------------------------------
+   Action Pills (View Store & Logout)
+   -------------------------------------------------------- */
+
+.admin-shell__action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  transition: transform 0.12s ease;
+  white-space: nowrap;
+}
+
+.admin-shell__action-pill:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.admin-shell__action-pill--store {
+  color: var(--md-sys-color-primary, #1e8e3e);
+  border-color: rgba(30, 142, 62, 0.3);
+  background: rgba(30, 142, 62, 0.04);
+}
+
+.admin-shell__action-pill--store:hover {
+  background: rgba(30, 142, 62, 0.1);
+  border-color: var(--md-sys-color-primary, #1e8e3e);
+}
+
+.admin-shell__action-pill--logout {
+  color: var(--md-sys-color-error, #ba1a1a);
+  border-color: rgba(186, 26, 26, 0.25);
+  background: rgba(186, 26, 26, 0.03);
+}
+
+.admin-shell__action-pill--logout:hover {
+  background: rgba(186, 26, 26, 0.1);
+  border-color: var(--md-sys-color-error, #ba1a1a);
+}
+
+/* --------------------------------------------------------
+   Main Page Content Container
+   -------------------------------------------------------- */
+
+.admin-shell__content {
+  flex: 1;
+  padding: var(--md-sys-spacing-4);
+  overflow-y: auto;
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+/* --------------------------------------------------------
+   Responsive Breakpoints
+   -------------------------------------------------------- */
+
+@media (max-width: 904px) {
+  .admin-shell {
+    flex-direction: column;
+  }
+
+  .admin-shell__nav {
+    flex-direction: row;
+    width: 100%;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    border-right: none;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    order: 2;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: var(--md-sys-color-surface-container, #f1f3f4);
+  }
+
+  .admin-shell__nav-header {
+    display: none;
+  }
+
+  .admin-shell__nav-list {
+    flex-direction: row;
+    padding: 0 4px;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .admin-shell__nav-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-shell__nav-item {
+    flex: 0 0 auto;
+    min-width: 58px;
+    padding: 4px 6px;
+  }
+
+  .admin-shell__main {
+    order: 1;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); /* Space for mobile bottom nav */
+  }
+}
+
+@media (max-width: 680px) {
+  .admin-shell__top-bar {
+    padding: 0 12px;
+  }
+
+  .admin-shell__brand-subtitle {
+    display: none;
+  }
+
+  .admin-theme-segment-btn span:not(.material-symbols-outlined) {
+    display: none;
+  }
+
+  .admin-theme-segment-btn {
+    padding: 6px 8px;
+  }
+
+  .admin-shell__action-pill span:not(.material-symbols-outlined) {
+    display: none;
+  }
+
+  .admin-shell__action-pill {
+    padding: 6px 9px;
+  }
+}
