@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { MOCK_CATEGORIES } from '../lib/mockData';
 import type { Category } from '../types/category';
 
 export function useCategories() {
@@ -21,12 +22,19 @@ export function useCategories() {
 
         if (fetchError) throw fetchError;
         
-        if (mounted && data) {
-          setCategories(data as Category[]);
+        if (mounted) {
+          if (data && data.length > 0) {
+            setCategories(data as Category[]);
+          } else {
+            setCategories(MOCK_CATEGORIES);
+          }
         }
       } catch (err: any) {
-        console.error('Error fetching categories:', err);
-        if (mounted) setError(err.message || 'Failed to fetch categories');
+        console.warn('Falling back to testing categories:', err.message);
+        if (mounted) {
+          setError(err.message || null);
+          setCategories(MOCK_CATEGORIES);
+        }
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -37,7 +45,7 @@ export function useCategories() {
     return () => {
       mounted = false;
     };
-  }, []); // Should technically depend on options but omitting for simplicity
+  }, []);
 
   return { categories, isLoading, error };
 }

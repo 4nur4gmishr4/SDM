@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { MOCK_DELIVERY_SETTINGS } from '../lib/mockData';
 import type { DeliverySettings } from '../types/delivery';
 
 export function useDeliverySettings() {
@@ -20,11 +21,18 @@ export function useDeliverySettings() {
 
         if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
         
-        if (mounted && data) {
-          setSettings(data as DeliverySettings);
+        if (mounted) {
+          if (data) {
+            setSettings(data as DeliverySettings);
+          } else {
+            setSettings(MOCK_DELIVERY_SETTINGS);
+          }
         }
       } catch (error) {
-        console.error('Error fetching delivery settings:', error);
+        console.warn('Falling back to testing delivery settings:', error);
+        if (mounted) {
+          setSettings(MOCK_DELIVERY_SETTINGS);
+        }
       } finally {
         if (mounted) setIsLoading(false);
       }

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase } from '../../lib/supabase';
-import { generateOrderId, buildQuickOrderWhatsAppMessage, openWhatsApp } from '../../lib/orderUtils';
+import { generateOrderId, buildQuickOrderWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import type { QuickOrderFormData } from '../../types/order';
 import './CheckoutPage.css'; // Reusing checkout form styles
 
@@ -20,7 +20,7 @@ export function QuickOrderPage() {
   });
 
   const { settings } = useDeliverySettings();
-  const storeWhatsAppNumber = '+919999999999'; // To be replaced in Phase 4
+  const storeWhatsAppNumber = STORE_WHATSAPP_NUMBER;
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;

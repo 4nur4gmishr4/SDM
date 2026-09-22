@@ -1,5 +1,8 @@
 import type { CartItem } from '../types/order';
 
+export const STORE_WHATSAPP_NUMBER = '+91 73541 55669';
+export const STORE_WHATSAPP_CLEAN = '917354155669';
+
 /**
  * Generate a unique order ID in format: SDM-YYMMDD-XXXX
  * XXXX is a random 4-digit alphanumeric string for uniqueness.

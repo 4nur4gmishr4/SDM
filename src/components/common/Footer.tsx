@@ -24,7 +24,7 @@ export function Footer() {
             </p>
             <div className="sdm-footer__whatsapp-pill">
               <a 
-                href="https://wa.me/919425150000?text=Hello%20Sai%20Darshan%20Mart,%20I%20have%20an%20inquiry" 
+                href="https://wa.me/917354155669?text=Hello%20Sai%20Darshan%20Mart,%20I%20have%20an%20inquiry" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="sdm-footer__whatsapp-btn"
@@ -150,10 +150,6 @@ export function Footer() {
           </div>
           <div className="sdm-footer__meta">
             <span className="sdm-footer__m3-badge">Material 3 Design System</span>
-            <span className="sdm-footer__divider">&bull;</span>
-            <Link to="/admin" className="sdm-footer__admin-link">
-              Admin Portal
-            </Link>
           </div>
         </div>
       </div>

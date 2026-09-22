@@ -91,7 +91,7 @@ export function AboutPage() {
 
             <div className="about-actions-list">
               <a 
-                href="https://wa.me/919425150000?text=Hello%20Sai%20Darshan%20Mart,%20I%20would%20like%20to%20place%20an%20order"
+                href="https://wa.me/917354155669?text=Hello%20Sai%20Darshan%20Mart,%20I%20would%20like%20to%20place%20an%20order"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="about-whatsapp-action"
@@ -104,13 +104,13 @@ export function AboutPage() {
               </a>
 
               <a 
-                href="tel:+919425150000"
+                href="tel:+917354155669"
                 className="about-phone-action"
               >
                 <span className="material-symbols-outlined">call</span>
                 <div>
                   <strong>Call Store Directly</strong>
-                  <span>+91 94251 50000</span>
+                  <span>+91 73541 55669</span>
                 </div>
               </a>
 

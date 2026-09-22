@@ -5,7 +5,7 @@ import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase } from '../../lib/supabase';
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
-import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp } from '../../lib/orderUtils';
+import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import type { CheckoutFormData } from '../../types/order';
 import './CheckoutPage.css';
 
@@ -23,7 +23,7 @@ export function CheckoutPage() {
 
   const { settings } = useDeliverySettings();
   const deliveryFee = settings?.flat_fee || 0;
-  const storeWhatsAppNumber = '+919999999999'; // Ideally fetch from settings too, hardcoding for now as per PRD
+  const storeWhatsAppNumber = STORE_WHATSAPP_NUMBER;
 
   // If cart is empty, redirect back to cart
   if (items.length === 0) {

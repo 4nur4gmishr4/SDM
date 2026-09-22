@@ -99,7 +99,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                   <span>Quick WhatsApp Order</span>
                 </Link>
                 <a 
-                  href="https://wa.me/919425150000?text=Hello%20Sai%20Darshan%20Mart,%20I%20have%20an%20order%20query" 
+                  href="https://wa.me/917354155669?text=Hello%20Sai%20Darshan%20Mart,%20I%20have%20an%20order%20query" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="profile-menu-item"
@@ -143,13 +143,6 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                 <span>
                   Shopping on Sai Darshan Mart is always 100% account-free. You can also order directly without signing in!
                 </span>
-              </div>
-
-              <div className="profile-admin-shortcut">
-                <span>Store staff or admin?</span>
-                <Link to="/admin/login" onClick={onClose} className="profile-admin-link">
-                  Admin Portal Login &rarr;
-                </Link>
               </div>
             </div>
           )}

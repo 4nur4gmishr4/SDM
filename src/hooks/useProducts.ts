@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { MOCK_PRODUCTS } from '../lib/mockData';
 import type { Product } from '../types/product';
 
 interface UseProductsOptions {
@@ -8,6 +9,27 @@ interface UseProductsOptions {
   searchQuery?: string;
   limit?: number;
   fetchAll?: boolean;
+}
+
+function getMockProducts(options: UseProductsOptions = {}): Product[] {
+  let list = [...MOCK_PRODUCTS];
+  if (!options.fetchAll) {
+    list = list.filter(p => !p.is_archived);
+  }
+  if (options.categoryId) {
+    list = list.filter(p => p.category_id === options.categoryId);
+  }
+  if (options.isFeatured) {
+    list = list.filter(p => p.is_featured);
+  }
+  if (options.searchQuery) {
+    const q = options.searchQuery.toLowerCase();
+    list = list.filter(p => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q));
+  }
+  if (options.limit) {
+    list = list.slice(0, options.limit);
+  }
+  return list;
 }
 
 export function useProducts(options: UseProductsOptions = {}) {
@@ -46,12 +68,20 @@ export function useProducts(options: UseProductsOptions = {}) {
         const { data, error: fetchError } = await query;
         if (fetchError) throw fetchError;
 
-        if (mounted && data) {
-          setProducts(data as Product[]);
+        if (mounted) {
+          if (data && data.length > 0) {
+            setProducts(data as Product[]);
+          } else {
+            // Fallback to rich testing data when database is unseeded
+            setProducts(getMockProducts(options));
+          }
         }
       } catch (err: any) {
-        console.error('Error fetching products:', err);
-        if (mounted) setError(err.message || 'Failed to fetch products');
+        console.warn('Falling back to testing products:', err.message);
+        if (mounted) {
+          setError(err.message || null);
+          setProducts(getMockProducts(options));
+        }
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -88,14 +118,24 @@ export function useProduct(id?: string) {
           .eq('id', id)
           .single();
           
-        if (fetchError) throw fetchError;
+        if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
         
-        if (mounted && data) {
-          setProduct(data as Product);
+        if (mounted) {
+          if (data) {
+            setProduct(data as Product);
+          } else {
+            // Fallback to testing product by id
+            const mock = MOCK_PRODUCTS.find(p => p.id === id) || null;
+            setProduct(mock);
+          }
         }
       } catch (err: any) {
-        console.error('Error fetching product:', err);
-        if (mounted) setError(err.message || 'Failed to fetch product');
+        console.warn('Falling back to testing product details:', err.message);
+        if (mounted) {
+          setError(err.message || null);
+          const mock = MOCK_PRODUCTS.find(p => p.id === id) || null;
+          setProduct(mock);
+        }
       } finally {
         if (mounted) setIsLoading(false);
       }
