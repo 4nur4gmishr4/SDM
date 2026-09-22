@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { SnackbarProvider } from './contexts/SnackbarContext';
 import { HelmetProvider } from 'react-helmet-async';
 
@@ -101,13 +102,15 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <HelmetProvider>
-        <AuthProvider>
-          <SnackbarProvider>
-            <CartProvider>
-              <AppRoutes />
-            </CartProvider>
-          </SnackbarProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <SnackbarProvider>
+              <CartProvider>
+                <AppRoutes />
+              </CartProvider>
+            </SnackbarProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </HelmetProvider>
     </BrowserRouter>
   );

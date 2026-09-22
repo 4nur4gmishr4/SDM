@@ -101,7 +101,7 @@
   font-weight: 600;
 }
 
-/* Actions (cart icon, etc.) */
+/* Actions (theme toggle, cart, profile) */
 .app-shell__actions {
   display: flex;
   align-items: center;
@@ -109,27 +109,39 @@
   margin-left: auto;
 }
 
-.app-shell__cart-button {
+.app-shell__action-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--md-sys-shape-corner-full);
   color: var(--md-sys-color-on-surface-variant);
-  transition: background-color var(--md-sys-motion-standard), transform var(--md-sys-motion-standard);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--md-sys-motion-standard), transform var(--md-sys-motion-standard), color var(--md-sys-motion-standard);
   -webkit-tap-highlight-color: transparent !important;
   -webkit-user-select: none;
   user-select: none;
 }
 
-.app-shell__cart-button:hover {
+.app-shell__action-btn:hover {
   background-color: rgba(0, 0, 0, 0.08);
+  color: var(--md-sys-color-on-surface);
 }
 
-.app-shell__cart-button:active {
+.app-shell__action-btn:active {
   transform: scale(0.92);
+}
+
+.app-shell__avatar-img {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--md-sys-shape-corner-full);
+  object-fit: cover;
+  border: 1.5px solid var(--md-sys-color-primary);
 }
 
 .app-shell__cart-badge {

@@ -1,11 +1,31 @@
+import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 import { Footer } from './Footer';
+import { ProfileModal } from './ProfileModal';
 import './AppShell.css';
 
 export function AppShell() {
   const { itemCount } = useCart();
+  const { theme, resolvedTheme, toggleTheme } = useTheme();
+  const { user } = useAuth();
+  const { showSnackbar } = useSnackbar();
   const location = useLocation();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+
+  const handleToggleTheme = () => {
+    toggleTheme();
+    // compute what the next theme will be
+    const nextTheme = theme === 'system' 
+      ? (resolvedTheme === 'dark' ? 'Light Theme' : 'Dark Theme')
+      : (theme === 'light' ? 'Dark Theme' : 'Auto (System Theme)');
+    showSnackbar(`Theme set to ${nextTheme}`);
+  };
 
   const navItems = [
     { label: 'Home', path: '/', icon: 'home' },
@@ -45,12 +65,52 @@ export function AppShell() {
             })}
           </nav>
 
-          {/* Actions (Cart) */}
+          {/* Actions (Theme Switcher, Cart, Profile) */}
           <div className="app-shell__actions">
-            <Link to="/cart" className="app-shell__cart-button" aria-label="Shopping Cart">
+            {/* Light / Dark Mode Switcher */}
+            <button
+              type="button"
+              className="app-shell__action-btn"
+              onClick={handleToggleTheme}
+              aria-label={`Current theme: ${theme}. Click to switch theme`}
+              title={`Theme: ${theme === 'system' ? `Auto (System: ${resolvedTheme})` : theme}`}
+            >
+              <span className="material-symbols-outlined">
+                {theme === 'system' ? 'brightness_auto' : resolvedTheme === 'dark' ? 'dark_mode' : 'light_mode'}
+              </span>
+            </button>
+
+            {/* Shopping Cart Button */}
+            <Link 
+              to="/cart" 
+              className="app-shell__action-btn app-shell__cart-button" 
+              aria-label="Shopping Cart"
+            >
               <span className="material-symbols-outlined">shopping_cart</span>
               {itemCount > 0 && <span className="app-shell__cart-badge">{itemCount}</span>}
             </Link>
+
+            {/* Customer Profile / Google Login Button */}
+            <button
+              type="button"
+              className="app-shell__action-btn app-shell__profile-btn"
+              onClick={() => setIsProfileOpen(true)}
+              aria-label={user ? 'Customer Account' : 'Sign in with Google'}
+              title={user ? (user.user_metadata?.full_name || user.email || 'Customer Account') : 'Sign in with Google'}
+            >
+              {avatarUrl ? (
+                <img 
+                  src={avatarUrl} 
+                  alt="Profile" 
+                  className="app-shell__avatar-img" 
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <span className={`material-symbols-outlined ${user ? 'filled' : ''}`}>
+                  {user ? 'account_circle' : 'person'}
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </header>
@@ -64,6 +124,12 @@ export function AppShell() {
 
       {/* Customer Footer */}
       <Footer />
+
+      {/* Customer Profile & Google Login Modal */}
+      <ProfileModal 
+        isOpen={isProfileOpen} 
+        onClose={() => setIsProfileOpen(false)} 
+      />
 
       {/* Mobile Bottom Navigation */}
       <nav className="app-shell__bottom-nav" aria-label="Mobile Navigation">

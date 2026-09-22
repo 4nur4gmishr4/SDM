@@ -8,7 +8,7 @@
 
 :root {
   /* --------------------------------------------------------
-     COLOR SYSTEM — M3 Semantic Roles
+     COLOR SYSTEM — M3 Semantic Roles (Light Palette)
      Derived for Indian supermarket retail context.
      Primary: Warm saffron-brown
      Secondary: Earthy teal
@@ -173,7 +173,6 @@
 
   /* --------------------------------------------------------
      SHAPE — M3 Corner Radii
-     Different components use different radii per hierarchy.
      -------------------------------------------------------- */
 
   --md-sys-shape-corner-none: 0px;
@@ -185,16 +184,16 @@
   --md-sys-shape-corner-full: 9999px;
 
   /* --------------------------------------------------------
-     ELEVATION — M3 Elevation Levels
-     Tonal surface separation preferred over shadows.
+     ELEVATION — M3 Shadow Levels
+     Restrained elevation: structural separation, not decorative.
      -------------------------------------------------------- */
 
-  --md-sys-elevation-0: none;
-  --md-sys-elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
-  --md-sys-elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
-  --md-sys-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-  --md-sys-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px 0 rgba(0, 0, 0, 0.3);
-  --md-sys-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px 0 rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level2: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level3: 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level4: 0px 2px 3px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level5: 0px 4px 4px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
 
   /* --------------------------------------------------------
      SPACING — Consistent spacing scale
@@ -253,6 +252,108 @@
   --md-sys-state-dragged-opacity: 0.16;
   --md-sys-state-disabled-opacity: 0.38;
   --md-sys-state-disabled-container-opacity: 0.12;
+}
+
+/* --------------------------------------------------------
+   M3 DARK THEME PALETTE
+   Auto-applied when system prefers dark (unless data-theme="light")
+   Or explicitly forced when data-theme="dark".
+   -------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --md-sys-color-primary: #FFB68C;
+    --md-sys-color-on-primary: #522300;
+    --md-sys-color-primary-container: #733200;
+    --md-sys-color-on-primary-container: #FFDBC9;
+
+    --md-sys-color-secondary: #A2D5C5;
+    --md-sys-color-on-secondary: #00372D;
+    --md-sys-color-secondary-container: #1F5145;
+    --md-sys-color-on-secondary-container: #BDF1E1;
+
+    --md-sys-color-tertiary: #DBCA6E;
+    --md-sys-color-on-tertiary: #393000;
+    --md-sys-color-tertiary-container: #524600;
+    --md-sys-color-on-tertiary-container: #F8E287;
+
+    --md-sys-color-error: #FFB4AB;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-error-container: #93000A;
+    --md-sys-color-on-error-container: #FFDAD6;
+
+    --md-sys-color-surface: #18120F;
+    --md-sys-color-on-surface: #EDE0D9;
+    --md-sys-color-surface-variant: #52443C;
+    --md-sys-color-on-surface-variant: #D7C3B8;
+    --md-sys-color-surface-container-lowest: #120D0A;
+    --md-sys-color-surface-container-low: #211A16;
+    --md-sys-color-surface-container: #251E1A;
+    --md-sys-color-surface-container-high: #302824;
+    --md-sys-color-surface-container-highest: #3B332F;
+    --md-sys-color-surface-dim: #18120F;
+    --md-sys-color-surface-bright: #3F3733;
+
+    --md-sys-color-inverse-surface: #EDE0D9;
+    --md-sys-color-inverse-on-surface: #372F2A;
+    --md-sys-color-inverse-primary: #B5541A;
+
+    --md-sys-color-outline: #9F8D84;
+    --md-sys-color-outline-variant: #52443C;
+
+    --sdm-color-success: #81C784;
+    --sdm-color-success-container: #1B5E20;
+    --sdm-color-on-success-container: #C8E6C9;
+    --sdm-color-warning: #FFB74D;
+    --sdm-color-warning-container: #E65100;
+  }
+}
+
+[data-theme="dark"] {
+  --md-sys-color-primary: #FFB68C;
+  --md-sys-color-on-primary: #522300;
+  --md-sys-color-primary-container: #733200;
+  --md-sys-color-on-primary-container: #FFDBC9;
+
+  --md-sys-color-secondary: #A2D5C5;
+  --md-sys-color-on-secondary: #00372D;
+  --md-sys-color-secondary-container: #1F5145;
+  --md-sys-color-on-secondary-container: #BDF1E1;
+
+  --md-sys-color-tertiary: #DBCA6E;
+  --md-sys-color-on-tertiary: #393000;
+  --md-sys-color-tertiary-container: #524600;
+  --md-sys-color-on-tertiary-container: #F8E287;
+
+  --md-sys-color-error: #FFB4AB;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000A;
+  --md-sys-color-on-error-container: #FFDAD6;
+
+  --md-sys-color-surface: #18120F;
+  --md-sys-color-on-surface: #EDE0D9;
+  --md-sys-color-surface-variant: #52443C;
+  --md-sys-color-on-surface-variant: #D7C3B8;
+  --md-sys-color-surface-container-lowest: #120D0A;
+  --md-sys-color-surface-container-low: #211A16;
+  --md-sys-color-surface-container: #251E1A;
+  --md-sys-color-surface-container-high: #302824;
+  --md-sys-color-surface-container-highest: #3B332F;
+  --md-sys-color-surface-dim: #18120F;
+  --md-sys-color-surface-bright: #3F3733;
+
+  --md-sys-color-inverse-surface: #EDE0D9;
+  --md-sys-color-inverse-on-surface: #372F2A;
+  --md-sys-color-inverse-primary: #B5541A;
+
+  --md-sys-color-outline: #9F8D84;
+  --md-sys-color-outline-variant: #52443C;
+
+  --sdm-color-success: #81C784;
+  --sdm-color-success-container: #1B5E20;
+  --sdm-color-on-success-container: #C8E6C9;
+  --sdm-color-warning: #FFB74D;
+  --sdm-color-warning-container: #E65100;
 }
 
 /* Reduced motion preference */
