@@ -79,7 +79,7 @@
 }
 
 .app-shell__nav-link:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) calc(var(--md-sys-state-hover-opacity) * 100%), transparent);
+  background-color: rgba(0, 0, 0, 0.08);
 }
 
 .app-shell__nav-link:focus-visible {
