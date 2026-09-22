@@ -106,8 +106,8 @@ export function ProductsPage() {
     <div className="admin-layout-content admin-products-page">
       <div className="admin-products-header">
         <h1 className="admin-products-title">Products</h1>
-        <md-filled-button onClick={handleOpenAdd}>
-          <md-icon slot="icon">add</md-icon>
+        <md-filled-button onClick={handleOpenAdd} className="admin-action-btn">
+          <span className="material-symbols-outlined" slot="icon">add</span>
           Add Product
         </md-filled-button>
       </div>

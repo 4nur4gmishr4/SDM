@@ -82,8 +82,11 @@ export function AdminShell() {
       <main className="admin-shell__main">
         <header className="admin-shell__top-bar">
           <h1 className="admin-shell__top-bar-title">{pageTitle}</h1>
-          <Link to="/" target="_blank" rel="noopener noreferrer">
-            <md-outlined-button>View Store</md-outlined-button>
+          <Link to="/" target="_blank" rel="noopener noreferrer" className="admin-shell__view-store-link">
+            <md-outlined-button className="admin-shell__view-store-btn">
+              <span className="material-symbols-outlined" slot="icon">storefront</span>
+              View Store
+            </md-outlined-button>
           </Link>
         </header>
 

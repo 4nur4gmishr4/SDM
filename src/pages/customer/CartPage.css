@@ -79,5 +79,9 @@
 
 .cart-page__checkout-btn {
   width: 100%;
-  --md-sys-color-primary: var(--md-sys-color-primary);
+  --md-filled-button-container-height: 46px;
+  --md-filled-button-container-shape: 10px;
+  --md-filled-button-label-text-weight: 600;
+  --md-filled-button-label-text-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }

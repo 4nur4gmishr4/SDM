@@ -119,6 +119,65 @@ ol {
 }
 
 /* --------------------------------------------------------
+   Universal Button & Icon Button Standardization
+   Replaces awkward pill shapes (9999px) with modern 10px/12px
+   rounded containers, standard heights, and solid font weights.
+   -------------------------------------------------------- */
+
+md-filled-button,
+md-outlined-button,
+md-filled-tonal-button,
+md-elevated-button,
+md-text-button {
+  --md-filled-button-container-shape: 10px;
+  --md-outlined-button-container-shape: 10px;
+  --md-filled-tonal-button-container-shape: 10px;
+  --md-elevated-button-container-shape: 10px;
+  --md-text-button-container-shape: 10px;
+
+  --md-filled-button-container-height: 40px;
+  --md-outlined-button-container-height: 40px;
+  --md-filled-tonal-button-container-height: 40px;
+  --md-elevated-button-container-height: 40px;
+  --md-text-button-container-height: 40px;
+
+  --md-filled-button-label-text-weight: 600;
+  --md-outlined-button-label-text-weight: 600;
+  --md-filled-tonal-button-label-text-weight: 600;
+  --md-elevated-button-label-text-weight: 600;
+  --md-text-button-label-text-weight: 600;
+
+  --md-filled-button-leading-space: 16px;
+  --md-filled-button-trailing-space: 16px;
+  --md-outlined-button-leading-space: 16px;
+  --md-outlined-button-trailing-space: 16px;
+  --md-filled-tonal-button-leading-space: 16px;
+  --md-filled-tonal-button-trailing-space: 16px;
+  --md-text-button-leading-space: 12px;
+  --md-text-button-trailing-space: 12px;
+
+  --md-filled-button-icon-size: 18px;
+  --md-outlined-button-icon-size: 18px;
+  --md-filled-tonal-button-icon-size: 18px;
+  --md-elevated-button-icon-size: 18px;
+  --md-text-button-icon-size: 18px;
+
+  font-family: inherit;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+md-icon-button,
+md-filled-icon-button {
+  --md-icon-button-state-layer-shape: 8px;
+  --md-filled-icon-button-container-shape: 8px;
+  --md-icon-button-icon-size: 20px;
+  --md-filled-icon-button-icon-size: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------
    Typography utility classes
    -------------------------------------------------------- */
 

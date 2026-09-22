@@ -99,8 +99,8 @@ export function CategoriesPage() {
     <div className="admin-layout-content admin-products-page">
       <div className="admin-products-header">
         <h1 className="admin-products-title">Categories</h1>
-        <md-filled-button onClick={handleOpenAdd}>
-          <md-icon slot="icon">add</md-icon>
+        <md-filled-button onClick={handleOpenAdd} className="admin-action-btn">
+          <span className="material-symbols-outlined" slot="icon">add</span>
           Add Category
         </md-filled-button>
       </div>

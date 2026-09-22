@@ -62,4 +62,8 @@
 
 .admin-login-submit {
   margin-top: var(--md-sys-spacing-2);
+  --md-filled-button-container-height: 44px;
+  --md-filled-button-container-shape: 10px;
+  --md-filled-button-label-text-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }

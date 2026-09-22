@@ -80,6 +80,11 @@
 .checkout-page__submit-btn {
   width: 100%;
   --md-sys-color-primary: var(--sdm-color-success); /* Green for WhatsApp */
+  --md-filled-button-container-height: 48px;
+  --md-filled-button-container-shape: 10px;
+  --md-filled-button-label-text-weight: 600;
+  --md-filled-button-label-text-size: 1.02rem;
+  box-shadow: 0 4px 12px rgba(30, 124, 67, 0.22);
 }
 
 .checkout-page__whatsapp-notice {
