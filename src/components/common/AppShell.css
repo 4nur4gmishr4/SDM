@@ -1,0 +1,502 @@
+/* ============================================================
+   AppShell — Customer Layout
+   ============================================================
+   Structured M3 layout: TopAppBar + content + mobile bottom nav.
+   NOT a floating/glass/pill navbar.
+   ============================================================ */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* --------------------------------------------------------
+   Top App Bar (Desktop & Mobile header)
+   -------------------------------------------------------- */
+
+.app-shell__top-bar {
+  background-color: var(--md-sys-color-surface);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.app-shell__top-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-4);
+  padding: var(--md-sys-spacing-2) var(--md-sys-spacing-4);
+  max-width: var(--sdm-layout-max-width);
+  margin-inline: auto;
+  min-height: 56px;
+}
+
+.app-shell__brand-group {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-4);
+  flex-shrink: 0;
+}
+
+.app-shell__brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.app-shell__brand-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  border-radius: 9px;
+  background: var(--md-sys-color-primary, #1E8E3E);
+  color: #FFFFFF;
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(30, 142, 62, 0.22);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-shell__brand:hover .app-shell__brand-box {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(30, 142, 62, 0.32);
+}
+
+.app-shell__brand:active .app-shell__brand-box {
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .app-shell__brand-box {
+  background: #81C995;
+  color: #003915;
+  box-shadow: 0 2px 8px rgba(129, 201, 149, 0.2);
+}
+
+.app-shell__brand-name {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-large-size);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  color: var(--md-sys-color-primary);
+}
+
+.app-shell__brand-tagline {
+  font-size: var(--md-sys-typescale-label-small-size);
+  color: var(--md-sys-color-on-surface-variant);
+  display: none;
+}
+
+/* Desktop nav links */
+.app-shell__nav {
+  display: none;
+  align-items: center;
+  gap: var(--md-sys-spacing-1);
+  margin-left: auto;
+}
+
+.app-shell__nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-1);
+  padding: var(--md-sys-spacing-2) var(--md-sys-spacing-3);
+  border-radius: var(--md-sys-shape-corner-small);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  transition: background-color var(--md-sys-motion-standard), color var(--md-sys-motion-standard);
+  min-height: 40px;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.app-shell__nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.app-shell__nav-link:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+}
+
+.app-shell__nav-link--active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+}
+
+/* Actions (theme toggle, cart, profile) */
+.app-shell__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-1);
+  margin-left: auto;
+}
+
+.app-shell__action-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-color-on-surface-variant);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--md-sys-motion-standard), transform var(--md-sys-motion-standard), color var(--md-sys-motion-standard);
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.app-shell__action-btn:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: var(--md-sys-color-on-surface);
+}
+
+.app-shell__action-btn:active {
+  transform: scale(0.92);
+}
+
+.app-shell__avatar-img {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--md-sys-shape-corner-full);
+  object-fit: cover;
+  border: 1.5px solid var(--md-sys-color-primary);
+}
+
+.app-shell__cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  animation: m3-badge-pop 250ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* --------------------------------------------------------
+   Main Content & Mobile Viewport
+   -------------------------------------------------------- */
+
+.app-shell__page-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.app-shell__main {
+  flex: 1;
+  position: relative;
+}
+
+.app-shell__page-content {
+  width: 100%;
+}
+
+/* --------------------------------------------------------
+   Mobile Bottom Navigation — Material 3
+   -------------------------------------------------------- */
+
+.app-shell__bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: var(--md-sys-color-surface-container);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 80px;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.app-shell__bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex: 1;
+  padding: var(--md-sys-spacing-1) 0;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  min-height: 56px;
+  position: relative;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  outline: none !important;
+  transition: color 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.app-shell__bottom-nav-item:focus {
+  outline: none;
+}
+
+.app-shell__bottom-nav-item:focus-visible {
+  outline: none;
+}
+
+/* Active touch state without blue box */
+.app-shell__bottom-nav-item:active .app-shell__bottom-nav-icon-wrapper {
+  transform: scale(0.92);
+  transition-duration: 90ms;
+}
+
+/* Active state */
+.app-shell__bottom-nav-item--active {
+  color: var(--md-sys-color-primary);
+}
+
+.app-shell__bottom-nav-item--active .app-shell__bottom-nav-icon-wrapper {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.app-shell__bottom-nav-item--active .material-symbols-outlined {
+  transform: scale(1.08);
+}
+
+.app-shell__bottom-nav-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: background-color 220ms cubic-bezier(0.2, 0, 0, 1),
+              transform 180ms cubic-bezier(0.2, 0, 0, 1),
+              color 220ms cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  will-change: transform, background-color;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.app-shell__bottom-nav-icon-wrapper .material-symbols-outlined {
+  font-size: 24px;
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1),
+              color 220ms cubic-bezier(0.2, 0, 0, 1);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.app-shell__bottom-nav-label {
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 1.2;
+  transition: font-weight 200ms cubic-bezier(0.2, 0, 0, 1),
+              color 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.app-shell__bottom-nav-item--active .app-shell__bottom-nav-label {
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+}
+
+/* Footer bottom padding on mobile so content isn't covered by bottom nav */
+.sdm-footer {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+}
+
+/* --------------------------------------------------------
+   Responsive Breakpoints
+   -------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .app-shell__top-bar-inner {
+    gap: 8px;
+    padding: 6px 12px;
+    min-height: 52px;
+  }
+  .app-shell__brand-group {
+    gap: 0;
+    flex: 1;
+    min-width: 0;
+  }
+  /* Remove Sai Darshan Shopping Mart text/link from top-left on mobile to let location setter own the top-left */
+  .app-shell__brand {
+    display: none !important;
+  }
+  .app-shell__brand-name {
+    display: none !important;
+  }
+  .app-shell__brand-tagline {
+    display: none !important;
+  }
+}
+
+@media (min-width: 600px) {
+  .app-shell__brand-tagline {
+    display: block;
+  }
+}
+
+@media (min-width: 905px) {
+  .app-shell__nav {
+    display: flex;
+  }
+
+  .app-shell__actions {
+    margin-left: 0;
+  }
+
+  .app-shell__bottom-nav {
+    display: none;
+  }
+
+  .sdm-footer {
+    padding-bottom: var(--md-sys-spacing-4);
+  }
+
+  .app-shell__top-bar-inner {
+    padding: var(--md-sys-spacing-3) var(--md-sys-spacing-6);
+    min-height: 64px;
+  }
+
+  .app-shell__floating-cart-bar {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------
+   Mobile Sticky Floating Cart Bar
+   -------------------------------------------------------- */
+
+.app-shell__floating-cart-bar {
+  position: fixed;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 10px);
+  left: 14px;
+  right: 14px;
+  z-index: 95;
+  background: linear-gradient(135deg, #1E8E3E 0%, #137333 100%);
+  color: #FFFFFF;
+  border-radius: 14px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(30, 142, 62, 0.45);
+  animation: slideUpFloat 0.25s cubic-bezier(0.2, 0, 0, 1);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+@keyframes slideUpFloat {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.app-shell__floating-cart-bar:active {
+  transform: scale(0.98);
+}
+
+.app-shell__floating-cart-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-shell__floating-cart-icon-wrap {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+}
+
+.app-shell__floating-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #F9AB00;
+  color: #202124;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.app-shell__floating-cart-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell__floating-cart-count {
+  font-size: 11px;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.app-shell__floating-cart-total {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.app-shell__floating-cart-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 6px 14px;
+  border-radius: 8px;
+  color: #FFFFFF;
+}
