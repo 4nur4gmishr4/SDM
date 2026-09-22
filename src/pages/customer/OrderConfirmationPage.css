@@ -1,0 +1,69 @@
+/* ============================================================
+   Order Confirmation Page
+   ============================================================ */
+
+.order-confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--md-sys-spacing-16) var(--md-sys-spacing-4);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.order-confirmation__icon-wrapper {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--sdm-color-success-container);
+  color: var(--sdm-color-on-success-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--md-sys-spacing-6);
+}
+
+.order-confirmation__icon {
+  font-size: 48px;
+}
+
+.order-confirmation__title {
+  font-size: var(--md-sys-typescale-display-small-size);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: var(--md-sys-spacing-2);
+}
+
+.order-confirmation__text {
+  font-size: var(--md-sys-typescale-body-large-size);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: var(--md-sys-spacing-6);
+}
+
+.order-confirmation__order-id {
+  background-color: var(--md-sys-color-surface-container-high);
+  padding: var(--md-sys-spacing-3) var(--md-sys-spacing-6);
+  border-radius: var(--md-sys-shape-corner-medium);
+  font-family: var(--md-sys-typescale-font-family-mono);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: var(--md-sys-spacing-8);
+  border: 1px dashed var(--md-sys-color-outline);
+}
+
+.order-confirmation__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-4);
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .order-confirmation__actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
