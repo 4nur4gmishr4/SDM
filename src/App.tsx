@@ -26,6 +26,7 @@ import { SettingsPage } from './pages/admin/SettingsPage';
 // Layouts
 import { AppShell } from './components/common/AppShell';
 import { AdminShell } from './components/admin/AdminShell';
+import { ScrollToTop } from './components/common/ScrollToTop';
 
 import './styles/global.css';
 
@@ -98,6 +99,7 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <HelmetProvider>
         <AuthProvider>
           <SnackbarProvider>

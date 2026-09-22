@@ -119,11 +119,23 @@
   justify-content: center;
   border-radius: var(--md-sys-shape-corner-full);
   color: var(--md-sys-color-on-surface);
-  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: transform 120ms cubic-bezier(0.2, 0, 0, 1), background-color 160ms cubic-bezier(0.2, 0, 0, 1);
+  will-change: transform;
 }
 
 .quantity-control__btn:hover:not(:disabled) {
   background-color: rgba(0, 0, 0, 0.08);
+}
+
+.quantity-control__btn:active:not(:disabled) {
+  transform: scale(0.86);
+  background-color: rgba(0, 0, 0, 0.12);
 }
 
 .quantity-control__btn:disabled {
