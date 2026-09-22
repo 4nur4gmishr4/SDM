@@ -1,0 +1,783 @@
+/* ============================================================
+   SAI DARSHAN SHOPPING MART — GLOBAL STYLES
+   ============================================================
+   Reset, base styles, font imports, and Material Web theme
+   variable overrides for Sai Darshan Shopping Mart brand identity.
+   ============================================================ */
+@import 'leaflet/dist/leaflet.css';
+
+@import './tokens.css';
+
+/* Prevent global img rule from breaking Leaflet map tiles */
+.leaflet-container img,
+.leaflet-pane img,
+.leaflet-tile-pane img,
+.leaflet-tile {
+  max-width: none !important;
+  max-height: none !important;
+  width: auto;
+  height: auto;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.leaflet-container img,
+.leaflet-container picture,
+.leaflet-container .leaflet-tile {
+  transition: none !important;
+}
+
+.leaflet-fade-anim .leaflet-tile-loaded {
+  transition: opacity 0.2s linear !important;
+}
+
+/* --------------------------------------------------------
+   CSS Reset
+   -------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Universal Search Bar & Input Overlays Reset: Eliminates all square box overlays on tap and typing */
+input[type="search"],
+.search-bar__input,
+.location-search-input,
+.admin-search-input {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+input[type="search"]:focus,
+.search-bar__input:focus,
+.location-search-input:focus,
+.admin-search-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  transition: var(--md-sys-motion-standard);
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* --------------------------------------------------------
+   Focus visible styles
+   -------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------
+   Material Web component theme overrides
+   Apply Sai Darshan Shopping Mart brand tokens to @material/web
+   -------------------------------------------------------- */
+
+:root {
+  /* Material Web ref palette for component internals */
+  --md-ref-typeface-plain: 'Roboto Flex', 'Roboto', sans-serif;
+  --md-ref-typeface-brand: 'Roboto Flex', 'Roboto', sans-serif;
+
+  /* Motion */
+  --md-sys-motion-standard: 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ============================================================
+   ABSOLUTE REMOVAL OF ALL IMAGE ZOOM / HOVER SCALING
+   Guarantees all images across the website remain steady on hover.
+   ============================================================ */
+
+img:not([class*="leaflet"]):not(.leaflet-tile),
+picture:not([class*="leaflet"]):not(.leaflet-tile),
+video,
+canvas,
+svg,
+.product-tile__image,
+.category-nav__image,
+.offer-banner__image,
+.product-detail__image,
+.app-shell__avatar-img {
+  -webkit-transform: none !important;
+  transform: none !important;
+  scale: 1 !important;
+  transition: opacity 150ms ease !important;
+}
+
+*:hover > img:not([class*="leaflet"]):not(.leaflet-tile),
+*:hover > picture:not([class*="leaflet"]):not(.leaflet-tile),
+*:hover img:not([class*="leaflet"]):not(.leaflet-tile),
+*:hover picture:not([class*="leaflet"]):not(.leaflet-tile),
+.product-tile:hover .product-tile__image,
+.product-tile__image-link:hover .product-tile__image,
+.category-nav__item:hover .category-nav__image,
+.offer-banner:hover .offer-banner__image,
+.product-detail__image:hover,
+img:not([class*="leaflet"]):not(.leaflet-tile):hover {
+  -webkit-transform: none !important;
+  transform: none !important;
+  scale: 1 !important;
+}
+
+/* ============================================================
+   UNIVERSAL BUTTON SYSTEM (Clean, Spacious, Generous Padding)
+   ============================================================ */
+
+.sdm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 32px !important;
+  border-radius: 9999px !important;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: transform 120ms cubic-bezier(0.2, 0, 0, 1), box-shadow 120ms cubic-bezier(0.2, 0, 0, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sdm-btn--primary {
+  background-color: #1E8E3E !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+.sdm-btn--primary:hover:not(:disabled) {
+  background-color: #178036 !important;
+  box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.2), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+}
+
+.sdm-btn--primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.sdm-btn--tonal {
+  background-color: var(--md-sys-color-primary-container, #CEEAD6) !important;
+  color: var(--md-sys-color-on-primary-container, #0D652D) !important;
+  border: 1px solid rgba(30, 142, 62, 0.2) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.sdm-btn--tonal:hover:not(:disabled) {
+  background-color: var(--md-sys-color-primary, #1E8E3E) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(30, 142, 62, 0.25) !important;
+  border-color: var(--md-sys-color-primary, #1E8E3E) !important;
+}
+
+.sdm-btn--tonal:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.sdm-btn--outlined {
+  background-color: transparent !important;
+  color: var(--md-sys-color-primary, #1E8E3E) !important;
+  border: 1.5px solid var(--md-sys-color-primary, #1E8E3E) !important;
+}
+
+.sdm-btn--outlined:hover:not(:disabled) {
+  background-color: var(--md-sys-color-primary-container, #CEEAD6) !important;
+}
+
+.sdm-btn--text {
+  background-color: transparent !important;
+  color: var(--md-sys-color-primary, #1E8E3E) !important;
+  padding: 0 24px !important;
+}
+
+.sdm-btn--text:hover:not(:disabled) {
+  background-color: rgba(30, 142, 62, 0.08) !important;
+}
+
+.sdm-btn--whatsapp {
+  background-color: #25D366 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.28);
+}
+
+.sdm-btn--whatsapp:hover:not(:disabled) {
+  background-color: #20BA59 !important;
+  box-shadow: 0 5px 16px rgba(37, 211, 102, 0.38);
+}
+
+.sdm-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .sdm-btn--tonal {
+  background-color: #137333 !important;
+  color: #CEEAD6 !important;
+  border-color: #1E8E3E !important;
+}
+
+[data-theme="dark"] .sdm-btn--tonal:hover:not(:disabled) {
+  background-color: #1E8E3E !important;
+  color: #0D652D !important;
+}
+
+/* --------------------------------------------------------
+   Universal Material Web Button Standardization
+   -------------------------------------------------------- */
+
+:root {
+  --md-filled-button-container-shape: 12px;
+  --md-outlined-button-container-shape: 12px;
+  --md-filled-tonal-button-container-shape: 12px;
+  --md-elevated-button-container-shape: 12px;
+  --md-text-button-container-shape: 12px;
+
+  --md-filled-button-container-height: 44px;
+  --md-outlined-button-container-height: 44px;
+  --md-filled-tonal-button-container-height: 44px;
+  --md-elevated-button-container-height: 44px;
+  --md-text-button-container-height: 44px;
+
+  --md-filled-button-label-text-weight: 600;
+  --md-outlined-button-label-text-weight: 600;
+  --md-filled-tonal-button-label-text-weight: 600;
+  --md-elevated-button-label-text-weight: 600;
+  --md-text-button-label-text-weight: 600;
+
+  --md-filled-button-leading-space: 34px;
+  --md-filled-button-trailing-space: 34px;
+  --md-outlined-button-leading-space: 34px;
+  --md-outlined-button-trailing-space: 34px;
+  --md-filled-tonal-button-leading-space: 34px;
+  --md-filled-tonal-button-trailing-space: 34px;
+  --md-elevated-button-leading-space: 34px;
+  --md-elevated-button-trailing-space: 34px;
+  --md-text-button-leading-space: 22px;
+  --md-text-button-trailing-space: 22px;
+
+  --md-filled-button-with-leading-icon-leading-space: 24px;
+  --md-filled-button-with-leading-icon-trailing-space: 34px;
+  --md-outlined-button-with-leading-icon-leading-space: 24px;
+  --md-outlined-button-with-leading-icon-trailing-space: 34px;
+  --md-filled-tonal-button-with-leading-icon-leading-space: 24px;
+  --md-filled-tonal-button-with-leading-icon-trailing-space: 34px;
+
+  --md-filled-tonal-button-container-color: var(--md-sys-color-primary-container);
+  --md-filled-tonal-button-label-text-color: var(--md-sys-color-on-primary-container);
+  --md-filled-tonal-button-hover-state-layer-color: var(--md-sys-color-primary);
+  --md-filled-tonal-button-pressed-state-layer-color: var(--md-sys-color-primary);
+
+  --md-filled-button-icon-size: 20px;
+  --md-outlined-button-icon-size: 20px;
+  --md-filled-tonal-button-icon-size: 20px;
+  --md-elevated-button-icon-size: 20px;
+  --md-text-button-icon-size: 20px;
+}
+
+md-filled-button,
+md-outlined-button,
+md-filled-tonal-button,
+md-elevated-button,
+md-text-button {
+  --md-filled-button-container-shape: 12px;
+  --md-outlined-button-container-shape: 12px;
+  --md-filled-tonal-button-container-shape: 12px;
+  --md-elevated-button-container-shape: 12px;
+  --md-text-button-container-shape: 12px;
+
+  --md-filled-button-container-height: 44px;
+  --md-outlined-button-container-height: 44px;
+  --md-filled-tonal-button-container-height: 44px;
+  --md-elevated-button-container-height: 44px;
+  --md-text-button-container-height: 44px;
+
+  --md-filled-button-label-text-weight: 600;
+  --md-outlined-button-label-text-weight: 600;
+  --md-filled-tonal-button-label-text-weight: 600;
+  --md-elevated-button-label-text-weight: 600;
+  --md-text-button-label-text-weight: 600;
+
+  --md-filled-button-leading-space: 34px;
+  --md-filled-button-trailing-space: 34px;
+  --md-outlined-button-leading-space: 34px;
+  --md-outlined-button-trailing-space: 34px;
+  --md-filled-tonal-button-leading-space: 34px;
+  --md-filled-tonal-button-trailing-space: 34px;
+  --md-elevated-button-leading-space: 34px;
+  --md-elevated-button-trailing-space: 34px;
+  --md-text-button-leading-space: 22px;
+  --md-text-button-trailing-space: 22px;
+
+  --md-filled-button-with-leading-icon-leading-space: 24px;
+  --md-filled-button-with-leading-icon-trailing-space: 34px;
+  --md-outlined-button-with-leading-icon-leading-space: 24px;
+  --md-outlined-button-with-leading-icon-trailing-space: 34px;
+  --md-filled-tonal-button-with-leading-icon-leading-space: 24px;
+  --md-filled-tonal-button-with-leading-icon-trailing-space: 34px;
+
+  --md-filled-tonal-button-container-color: var(--md-sys-color-primary-container);
+  --md-filled-tonal-button-label-text-color: var(--md-sys-color-on-primary-container);
+  --md-filled-tonal-button-hover-state-layer-color: var(--md-sys-color-primary);
+  --md-filled-tonal-button-pressed-state-layer-color: var(--md-sys-color-primary);
+
+  --md-filled-button-icon-size: 20px;
+  --md-outlined-button-icon-size: 20px;
+  --md-filled-tonal-button-icon-size: 20px;
+  --md-elevated-button-icon-size: 20px;
+  --md-text-button-icon-size: 20px;
+
+  font-family: inherit;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+md-icon-button,
+md-filled-icon-button {
+  --md-icon-button-state-layer-shape: 10px;
+  --md-filled-icon-button-container-shape: 10px;
+  --md-icon-button-icon-size: 20px;
+  --md-filled-icon-button-icon-size: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------
+   Material Web Select & Menu Dropdown Theme Overrides
+   Ensures active/selected option indicators use brand green
+   container (primary-container) instead of yellow.
+   -------------------------------------------------------- */
+
+md-outlined-select,
+md-filled-select,
+md-select-option,
+md-menu,
+md-menu-item {
+  --md-menu-item-selected-container-color: var(--md-sys-color-primary-container);
+  --md-menu-item-selected-label-text-color: var(--md-sys-color-on-primary-container);
+  --md-sys-color-secondary-container: var(--md-sys-color-primary-container);
+  --md-sys-color-on-secondary-container: var(--md-sys-color-on-primary-container);
+  --md-outlined-select-focus-outline-color: var(--md-sys-color-primary);
+  --md-outlined-select-focus-label-text-color: var(--md-sys-color-primary);
+  --md-filled-select-focus-active-indicator-color: var(--md-sys-color-primary);
+  --md-filled-select-focus-label-text-color: var(--md-sys-color-primary);
+  --md-menu-container-shape: 12px;
+}
+
+md-select-option {
+  --md-menu-item-selected-container-color: var(--md-sys-color-primary-container);
+  --md-menu-item-selected-label-text-color: var(--md-sys-color-on-primary-container);
+}
+
+md-select-option[selected],
+md-select-option[aria-selected="true"] {
+  --md-menu-item-selected-container-color: var(--md-sys-color-primary-container);
+  --md-menu-item-selected-label-text-color: var(--md-sys-color-on-primary-container);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* --------------------------------------------------------
+   Typography utility classes
+   -------------------------------------------------------- */
+
+.typescale-display-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-large-size);
+  font-weight: var(--md-sys-typescale-display-large-weight);
+  line-height: var(--md-sys-typescale-display-large-line-height);
+  letter-spacing: var(--md-sys-typescale-display-large-tracking);
+}
+
+.typescale-display-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-medium-size);
+  font-weight: var(--md-sys-typescale-display-medium-weight);
+  line-height: var(--md-sys-typescale-display-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-display-medium-tracking);
+}
+
+.typescale-display-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-small-size);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+  line-height: var(--md-sys-typescale-display-small-line-height);
+  letter-spacing: var(--md-sys-typescale-display-small-tracking);
+}
+
+.typescale-headline-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-large-size);
+  font-weight: var(--md-sys-typescale-headline-large-weight);
+  line-height: var(--md-sys-typescale-headline-large-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-large-tracking);
+}
+
+.typescale-headline-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+}
+
+.typescale-headline-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+}
+
+.typescale-title-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-large-size);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  letter-spacing: var(--md-sys-typescale-title-large-tracking);
+}
+
+.typescale-title-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+}
+
+.typescale-title-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-small-size);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+}
+
+.typescale-body-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+}
+
+.typescale-body-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+}
+
+.typescale-body-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-small-size);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  letter-spacing: var(--md-sys-typescale-body-small-tracking);
+}
+
+.typescale-label-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+
+.typescale-label-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+}
+
+.typescale-label-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+}
+
+.typescale-mono {
+  font-family: var(--md-sys-typescale-font-family-mono);
+}
+
+/* --------------------------------------------------------
+   Scrollbar styling
+   -------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--md-sys-color-surface-container-low);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--md-sys-color-outline);
+}
+
+/* --------------------------------------------------------
+   Utility: visually hidden (accessible, not visible)
+   -------------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --------------------------------------------------------
+   Layout container
+   -------------------------------------------------------- */
+
+.layout-container {
+  width: 100%;
+  max-width: var(--sdm-layout-max-width);
+  margin-inline: auto;
+  padding-inline: var(--sdm-layout-content-padding-mobile);
+}
+
+@media (min-width: 600px) {
+  .layout-container {
+    padding-inline: var(--sdm-layout-content-padding-tablet);
+  }
+}
+
+@media (min-width: 905px) {
+  .layout-container {
+    padding-inline: var(--sdm-layout-content-padding-desktop);
+  }
+}
+
+/* --------------------------------------------------------
+/* --------------------------------------------------------
+   Material Symbols icon setup — Zero FOUT & Self-Hosted
+   -------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: block;
+  src: url('/fonts/material-symbols-outlined.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/materialsymbolsoutlined/v382/kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40yxrjGyv3fzdVBO1USv9ls.woff2') format('woff2');
+}
+
+html.icons-loading .material-symbols-outlined {
+  visibility: hidden !important;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  overflow: hidden;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* --------------------------------------------------------
+   Material 3 Motion Keyframes & Section Transitions
+   -------------------------------------------------------- */
+
+@keyframes m3-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes m3-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes m3-pill-pop {
+  0% {
+    transform: scale(0.88);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes m3-icon-bounce {
+  0% {
+    transform: scale(0.85);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes m3-badge-pop {
+  0% {
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+  /* Native Mobile App Tactile Feedback */
+  button:active,
+  a.sdm-btn:active,
+  .sdm-footer__icon-btn:active,
+  .app-shell__bottom-nav-item:active,
+  .category-nav__item:active,
+  .app-shell__action-btn:active {
+    transform: scale(0.96);
+    transition: transform 90ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  /* Native touch-callout prevention on mobile app chrome */
+  .app-shell__top-bar,
+  .app-shell__bottom-nav,
+  .category-nav,
+  .ios-banner-container,
+  .watermark-banner {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
+
+

@@ -1,0 +1,372 @@
+/* ============================================================
+   SAI DARSHAN SHOPPING MART — MATERIAL 3 DESIGN TOKENS
+   ============================================================
+   Centralized design token system.
+   Fresh Supermarket Palette: Fresh Green & Warm Sunny Yellow.
+   ============================================================ */
+
+:root {
+  /* --------------------------------------------------------
+     COLOR SYSTEM — M3 Semantic Roles (Fresh Green & Yellow Palette)
+     Primary: Fresh Supermarket Green
+     Secondary: Warm Golden Yellow (Promos, Highlights, Badges)
+     Tertiary: Fresh Lime / Leaf Green
+     -------------------------------------------------------- */
+
+  /* Primary (Google Material Green 600) */
+  --md-sys-color-primary: #1E8E3E;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #CEEAD6;
+  --md-sys-color-on-primary-container: #0D652D;
+
+  /* Secondary (Google Material Amber / Warm Accent) */
+  --md-sys-color-secondary: #F9AB00;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #FEF7E0;
+  --md-sys-color-on-secondary-container: #B06000;
+
+  /* Tertiary (Google Pine / Leaf Green) */
+  --md-sys-color-tertiary: #137333;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #E6F4EA;
+  --md-sys-color-on-tertiary-container: #0D652D;
+
+  /* Error */
+  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FFDAD6;
+  --md-sys-color-on-error-container: #410002;
+
+  /* Surface system — Google Material 3 Formula */
+  --md-sys-color-surface: #FFFFFF;
+  --md-sys-color-on-surface: #202124;
+  --md-sys-color-surface-variant: #F1F3F4;
+  --md-sys-color-on-surface-variant: #5F6368;
+  --md-sys-color-surface-container-lowest: #FFFFFF;
+  --md-sys-color-surface-container-low: #F8F9FA;
+  --md-sys-color-surface-container: #F1F3F4;
+  --md-sys-color-surface-container-high: #E8EAED;
+  --md-sys-color-surface-container-highest: #DADCE0;
+  --md-sys-color-surface-dim: #DCDFE4;
+  --md-sys-color-surface-bright: #FFFFFF;
+
+  /* Inverse */
+  --md-sys-color-inverse-surface: #303134;
+  --md-sys-color-inverse-on-surface: #F1F3F4;
+  --md-sys-color-inverse-primary: #81C995;
+
+  /* Outline */
+  --md-sys-color-outline: #BDC1C6;
+  --md-sys-color-outline-variant: #E8EAED;
+
+  /* Scrim */
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+
+  /* Custom status colors */
+  --sdm-color-success: #1E8E3E;
+  --sdm-color-success-container: #CEEAD6;
+  --sdm-color-on-success-container: #0D652D;
+  --sdm-color-warning: #F9AB00;
+  --sdm-color-warning-container: #FEF7E0;
+
+  /* --------------------------------------------------------
+     TYPOGRAPHY — M3 Type Scale
+     Primary: Roboto / Roboto Flex
+     Monospace: Roboto Mono (SKU, Order IDs only)
+     -------------------------------------------------------- */
+
+  --md-sys-typescale-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --md-sys-typescale-font-family-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+  --font-syne: 'Syne', sans-serif;
+
+  /* Display Large — page titles (used sparingly) */
+  --md-sys-typescale-display-large-size: 2.25rem;
+  --md-sys-typescale-display-large-weight: 400;
+  --md-sys-typescale-display-large-line-height: 2.75rem;
+  --md-sys-typescale-display-large-tracking: 0;
+
+  /* Display Medium */
+  --md-sys-typescale-display-medium-size: 1.8125rem;
+  --md-sys-typescale-display-medium-weight: 400;
+  --md-sys-typescale-display-medium-line-height: 2.25rem;
+  --md-sys-typescale-display-medium-tracking: 0;
+
+  /* Display Small */
+  --md-sys-typescale-display-small-size: 1.5rem;
+  --md-sys-typescale-display-small-weight: 400;
+  --md-sys-typescale-display-small-line-height: 2rem;
+  --md-sys-typescale-display-small-tracking: 0;
+
+  /* Headline Large */
+  --md-sys-typescale-headline-large-size: 1.5rem;
+  --md-sys-typescale-headline-large-weight: 400;
+  --md-sys-typescale-headline-large-line-height: 2rem;
+  --md-sys-typescale-headline-large-tracking: 0;
+
+  /* Headline Medium */
+  --md-sys-typescale-headline-medium-size: 1.25rem;
+  --md-sys-typescale-headline-medium-weight: 400;
+  --md-sys-typescale-headline-medium-line-height: 1.75rem;
+  --md-sys-typescale-headline-medium-tracking: 0;
+
+  /* Headline Small */
+  --md-sys-typescale-headline-small-size: 1.125rem;
+  --md-sys-typescale-headline-small-weight: 400;
+  --md-sys-typescale-headline-small-line-height: 1.5rem;
+  --md-sys-typescale-headline-small-tracking: 0;
+
+  /* Title Large */
+  --md-sys-typescale-title-large-size: 1.125rem;
+  --md-sys-typescale-title-large-weight: 500;
+  --md-sys-typescale-title-large-line-height: 1.5rem;
+  --md-sys-typescale-title-large-tracking: 0;
+
+  /* Title Medium */
+  --md-sys-typescale-title-medium-size: 1rem;
+  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-medium-line-height: 1.5rem;
+  --md-sys-typescale-title-medium-tracking: 0.01em;
+
+  /* Title Small */
+  --md-sys-typescale-title-small-size: 0.875rem;
+  --md-sys-typescale-title-small-weight: 500;
+  --md-sys-typescale-title-small-line-height: 1.25rem;
+  --md-sys-typescale-title-small-tracking: 0.006em;
+
+  /* Body Large */
+  --md-sys-typescale-body-large-size: 1rem;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-large-line-height: 1.5rem;
+  --md-sys-typescale-body-large-tracking: 0.03em;
+
+  /* Body Medium */
+  --md-sys-typescale-body-medium-size: 0.875rem;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-medium-line-height: 1.25rem;
+  --md-sys-typescale-body-medium-tracking: 0.016em;
+
+  /* Body Small */
+  --md-sys-typescale-body-small-size: 0.75rem;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-body-small-line-height: 1rem;
+  --md-sys-typescale-body-small-tracking: 0.025em;
+
+  /* Label Large */
+  --md-sys-typescale-label-large-size: 0.875rem;
+  --md-sys-typescale-label-large-weight: 500;
+  --md-sys-typescale-label-large-line-height: 1.25rem;
+  --md-sys-typescale-label-large-tracking: 0.006em;
+
+  /* Label Medium */
+  --md-sys-typescale-label-medium-size: 0.75rem;
+  --md-sys-typescale-label-medium-weight: 500;
+  --md-sys-typescale-label-medium-line-height: 1rem;
+  --md-sys-typescale-label-medium-tracking: 0.03em;
+
+  /* Label Small */
+  --md-sys-typescale-label-small-size: 0.6875rem;
+  --md-sys-typescale-label-small-weight: 500;
+  --md-sys-typescale-label-small-line-height: 1rem;
+  --md-sys-typescale-label-small-tracking: 0.03em;
+
+  /* --------------------------------------------------------
+     SHAPE — M3 Corner Radii
+     -------------------------------------------------------- */
+
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 9999px;
+
+  /* --------------------------------------------------------
+     ELEVATION — M3 Shadow Levels
+     Restrained elevation: structural separation, not decorative.
+     -------------------------------------------------------- */
+
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level2: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level3: 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level4: 0px 2px 3px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level5: 0px 4px 4px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+
+  /* --------------------------------------------------------
+     SPACING — Consistent spacing scale
+     -------------------------------------------------------- */
+
+  --md-sys-spacing-0: 0;
+  --md-sys-spacing-1: 4px;
+  --md-sys-spacing-2: 8px;
+  --md-sys-spacing-3: 12px;
+  --md-sys-spacing-4: 16px;
+  --md-sys-spacing-5: 20px;
+  --md-sys-spacing-6: 24px;
+  --md-sys-spacing-8: 32px;
+  --md-sys-spacing-10: 40px;
+  --md-sys-spacing-12: 48px;
+  --md-sys-spacing-16: 64px;
+
+  /* --------------------------------------------------------
+     MOTION — M3 Motion Tokens
+     Functional transitions only. Respect prefers-reduced-motion.
+     -------------------------------------------------------- */
+
+  --md-sys-motion-duration-short1: 50ms;
+  --md-sys-motion-duration-short2: 100ms;
+  --md-sys-motion-duration-short3: 150ms;
+  --md-sys-motion-duration-short4: 200ms;
+  --md-sys-motion-duration-medium1: 250ms;
+  --md-sys-motion-duration-medium2: 300ms;
+  --md-sys-motion-duration-medium3: 350ms;
+  --md-sys-motion-duration-medium4: 400ms;
+  --md-sys-motion-duration-long1: 450ms;
+  --md-sys-motion-duration-long2: 500ms;
+
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  /* --------------------------------------------------------
+     LAYOUT — Responsive breakpoints and content widths
+     -------------------------------------------------------- */
+
+  --sdm-layout-max-width: 1560px;
+  --sdm-layout-content-padding-mobile: 16px;
+  --sdm-layout-content-padding-tablet: 20px;
+  --sdm-layout-content-padding-desktop: 24px;
+
+  /* --------------------------------------------------------
+     COMPONENT STATE LAYERS — M3 State System
+     Applied via opacity on top of component colors.
+     -------------------------------------------------------- */
+
+  --md-sys-state-hover-opacity: 0.08;
+  --md-sys-state-focus-opacity: 0.12;
+  --md-sys-state-pressed-opacity: 0.12;
+  --md-sys-state-dragged-opacity: 0.16;
+  --md-sys-state-disabled-opacity: 0.38;
+  --md-sys-state-disabled-container-opacity: 0.12;
+}
+
+/* --------------------------------------------------------
+   M3 DARK THEME PALETTE (Green & Yellow Dark Mode)
+   Auto-applied when system prefers dark (unless data-theme="light")
+   Or explicitly forced when data-theme="dark".
+   -------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --md-sys-color-primary: #81C995;
+    --md-sys-color-on-primary: #0D652D;
+    --md-sys-color-primary-container: #137333;
+    --md-sys-color-on-primary-container: #CEEAD6;
+
+    --md-sys-color-secondary: #FDD663;
+    --md-sys-color-on-secondary: #3C2F00;
+    --md-sys-color-secondary-container: #564500;
+    --md-sys-color-on-secondary-container: #FFE082;
+
+    --md-sys-color-tertiary: #81C995;
+    --md-sys-color-on-tertiary: #0D652D;
+    --md-sys-color-tertiary-container: #188038;
+    --md-sys-color-on-tertiary-container: #CEEAD6;
+
+    --md-sys-color-error: #FFB4AB;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-error-container: #93000A;
+    --md-sys-color-on-error-container: #FFDAD6;
+
+    --md-sys-color-surface: #202124;
+    --md-sys-color-on-surface: #E8EAED;
+    --md-sys-color-surface-variant: #303134;
+    --md-sys-color-on-surface-variant: #9AA0A6;
+    --md-sys-color-surface-container-lowest: #171717;
+    --md-sys-color-surface-container-low: #202124;
+    --md-sys-color-surface-container: #292A2D;
+    --md-sys-color-surface-container-high: #303134;
+    --md-sys-color-surface-container-highest: #3C4043;
+    --md-sys-color-surface-dim: #1C1D1F;
+    --md-sys-color-surface-bright: #3C4043;
+
+    --md-sys-color-inverse-surface: #E8EAED;
+    --md-sys-color-inverse-on-surface: #202124;
+    --md-sys-color-inverse-primary: #1E8E3E;
+
+    --md-sys-color-outline: #5F6368;
+    --md-sys-color-outline-variant: #3C4043;
+
+    --sdm-color-success: #81C995;
+    --sdm-color-success-container: #137333;
+    --sdm-color-on-success-container: #CEEAD6;
+    --sdm-color-warning: #FDD663;
+    --sdm-color-warning-container: #564500;
+  }
+}
+
+[data-theme="dark"] {
+  --md-sys-color-primary: #81C995;
+  --md-sys-color-on-primary: #0D652D;
+  --md-sys-color-primary-container: #137333;
+  --md-sys-color-on-primary-container: #CEEAD6;
+
+  --md-sys-color-secondary: #FDD663;
+  --md-sys-color-on-secondary: #3C2F00;
+  --md-sys-color-secondary-container: #564500;
+  --md-sys-color-on-secondary-container: #FFE082;
+
+  --md-sys-color-tertiary: #81C995;
+  --md-sys-color-on-tertiary: #0D652D;
+  --md-sys-color-tertiary-container: #188038;
+  --md-sys-color-on-tertiary-container: #CEEAD6;
+
+  --md-sys-color-error: #FFB4AB;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000A;
+  --md-sys-color-on-error-container: #FFDAD6;
+
+  --md-sys-color-surface: #202124;
+  --md-sys-color-on-surface: #E8EAED;
+  --md-sys-color-surface-variant: #303134;
+  --md-sys-color-on-surface-variant: #9AA0A6;
+  --md-sys-color-surface-container-lowest: #171717;
+  --md-sys-color-surface-container-low: #202124;
+  --md-sys-color-surface-container: #292A2D;
+  --md-sys-color-surface-container-high: #303134;
+  --md-sys-color-surface-container-highest: #3C4043;
+  --md-sys-color-surface-dim: #1C1D1F;
+  --md-sys-color-surface-bright: #3C4043;
+
+  --md-sys-color-inverse-surface: #E8EAED;
+  --md-sys-color-inverse-on-surface: #202124;
+  --md-sys-color-inverse-primary: #1E8E3E;
+
+  --md-sys-color-outline: #5F6368;
+  --md-sys-color-outline-variant: #3C4043;
+
+  --sdm-color-success: #81C995;
+  --sdm-color-success-container: #137333;
+  --sdm-color-on-success-container: #CEEAD6;
+  --sdm-color-warning: #FDD663;
+  --sdm-color-warning-container: #564500;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --md-sys-motion-duration-short1: 0ms;
+    --md-sys-motion-duration-short2: 0ms;
+    --md-sys-motion-duration-short3: 0ms;
+    --md-sys-motion-duration-short4: 0ms;
+    --md-sys-motion-duration-medium1: 0ms;
+    --md-sys-motion-duration-medium2: 0ms;
+    --md-sys-motion-duration-medium3: 0ms;
+    --md-sys-motion-duration-medium4: 0ms;
+    --md-sys-motion-duration-long1: 0ms;
+    --md-sys-motion-duration-long2: 0ms;
+  }
+}
