@@ -1,0 +1,177 @@
+/* ============================================================
+   SAI DARSHAN MART — SKELETON LOADING SYSTEM
+   Fluid shimmer animations matching M3 design tokens
+   ============================================================ */
+
+@keyframes sdm-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.sdm-skeleton {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--md-sys-color-surface-container-high) 0%,
+    var(--md-sys-color-surface-container-highest) 50%,
+    var(--md-sys-color-surface-container-high) 100%
+  );
+  background-size: 200% 100%;
+  animation: sdm-shimmer 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  border-radius: var(--md-sys-shape-corner-small, 8px);
+}
+
+.sdm-skeleton--text {
+  height: 14px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.sdm-skeleton--circular {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sdm-skeleton--rounded {
+  border-radius: var(--md-sys-shape-corner-medium, 12px);
+}
+
+.sdm-skeleton--rectangular {
+  border-radius: 0;
+}
+
+/* Product Tile Skeleton */
+.product-tile-skeleton {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium, 12px);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.product-tile-skeleton__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--md-sys-shape-corner-small, 8px);
+}
+
+.product-tile-skeleton__content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.product-tile-skeleton__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+/* Category Nav Skeleton */
+.category-nav-skeleton {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 8px 4px 16px 4px;
+  scrollbar-width: none;
+}
+
+.category-nav-skeleton::-webkit-scrollbar {
+  display: none;
+}
+
+.category-nav-skeleton__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  width: 72px;
+}
+
+/* Banner Skeleton */
+.banner-skeleton {
+  width: 100%;
+  height: 180px;
+  border-radius: var(--md-sys-shape-corner-large, 16px);
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .banner-skeleton {
+    height: 240px;
+  }
+}
+
+/* Product Detail Skeleton */
+.product-detail-skeleton {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  padding: 24px 0;
+}
+
+@media (min-width: 768px) {
+  .product-detail-skeleton {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+}
+
+.product-detail-skeleton__gallery {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: var(--md-sys-shape-corner-large, 16px);
+}
+
+.product-detail-skeleton__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Admin Table Skeleton */
+.admin-table-skeleton-row td {
+  padding: 14px 16px;
+}
+
+/* Admin Dashboard Skeleton */
+.admin-dashboard-skeleton__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-dashboard-skeleton__card {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium, 12px);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Admin Form Skeleton */
+.admin-form-skeleton {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium, 12px);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 600px;
+}

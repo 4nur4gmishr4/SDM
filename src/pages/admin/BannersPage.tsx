@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { AdminTableSkeleton } from '../../components/common';
 import type { Banner } from '../../types/banner';
 import './OrdersPage.css'; 
 import './ProductsPage.css';
@@ -99,24 +100,28 @@ export function BannersPage() {
       </div>
 
       <div className="admin-table-container">
-        {isLoading ? (
-          <div style={{ padding: '32px', textAlign: 'center' }}>
-            <md-circular-progress indeterminate></md-circular-progress>
-          </div>
-        ) : (
-          <table className="admin-table">
-            <thead>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title & Text</th>
+              <th>Link</th>
+              <th>Order</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              <AdminTableSkeleton rows={4} cols={6} />
+            ) : banners.length === 0 ? (
               <tr>
-                <th>Image</th>
-                <th>Title & Text</th>
-                <th>Link</th>
-                <th>Order</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '32px' }}>
+                  No banners found. Click "Add Banner" to create one.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {banners.map((banner) => (
+            ) : (
+              banners.map((banner) => (
                 <tr key={banner.id} style={{ opacity: banner.is_active ? 1 : 0.5 }}>
                   <td>
                     {banner.image_url ? (
@@ -146,10 +151,10 @@ export function BannersPage() {
                     </md-icon-button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
 
       {isModalOpen && editingBanner && (

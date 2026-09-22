@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { seedDatabase } from '../../lib/seedDatabase';
+import { AdminFormSkeleton } from '../../components/common';
 import type { DeliverySettings } from '../../types/delivery';
 
 export function SettingsPage() {
@@ -102,9 +103,7 @@ export function SettingsPage() {
       </div>
 
       {isLoading ? (
-        <div style={{ padding: '32px', textAlign: 'center' }}>
-          <md-circular-progress indeterminate></md-circular-progress>
-        </div>
+        <AdminFormSkeleton />
       ) : (
         <div className="admin-table-container" style={{ padding: '24px', maxWidth: '600px', flex: 'none' }}>
           <form id="settings-form" onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

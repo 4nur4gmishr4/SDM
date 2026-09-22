@@ -5,6 +5,7 @@ import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/orderUtils';
 import './ProductDetailPage.css';
 
+import { ProductDetailSkeleton } from '../../components/common';
 import { useProduct } from '../../hooks/useProducts';
 
 export function ProductDetailPage() {
@@ -26,11 +27,11 @@ export function ProductDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="layout-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+      <div className="layout-container" style={{ padding: '16px 0' }}>
         <Helmet>
           <title>Loading Product - Sai Darshan Mart</title>
         </Helmet>
-        <md-circular-progress indeterminate></md-circular-progress>
+        <ProductDetailSkeleton />
       </div>
     );
   }

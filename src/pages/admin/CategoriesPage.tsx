@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { AdminTableSkeleton } from '../../components/common';
 import type { Category } from '../../types/category';
 import './OrdersPage.css'; // Reusing table styles
 import './ProductsPage.css'; // Reusing modal/layout styles
@@ -105,23 +106,27 @@ export function CategoriesPage() {
       </div>
 
       <div className="admin-table-container">
-        {isLoading ? (
-          <div style={{ padding: '32px', textAlign: 'center' }}>
-            <md-circular-progress indeterminate></md-circular-progress>
-          </div>
-        ) : (
-          <table className="admin-table">
-            <thead>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name / Slug</th>
+              <th>Display Order</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              <AdminTableSkeleton rows={5} cols={5} />
+            ) : categories.length === 0 ? (
               <tr>
-                <th>Image</th>
-                <th>Name / Slug</th>
-                <th>Display Order</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <td colSpan={5} style={{ textAlign: 'center', padding: '32px' }}>
+                  No categories found. Click "Add Category" to create one.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {categories.map((category) => (
+            ) : (
+              categories.map((category) => (
                 <tr key={category.id} style={{ opacity: category.is_visible ? 1 : 0.5 }}>
                   <td>
                     {category.thumbnail_url ? (
@@ -155,10 +160,10 @@ export function CategoriesPage() {
                     </md-icon-button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Modal */}

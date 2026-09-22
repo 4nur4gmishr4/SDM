@@ -25,7 +25,7 @@ import { BannersPage } from './pages/admin/BannersPage';
 import { SettingsPage } from './pages/admin/SettingsPage';
 
 // Layouts
-import { AppShell, ScrollToTop } from './components/common';
+import { AppShell, ScrollToTop, Skeleton } from './components/common';
 import { AdminShell } from './components/admin';
 
 import './styles/global.css';
@@ -37,8 +37,10 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <md-circular-progress indeterminate></md-circular-progress>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: '16px', background: 'var(--md-sys-color-surface)' }}>
+        <Skeleton variant="circular" width={64} height={64} />
+        <Skeleton variant="rounded" width={180} height={20} />
+        <Skeleton variant="rounded" width={120} height={14} />
       </div>
     );
   }

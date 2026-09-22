@@ -91,17 +91,7 @@ export function ShopPage() {
   }, [products, localQuery, sortBy, inStockOnly]);
 
   const pageTitle = currentCategory ? `${currentCategory.name} - Sai Darshan Mart` : 'All Products - Sai Darshan Mart';
-
-  if (isLoading && products.length === 0) {
-    return (
-      <div className="layout-container shop-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <Helmet>
-          <title>{pageTitle}</title>
-        </Helmet>
-        <md-circular-progress indeterminate></md-circular-progress>
-      </div>
-    );
-  }
+  const isInitialLoading = isLoading && products.length === 0;
 
   return (
     <div className="layout-container shop-page">
@@ -185,8 +175,14 @@ export function ShopPage() {
         <div className="shop-page__main">
           <div className="shop-page__results-header">
             <span className="shop-page__results-count">
-              Showing {displayedProducts.length} {displayedProducts.length === 1 ? 'result' : 'results'}
-              {localQuery && <span> for "{localQuery}"</span>}
+              {isInitialLoading ? (
+                'Loading fresh products...'
+              ) : (
+                <>
+                  Showing {displayedProducts.length} {displayedProducts.length === 1 ? 'result' : 'results'}
+                  {localQuery && <span> for "{localQuery}"</span>}
+                </>
+              )}
             </span>
             
             <div className="shop-page__filters">
@@ -204,7 +200,7 @@ export function ShopPage() {
             </div>
           </div>
 
-          <ProductGrid products={displayedProducts} />
+          <ProductGrid products={displayedProducts} isLoading={isInitialLoading} skeletonCount={12} />
         </div>
       </div>
     </div>

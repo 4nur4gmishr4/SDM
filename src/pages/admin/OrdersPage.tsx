@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { formatPrice } from '../../lib/orderUtils';
+import { AdminTableSkeleton } from '../../components/common';
 import type { Order } from '../../types/order';
 import './OrdersPage.css';
 
@@ -71,28 +72,28 @@ export function OrdersPage() {
       </div>
 
       <div className="admin-table-container">
-        {isLoading ? (
-          <div style={{ padding: '32px', textAlign: 'center' }}>
-            <md-circular-progress indeterminate></md-circular-progress>
-          </div>
-        ) : orders.length === 0 ? (
-          <div style={{ padding: '32px', textAlign: 'center', color: 'var(--md-sys-color-on-surface-variant)' }}>
-            No orders found.
-          </div>
-        ) : (
-          <table className="admin-table">
-            <thead>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              <AdminTableSkeleton rows={6} cols={6} />
+            ) : orders.length === 0 ? (
               <tr>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Customer</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '32px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+                  No orders found.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
+            ) : (
+              orders.map((order) => (
                 <tr key={order.id}>
                   <td style={{ fontFamily: 'monospace' }}>{order.id}</td>
                   <td>{formatDate(order.created_at)}</td>
@@ -132,10 +133,10 @@ export function OrdersPage() {
                     </div>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

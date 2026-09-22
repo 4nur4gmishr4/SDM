@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { CategoryNavSkeleton } from '../common';
 import type { Category } from '../../types/category';
 import './CategoryNav.css';
 
@@ -6,9 +7,14 @@ interface CategoryNavProps {
   categories: Category[];
   activeSlug?: string;
   basePath?: string; // e.g. '/shop'
+  isLoading?: boolean;
 }
 
-export function CategoryNav({ categories, activeSlug, basePath = '/shop' }: CategoryNavProps) {
+export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoading = false }: CategoryNavProps) {
+  if (isLoading) {
+    return <CategoryNavSkeleton count={8} />;
+  }
+
   // Helper to map category names to Material Symbols if no thumbnail is available
   const getCategoryIcon = (name: string) => {
     const nameLower = name.toLowerCase();

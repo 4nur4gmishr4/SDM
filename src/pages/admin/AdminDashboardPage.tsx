@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
+import { AdminDashboardSkeleton } from '../../components/common';
 import './AdminDashboardPage.css';
 
 export function AdminDashboardPage() {
@@ -60,8 +61,11 @@ export function AdminDashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="admin-layout-content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <md-circular-progress indeterminate></md-circular-progress>
+      <div className="admin-layout-content admin-dashboard">
+        <div className="admin-dashboard-header">
+          <h1 className="admin-dashboard-title">Dashboard</h1>
+        </div>
+        <AdminDashboardSkeleton />
       </div>
     );
   }

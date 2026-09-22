@@ -10,6 +10,8 @@ import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
 import { useBanners } from '../../hooks/useBanners';
 
+import { BannerSkeleton } from '../../components/common';
+
 export function HomePage() {
   const { categories, isLoading: categoriesLoading } = useCategories();
   const { products: featuredProducts, isLoading: productsLoading } = useProducts({ isFeatured: true });
@@ -17,13 +19,6 @@ export function HomePage() {
 
   const mainBanner = banners.length > 0 ? banners[0] : null;
 
-  if (categoriesLoading || productsLoading || bannersLoading) {
-    return (
-      <div className="layout-container home-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <md-circular-progress indeterminate></md-circular-progress>
-      </div>
-    );
-  }
   return (
     <div className="layout-container home-page">
       <Helmet>
@@ -52,14 +47,18 @@ export function HomePage() {
         <div className="home-page__section-header">
           <h2 className="home-page__section-title">Shop by Category</h2>
         </div>
-        <CategoryNav categories={categories} />
+        <CategoryNav categories={categories} isLoading={categoriesLoading} />
       </section>
 
-      {mainBanner && (
+      {bannersLoading ? (
+        <section className="home-page__section">
+          <BannerSkeleton />
+        </section>
+      ) : mainBanner ? (
         <section className="home-page__section">
           <OfferBanner banner={mainBanner} />
         </section>
-      )}
+      ) : null}
 
       {/* Featured Products */}
       <section className="home-page__section">
@@ -69,7 +68,7 @@ export function HomePage() {
             View All <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
           </Link>
         </div>
-        <ProductGrid products={featuredProducts} />
+        <ProductGrid products={featuredProducts} isLoading={productsLoading} skeletonCount={8} />
       </section>
 
     </div>

@@ -1,15 +1,28 @@
 import { useState } from 'react';
 import { ProductTile } from './ProductTile';
+import { ProductGridSkeleton } from '../common';
 import type { Product } from '../../types/product';
 import './ProductGrid.css';
 
 interface ProductGridProps {
   products: Product[];
   emptyMessage?: string;
+  isLoading?: boolean;
+  skeletonCount?: number;
 }
 
-export function ProductGrid({ products, emptyMessage = 'No products found.' }: ProductGridProps) {
+export function ProductGrid({
+  products,
+  emptyMessage = 'No products found.',
+  isLoading = false,
+  skeletonCount = 8,
+}: ProductGridProps) {
   const [visibleCount, setVisibleCount] = useState(20);
+
+  if (isLoading) {
+    return <ProductGridSkeleton count={skeletonCount} />;
+  }
+
 
   if (products.length === 0) {
     return (

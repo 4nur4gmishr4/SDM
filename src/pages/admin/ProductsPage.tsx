@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { formatPrice } from '../../lib/orderUtils';
+import { AdminTableSkeleton } from '../../components/common';
 import type { Product } from '../../types/product';
 import type { Category } from '../../types/category';
 import './OrdersPage.css'; // Reusing table styles
@@ -112,24 +113,28 @@ export function ProductsPage() {
       </div>
 
       <div className="admin-table-container">
-        {isLoading ? (
-          <div style={{ padding: '32px', textAlign: 'center' }}>
-            <md-circular-progress indeterminate></md-circular-progress>
-          </div>
-        ) : (
-          <table className="admin-table">
-            <thead>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              <AdminTableSkeleton rows={6} cols={6} />
+            ) : products.length === 0 ? (
               <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '32px' }}>
+                  No products found. Click "Add Product" to create one.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
+            ) : (
+              products.map((product) => (
                 <tr key={product.id} style={{ opacity: product.is_archived ? 0.5 : 1 }}>
                   <td>
                     {product.image_url ? (
@@ -163,10 +168,10 @@ export function ProductsPage() {
                     </md-icon-button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Modal */}
