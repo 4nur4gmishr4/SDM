@@ -43,6 +43,7 @@
   color: var(--md-sys-color-on-surface);
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -81,6 +82,7 @@
   transition: background-color var(--md-sys-motion-standard), color var(--md-sys-motion-standard);
   min-height: 40px;
   -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -118,6 +120,7 @@
   color: var(--md-sys-color-on-surface-variant);
   transition: background-color var(--md-sys-motion-standard), transform var(--md-sys-motion-standard);
   -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -180,6 +183,7 @@
   padding-bottom: env(safe-area-inset-bottom, 0);
   -webkit-tap-highlight-color: transparent !important;
   -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
   user-select: none !important;
   box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -200,6 +204,7 @@
   position: relative;
   -webkit-tap-highlight-color: transparent !important;
   -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
   user-select: none !important;
   outline: none !important;
   transition: color 200ms cubic-bezier(0.2, 0, 0, 1);
