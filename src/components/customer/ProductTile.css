@@ -122,12 +122,18 @@
   position: relative;
 }
 
+.product-tile__add-button {
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none;
+}
+
 .product-tile__add-button:hover:not(:disabled) {
   background-color: rgba(0, 0, 0, 0.08);
 }
 
 .product-tile__add-button:active:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.08);
+  transform: scale(0.90);
+  background-color: rgba(0, 0, 0, 0.12);
 }
 
 .product-tile__add-button:focus-visible {

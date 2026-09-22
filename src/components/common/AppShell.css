@@ -9,10 +9,11 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 /* --------------------------------------------------------
-   Top App Bar (Desktop)
+   Top App Bar (Desktop & Mobile header)
    -------------------------------------------------------- */
 
 .app-shell__top-bar {
@@ -21,6 +22,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 .app-shell__top-bar-inner {
@@ -40,6 +42,8 @@
   text-decoration: none;
   color: var(--md-sys-color-on-surface);
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none;
 }
 
 .app-shell__brand-name {
@@ -74,8 +78,10 @@
   font-weight: var(--md-sys-typescale-label-large-weight);
   color: var(--md-sys-color-on-surface-variant);
   text-decoration: none;
-  transition: all var(--md-sys-motion-standard);
+  transition: background-color var(--md-sys-motion-standard), color var(--md-sys-motion-standard);
   min-height: 40px;
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none;
 }
 
 .app-shell__nav-link:hover {
@@ -89,6 +95,8 @@
 
 .app-shell__nav-link--active {
   background-color: rgba(181, 84, 26, 0.08);
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
 }
 
 /* Actions (cart icon, etc.) */
@@ -104,15 +112,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--md-sys-shape-corner-full);
   color: var(--md-sys-color-on-surface-variant);
-  transition: all var(--md-sys-motion-standard);
+  transition: background-color var(--md-sys-motion-standard), transform var(--md-sys-motion-standard);
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none;
 }
 
 .app-shell__cart-button:hover {
   background-color: rgba(0, 0, 0, 0.08);
+}
+
+.app-shell__cart-button:active {
+  transform: scale(0.92);
 }
 
 .app-shell__cart-badge {
@@ -131,6 +145,7 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
+  animation: m3-badge-pop 250ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* --------------------------------------------------------
@@ -139,11 +154,15 @@
 
 .app-shell__main {
   flex: 1;
-  padding-bottom: 80px; /* Space for bottom nav on mobile */
+  position: relative;
+}
+
+.app-shell__page-content {
+  width: 100%;
 }
 
 /* --------------------------------------------------------
-   Mobile Bottom Navigation
+   Mobile Bottom Navigation — Material 3
    -------------------------------------------------------- */
 
 .app-shell__bottom-nav {
@@ -156,9 +175,13 @@
   border-top: 1px solid var(--md-sys-color-outline-variant);
   display: flex;
   justify-content: space-around;
-  align-items: stretch;
+  align-items: center;
   height: 80px;
   padding-bottom: env(safe-area-inset-bottom, 0);
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .app-shell__bottom-nav-item {
@@ -168,22 +191,46 @@
   justify-content: center;
   gap: 4px;
   flex: 1;
-  padding: var(--md-sys-spacing-2) var(--md-sys-spacing-1);
+  padding: var(--md-sys-spacing-1) 0;
   color: var(--md-sys-color-on-surface-variant);
   text-decoration: none;
   font-size: var(--md-sys-typescale-label-medium-size);
   font-weight: var(--md-sys-typescale-label-medium-weight);
-  min-height: 48px;
-  min-width: 48px;
+  min-height: 56px;
   position: relative;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
+  outline: none !important;
+  transition: color 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
+.app-shell__bottom-nav-item:focus {
+  outline: none;
+}
+
+.app-shell__bottom-nav-item:focus-visible {
+  outline: none;
+}
+
+/* Active touch state without blue box */
+.app-shell__bottom-nav-item:active .app-shell__bottom-nav-icon-wrapper {
+  transform: scale(0.92);
+}
+
+/* Active state */
 .app-shell__bottom-nav-item--active {
   color: var(--md-sys-color-primary);
 }
 
 .app-shell__bottom-nav-item--active .app-shell__bottom-nav-icon-wrapper {
   background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  animation: m3-pill-pop 250ms cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+.app-shell__bottom-nav-item--active .material-symbols-outlined {
+  animation: m3-icon-bounce 300ms cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
 .app-shell__bottom-nav-icon-wrapper {
@@ -192,17 +239,41 @@
   justify-content: center;
   width: 56px;
   height: 32px;
-  border-radius: var(--md-sys-shape-corner-large);
-  transition: all var(--md-sys-motion-standard);
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1),
+              transform 200ms cubic-bezier(0.2, 0, 0, 1),
+              color 200ms cubic-bezier(0.2, 0, 0, 1);
   position: relative;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+}
+
+.app-shell__bottom-nav-icon-wrapper .material-symbols-outlined {
+  font-size: 24px;
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .app-shell__bottom-nav-label {
-  font-size: var(--md-sys-typescale-label-medium-size);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 1.2;
+  transition: font-weight 200ms cubic-bezier(0.2, 0, 0, 1),
+              color 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.app-shell__bottom-nav-item--active .app-shell__bottom-nav-label {
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+}
+
+/* Footer bottom padding on mobile so content isn't covered by bottom nav */
+.sdm-footer {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
 }
 
 /* --------------------------------------------------------
-   Responsive
+   Responsive Breakpoints
    -------------------------------------------------------- */
 
 @media (min-width: 600px) {
@@ -224,8 +295,8 @@
     display: none;
   }
 
-  .app-shell__main {
-    padding-bottom: 0;
+  .sdm-footer {
+    padding-bottom: var(--md-sys-spacing-4);
   }
 
   .app-shell__top-bar-inner {

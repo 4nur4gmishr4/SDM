@@ -1,5 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
+import { Footer } from './Footer';
 import './AppShell.css';
 
 export function AppShell() {
@@ -25,17 +26,23 @@ export function AppShell() {
 
           {/* Desktop Navigation */}
           <nav className="app-shell__nav">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`app-shell__nav-link ${
-                  location.pathname === item.path ? 'app-shell__nav-link--active' : ''
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = item.path === '/' 
+                ? location.pathname === '/' 
+                : location.pathname.startsWith(item.path);
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`app-shell__nav-link ${
+                    isActive ? 'app-shell__nav-link--active' : ''
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Actions (Cart) */}
@@ -48,15 +55,23 @@ export function AppShell() {
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main Content Area with M3 page transition */}
       <main className="app-shell__main">
-        <Outlet />
+        <div key={location.pathname} className="m3-page-transition app-shell__page-content">
+          <Outlet />
+        </div>
       </main>
 
+      {/* Customer Footer */}
+      <Footer />
+
       {/* Mobile Bottom Navigation */}
-      <nav className="app-shell__bottom-nav">
+      <nav className="app-shell__bottom-nav" aria-label="Mobile Navigation">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive = item.path === '/' 
+            ? location.pathname === '/' 
+            : location.pathname.startsWith(item.path);
+
           return (
             <Link
               key={item.path}

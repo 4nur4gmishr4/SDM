@@ -19,11 +19,17 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -352,3 +358,76 @@ ol {
 .material-symbols-outlined.filled {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
+
+/* --------------------------------------------------------
+   Material 3 Motion Keyframes & Section Transitions
+   -------------------------------------------------------- */
+
+@keyframes m3-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes m3-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes m3-pill-pop {
+  0% {
+    transform: scale(0.88);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes m3-icon-bounce {
+  0% {
+    transform: scale(0.85);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes m3-badge-pop {
+  0% {
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.m3-page-transition {
+  animation: m3-fade-slide-in 240ms cubic-bezier(0.05, 0.7, 0.1, 1.0) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-page-transition {
+    animation: none !important;
+  }
+}
+
