@@ -1,0 +1,169 @@
+/* ============================================================
+   Product Tile Component
+   ============================================================
+   Compact grocery shopping tile. Follows M3 principles without
+   excessive elevation or rounded-2xl "vibe-coded" corners.
+   ============================================================ */
+
+.product-tile {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border-radius: var(--md-sys-shape-corner-small);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+  position: relative;
+  transition: all var(--md-sys-motion-standard);
+  height: 100%;
+}
+
+.product-tile:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+.product-tile:focus-within {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* Image */
+.product-tile__image-link {
+  display: block;
+  aspect-ratio: 1 / 1;
+  background-color: var(--md-sys-color-surface-container-low);
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+}
+
+.product-tile__image-link:focus-visible {
+  outline: none; /* Focus handled by product-tile:focus-within */
+}
+
+.product-tile__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--md-sys-motion-standard);
+}
+
+.product-tile:hover .product-tile__image {
+  transform: scale(1.05);
+}
+
+.product-tile__placeholder-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--md-sys-color-outline-variant);
+  font-size: 48px;
+}
+
+/* Content */
+.product-tile__content {
+  padding: var(--md-sys-spacing-3);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-tile__name {
+  font-size: var(--md-sys-typescale-body-medium-size);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  color: var(--md-sys-color-on-surface);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  margin-bottom: var(--md-sys-spacing-1);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.product-tile__name:hover {
+  text-decoration: underline;
+}
+
+.product-tile__name:focus-visible {
+  outline: none;
+}
+
+.product-tile__unit {
+  font-size: var(--md-sys-typescale-label-small-size);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: var(--md-sys-spacing-2);
+}
+
+.product-tile__price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto; /* Push to bottom */
+}
+
+.product-tile__price {
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Actions */
+.product-tile__add-button {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-radius: var(--md-sys-shape-corner-full);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--md-sys-motion-standard);
+  position: relative;
+}
+
+.product-tile__add-button:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.product-tile__add-button:active:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.product-tile__add-button:focus-visible {
+  outline: none; /* Focus handled globally */
+}
+
+.product-tile__add-button:disabled {
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-outline);
+  cursor: not-allowed;
+}
+
+/* Badges */
+.product-tile__badges {
+  position: absolute;
+  top: var(--md-sys-spacing-2);
+  left: var(--md-sys-spacing-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-1);
+}
+
+.product-tile__badge {
+  padding: 2px 6px;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  line-height: 1.2;
+}
+
+.product-tile__badge--unavailable {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.product-tile__badge--featured {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}

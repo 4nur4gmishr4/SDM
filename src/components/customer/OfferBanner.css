@@ -1,0 +1,86 @@
+/* ============================================================
+   Offer Banner
+   ============================================================
+   M3 standard banner (not glass/floating). Usually edge-to-edge
+   on mobile, rounded on desktop.
+   ============================================================ */
+
+.offer-banner {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  margin: var(--md-sys-spacing-4) calc(-1 * var(--sdm-layout-content-padding-mobile));
+  transition: all var(--md-sys-motion-standard);
+}
+
+.offer-banner:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+@media (min-width: 600px) {
+  .offer-banner {
+    flex-direction: row;
+    border-radius: var(--md-sys-shape-corner-medium);
+    margin: var(--md-sys-spacing-6) 0;
+  }
+}
+
+.offer-banner__image-container {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--md-sys-color-surface-container-high);
+}
+
+@media (min-width: 600px) {
+  .offer-banner__image-container {
+    width: 40%;
+    aspect-ratio: auto;
+    min-height: 200px;
+  }
+}
+
+.offer-banner__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--md-sys-motion-standard);
+}
+
+.offer-banner:hover .offer-banner__image {
+  transform: scale(1.05);
+}
+
+.offer-banner__content {
+  padding: var(--md-sys-spacing-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+@media (min-width: 600px) {
+  .offer-banner__content {
+    padding: var(--md-sys-spacing-6);
+  }
+}
+
+.offer-banner__title {
+  font-size: var(--md-sys-typescale-headline-small-size);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  margin-bottom: var(--md-sys-spacing-2);
+}
+
+.offer-banner__text {
+  font-size: var(--md-sys-typescale-body-large-size);
+  margin-bottom: var(--md-sys-spacing-4);
+  opacity: 0.9;
+}
+
+.offer-banner__actions {
+  display: flex;
+  gap: var(--md-sys-spacing-2);
+  margin-top: auto;
+}

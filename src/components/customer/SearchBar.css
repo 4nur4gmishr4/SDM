@@ -1,0 +1,24 @@
+/* ============================================================
+   Search Bar
+   ============================================================
+   M3 standard search field
+   ============================================================ */
+
+.search-bar {
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+.search-bar form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar md-outlined-text-field {
+  width: 100%;
+  /* M3 text fields automatically handle their own internal styles */
+}
+
+
