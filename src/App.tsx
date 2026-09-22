@@ -25,9 +25,8 @@ import { BannersPage } from './pages/admin/BannersPage';
 import { SettingsPage } from './pages/admin/SettingsPage';
 
 // Layouts
-import { AppShell } from './components/common/AppShell';
-import { AdminShell } from './components/admin/AdminShell';
-import { ScrollToTop } from './components/common/ScrollToTop';
+import { AppShell, ScrollToTop } from './components/common';
+import { AdminShell } from './components/admin';
 
 import './styles/global.css';
 
