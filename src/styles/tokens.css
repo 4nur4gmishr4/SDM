@@ -1,37 +1,35 @@
 /* ============================================================
    SAI DARSHAN MART — MATERIAL 3 DESIGN TOKENS
    ============================================================
-   Centralized design token system. All visual values must
-   reference these tokens — never use raw hex/px values in
-   component CSS.
+   Centralized design token system.
+   Fresh Supermarket Palette: Fresh Green & Warm Sunny Yellow.
    ============================================================ */
 
 :root {
   /* --------------------------------------------------------
-     COLOR SYSTEM — M3 Semantic Roles (Light Palette)
-     Derived for Indian supermarket retail context.
-     Primary: Warm saffron-brown
-     Secondary: Earthy teal
-     Tertiary: Warm gold
+     COLOR SYSTEM — M3 Semantic Roles (Fresh Green & Yellow Palette)
+     Primary: Fresh Supermarket Green
+     Secondary: Warm Golden Yellow (Promos, Highlights, Badges)
+     Tertiary: Fresh Lime / Leaf Green
      -------------------------------------------------------- */
 
-  /* Primary */
-  --md-sys-color-primary: #B5541A;
+  /* Primary (Fresh Supermarket Green) */
+  --md-sys-color-primary: #1E7C43;
   --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #FFDBC9;
-  --md-sys-color-on-primary-container: #3A1200;
+  --md-sys-color-primary-container: #C7F9D0;
+  --md-sys-color-on-primary-container: #00210C;
 
-  /* Secondary */
-  --md-sys-color-secondary: #3A6B5E;
+  /* Secondary (Warm Golden Yellow for Deals & Badges) */
+  --md-sys-color-secondary: #B77C00;
   --md-sys-color-on-secondary: #FFFFFF;
-  --md-sys-color-secondary-container: #BDF1E1;
-  --md-sys-color-on-secondary-container: #00201B;
+  --md-sys-color-secondary-container: #FFE082;
+  --md-sys-color-on-secondary-container: #261900;
 
-  /* Tertiary */
-  --md-sys-color-tertiary: #6D5E0F;
+  /* Tertiary (Fresh Leaf / Lime Green) */
+  --md-sys-color-tertiary: #436838;
   --md-sys-color-on-tertiary: #FFFFFF;
-  --md-sys-color-tertiary-container: #F8E287;
-  --md-sys-color-on-tertiary-container: #221B00;
+  --md-sys-color-tertiary-container: #C4EFB2;
+  --md-sys-color-on-tertiary-container: #072102;
 
   /* Error */
   --md-sys-color-error: #BA1A1A;
@@ -39,38 +37,38 @@
   --md-sys-color-error-container: #FFDAD6;
   --md-sys-color-on-error-container: #410002;
 
-  /* Surface system */
-  --md-sys-color-surface: #FFF8F5;
-  --md-sys-color-on-surface: #211A16;
-  --md-sys-color-surface-variant: #F4DED3;
-  --md-sys-color-on-surface-variant: #52443C;
+  /* Surface system (Crisp, clean fresh-market surfaces) */
+  --md-sys-color-surface: #F7FAF5;
+  --md-sys-color-on-surface: #181D18;
+  --md-sys-color-surface-variant: #DDE5DC;
+  --md-sys-color-on-surface-variant: #414942;
   --md-sys-color-surface-container-lowest: #FFFFFF;
-  --md-sys-color-surface-container-low: #FEF1EB;
-  --md-sys-color-surface-container: #F8EBE4;
-  --md-sys-color-surface-container-high: #F2E5DE;
-  --md-sys-color-surface-container-highest: #EDE0D9;
-  --md-sys-color-surface-dim: #E4D7D0;
-  --md-sys-color-surface-bright: #FFF8F5;
+  --md-sys-color-surface-container-low: #F1F5EE;
+  --md-sys-color-surface-container: #EBF0E8;
+  --md-sys-color-surface-container-high: #E5EAE2;
+  --md-sys-color-surface-container-highest: #DFE4DC;
+  --md-sys-color-surface-dim: #D7DCD5;
+  --md-sys-color-surface-bright: #F7FAF5;
 
   /* Inverse */
-  --md-sys-color-inverse-surface: #372F2A;
-  --md-sys-color-inverse-on-surface: #FDEEEA;
-  --md-sys-color-inverse-primary: #FFB68C;
+  --md-sys-color-inverse-surface: #2D322D;
+  --md-sys-color-inverse-on-surface: #EEF2EB;
+  --md-sys-color-inverse-primary: #7ED89A;
 
   /* Outline */
-  --md-sys-color-outline: #85736A;
-  --md-sys-color-outline-variant: #D7C3B8;
+  --md-sys-color-outline: #717971;
+  --md-sys-color-outline-variant: #C1C9C0;
 
   /* Scrim */
   --md-sys-color-scrim: #000000;
   --md-sys-color-shadow: #000000;
 
   /* Custom status colors */
-  --sdm-color-success: #2E7D32;
-  --sdm-color-success-container: #C8E6C9;
-  --sdm-color-on-success-container: #1B5E20;
-  --sdm-color-warning: #E65100;
-  --sdm-color-warning-container: #FFE0B2;
+  --sdm-color-success: #1E7C43;
+  --sdm-color-success-container: #C7F9D0;
+  --sdm-color-on-success-container: #00210C;
+  --sdm-color-warning: #B77C00;
+  --sdm-color-warning-container: #FFE082;
 
   /* --------------------------------------------------------
      TYPOGRAPHY — M3 Type Scale
@@ -255,105 +253,105 @@
 }
 
 /* --------------------------------------------------------
-   M3 DARK THEME PALETTE
+   M3 DARK THEME PALETTE (Green & Yellow Dark Mode)
    Auto-applied when system prefers dark (unless data-theme="light")
    Or explicitly forced when data-theme="dark".
    -------------------------------------------------------- */
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --md-sys-color-primary: #FFB68C;
-    --md-sys-color-on-primary: #522300;
-    --md-sys-color-primary-container: #733200;
-    --md-sys-color-on-primary-container: #FFDBC9;
+    --md-sys-color-primary: #7ED89A;
+    --md-sys-color-on-primary: #00391A;
+    --md-sys-color-primary-container: #005228;
+    --md-sys-color-on-primary-container: #A6F5B5;
 
-    --md-sys-color-secondary: #A2D5C5;
-    --md-sys-color-on-secondary: #00372D;
-    --md-sys-color-secondary-container: #1F5145;
-    --md-sys-color-on-secondary-container: #BDF1E1;
+    --md-sys-color-secondary: #F5CB5C;
+    --md-sys-color-on-secondary: #3C2F00;
+    --md-sys-color-secondary-container: #564500;
+    --md-sys-color-on-secondary-container: #FFE082;
 
-    --md-sys-color-tertiary: #DBCA6E;
-    --md-sys-color-on-tertiary: #393000;
-    --md-sys-color-tertiary-container: #524600;
-    --md-sys-color-on-tertiary-container: #F8E287;
+    --md-sys-color-tertiary: #A8D397;
+    --md-sys-color-on-tertiary: #16380E;
+    --md-sys-color-tertiary-container: #2D5023;
+    --md-sys-color-on-tertiary-container: #C4EFB2;
 
     --md-sys-color-error: #FFB4AB;
     --md-sys-color-on-error: #690005;
     --md-sys-color-error-container: #93000A;
     --md-sys-color-on-error-container: #FFDAD6;
 
-    --md-sys-color-surface: #18120F;
-    --md-sys-color-on-surface: #EDE0D9;
-    --md-sys-color-surface-variant: #52443C;
-    --md-sys-color-on-surface-variant: #D7C3B8;
-    --md-sys-color-surface-container-lowest: #120D0A;
-    --md-sys-color-surface-container-low: #211A16;
-    --md-sys-color-surface-container: #251E1A;
-    --md-sys-color-surface-container-high: #302824;
-    --md-sys-color-surface-container-highest: #3B332F;
-    --md-sys-color-surface-dim: #18120F;
-    --md-sys-color-surface-bright: #3F3733;
+    --md-sys-color-surface: #101511;
+    --md-sys-color-on-surface: #DFE4DC;
+    --md-sys-color-surface-variant: #414942;
+    --md-sys-color-on-surface-variant: #C1C9C0;
+    --md-sys-color-surface-container-lowest: #0B0F0C;
+    --md-sys-color-surface-container-low: #181D19;
+    --md-sys-color-surface-container: #1C211D;
+    --md-sys-color-surface-container-high: #272C27;
+    --md-sys-color-surface-container-highest: #323732;
+    --md-sys-color-surface-dim: #101511;
+    --md-sys-color-surface-bright: #363B36;
 
-    --md-sys-color-inverse-surface: #EDE0D9;
-    --md-sys-color-inverse-on-surface: #372F2A;
-    --md-sys-color-inverse-primary: #B5541A;
+    --md-sys-color-inverse-surface: #DFE4DC;
+    --md-sys-color-inverse-on-surface: #2D322D;
+    --md-sys-color-inverse-primary: #1E7C43;
 
-    --md-sys-color-outline: #9F8D84;
-    --md-sys-color-outline-variant: #52443C;
+    --md-sys-color-outline: #8B938A;
+    --md-sys-color-outline-variant: #414942;
 
-    --sdm-color-success: #81C784;
-    --sdm-color-success-container: #1B5E20;
-    --sdm-color-on-success-container: #C8E6C9;
-    --sdm-color-warning: #FFB74D;
-    --sdm-color-warning-container: #E65100;
+    --sdm-color-success: #7ED89A;
+    --sdm-color-success-container: #005228;
+    --sdm-color-on-success-container: #A6F5B5;
+    --sdm-color-warning: #F5CB5C;
+    --sdm-color-warning-container: #564500;
   }
 }
 
 [data-theme="dark"] {
-  --md-sys-color-primary: #FFB68C;
-  --md-sys-color-on-primary: #522300;
-  --md-sys-color-primary-container: #733200;
-  --md-sys-color-on-primary-container: #FFDBC9;
+  --md-sys-color-primary: #7ED89A;
+  --md-sys-color-on-primary: #00391A;
+  --md-sys-color-primary-container: #005228;
+  --md-sys-color-on-primary-container: #A6F5B5;
 
-  --md-sys-color-secondary: #A2D5C5;
-  --md-sys-color-on-secondary: #00372D;
-  --md-sys-color-secondary-container: #1F5145;
-  --md-sys-color-on-secondary-container: #BDF1E1;
+  --md-sys-color-secondary: #F5CB5C;
+  --md-sys-color-on-secondary: #3C2F00;
+  --md-sys-color-secondary-container: #564500;
+  --md-sys-color-on-secondary-container: #FFE082;
 
-  --md-sys-color-tertiary: #DBCA6E;
-  --md-sys-color-on-tertiary: #393000;
-  --md-sys-color-tertiary-container: #524600;
-  --md-sys-color-on-tertiary-container: #F8E287;
+  --md-sys-color-tertiary: #A8D397;
+  --md-sys-color-on-tertiary: #16380E;
+  --md-sys-color-tertiary-container: #2D5023;
+  --md-sys-color-on-tertiary-container: #C4EFB2;
 
   --md-sys-color-error: #FFB4AB;
   --md-sys-color-on-error: #690005;
   --md-sys-color-error-container: #93000A;
   --md-sys-color-on-error-container: #FFDAD6;
 
-  --md-sys-color-surface: #18120F;
-  --md-sys-color-on-surface: #EDE0D9;
-  --md-sys-color-surface-variant: #52443C;
-  --md-sys-color-on-surface-variant: #D7C3B8;
-  --md-sys-color-surface-container-lowest: #120D0A;
-  --md-sys-color-surface-container-low: #211A16;
-  --md-sys-color-surface-container: #251E1A;
-  --md-sys-color-surface-container-high: #302824;
-  --md-sys-color-surface-container-highest: #3B332F;
-  --md-sys-color-surface-dim: #18120F;
-  --md-sys-color-surface-bright: #3F3733;
+  --md-sys-color-surface: #101511;
+  --md-sys-color-on-surface: #DFE4DC;
+  --md-sys-color-surface-variant: #414942;
+  --md-sys-color-on-surface-variant: #C1C9C0;
+  --md-sys-color-surface-container-lowest: #0B0F0C;
+  --md-sys-color-surface-container-low: #181D19;
+  --md-sys-color-surface-container: #1C211D;
+  --md-sys-color-surface-container-high: #272C27;
+  --md-sys-color-surface-container-highest: #323732;
+  --md-sys-color-surface-dim: #101511;
+  --md-sys-color-surface-bright: #363B36;
 
-  --md-sys-color-inverse-surface: #EDE0D9;
-  --md-sys-color-inverse-on-surface: #372F2A;
-  --md-sys-color-inverse-primary: #B5541A;
+  --md-sys-color-inverse-surface: #DFE4DC;
+  --md-sys-color-inverse-on-surface: #2D322D;
+  --md-sys-color-inverse-primary: #1E7C43;
 
-  --md-sys-color-outline: #9F8D84;
-  --md-sys-color-outline-variant: #52443C;
+  --md-sys-color-outline: #8B938A;
+  --md-sys-color-outline-variant: #414942;
 
-  --sdm-color-success: #81C784;
-  --sdm-color-success-container: #1B5E20;
-  --sdm-color-on-success-container: #C8E6C9;
-  --sdm-color-warning: #FFB74D;
-  --sdm-color-warning-container: #E65100;
+  --sdm-color-success: #7ED89A;
+  --sdm-color-success-container: #005228;
+  --sdm-color-on-success-container: #A6F5B5;
+  --sdm-color-warning: #F5CB5C;
+  --sdm-color-warning-container: #564500;
 }
 
 /* Reduced motion preference */

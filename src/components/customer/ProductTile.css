@@ -175,6 +175,7 @@
 }
 
 .product-tile__badge--featured {
-  background-color: var(--md-sys-color-tertiary-container);
-  color: var(--md-sys-color-on-tertiary-container);
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 600;
 }

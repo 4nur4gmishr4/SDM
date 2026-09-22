@@ -13,8 +13,8 @@ export default defineConfig({
         name: 'Sai Darshan Mart',
         short_name: 'SDM',
         description: 'Your local supermarket in Jabalpur',
-        theme_color: '#B5541A',
-        background_color: '#FFF8F5',
+        theme_color: '#1E7C43',
+        background_color: '#F7FAF5',
         display: 'standalone',
         icons: [
           {
