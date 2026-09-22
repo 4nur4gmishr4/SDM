@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/orderUtils';
