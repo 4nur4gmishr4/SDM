@@ -1,0 +1,272 @@
+/* ============================================================
+   SAI DARSHAN MART — MATERIAL 3 DESIGN TOKENS
+   ============================================================
+   Centralized design token system. All visual values must
+   reference these tokens — never use raw hex/px values in
+   component CSS.
+   ============================================================ */
+
+:root {
+  /* --------------------------------------------------------
+     COLOR SYSTEM — M3 Semantic Roles
+     Derived for Indian supermarket retail context.
+     Primary: Warm saffron-brown
+     Secondary: Earthy teal
+     Tertiary: Warm gold
+     -------------------------------------------------------- */
+
+  /* Primary */
+  --md-sys-color-primary: #B5541A;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #FFDBC9;
+  --md-sys-color-on-primary-container: #3A1200;
+
+  /* Secondary */
+  --md-sys-color-secondary: #3A6B5E;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #BDF1E1;
+  --md-sys-color-on-secondary-container: #00201B;
+
+  /* Tertiary */
+  --md-sys-color-tertiary: #6D5E0F;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #F8E287;
+  --md-sys-color-on-tertiary-container: #221B00;
+
+  /* Error */
+  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FFDAD6;
+  --md-sys-color-on-error-container: #410002;
+
+  /* Surface system */
+  --md-sys-color-surface: #FFF8F5;
+  --md-sys-color-on-surface: #211A16;
+  --md-sys-color-surface-variant: #F4DED3;
+  --md-sys-color-on-surface-variant: #52443C;
+  --md-sys-color-surface-container-lowest: #FFFFFF;
+  --md-sys-color-surface-container-low: #FEF1EB;
+  --md-sys-color-surface-container: #F8EBE4;
+  --md-sys-color-surface-container-high: #F2E5DE;
+  --md-sys-color-surface-container-highest: #EDE0D9;
+  --md-sys-color-surface-dim: #E4D7D0;
+  --md-sys-color-surface-bright: #FFF8F5;
+
+  /* Inverse */
+  --md-sys-color-inverse-surface: #372F2A;
+  --md-sys-color-inverse-on-surface: #FDEEEA;
+  --md-sys-color-inverse-primary: #FFB68C;
+
+  /* Outline */
+  --md-sys-color-outline: #85736A;
+  --md-sys-color-outline-variant: #D7C3B8;
+
+  /* Scrim */
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+
+  /* Custom status colors */
+  --sdm-color-success: #2E7D32;
+  --sdm-color-success-container: #C8E6C9;
+  --sdm-color-on-success-container: #1B5E20;
+  --sdm-color-warning: #E65100;
+  --sdm-color-warning-container: #FFE0B2;
+
+  /* --------------------------------------------------------
+     TYPOGRAPHY — M3 Type Scale
+     Primary: Roboto / Roboto Flex
+     Monospace: Roboto Mono (SKU, Order IDs only)
+     -------------------------------------------------------- */
+
+  --md-sys-typescale-font-family: 'Roboto Flex', 'Roboto', sans-serif;
+  --md-sys-typescale-font-family-mono: 'Roboto Mono', monospace;
+
+  /* Display Large — page titles (used sparingly) */
+  --md-sys-typescale-display-large-size: 2.25rem;
+  --md-sys-typescale-display-large-weight: 400;
+  --md-sys-typescale-display-large-line-height: 2.75rem;
+  --md-sys-typescale-display-large-tracking: 0;
+
+  /* Display Medium */
+  --md-sys-typescale-display-medium-size: 1.8125rem;
+  --md-sys-typescale-display-medium-weight: 400;
+  --md-sys-typescale-display-medium-line-height: 2.25rem;
+  --md-sys-typescale-display-medium-tracking: 0;
+
+  /* Display Small */
+  --md-sys-typescale-display-small-size: 1.5rem;
+  --md-sys-typescale-display-small-weight: 400;
+  --md-sys-typescale-display-small-line-height: 2rem;
+  --md-sys-typescale-display-small-tracking: 0;
+
+  /* Headline Large */
+  --md-sys-typescale-headline-large-size: 1.5rem;
+  --md-sys-typescale-headline-large-weight: 400;
+  --md-sys-typescale-headline-large-line-height: 2rem;
+  --md-sys-typescale-headline-large-tracking: 0;
+
+  /* Headline Medium */
+  --md-sys-typescale-headline-medium-size: 1.25rem;
+  --md-sys-typescale-headline-medium-weight: 400;
+  --md-sys-typescale-headline-medium-line-height: 1.75rem;
+  --md-sys-typescale-headline-medium-tracking: 0;
+
+  /* Headline Small */
+  --md-sys-typescale-headline-small-size: 1.125rem;
+  --md-sys-typescale-headline-small-weight: 400;
+  --md-sys-typescale-headline-small-line-height: 1.5rem;
+  --md-sys-typescale-headline-small-tracking: 0;
+
+  /* Title Large */
+  --md-sys-typescale-title-large-size: 1.125rem;
+  --md-sys-typescale-title-large-weight: 500;
+  --md-sys-typescale-title-large-line-height: 1.5rem;
+  --md-sys-typescale-title-large-tracking: 0;
+
+  /* Title Medium */
+  --md-sys-typescale-title-medium-size: 1rem;
+  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-medium-line-height: 1.5rem;
+  --md-sys-typescale-title-medium-tracking: 0.01em;
+
+  /* Title Small */
+  --md-sys-typescale-title-small-size: 0.875rem;
+  --md-sys-typescale-title-small-weight: 500;
+  --md-sys-typescale-title-small-line-height: 1.25rem;
+  --md-sys-typescale-title-small-tracking: 0.006em;
+
+  /* Body Large */
+  --md-sys-typescale-body-large-size: 1rem;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-large-line-height: 1.5rem;
+  --md-sys-typescale-body-large-tracking: 0.03em;
+
+  /* Body Medium */
+  --md-sys-typescale-body-medium-size: 0.875rem;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-medium-line-height: 1.25rem;
+  --md-sys-typescale-body-medium-tracking: 0.016em;
+
+  /* Body Small */
+  --md-sys-typescale-body-small-size: 0.75rem;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-body-small-line-height: 1rem;
+  --md-sys-typescale-body-small-tracking: 0.025em;
+
+  /* Label Large */
+  --md-sys-typescale-label-large-size: 0.875rem;
+  --md-sys-typescale-label-large-weight: 500;
+  --md-sys-typescale-label-large-line-height: 1.25rem;
+  --md-sys-typescale-label-large-tracking: 0.006em;
+
+  /* Label Medium */
+  --md-sys-typescale-label-medium-size: 0.75rem;
+  --md-sys-typescale-label-medium-weight: 500;
+  --md-sys-typescale-label-medium-line-height: 1rem;
+  --md-sys-typescale-label-medium-tracking: 0.03em;
+
+  /* Label Small */
+  --md-sys-typescale-label-small-size: 0.6875rem;
+  --md-sys-typescale-label-small-weight: 500;
+  --md-sys-typescale-label-small-line-height: 1rem;
+  --md-sys-typescale-label-small-tracking: 0.03em;
+
+  /* --------------------------------------------------------
+     SHAPE — M3 Corner Radii
+     Different components use different radii per hierarchy.
+     -------------------------------------------------------- */
+
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 9999px;
+
+  /* --------------------------------------------------------
+     ELEVATION — M3 Elevation Levels
+     Tonal surface separation preferred over shadows.
+     -------------------------------------------------------- */
+
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px 0 rgba(0, 0, 0, 0.3);
+
+  /* --------------------------------------------------------
+     SPACING — Consistent spacing scale
+     -------------------------------------------------------- */
+
+  --md-sys-spacing-0: 0;
+  --md-sys-spacing-1: 4px;
+  --md-sys-spacing-2: 8px;
+  --md-sys-spacing-3: 12px;
+  --md-sys-spacing-4: 16px;
+  --md-sys-spacing-5: 20px;
+  --md-sys-spacing-6: 24px;
+  --md-sys-spacing-8: 32px;
+  --md-sys-spacing-10: 40px;
+  --md-sys-spacing-12: 48px;
+  --md-sys-spacing-16: 64px;
+
+  /* --------------------------------------------------------
+     MOTION — M3 Motion Tokens
+     Functional transitions only. Respect prefers-reduced-motion.
+     -------------------------------------------------------- */
+
+  --md-sys-motion-duration-short1: 50ms;
+  --md-sys-motion-duration-short2: 100ms;
+  --md-sys-motion-duration-short3: 150ms;
+  --md-sys-motion-duration-short4: 200ms;
+  --md-sys-motion-duration-medium1: 250ms;
+  --md-sys-motion-duration-medium2: 300ms;
+  --md-sys-motion-duration-medium3: 350ms;
+  --md-sys-motion-duration-medium4: 400ms;
+  --md-sys-motion-duration-long1: 450ms;
+  --md-sys-motion-duration-long2: 500ms;
+
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  /* --------------------------------------------------------
+     LAYOUT — Responsive breakpoints and content widths
+     -------------------------------------------------------- */
+
+  --sdm-layout-max-width: 1200px;
+  --sdm-layout-content-padding-mobile: 16px;
+  --sdm-layout-content-padding-tablet: 24px;
+  --sdm-layout-content-padding-desktop: 32px;
+
+  /* --------------------------------------------------------
+     COMPONENT STATE LAYERS — M3 State System
+     Applied via opacity on top of component colors.
+     -------------------------------------------------------- */
+
+  --md-sys-state-hover-opacity: 0.08;
+  --md-sys-state-focus-opacity: 0.12;
+  --md-sys-state-pressed-opacity: 0.12;
+  --md-sys-state-dragged-opacity: 0.16;
+  --md-sys-state-disabled-opacity: 0.38;
+  --md-sys-state-disabled-container-opacity: 0.12;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --md-sys-motion-duration-short1: 0ms;
+    --md-sys-motion-duration-short2: 0ms;
+    --md-sys-motion-duration-short3: 0ms;
+    --md-sys-motion-duration-short4: 0ms;
+    --md-sys-motion-duration-medium1: 0ms;
+    --md-sys-motion-duration-medium2: 0ms;
+    --md-sys-motion-duration-medium3: 0ms;
+    --md-sys-motion-duration-medium4: 0ms;
+    --md-sys-motion-duration-long1: 0ms;
+    --md-sys-motion-duration-long2: 0ms;
+  }
+}
