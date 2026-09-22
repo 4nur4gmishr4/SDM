@@ -1,0 +1,93 @@
+/* ============================================================
+   Admin Dashboard Page
+   ============================================================ */
+
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-6);
+}
+
+.admin-dashboard-header {
+  margin-bottom: var(--md-sys-spacing-2);
+}
+
+.admin-dashboard-title {
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--md-sys-spacing-4);
+}
+
+@media (min-width: 600px) {
+  .admin-dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 905px) {
+  .admin-dashboard-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.admin-stat-card {
+  background-color: var(--md-sys-color-surface-container-low);
+  border-radius: var(--md-sys-shape-corner-medium);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: var(--md-sys-spacing-4);
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-4);
+}
+
+.admin-stat-card__icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--md-sys-shape-corner-medium);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-stat-card__icon {
+  font-size: 32px;
+}
+
+.admin-stat-card__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-stat-card__value {
+  font-size: var(--md-sys-typescale-headline-small-size);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.admin-stat-card__label {
+  font-size: var(--md-sys-typescale-label-medium-size);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.admin-dashboard-section {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: var(--md-sys-spacing-6);
+  margin-top: var(--md-sys-spacing-4);
+}
+
+.admin-dashboard-section__title {
+  font-size: var(--md-sys-typescale-title-large-size);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  margin-bottom: var(--md-sys-spacing-4);
+  color: var(--md-sys-color-on-surface);
+}

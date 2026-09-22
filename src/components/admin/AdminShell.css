@@ -1,0 +1,184 @@
+/* ============================================================
+   AdminShell — Admin Layout
+   ============================================================
+   M3 Navigation Rail / Drawer + Content Area
+   ============================================================ */
+
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+/* --------------------------------------------------------
+   Navigation Drawer (Mobile) / Rail (Desktop)
+   -------------------------------------------------------- */
+
+.admin-shell__nav {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--md-sys-color-surface-container-low);
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  width: 80px; /* Nav Rail width on desktop by default */
+  transition: width var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  z-index: 100;
+}
+
+.admin-shell__nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  padding: 0 var(--md-sys-spacing-2);
+}
+
+.admin-shell__brand-icon {
+  color: var(--md-sys-color-primary);
+  font-size: 32px;
+}
+
+.admin-shell__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-2);
+  padding: var(--md-sys-spacing-2) 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.admin-shell__nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface-variant);
+  min-height: 56px;
+  padding: var(--md-sys-spacing-1) 0;
+  position: relative;
+}
+
+.admin-shell__nav-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-large);
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.admin-shell__nav-item:hover .admin-shell__nav-icon-wrapper {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.admin-shell__nav-item--active {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.admin-shell__nav-item--active .admin-shell__nav-icon-wrapper {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.admin-shell__nav-item:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+}
+
+.admin-shell__nav-label {
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  text-align: center;
+  display: block;
+}
+
+.admin-shell__nav-footer {
+  padding: var(--md-sys-spacing-2) 0;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* --------------------------------------------------------
+   Main Content
+   -------------------------------------------------------- */
+
+.admin-shell__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Prevent flex overflow */
+}
+
+.admin-shell__top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 var(--md-sys-spacing-4);
+  background-color: var(--md-sys-color-surface);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.admin-shell__top-bar-title {
+  font-size: var(--md-sys-typescale-title-large-size);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.admin-shell__content {
+  flex: 1;
+  padding: var(--md-sys-spacing-4);
+  overflow-y: auto;
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+/* --------------------------------------------------------
+   Responsive
+   -------------------------------------------------------- */
+
+@media (max-width: 904px) {
+  /* On mobile/tablet, the nav is a bottom bar or hidden in a drawer. 
+     For simplicity in admin, we'll keep it as a bottom nav on very small screens. */
+  .admin-shell {
+    flex-direction: column;
+  }
+  
+  .admin-shell__nav {
+    flex-direction: row;
+    width: 100%;
+    height: 80px;
+    border-right: none;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    order: 2; /* Put at bottom */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+
+  .admin-shell__nav-header {
+    display: none;
+  }
+
+  .admin-shell__nav-list {
+    flex-direction: row;
+    padding: 0;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .admin-shell__nav-item {
+    flex: 1;
+    min-width: 64px;
+  }
+
+  .admin-shell__nav-footer {
+    display: none;
+  }
+
+  .admin-shell__main {
+    order: 1;
+    padding-bottom: 80px; /* Space for bottom nav */
+  }
+}

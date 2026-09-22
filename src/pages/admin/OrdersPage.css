@@ -1,0 +1,101 @@
+/* ============================================================
+   Admin Orders Page
+   ============================================================ */
+
+.admin-orders-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-4);
+  height: 100%;
+}
+
+.admin-orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--md-sys-spacing-4);
+}
+
+.admin-orders-title {
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.admin-table-container {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  overflow: auto;
+  flex: 1;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: var(--md-sys-color-surface-container-low);
+  padding: var(--md-sys-spacing-3) var(--md-sys-spacing-4);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  color: var(--md-sys-color-on-surface-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: var(--md-sys-spacing-3) var(--md-sys-spacing-4);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  color: var(--md-sys-color-on-surface);
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tr:hover td {
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+.admin-table-actions {
+  display: flex;
+  gap: var(--md-sys-spacing-2);
+}
+
+.admin-badge {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  text-transform: uppercase;
+}
+
+.admin-badge--pending {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.admin-badge--processing {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.admin-badge--shipped {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.admin-badge--delivered {
+  background-color: var(--sdm-color-success-container);
+  color: var(--sdm-color-on-success-container);
+}
+
+.admin-badge--cancelled {
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+}
