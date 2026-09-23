@@ -83,7 +83,7 @@ export const MOCK_CATEGORIES: Category[] = [
     display_order: 7,
     is_visible: true,
     is_offer_category: false,
-    thumbnail_url: 'https://images.unsplash.com/photo-1585670270608-b404fb001714?q=80&w=400&auto=format&fit=crop',
+    thumbnail_url: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?q=80&w=400&auto=format&fit=crop',
     description: 'Detergents, dishwash, cleaners, and essentials',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
@@ -411,7 +411,7 @@ export const MOCK_PRODUCTS: Product[] = [
     is_available: true,
     is_featured: true,
     is_archived: false,
-    image_url: 'https://images.unsplash.com/photo-1585670270608-b404fb001714?q=80&w=400&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=400&auto=format&fit=crop',
     description: 'Premium stain removal detergent powder with X-Tra Clean Particles.',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
@@ -426,7 +426,7 @@ export const MOCK_PRODUCTS: Product[] = [
     is_available: true,
     is_featured: false,
     is_archived: false,
-    image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?q=80&w=400&auto=format&fit=crop',
     description: 'Concentrated gel with power of 100 lemons. Leaves zero residue and sparkling shine.',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()

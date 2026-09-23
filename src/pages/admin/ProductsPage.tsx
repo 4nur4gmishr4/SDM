@@ -162,7 +162,7 @@ export function ProductsPage() {
                     <div style={{ fontWeight: 500 }}>{product.name}</div>
                     <div style={{ fontSize: '12px', color: 'var(--md-sys-color-outline)' }}>{product.unit_size} • SKU: {product.sku}</div>
                   </td>
-                  <td>{(product as any).category?.name || 'Unknown'}</td>
+                  <td>{categories.find(c => c.id === product.category_id)?.name || (product as any).category?.name || 'General'}</td>
                   <td>{formatPrice(product.price)}</td>
                   <td>
                     <div style={{ display: 'flex', gap: '4px', flexDirection: 'column', alignItems: 'flex-start' }}>

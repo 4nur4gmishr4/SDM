@@ -42,11 +42,25 @@ export function ProductTile({ product }: ProductTileProps) {
         aria-label={`View details for ${product.name}`}
         tabIndex={-1} // Prevent double tab stops
       >
-        {product.image_url ? (
-          <img src={product.image_url} alt={product.name} className="product-tile__image" loading="lazy" />
-        ) : (
-          <span className="material-symbols-outlined product-tile__placeholder-icon">image</span>
+        {product.image_url && (
+          <img 
+            src={product.image_url} 
+            alt={product.name} 
+            className="product-tile__image" 
+            loading="lazy" 
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              const icon = e.currentTarget.parentElement?.querySelector('.product-tile__placeholder-icon') as HTMLElement;
+              if (icon) icon.style.display = 'block';
+            }}
+          />
         )}
+        <span 
+          className="material-symbols-outlined product-tile__placeholder-icon"
+          style={{ display: product.image_url ? 'none' : 'block' }}
+        >
+          image
+        </span>
       </Link>
 
       <div className="product-tile__content">

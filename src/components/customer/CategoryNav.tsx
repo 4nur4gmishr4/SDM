@@ -60,13 +60,25 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
             className={`category-nav__item ${isActive ? 'category-nav__item--active' : ''}`}
           >
             <div className="category-nav__icon-wrapper">
-              {category.thumbnail_url ? (
-                <img src={category.thumbnail_url} alt="" className="category-nav__image" loading="lazy" />
-              ) : (
-                <span className="material-symbols-outlined category-nav__icon">
-                  {getCategoryIcon(category.name)}
-                </span>
+              {category.thumbnail_url && (
+                <img 
+                  src={category.thumbnail_url} 
+                  alt="" 
+                  className="category-nav__image" 
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const icon = e.currentTarget.parentElement?.querySelector('.category-nav__fallback-icon') as HTMLElement;
+                    if (icon) icon.style.display = 'inline-block';
+                  }} 
+                />
               )}
+              <span 
+                className="material-symbols-outlined category-nav__icon category-nav__fallback-icon"
+                style={{ display: category.thumbnail_url ? 'none' : 'inline-block' }}
+              >
+                {getCategoryIcon(category.name)}
+              </span>
             </div>
             <span className="category-nav__label">{category.name}</span>
           </Link>

@@ -33,12 +33,15 @@ export function HomePage() {
 
       {/* Main Banner / Hero */}
       <section className="home-page__hero">
-        <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--md-sys-color-primary-container)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '64px', color: 'var(--md-sys-color-on-primary-container)' }}>storefront</span>
-        </div>
+        <img 
+          src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1600&auto=format&fit=crop" 
+          alt="Sai Darshan Mart Supermarket" 
+          className="home-page__hero-image"
+          loading="eager"
+        />
         <div className="home-page__hero-content">
           <h2 className="home-page__hero-title">Welcome to Sai Darshan Mart</h2>
-          <p>Your local supermarket in Jabalpur.</p>
+          <p>Your local supermarket in Jabalpur with quick WhatsApp doorstep delivery.</p>
         </div>
       </section>
 
