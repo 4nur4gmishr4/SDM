@@ -80,10 +80,16 @@ export function ProductDetailPage() {
     setQuantity(1);
   };
 
+  const pageTitle = `${product.name} — Sai Darshan Mart`;
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
+
   return (
     <div className="layout-container product-detail">
       <Helmet>
-        <title>{product.name} - Sai Darshan Mart</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={product.description || `Buy ${product.name} at Sai Darshan Mart.`} />
       </Helmet>
 
@@ -145,7 +151,7 @@ export function ProductDetailPage() {
               <div className="product-detail__add-btn-wrapper">
                 <button 
                   type="button" 
-                  className="sdm-btn sdm-btn--primary" 
+                  className="sdm-btn sdm-btn--primary product-detail__add-btn" 
                   style={{ width: '100%', height: '46px' }}
                   onClick={handleAddToCart}
                 >

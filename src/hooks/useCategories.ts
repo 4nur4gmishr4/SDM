@@ -4,10 +4,8 @@ import { MOCK_CATEGORIES } from '../lib/mockData';
 import type { Category } from '../types/category';
 
 export function useCategories() {
-  const [categories, setCategories] = useState<Category[]>(() =>
-    !isSupabaseConfigured ? MOCK_CATEGORIES : []
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(() => isSupabaseConfigured);
+  const [categories, setCategories] = useState<Category[]>(() => MOCK_CATEGORIES);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

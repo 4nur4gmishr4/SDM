@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { MOCK_PRODUCTS, MOCK_BANNERS } from '../../lib/mockData';
@@ -13,7 +14,13 @@ export function AdminDashboardPage() {
     totalProducts: MOCK_PRODUCTS.length,
     activeOffers: MOCK_BANNERS.length
   }));
-  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const pageTitle = 'Dashboard — Sai Darshan Mart Admin';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
 
   useEffect(() => {
     async function fetchDashboardStats() {
@@ -66,6 +73,9 @@ export function AdminDashboardPage() {
 
   return (
     <div className="admin-layout-content admin-dashboard">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
       <div className="admin-dashboard-header">
         <h1 className="admin-dashboard-title">Dashboard</h1>
       </div>

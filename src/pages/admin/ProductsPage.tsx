@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { MOCK_PRODUCTS, MOCK_CATEGORIES } from '../../lib/mockData';
 import { formatPrice } from '../../lib/orderUtils';
@@ -9,13 +10,15 @@ import './OrdersPage.css'; // Reusing table styles
 import './ProductsPage.css';
 
 export function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>(() =>
-    !isSupabaseConfigured ? MOCK_PRODUCTS : []
-  );
-  const [categories, setCategories] = useState<Category[]>(() =>
-    !isSupabaseConfigured ? MOCK_CATEGORIES : []
-  );
-  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
+  const [products, setProducts] = useState<Product[]>(() => MOCK_PRODUCTS);
+  const [categories, setCategories] = useState<Category[]>(() => MOCK_CATEGORIES);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const pageTitle = 'Products Catalog — Sai Darshan Mart Admin';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,6 +120,9 @@ export function ProductsPage() {
 
   return (
     <div className="admin-layout-content admin-products-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
       <div className="admin-products-header">
         <h1 className="admin-products-title">Products</h1>
         <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">

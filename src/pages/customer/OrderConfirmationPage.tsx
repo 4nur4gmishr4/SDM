@@ -1,12 +1,23 @@
+import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { formatOrderId } from '../../lib/orderUtils';
 import './OrderConfirmationPage.css';
 
 export function OrderConfirmationPage() {
   const { orderId } = useParams<{ orderId: string }>();
 
+  const pageTitle = 'Order Placed — Sai Darshan Mart';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
+
   return (
     <div className="layout-container">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
       <div className="order-confirmation">
         <div className="order-confirmation__icon-wrapper">
           <span className="material-symbols-outlined order-confirmation__icon">check</span>

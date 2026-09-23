@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { MOCK_CATEGORIES } from '../../lib/mockData';
 import { AdminTableSkeleton } from '../../components/common';
@@ -7,10 +8,14 @@ import './OrdersPage.css'; // Reusing table styles
 import './ProductsPage.css'; // Reusing modal/layout styles
 
 export function CategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>(() =>
-    !isSupabaseConfigured ? MOCK_CATEGORIES : []
-  );
-  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
+  const [categories, setCategories] = useState<Category[]>(() => MOCK_CATEGORIES);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const pageTitle = 'Categories Management — Sai Darshan Mart Admin';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -109,6 +114,9 @@ export function CategoriesPage() {
 
   return (
     <div className="admin-layout-content admin-products-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
       <div className="admin-products-header">
         <h1 className="admin-products-title">Categories</h1>
         <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">

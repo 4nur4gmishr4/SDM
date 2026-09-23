@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { formatPrice } from '../../lib/orderUtils';
 import { AdminTableSkeleton } from '../../components/common';
@@ -7,8 +8,14 @@ import type { Order } from '../../types/order';
 import './OrdersPage.css';
 
 export function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>(() => isSupabaseConfigured ? [] : MOCK_ORDERS);
-  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
+  const [orders, setOrders] = useState<Order[]>(() => MOCK_ORDERS);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const pageTitle = 'Orders Management — Sai Darshan Mart Admin';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
 
   const fetchOrders = async () => {
     if (!isSupabaseConfigured) {
@@ -75,6 +82,9 @@ export function OrdersPage() {
 
   return (
     <div className="admin-layout-content admin-orders-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
       <div className="admin-orders-header">
         <h1 className="admin-orders-title">Orders</h1>
         <md-filled-icon-button onClick={fetchOrders} aria-label="Refresh orders">

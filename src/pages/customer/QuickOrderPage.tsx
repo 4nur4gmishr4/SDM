@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
@@ -10,6 +11,12 @@ import './CheckoutPage.css'; // Reusing checkout form styles
 export function QuickOrderPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const pageTitle = 'Quick Order via Shopping List — Sai Darshan Mart';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
 
   const [formData, setFormData] = useState<QuickOrderFormData>({
     customer_name: '',
@@ -84,6 +91,10 @@ export function QuickOrderPage() {
 
   return (
     <div className="layout-container checkout-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content="Type or paste your grocery shopping list for fast delivery from Sai Darshan Mart Jabalpur." />
+      </Helmet>
       <header className="checkout-page__header">
         <h1 className="checkout-page__title">Quick Order</h1>
         <p style={{ marginTop: '8px', color: 'var(--md-sys-color-on-surface-variant)' }}>

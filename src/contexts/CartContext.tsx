@@ -76,25 +76,27 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, { items: [] });
-  const { showSnackbar } = useSnackbar();
-
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(CART_STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored) as CartItem[];
-        if (Array.isArray(parsed)) {
-          dispatch({ type: 'LOAD', payload: parsed });
-        }
+function getInitialCart(): CartState {
+  try {
+    const stored = typeof window !== 'undefined' ? localStorage.getItem(CART_STORAGE_KEY) : null;
+    if (stored) {
+      const parsed = JSON.parse(stored) as CartItem[];
+      if (Array.isArray(parsed)) {
+        return { items: parsed };
       }
-    } catch {
-      // Corrupted storage — start fresh
+    }
+  } catch {
+    // Corrupted storage — start fresh
+    if (typeof window !== 'undefined') {
       localStorage.removeItem(CART_STORAGE_KEY);
     }
-  }, []);
+  }
+  return { items: [] };
+}
+
+export function CartProvider({ children }: { children: ReactNode }) {
+  const [state, dispatch] = useReducer(cartReducer, undefined, getInitialCart);
+  const { showSnackbar } = useSnackbar();
 
   // Persist cart to localStorage on every change
   useEffect(() => {

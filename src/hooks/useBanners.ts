@@ -4,10 +4,8 @@ import { MOCK_BANNERS } from '../lib/mockData';
 import type { Banner } from '../types/banner';
 
 export function useBanners() {
-  const [banners, setBanners] = useState<Banner[]>(() =>
-    !isSupabaseConfigured ? MOCK_BANNERS : []
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(() => isSupabaseConfigured);
+  const [banners, setBanners] = useState<Banner[]>(() => MOCK_BANNERS);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

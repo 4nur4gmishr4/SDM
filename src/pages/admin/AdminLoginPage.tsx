@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../../contexts/AuthContext';
 import './AdminLoginPage.css';
 
@@ -12,6 +13,12 @@ export function AdminLoginPage() {
   const { signIn, session } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const pageTitle = 'Admin Login — Sai Darshan Mart';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -43,6 +50,9 @@ export function AdminLoginPage() {
 
   return (
     <div className="admin-login-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
       <div className="admin-login-card">
         <div className="admin-login-header">
           <span className="material-symbols-outlined" style={{ fontSize: '48px', color: 'var(--md-sys-color-primary)', marginBottom: '16px' }}>admin_panel_settings</span>

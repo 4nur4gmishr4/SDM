@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { seedDatabase } from '../../lib/seedDatabase';
 import { AdminFormSkeleton } from '../../components/common';
@@ -6,10 +7,16 @@ import { MOCK_DELIVERY_SETTINGS } from '../../lib/mockData';
 import type { DeliverySettings } from '../../types/delivery';
 
 export function SettingsPage() {
-  const [settings, setSettings] = useState<DeliverySettings | null>(() => isSupabaseConfigured ? null : MOCK_DELIVERY_SETTINGS);
-  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
+  const [settings, setSettings] = useState<DeliverySettings | null>(() => MOCK_DELIVERY_SETTINGS);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSeeding, setIsSeeding] = useState(false);
+
+  const pageTitle = 'Store Settings — Sai Darshan Mart Admin';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
 
   const fetchSettings = async () => {
     if (!isSupabaseConfigured) {
@@ -104,6 +111,9 @@ export function SettingsPage() {
 
   return (
     <div className="admin-layout-content admin-products-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
       <div className="admin-products-header">
         <h1 className="admin-products-title">Store Settings</h1>
       </div>

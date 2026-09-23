@@ -4,10 +4,8 @@ import { MOCK_DELIVERY_SETTINGS } from '../lib/mockData';
 import type { DeliverySettings } from '../types/delivery';
 
 export function useDeliverySettings() {
-  const [settings, setSettings] = useState<DeliverySettings | null>(() =>
-    !isSupabaseConfigured ? MOCK_DELIVERY_SETTINGS : null
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(() => isSupabaseConfigured);
+  const [settings, setSettings] = useState<DeliverySettings | null>(() => MOCK_DELIVERY_SETTINGS);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     let mounted = true;

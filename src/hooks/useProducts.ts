@@ -33,11 +33,9 @@ function getMockProducts(options: UseProductsOptions = {}): Product[] {
 }
 
 export function useProducts(options: UseProductsOptions = {}) {
-  // If Supabase is unconfigured, serve mock products instantly with zero delay
-  const [products, setProducts] = useState<Product[]>(() => 
-    !isSupabaseConfigured ? getMockProducts(options) : []
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(() => isSupabaseConfigured);
+  // Always initialize with mock data so pages render instantly without blank skeleton waiting
+  const [products, setProducts] = useState<Product[]>(() => getMockProducts(options));
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -109,11 +107,12 @@ export function useProducts(options: UseProductsOptions = {}) {
 export function useProduct(id?: string) {
   const [product, setProduct] = useState<Product | null>(() => {
     if (!id) return null;
-    return !isSupabaseConfigured ? (MOCK_PRODUCTS.find(p => p.id === id) || null) : null;
+    return MOCK_PRODUCTS.find(p => p.id === id) || null;
   });
   const [isLoading, setIsLoading] = useState<boolean>(() => {
     if (!id) return false;
-    return isSupabaseConfigured;
+    const initial = MOCK_PRODUCTS.find(p => p.id === id);
+    return !initial && isSupabaseConfigured;
   });
   const [error, setError] = useState<string | null>(null);
 

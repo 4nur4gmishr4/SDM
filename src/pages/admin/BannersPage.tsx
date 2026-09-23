@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { MOCK_BANNERS } from '../../lib/mockData';
 import { AdminTableSkeleton } from '../../components/common';
@@ -7,10 +8,14 @@ import './OrdersPage.css';
 import './ProductsPage.css';
 
 export function BannersPage() {
-  const [banners, setBanners] = useState<Banner[]>(() =>
-    !isSupabaseConfigured ? MOCK_BANNERS : []
-  );
-  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
+  const [banners, setBanners] = useState<Banner[]>(() => MOCK_BANNERS);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const pageTitle = 'Banners Management — Sai Darshan Mart Admin';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBanner, setEditingBanner] = useState<Partial<Banner> | null>(null);
@@ -103,6 +108,9 @@ export function BannersPage() {
 
   return (
     <div className="admin-layout-content admin-products-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
       <div className="admin-products-header">
         <h1 className="admin-products-title">Banners</h1>
         <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useCart } from '../../contexts/CartContext';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
@@ -13,6 +14,12 @@ export function CheckoutPage() {
   const { items, itemCount, subtotal, clearCart } = useCart();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const pageTitle = 'Checkout & WhatsApp Order — Sai Darshan Mart';
+
+  useEffect(() => {
+    document.title = pageTitle;
+  }, [pageTitle]);
 
   const [formData, setFormData] = useState<CheckoutFormData>({
     customer_name: '',
@@ -104,6 +111,10 @@ export function CheckoutPage() {
 
   return (
     <div className="layout-container checkout-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content="Complete your grocery order via WhatsApp from Sai Darshan Mart Jabalpur." />
+      </Helmet>
       <header className="checkout-page__header">
         <h1 className="checkout-page__title">Checkout</h1>
       </header>

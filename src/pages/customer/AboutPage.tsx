@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
@@ -6,6 +7,10 @@ import './AboutPage.css';
 
 export function AboutPage() {
   const { settings: deliverySettings } = useDeliverySettings();
+
+  useEffect(() => {
+    document.title = 'Store Info & Contact | Sai Darshan Mart Jabalpur';
+  }, []);
 
   return (
     <div className="layout-container about-page">
