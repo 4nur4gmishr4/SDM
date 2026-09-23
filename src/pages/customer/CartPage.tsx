@@ -25,8 +25,8 @@ export function CartPage() {
           <span className="material-symbols-outlined cart-page__empty-icon">shopping_cart</span>
           <h2 className="cart-page__empty-title">Your cart is empty</h2>
           <p style={{ marginBottom: '24px' }}>Looks like you haven't added anything to your cart yet.</p>
-          <Link to="/shop">
-            <md-filled-button>Start Shopping</md-filled-button>
+          <Link to="/shop" style={{ textDecoration: 'none' }}>
+            <button type="button" className="sdm-btn sdm-btn--primary">Start Shopping</button>
           </Link>
         </div>
       </div>
@@ -37,7 +37,7 @@ export function CartPage() {
     <div className="layout-container cart-page">
       <header className="cart-page__header">
         <h1 className="cart-page__title">Your Cart ({itemCount} {itemCount === 1 ? 'item' : 'items'})</h1>
-        <md-text-button onClick={clearCart}>Clear Cart</md-text-button>
+        <button type="button" className="sdm-btn sdm-btn--text" onClick={clearCart}>Clear Cart</button>
       </header>
 
       <div className="cart-page__content">
@@ -55,13 +55,14 @@ export function CartPage() {
         <div className="cart-page__sidebar">
           <OrderSummary subtotal={subtotal} deliveryFee={deliveryFee} />
           
-          <md-filled-button 
-            className="cart-page__checkout-btn"
+          <button 
+            type="button"
+            className="sdm-btn sdm-btn--primary cart-page__checkout-btn"
             onClick={() => navigate('/checkout')}
           >
-            Proceed to Checkout
-            <span className="material-symbols-outlined" slot="icon">arrow_forward</span>
-          </md-filled-button>
+            <span>Proceed to Checkout</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_forward</span>
+          </button>
 
           <DeliveryInfo rulesText={settings?.rules_text} />
         </div>

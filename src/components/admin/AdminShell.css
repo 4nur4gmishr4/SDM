@@ -135,10 +135,12 @@
 }
 
 .admin-shell__view-store-btn {
-  --md-outlined-button-container-height: 38px;
+  --md-outlined-button-container-height: 40px;
   --md-outlined-button-container-shape: 10px;
-  --md-outlined-button-leading-space: 14px;
-  --md-outlined-button-trailing-space: 16px;
+  --md-outlined-button-leading-space: 24px;
+  --md-outlined-button-trailing-space: 26px;
+  --md-outlined-button-with-leading-icon-leading-space: 18px;
+  --md-outlined-button-with-leading-icon-trailing-space: 26px;
   --md-outlined-button-label-text-weight: 600;
   display: inline-flex;
   align-items: center;

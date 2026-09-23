@@ -159,9 +159,9 @@ export function SettingsPage() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '16px' }}>
-              <md-filled-button type="submit" disabled={isSaving}>
+              <button type="submit" className="sdm-btn sdm-btn--primary" disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Settings'}
-              </md-filled-button>
+              </button>
             </div>
           </form>
 
@@ -173,10 +173,10 @@ export function SettingsPage() {
               Use this tool to populate your database with dummy categories, products, and banners. This is useful for testing without manually adding items.
             </p>
             <div>
-              <md-outlined-button onClick={handleSeedDatabase} disabled={isSeeding}>
-                <md-icon slot="icon">database</md-icon>
-                {isSeeding ? 'Seeding Database...' : 'Seed Mock Data'}
-              </md-outlined-button>
+              <button type="button" className="sdm-btn sdm-btn--outlined" onClick={handleSeedDatabase} disabled={isSeeding}>
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>database</span>
+                <span>{isSeeding ? 'Seeding Database...' : 'Seed Mock Data'}</span>
+              </button>
             </div>
           </div>
         </div>

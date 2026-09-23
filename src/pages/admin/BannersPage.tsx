@@ -105,10 +105,10 @@ export function BannersPage() {
     <div className="admin-layout-content admin-products-page">
       <div className="admin-products-header">
         <h1 className="admin-products-title">Banners</h1>
-        <md-filled-button onClick={handleOpenAdd} className="admin-action-btn">
-          <span className="material-symbols-outlined" slot="icon">add</span>
-          Add Banner
-        </md-filled-button>
+        <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">
+          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add</span>
+          <span>Add Banner</span>
+        </button>
       </div>
 
       <div className="admin-table-container">
@@ -236,10 +236,10 @@ export function BannersPage() {
             </form>
 
             <div className="admin-modal-footer">
-              <md-text-button onClick={handleCloseModal}>Cancel</md-text-button>
-              <md-filled-button type="submit" form="banner-form" disabled={isSaving}>
+              <button type="button" className="sdm-btn sdm-btn--text" onClick={handleCloseModal}>Cancel</button>
+              <button type="submit" className="sdm-btn sdm-btn--primary" form="banner-form" disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Banner'}
-              </md-filled-button>
+              </button>
             </div>
           </div>
         </div>

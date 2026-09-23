@@ -23,11 +23,11 @@ export function OrderConfirmationPage() {
         </div>
 
         <div className="order-confirmation__actions">
-          <Link to="/">
-            <md-filled-tonal-button>Return to Home</md-filled-tonal-button>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <button type="button" className="sdm-btn sdm-btn--primary">Return to Home</button>
           </Link>
-          <Link to="/shop">
-            <md-text-button>Continue Shopping</md-text-button>
+          <Link to="/shop" style={{ textDecoration: 'none' }}>
+            <button type="button" className="sdm-btn sdm-btn--outlined">Continue Shopping</button>
           </Link>
         </div>
       </div>

@@ -185,15 +185,15 @@ export function CheckoutPage() {
           <DeliveryInfo rulesText={settings?.rules_text} />
 
           <div style={{ marginTop: '16px' }}>
-            <md-filled-button 
-              className="checkout-page__submit-btn"
+            <button 
+              className="sdm-btn sdm-btn--whatsapp checkout-page__submit-btn"
               type="submit"
               form="checkout-form"
               disabled={isSubmitting}
             >
-              Send Order via WhatsApp
-              <span className="material-symbols-outlined" slot="icon">send</span>
-            </md-filled-button>
+              <span>{isSubmitting ? 'Preparing Order...' : 'Send Order via WhatsApp'}</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>send</span>
+            </button>
             <p className="checkout-page__whatsapp-notice">
               You will be redirected to WhatsApp to send your order.
             </p>

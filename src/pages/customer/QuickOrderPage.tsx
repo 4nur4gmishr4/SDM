@@ -193,15 +193,15 @@ export function QuickOrderPage() {
           </div>
 
           <div style={{ marginTop: '24px' }}>
-            <md-filled-button 
-              className="checkout-page__submit-btn"
+            <button 
+              className="sdm-btn sdm-btn--whatsapp checkout-page__submit-btn"
               type="submit"
               form="quick-order-form"
               disabled={isSubmitting}
             >
-              Send List via WhatsApp
-              <span className="material-symbols-outlined" slot="icon">send</span>
-            </md-filled-button>
+              <span>{isSubmitting ? 'Preparing List...' : 'Send List via WhatsApp'}</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>send</span>
+            </button>
             <p className="checkout-page__whatsapp-notice">
               You will be redirected to WhatsApp.
             </p>

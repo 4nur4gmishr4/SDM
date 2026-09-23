@@ -79,14 +79,15 @@ export function AdminLoginPage() {
             <md-icon slot="leading-icon">lock</md-icon>
           </md-outlined-text-field>
 
-          <md-filled-button 
-            className="admin-login-submit" 
+          <button 
+            className="sdm-btn sdm-btn--primary" 
             type="submit"
             disabled={isSubmitting}
+            style={{ width: '100%', height: '46px', marginTop: '12px' }}
           >
-            {isSubmitting ? 'Signing in...' : 'Sign In'}
-            <md-icon slot="icon">login</md-icon>
-          </md-filled-button>
+            <span>{isSubmitting ? 'Signing in...' : 'Sign In'}</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>login</span>
+          </button>
         </form>
 
         <div style={{ marginTop: '20px', padding: '12px 16px', backgroundColor: 'var(--md-sys-color-surface-container)', borderRadius: '8px', fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: '1.5' }}>

@@ -143,10 +143,15 @@ export function ProductDetailPage() {
               </div>
               
               <div className="product-detail__add-btn-wrapper">
-                <md-filled-button onClick={handleAddToCart}>
-                  <span className="material-symbols-outlined" slot="icon">shopping_cart</span>
-                  Add {quantity > 1 ? `${quantity} items` : ''} to Cart
-                </md-filled-button>
+                <button 
+                  type="button" 
+                  className="sdm-btn sdm-btn--primary" 
+                  style={{ width: '100%', height: '46px' }}
+                  onClick={handleAddToCart}
+                >
+                  <span className="material-symbols-outlined">shopping_cart</span>
+                  <span>Add {quantity > 1 ? `${quantity} items` : ''} to Cart</span>
+                </button>
               </div>
             </div>
           )}

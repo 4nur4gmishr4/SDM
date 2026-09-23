@@ -46,14 +46,15 @@ export function ProductGrid({
       </div>
       
       {hasMore && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
-          <md-filled-tonal-button 
-            className="product-grid__load-more-btn" 
+        <div className="product-grid__load-more-wrapper">
+          <button 
+            type="button"
+            className="sdm-btn sdm-btn--tonal product-grid__load-more-btn" 
             onClick={() => setVisibleCount(c => c + 20)}
           >
-            <span className="material-symbols-outlined" slot="icon">expand_more</span>
-            Load More Products
-          </md-filled-tonal-button>
+            <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>expand_more</span>
+            <span>Load More Products</span>
+          </button>
         </div>
       )}
     </div>
