@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
@@ -43,32 +43,36 @@ export function CheckoutPage() {
       const orderId = generateOrderId();
       const total = subtotal + deliveryFee;
 
-      // 1. Persist the order to Supabase
-      const { error: orderError } = await supabase.from('orders').insert({
-        id: orderId,
-        customer_name: formData.customer_name,
-        customer_phone: formData.customer_phone,
-        delivery_address: formData.delivery_address,
-        map_link: formData.map_link || null,
-        subtotal_amount: subtotal,
-        delivery_fee: deliveryFee,
-        total_amount: total,
-        status: 'pending'
-      });
+      // 1. Persist the order to Supabase if configured (non-blocking)
+      if (isSupabaseConfigured) {
+        try {
+          await withTimeout(
+            supabase.from('orders').insert({
+              id: orderId,
+              customer_name: formData.customer_name,
+              customer_phone: formData.customer_phone,
+              delivery_address: formData.delivery_address,
+              map_link: formData.map_link || null,
+              subtotal_amount: subtotal,
+              delivery_fee: deliveryFee,
+              total_amount: total,
+              status: 'pending'
+            }),
+            3000
+          );
 
-      if (orderError) throw orderError;
+          const orderItems = items.map(item => ({
+            order_id: orderId,
+            product_id: item.product_id,
+            quantity: item.quantity,
+            price_at_time: item.product_price
+          }));
 
-      // Persist order items
-      const orderItems = items.map(item => ({
-        order_id: orderId,
-        product_id: item.product_id,
-        quantity: item.quantity,
-        price_at_time: item.product_price
-      }));
-
-      const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
-      
-      if (itemsError) throw itemsError;
+          await withTimeout(supabase.from('order_items').insert(orderItems), 3000);
+        } catch (dbErr) {
+          console.warn('Database save skipped or timed out, proceeding to WhatsApp:', dbErr);
+        }
+      }
 
       // 2. Build WhatsApp message
       const message = buildCartWhatsAppMessage({

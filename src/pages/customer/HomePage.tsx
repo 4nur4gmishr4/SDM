@@ -50,7 +50,7 @@ export function HomePage() {
         <CategoryNav categories={categories} isLoading={categoriesLoading} />
       </section>
 
-      {bannersLoading ? (
+      {bannersLoading && !mainBanner ? (
         <section className="home-page__section">
           <BannerSkeleton />
         </section>

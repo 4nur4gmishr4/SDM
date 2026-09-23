@@ -97,11 +97,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--md-sys-motion-standard);
-}
-
-.category-nav__item:hover .category-nav__image {
-  transform: scale(1.1);
 }
 
 .category-nav__label {

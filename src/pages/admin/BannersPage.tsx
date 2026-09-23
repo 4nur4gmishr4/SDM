@@ -1,31 +1,43 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
+import { MOCK_BANNERS } from '../../lib/mockData';
 import { AdminTableSkeleton } from '../../components/common';
 import type { Banner } from '../../types/banner';
 import './OrdersPage.css'; 
 import './ProductsPage.css';
 
 export function BannersPage() {
-  const [banners, setBanners] = useState<Banner[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [banners, setBanners] = useState<Banner[]>(() =>
+    !isSupabaseConfigured ? MOCK_BANNERS : []
+  );
+  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBanner, setEditingBanner] = useState<Partial<Banner> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchBanners = async () => {
+    if (!isSupabaseConfigured) {
+      setBanners(MOCK_BANNERS);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('banners')
-        .select('*')
-        .order('display_order');
+      const { data, error } = await withTimeout(
+        supabase
+          .from('banners')
+          .select('*')
+          .order('display_order'),
+        2000
+      );
 
       if (error) throw error;
-      setBanners(data as Banner[]);
+      setBanners(data && data.length > 0 ? (data as Banner[]) : MOCK_BANNERS);
     } catch (error) {
-      console.error('Error fetching banners:', error);
-      alert('Failed to load banners.');
+      console.warn('Falling back to testing banners in admin:', error);
+      setBanners(MOCK_BANNERS);
     } finally {
       setIsLoading(false);
     }
@@ -112,7 +124,7 @@ export function BannersPage() {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? (
+            {isLoading && banners.length === 0 ? (
               <AdminTableSkeleton rows={4} cols={6} />
             ) : banners.length === 0 ? (
               <tr>

@@ -1,24 +1,35 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import { MOCK_CATEGORIES } from '../lib/mockData';
 import type { Category } from '../types/category';
 
 export function useCategories() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>(() =>
+    !isSupabaseConfigured ? MOCK_CATEGORIES : []
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(() => isSupabaseConfigured);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
 
+    if (!isSupabaseConfigured) {
+      setCategories(MOCK_CATEGORIES);
+      setIsLoading(false);
+      return;
+    }
+
     async function fetchCategories() {
       try {
         setIsLoading(true);
-        const { data, error: fetchError } = await supabase
-          .from('categories')
-          .select('*')
-          .eq('is_active', true)
-          .order('sort_order', { ascending: true });
+        const { data, error: fetchError } = await withTimeout(
+          supabase
+            .from('categories')
+            .select('*')
+            .eq('is_active', true)
+            .order('sort_order', { ascending: true }),
+          2000
+        );
 
         if (fetchError) throw fetchError;
         

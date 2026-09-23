@@ -234,10 +234,10 @@
      LAYOUT — Responsive breakpoints and content widths
      -------------------------------------------------------- */
 
-  --sdm-layout-max-width: 1200px;
+  --sdm-layout-max-width: 1560px;
   --sdm-layout-content-padding-mobile: 16px;
-  --sdm-layout-content-padding-tablet: 24px;
-  --sdm-layout-content-padding-desktop: 32px;
+  --sdm-layout-content-padding-tablet: 20px;
+  --sdm-layout-content-padding-desktop: 24px;
 
   /* --------------------------------------------------------
      COMPONENT STATE LAYERS — M3 State System

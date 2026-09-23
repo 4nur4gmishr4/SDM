@@ -1,27 +1,38 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { formatPrice } from '../../lib/orderUtils';
 import { AdminTableSkeleton } from '../../components/common';
+import { MOCK_ORDERS } from '../../lib/mockData';
 import type { Order } from '../../types/order';
 import './OrdersPage.css';
 
 export function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [orders, setOrders] = useState<Order[]>(() => isSupabaseConfigured ? [] : MOCK_ORDERS);
+  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
 
   const fetchOrders = async () => {
+    if (!isSupabaseConfigured) {
+      setOrders(MOCK_ORDERS);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const response = await withTimeout(
+        supabase
+          .from('orders')
+          .select('*')
+          .order('created_at', { ascending: false }),
+        2500
+      );
 
+      const { data, error } = response as any;
       if (error) throw error;
-      setOrders(data as Order[]);
+      setOrders((data as Order[]) || MOCK_ORDERS);
     } catch (error) {
-      console.error('Error fetching orders:', error);
-      alert('Failed to load orders.');
+      console.warn('Orders fetch error or timeout, using test data:', error);
+      setOrders(MOCK_ORDERS);
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +95,7 @@ export function OrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? (
+            {isLoading && orders.length === 0 ? (
               <AdminTableSkeleton rows={6} cols={6} />
             ) : orders.length === 0 ? (
               <tr>

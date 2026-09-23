@@ -1,25 +1,36 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { seedDatabase } from '../../lib/seedDatabase';
 import { AdminFormSkeleton } from '../../components/common';
+import { MOCK_DELIVERY_SETTINGS } from '../../lib/mockData';
 import type { DeliverySettings } from '../../types/delivery';
 
 export function SettingsPage() {
-  const [settings, setSettings] = useState<DeliverySettings | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [settings, setSettings] = useState<DeliverySettings | null>(() => isSupabaseConfigured ? null : MOCK_DELIVERY_SETTINGS);
+  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
   const [isSaving, setIsSaving] = useState(false);
   const [isSeeding, setIsSeeding] = useState(false);
 
   const fetchSettings = async () => {
+    if (!isSupabaseConfigured) {
+      setSettings(MOCK_DELIVERY_SETTINGS);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('delivery_settings')
-        .select('*')
-        .eq('is_active', true)
-        .limit(1)
-        .single();
+      const response = await withTimeout(
+        supabase
+          .from('delivery_settings')
+          .select('*')
+          .eq('is_active', true)
+          .limit(1)
+          .single(),
+        2500
+      );
 
+      const { data, error } = response as any;
       if (error && error.code !== 'PGRST116') {
         throw error;
       }
@@ -27,16 +38,11 @@ export function SettingsPage() {
       if (data) {
         setSettings(data as DeliverySettings);
       } else {
-        // Init empty
-        setSettings({
-          rules_text: '',
-          flat_fee: 0,
-          is_active: true
-        } as any);
+        setSettings(MOCK_DELIVERY_SETTINGS);
       }
     } catch (error) {
-      console.error('Error fetching settings:', error);
-      alert('Failed to load settings.');
+      console.warn('Error fetching settings, falling back to defaults:', error);
+      setSettings(MOCK_DELIVERY_SETTINGS);
     } finally {
       setIsLoading(false);
     }

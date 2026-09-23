@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
+import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { generateOrderId, buildQuickOrderWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import type { QuickOrderFormData } from '../../types/order';
 import './CheckoutPage.css'; // Reusing checkout form styles
@@ -34,22 +34,29 @@ export function QuickOrderPage() {
     try {
       const orderId = generateOrderId();
 
-      // 1. Persist the quick order to Supabase
-      const { error: orderError } = await supabase.from('orders').insert({
-        id: orderId,
-        customer_name: formData.customer_name,
-        customer_phone: formData.customer_phone,
-        delivery_address: formData.delivery_address,
-        map_link: formData.map_link || null,
-        subtotal_amount: 0,
-        delivery_fee: settings?.flat_fee || 0,
-        total_amount: settings?.flat_fee || 0,
-        status: 'pending',
-        is_quick_order: true,
-        quick_order_text: formData.shopping_list
-      });
-
-      if (orderError) throw orderError;
+      // 1. Persist the quick order to Supabase if configured (non-blocking)
+      if (isSupabaseConfigured) {
+        try {
+          await withTimeout(
+            supabase.from('orders').insert({
+              id: orderId,
+              customer_name: formData.customer_name,
+              customer_phone: formData.customer_phone,
+              delivery_address: formData.delivery_address,
+              map_link: formData.map_link || null,
+              subtotal_amount: 0,
+              delivery_fee: settings?.flat_fee || 0,
+              total_amount: settings?.flat_fee || 0,
+              status: 'pending',
+              is_quick_order: true,
+              quick_order_text: formData.shopping_list
+            }),
+            3000
+          );
+        } catch (dbErr) {
+          console.warn('Database save skipped or timed out, proceeding to WhatsApp:', dbErr);
+        }
+      }
 
       // 2. Build WhatsApp message
       const message = buildQuickOrderWhatsAppMessage({

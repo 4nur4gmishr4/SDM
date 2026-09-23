@@ -124,6 +124,55 @@ ol {
    rounded containers, standard heights, and solid font weights.
    -------------------------------------------------------- */
 
+:root {
+  --md-filled-button-container-shape: 10px;
+  --md-outlined-button-container-shape: 10px;
+  --md-filled-tonal-button-container-shape: 10px;
+  --md-elevated-button-container-shape: 10px;
+  --md-text-button-container-shape: 10px;
+
+  --md-filled-button-container-height: 42px;
+  --md-outlined-button-container-height: 42px;
+  --md-filled-tonal-button-container-height: 42px;
+  --md-elevated-button-container-height: 42px;
+  --md-text-button-container-height: 42px;
+
+  --md-filled-button-label-text-weight: 600;
+  --md-outlined-button-label-text-weight: 600;
+  --md-filled-tonal-button-label-text-weight: 600;
+  --md-elevated-button-label-text-weight: 600;
+  --md-text-button-label-text-weight: 600;
+
+  --md-filled-button-leading-space: 26px;
+  --md-filled-button-trailing-space: 26px;
+  --md-outlined-button-leading-space: 26px;
+  --md-outlined-button-trailing-space: 26px;
+  --md-filled-tonal-button-leading-space: 26px;
+  --md-filled-tonal-button-trailing-space: 26px;
+  --md-elevated-button-leading-space: 26px;
+  --md-elevated-button-trailing-space: 26px;
+  --md-text-button-leading-space: 18px;
+  --md-text-button-trailing-space: 18px;
+
+  --md-filled-button-with-leading-icon-leading-space: 20px;
+  --md-filled-button-with-leading-icon-trailing-space: 26px;
+  --md-outlined-button-with-leading-icon-leading-space: 20px;
+  --md-outlined-button-with-leading-icon-trailing-space: 26px;
+  --md-filled-tonal-button-with-leading-icon-leading-space: 20px;
+  --md-filled-tonal-button-with-leading-icon-trailing-space: 26px;
+
+  --md-filled-tonal-button-container-color: var(--md-sys-color-primary-container);
+  --md-filled-tonal-button-label-text-color: var(--md-sys-color-on-primary-container);
+  --md-filled-tonal-button-hover-state-layer-color: var(--md-sys-color-primary);
+  --md-filled-tonal-button-pressed-state-layer-color: var(--md-sys-color-primary);
+
+  --md-filled-button-icon-size: 20px;
+  --md-outlined-button-icon-size: 20px;
+  --md-filled-tonal-button-icon-size: 20px;
+  --md-elevated-button-icon-size: 20px;
+  --md-text-button-icon-size: 20px;
+}
+
 md-filled-button,
 md-outlined-button,
 md-filled-tonal-button,
@@ -135,11 +184,11 @@ md-text-button {
   --md-elevated-button-container-shape: 10px;
   --md-text-button-container-shape: 10px;
 
-  --md-filled-button-container-height: 40px;
-  --md-outlined-button-container-height: 40px;
-  --md-filled-tonal-button-container-height: 40px;
-  --md-elevated-button-container-height: 40px;
-  --md-text-button-container-height: 40px;
+  --md-filled-button-container-height: 42px;
+  --md-outlined-button-container-height: 42px;
+  --md-filled-tonal-button-container-height: 42px;
+  --md-elevated-button-container-height: 42px;
+  --md-text-button-container-height: 42px;
 
   --md-filled-button-label-text-weight: 600;
   --md-outlined-button-label-text-weight: 600;
@@ -147,20 +196,34 @@ md-text-button {
   --md-elevated-button-label-text-weight: 600;
   --md-text-button-label-text-weight: 600;
 
-  --md-filled-button-leading-space: 16px;
-  --md-filled-button-trailing-space: 16px;
-  --md-outlined-button-leading-space: 16px;
-  --md-outlined-button-trailing-space: 16px;
-  --md-filled-tonal-button-leading-space: 16px;
-  --md-filled-tonal-button-trailing-space: 16px;
-  --md-text-button-leading-space: 12px;
-  --md-text-button-trailing-space: 12px;
+  --md-filled-button-leading-space: 26px;
+  --md-filled-button-trailing-space: 26px;
+  --md-outlined-button-leading-space: 26px;
+  --md-outlined-button-trailing-space: 26px;
+  --md-filled-tonal-button-leading-space: 26px;
+  --md-filled-tonal-button-trailing-space: 26px;
+  --md-elevated-button-leading-space: 26px;
+  --md-elevated-button-trailing-space: 26px;
+  --md-text-button-leading-space: 18px;
+  --md-text-button-trailing-space: 18px;
 
-  --md-filled-button-icon-size: 18px;
-  --md-outlined-button-icon-size: 18px;
-  --md-filled-tonal-button-icon-size: 18px;
-  --md-elevated-button-icon-size: 18px;
-  --md-text-button-icon-size: 18px;
+  --md-filled-button-with-leading-icon-leading-space: 20px;
+  --md-filled-button-with-leading-icon-trailing-space: 26px;
+  --md-outlined-button-with-leading-icon-leading-space: 20px;
+  --md-outlined-button-with-leading-icon-trailing-space: 26px;
+  --md-filled-tonal-button-with-leading-icon-leading-space: 20px;
+  --md-filled-tonal-button-with-leading-icon-trailing-space: 26px;
+
+  --md-filled-tonal-button-container-color: var(--md-sys-color-primary-container);
+  --md-filled-tonal-button-label-text-color: var(--md-sys-color-on-primary-container);
+  --md-filled-tonal-button-hover-state-layer-color: var(--md-sys-color-primary);
+  --md-filled-tonal-button-pressed-state-layer-color: var(--md-sys-color-primary);
+
+  --md-filled-button-icon-size: 20px;
+  --md-outlined-button-icon-size: 20px;
+  --md-filled-tonal-button-icon-size: 20px;
+  --md-elevated-button-icon-size: 20px;
+  --md-text-button-icon-size: 20px;
 
   font-family: inherit;
   vertical-align: middle;
@@ -175,6 +238,41 @@ md-filled-icon-button {
   --md-filled-icon-button-icon-size: 20px;
   vertical-align: middle;
   cursor: pointer;
+}
+
+/* --------------------------------------------------------
+   Material Web Select & Menu Dropdown Theme Overrides
+   Ensures active/selected option indicators use brand green
+   container (primary-container) instead of yellow.
+   -------------------------------------------------------- */
+
+md-outlined-select,
+md-filled-select,
+md-select-option,
+md-menu,
+md-menu-item {
+  --md-menu-item-selected-container-color: var(--md-sys-color-primary-container);
+  --md-menu-item-selected-label-text-color: var(--md-sys-color-on-primary-container);
+  --md-sys-color-secondary-container: var(--md-sys-color-primary-container);
+  --md-sys-color-on-secondary-container: var(--md-sys-color-on-primary-container);
+  --md-outlined-select-focus-outline-color: var(--md-sys-color-primary);
+  --md-outlined-select-focus-label-text-color: var(--md-sys-color-primary);
+  --md-filled-select-focus-active-indicator-color: var(--md-sys-color-primary);
+  --md-filled-select-focus-label-text-color: var(--md-sys-color-primary);
+  --md-menu-container-shape: 12px;
+}
+
+md-select-option {
+  --md-menu-item-selected-container-color: var(--md-sys-color-primary-container);
+  --md-menu-item-selected-label-text-color: var(--md-sys-color-on-primary-container);
+}
+
+md-select-option[selected],
+md-select-option[aria-selected="true"] {
+  --md-menu-item-selected-container-color: var(--md-sys-color-primary-container);
+  --md-menu-item-selected-label-text-color: var(--md-sys-color-on-primary-container);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
 }
 
 /* --------------------------------------------------------

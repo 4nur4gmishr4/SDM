@@ -25,7 +25,7 @@ export function ProductDetailPage() {
     setQuantity(1);
   }, [id]);
 
-  if (isLoading) {
+  if (isLoading && !product) {
     return (
       <div className="layout-container" style={{ padding: '16px 0' }}>
         <Helmet>

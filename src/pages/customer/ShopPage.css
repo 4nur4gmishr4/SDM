@@ -166,13 +166,13 @@
 }
 
 .shop-page__category-link--active {
-  background-color: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
   font-weight: 600;
 }
 
 .shop-page__category-link--active:hover {
-  background-color: var(--md-sys-color-secondary-container);
+  background-color: var(--md-sys-color-primary-container);
 }
 
 .shop-page__filter-row {

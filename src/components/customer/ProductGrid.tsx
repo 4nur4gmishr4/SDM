@@ -19,7 +19,7 @@ export function ProductGrid({
 }: ProductGridProps) {
   const [visibleCount, setVisibleCount] = useState(20);
 
-  if (isLoading) {
+  if (isLoading && products.length === 0) {
     return <ProductGridSkeleton count={skeletonCount} />;
   }
 
@@ -46,8 +46,12 @@ export function ProductGrid({
       </div>
       
       {hasMore && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-          <md-filled-tonal-button onClick={() => setVisibleCount(c => c + 20)}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
+          <md-filled-tonal-button 
+            className="product-grid__load-more-btn" 
+            onClick={() => setVisibleCount(c => c + 20)}
+          >
+            <span className="material-symbols-outlined" slot="icon">expand_more</span>
             Load More Products
           </md-filled-tonal-button>
         </div>

@@ -27,7 +27,15 @@
 
 @media (min-width: 1200px) {
   .product-grid {
-    grid-template-columns: repeat(5, 1fr); /* 5 columns on wide screens */
+    grid-template-columns: repeat(5, 1fr); /* 5 columns on desktop */
+    gap: var(--md-sys-spacing-4);
+  }
+}
+
+@media (min-width: 1440px) {
+  .product-grid {
+    grid-template-columns: repeat(6, 1fr); /* 6 columns on wide screens */
+    gap: var(--md-sys-spacing-4);
   }
 }
 
@@ -56,4 +64,23 @@
   font-weight: var(--md-sys-typescale-title-large-weight);
   margin-bottom: var(--md-sys-spacing-2);
   color: var(--md-sys-color-on-surface);
+}
+
+/* Load More Button */
+.product-grid__load-more-btn {
+  --md-filled-tonal-button-container-height: 44px;
+  --md-filled-tonal-button-container-shape: 10px;
+  --md-filled-tonal-button-leading-space: 28px;
+  --md-filled-tonal-button-trailing-space: 28px;
+  --md-filled-tonal-button-with-leading-icon-leading-space: 20px;
+  --md-filled-tonal-button-with-leading-icon-trailing-space: 28px;
+  --md-filled-tonal-button-container-color: var(--md-sys-color-primary-container);
+  --md-filled-tonal-button-label-text-color: var(--md-sys-color-on-primary-container);
+  --md-filled-tonal-button-label-text-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-size: 0.95rem;
+}
+
+.product-grid__load-more-btn:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }

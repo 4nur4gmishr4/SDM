@@ -74,11 +74,12 @@
 }
 
 .admin-shell__nav-item--active {
-  color: var(--md-sys-color-on-secondary-container);
+  color: var(--md-sys-color-primary);
 }
 
 .admin-shell__nav-item--active .admin-shell__nav-icon-wrapper {
-  background-color: var(--md-sys-color-secondary-container);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
 }
 
 .admin-shell__nav-item:focus-visible {

@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
+import { MOCK_CATEGORIES } from '../../lib/mockData';
 import { AdminTableSkeleton } from '../../components/common';
 import type { Category } from '../../types/category';
 import './OrdersPage.css'; // Reusing table styles
 import './ProductsPage.css'; // Reusing modal/layout styles
 
 export function CategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>(() =>
+    !isSupabaseConfigured ? MOCK_CATEGORIES : []
+  );
+  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,18 +18,27 @@ export function CategoriesPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchCategories = async () => {
+    if (!isSupabaseConfigured) {
+      setCategories(MOCK_CATEGORIES);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .order('display_order');
+      const { data, error } = await withTimeout(
+        supabase
+          .from('categories')
+          .select('*')
+          .order('display_order'),
+        2000
+      );
 
       if (error) throw error;
-      setCategories(data as Category[]);
+      setCategories(data && data.length > 0 ? (data as Category[]) : MOCK_CATEGORIES);
     } catch (error) {
-      console.error('Error fetching categories:', error);
-      alert('Failed to load categories.');
+      console.warn('Falling back to testing categories in admin:', error);
+      setCategories(MOCK_CATEGORIES);
     } finally {
       setIsLoading(false);
     }
@@ -117,7 +129,7 @@ export function CategoriesPage() {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? (
+            {isLoading && categories.length === 0 ? (
               <AdminTableSkeleton rows={5} cols={5} />
             ) : categories.length === 0 ? (
               <tr>

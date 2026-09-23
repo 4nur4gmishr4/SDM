@@ -11,7 +11,7 @@ interface CategoryNavProps {
 }
 
 export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoading = false }: CategoryNavProps) {
-  if (isLoading) {
+  if (isLoading && categories.length === 0) {
     return <CategoryNavSkeleton count={8} />;
   }
 

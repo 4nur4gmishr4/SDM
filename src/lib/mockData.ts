@@ -509,3 +509,83 @@ export const MOCK_OFFERS = [
     updated_at: new Date().toISOString()
   }
 ];
+
+export const MOCK_ORDERS: import('../types/order').Order[] = [
+  {
+    id: 'ord-849102',
+    customer_name: 'Aditi Sharma',
+    customer_phone: '+91 73541 55669',
+    delivery_address: '14 Civil Lines, Near City Hospital, Jabalpur, MP',
+    map_link: null,
+    quick_order_text: null,
+    is_quick_order: false,
+    subtotal_amount: 540,
+    delivery_fee: 0,
+    total_amount: 540,
+    status: 'pending',
+    created_at: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
+    updated_at: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
+    order_items: [
+      {
+        id: 'oi-1',
+        order_id: 'ord-849102',
+        product_id: 'p1',
+        product_name: 'Farm Fresh Hybrid Tomatoes',
+        product_sku: 'VEG-TOM-001',
+        product_price: 35,
+        quantity: 2,
+        line_total: 70
+      },
+      {
+        id: 'oi-2',
+        order_id: 'ord-849102',
+        product_id: 'p7',
+        product_name: 'Aashirvaad Shudh Chakki Atta 5kg',
+        product_sku: 'GRO-ATT-007',
+        product_price: 245,
+        quantity: 1,
+        line_total: 245
+      },
+      {
+        id: 'oi-3',
+        order_id: 'ord-849102',
+        product_id: 'p6',
+        product_name: 'Amul Fresh Malai Paneer 200g',
+        product_sku: 'DAI-PAN-006',
+        product_price: 90,
+        quantity: 2,
+        line_total: 180
+      }
+    ]
+  },
+  {
+    id: 'ord-849101',
+    customer_name: 'Rajesh Verma',
+    customer_phone: '+91 73541 55669',
+    delivery_address: 'Flat 302, Sai Vihar Apartment, Napier Town, Jabalpur',
+    map_link: null,
+    quick_order_text: '2kg Aashirvaad Atta, 1 packet Amul Taaza milk, 1 packet Fortune Sunflower oil',
+    is_quick_order: true,
+    subtotal_amount: 410,
+    delivery_fee: 30,
+    total_amount: 440,
+    status: 'processing',
+    created_at: new Date(Date.now() - 1000 * 60 * 90).toISOString(),
+    updated_at: new Date(Date.now() - 1000 * 60 * 60).toISOString()
+  },
+  {
+    id: 'ord-849100',
+    customer_name: 'Pooja Tiwari',
+    customer_phone: '+91 73541 55669',
+    delivery_address: 'B-12, Vijay Nagar, Jabalpur, MP',
+    map_link: null,
+    quick_order_text: null,
+    is_quick_order: false,
+    subtotal_amount: 780,
+    delivery_fee: 0,
+    total_amount: 780,
+    status: 'delivered',
+    created_at: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
+    updated_at: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString()
+  }
+];

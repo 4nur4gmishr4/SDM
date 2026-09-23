@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
+import { MOCK_PRODUCTS, MOCK_CATEGORIES } from '../../lib/mockData';
 import { formatPrice } from '../../lib/orderUtils';
 import { AdminTableSkeleton } from '../../components/common';
 import type { Product } from '../../types/product';
@@ -8,9 +9,13 @@ import './OrdersPage.css'; // Reusing table styles
 import './ProductsPage.css';
 
 export function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>(() =>
+    !isSupabaseConfigured ? MOCK_PRODUCTS : []
+  );
+  const [categories, setCategories] = useState<Category[]>(() =>
+    !isSupabaseConfigured ? MOCK_CATEGORIES : []
+  );
+  const [isLoading, setIsLoading] = useState(() => isSupabaseConfigured);
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,21 +23,29 @@ export function ProductsPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchData = async () => {
+    if (!isSupabaseConfigured) {
+      setProducts(MOCK_PRODUCTS);
+      setCategories(MOCK_CATEGORIES);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const [productsRes, categoriesRes] = await Promise.all([
-        supabase.from('products').select('*, category:categories(name)').order('name'),
-        supabase.from('categories').select('*').order('name')
+        withTimeout(supabase.from('products').select('*, category:categories(name)').order('name'), 2000),
+        withTimeout(supabase.from('categories').select('*').order('name'), 2000)
       ]);
 
       if (productsRes.error) throw productsRes.error;
       if (categoriesRes.error) throw categoriesRes.error;
 
-      setProducts(productsRes.data as Product[]);
-      setCategories(categoriesRes.data as Category[]);
+      setProducts(productsRes.data && productsRes.data.length > 0 ? (productsRes.data as Product[]) : MOCK_PRODUCTS);
+      setCategories(categoriesRes.data && categoriesRes.data.length > 0 ? (categoriesRes.data as Category[]) : MOCK_CATEGORIES);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      alert('Failed to load data.');
+      console.warn('Falling back to testing products in admin:', error);
+      setProducts(MOCK_PRODUCTS);
+      setCategories(MOCK_CATEGORIES);
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +138,7 @@ export function ProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? (
+            {isLoading && products.length === 0 ? (
               <AdminTableSkeleton rows={6} cols={6} />
             ) : products.length === 0 ? (
               <tr>

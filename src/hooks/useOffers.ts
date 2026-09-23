@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import type { Offer } from '../types/offer';
 
 export function useOffers(options = { fetchAll: false }) {
   const [offers, setOffers] = useState<Offer[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(() => isSupabaseConfigured);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
+
+    if (!isSupabaseConfigured) {
+      setIsLoading(false);
+      return;
+    }
 
     async function fetchOffers() {
       try {
@@ -19,7 +24,7 @@ export function useOffers(options = { fetchAll: false }) {
           query = query.eq('is_active', true);
         }
 
-        const { data, error: fetchError } = await query;
+        const { data, error: fetchError } = await withTimeout(query, 2000);
         if (fetchError) throw fetchError;
         
         if (mounted && data) {
@@ -38,7 +43,7 @@ export function useOffers(options = { fetchAll: false }) {
     return () => {
       mounted = false;
     };
-  }, []); // Omitting options.fetchAll for simplicity in mock
+  }, []);
 
   return { offers, isLoading, error };
 }

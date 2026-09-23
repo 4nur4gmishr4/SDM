@@ -1,24 +1,35 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import { MOCK_BANNERS } from '../lib/mockData';
 import type { Banner } from '../types/banner';
 
 export function useBanners() {
-  const [banners, setBanners] = useState<Banner[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [banners, setBanners] = useState<Banner[]>(() =>
+    !isSupabaseConfigured ? MOCK_BANNERS : []
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(() => isSupabaseConfigured);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
 
+    if (!isSupabaseConfigured) {
+      setBanners(MOCK_BANNERS);
+      setIsLoading(false);
+      return;
+    }
+
     async function fetchBanners() {
       try {
         setIsLoading(true);
-        const { data, error: fetchError } = await supabase
-          .from('banners')
-          .select('*')
-          .eq('is_active', true)
-          .order('sort_order', { ascending: true });
+        const { data, error: fetchError } = await withTimeout(
+          supabase
+            .from('banners')
+            .select('*')
+            .eq('is_active', true)
+            .order('sort_order', { ascending: true }),
+          2000
+        );
 
         if (fetchError) throw fetchError;
         
