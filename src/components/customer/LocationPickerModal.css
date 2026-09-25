@@ -255,6 +255,7 @@
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
   font-family: inherit;
+  -webkit-user-select: none;
   user-select: none;
 }
 
