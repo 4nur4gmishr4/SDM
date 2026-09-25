@@ -144,9 +144,9 @@ svg,
 .offer-banner__image,
 .product-detail__image,
 .app-shell__avatar-img {
+  -webkit-transform: none !important;
   transform: none !important;
   scale: 1 !important;
-  -webkit-transform: none !important;
   transition: opacity 150ms ease !important;
 }
 
@@ -160,9 +160,9 @@ svg,
 .offer-banner:hover .offer-banner__image,
 .product-detail__image:hover,
 img:hover {
+  -webkit-transform: none !important;
   transform: none !important;
   scale: 1 !important;
-  -webkit-transform: none !important;
 }
 
 /* ============================================================
