@@ -17,7 +17,21 @@
 .leaflet-tile {
   max-width: none !important;
   max-height: none !important;
-  display: inline !important;
+  width: auto;
+  height: auto;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.leaflet-container img,
+.leaflet-container picture,
+.leaflet-container .leaflet-tile {
+  transition: none !important;
+}
+
+.leaflet-fade-anim .leaflet-tile-loaded {
+  transition: opacity 0.2s linear !important;
 }
 
 /* --------------------------------------------------------
@@ -134,8 +148,8 @@ ol {
    Guarantees all images across the website remain steady on hover.
    ============================================================ */
 
-img,
-picture,
+img:not([class*="leaflet"]):not(.leaflet-tile),
+picture:not([class*="leaflet"]):not(.leaflet-tile),
 video,
 canvas,
 svg,
@@ -150,16 +164,16 @@ svg,
   transition: opacity 150ms ease !important;
 }
 
-*:hover > img,
-*:hover > picture,
-*:hover img,
-*:hover picture,
+*:hover > img:not([class*="leaflet"]):not(.leaflet-tile),
+*:hover > picture:not([class*="leaflet"]):not(.leaflet-tile),
+*:hover img:not([class*="leaflet"]):not(.leaflet-tile),
+*:hover picture:not([class*="leaflet"]):not(.leaflet-tile),
 .product-tile:hover .product-tile__image,
 .product-tile__image-link:hover .product-tile__image,
 .category-nav__item:hover .category-nav__image,
 .offer-banner:hover .offer-banner__image,
 .product-detail__image:hover,
-img:hover {
+img:not([class*="leaflet"]):not(.leaflet-tile):hover {
   -webkit-transform: none !important;
   transform: none !important;
   scale: 1 !important;

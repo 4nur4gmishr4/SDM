@@ -64,6 +64,8 @@ export function LocationPickerModal() {
     } else {
       layers.street.addTo(map);
     }
+
+    map.invalidateSize();
   };
 
   // Reverse geocode whenever pin coordinates change (debounced)

@@ -217,7 +217,11 @@
 .location-leaflet-map .leaflet-tile-pane img {
   max-width: none !important;
   max-height: none !important;
-  display: inline !important;
+  width: auto;
+  height: auto;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
 }
 
 /* Completely remove Leaflet / OpenStreetMap attribution text bar */
