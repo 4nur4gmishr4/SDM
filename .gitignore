@@ -25,3 +25,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Confidential store data
+main_data/
+main_data
+*.xlsx
+*.xls
