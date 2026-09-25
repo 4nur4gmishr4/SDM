@@ -1,0 +1,229 @@
+/* ============================================================
+   Sai Darshan Shopping Mart — Modern Compact Horizontal Footer
+   ============================================================ */
+
+.sdm-footer {
+  background-color: var(--md-sys-color-surface-container, #f3f4f6);
+  color: var(--md-sys-color-on-surface, #1f2937);
+  border-top: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
+  margin-top: auto;
+  font-family: var(--md-sys-typescale-font-family);
+  -webkit-tap-highlight-color: transparent;
+  padding: 18px 0 calc(var(--sdm-layout-bottom-nav-height, 64px) + 12px) 0;
+}
+
+@media (min-width: 768px) {
+  .sdm-footer {
+    padding: 18px 0 14px 0;
+  }
+}
+
+.sdm-footer__container {
+  max-width: var(--sdm-layout-max-width, 1280px);
+  margin-inline: auto;
+  padding: 0 var(--sdm-layout-content-padding-mobile, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .sdm-footer__container {
+    padding: 0 var(--sdm-layout-content-padding-tablet, 24px);
+    gap: 12px;
+  }
+}
+
+/* ------------------------------------------------------------
+   Horizontal Content Row (Side-by-Side on Desktop/Tablet)
+   ------------------------------------------------------------ */
+.sdm-footer__row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
+}
+
+/* Brand Section (Left Side) */
+.sdm-footer__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  flex: 1 1 300px;
+}
+
+.sdm-footer__brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--md-sys-color-primary, #1E8E3E);
+  line-height: 1.25;
+}
+
+.sdm-footer__brand-tagline {
+  font-size: 12.5px;
+  color: var(--md-sys-color-on-surface-variant, #6b7280);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Actions Section: Address & Contact Icons (Right Side) */
+.sdm-footer__actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  flex: 1 1 auto;
+}
+
+@media (min-width: 900px) {
+  .sdm-footer__actions {
+    justify-content: flex-end;
+  }
+}
+
+/* ------------------------------------------------------------
+   Clickable Exact Store Address Pill
+   ------------------------------------------------------------ */
+.sdm-footer__address {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 6px 14px;
+  background-color: var(--md-sys-color-surface, #ffffff);
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.1));
+  border-radius: 9999px;
+  color: var(--md-sys-color-on-surface, #374151);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  -webkit-tap-highlight-color: transparent;
+  white-space: normal;
+  text-align: left;
+}
+
+[data-theme="dark"] .sdm-footer__address {
+  background-color: var(--md-sys-color-surface-container-high, #2a2a2a);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--md-sys-color-on-surface, #e5e7eb);
+}
+
+.sdm-footer__address:hover {
+  background-color: var(--md-sys-color-surface-container-high, #f3f4f6);
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  color: var(--md-sys-color-primary, #1E8E3E);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.sdm-footer__address-icon {
+  font-size: 16px;
+  color: var(--md-sys-color-primary, #1E8E3E);
+  flex-shrink: 0;
+}
+
+.sdm-footer__address-text {
+  max-width: 440px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sdm-footer__address-arrow {
+  font-size: 14px;
+  color: var(--md-sys-color-outline, #9ca3af);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sdm-footer__address:hover .sdm-footer__address-arrow {
+  color: var(--md-sys-color-primary, #1E8E3E);
+  transform: translate(1px, -1px);
+}
+
+/* ------------------------------------------------------------
+   3 Unified Contact Icon Buttons (Google Green)
+   ------------------------------------------------------------ */
+.sdm-footer__contact-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sdm-footer__icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-primary, #1E8E3E);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(30, 142, 62, 0.22);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+              background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sdm-footer__icon-btn:hover {
+  background-color: #177332;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 10px rgba(30, 142, 62, 0.32);
+  color: #ffffff;
+}
+
+.sdm-footer__icon-btn:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 1px 3px rgba(30, 142, 62, 0.2);
+}
+
+.sdm-footer__icon-btn .material-symbols-outlined {
+  font-size: 19px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sdm-footer__icon-btn svg {
+  display: block;
+}
+
+/* ------------------------------------------------------------
+   Bottom Minimal Copyright (Compact Strip)
+   ------------------------------------------------------------ */
+.sdm-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .sdm-footer__bottom {
+    justify-content: space-between;
+  }
+}
+
+.sdm-footer__copyright {
+  font-size: 11.5px;
+  color: var(--md-sys-color-on-surface-variant, #6b7280);
+  line-height: 1.4;
+}
