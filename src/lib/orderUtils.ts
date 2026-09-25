@@ -4,6 +4,28 @@ export const STORE_WHATSAPP_NUMBER = '+91 79991 57430';
 export const STORE_WHATSAPP_CLEAN = '917999157430';
 export const STORE_PHONE_NUMBER = '7999157430';
 export const STORE_EMAIL = 'saidarshanmart@gmail.com';
+export const STORE_UPI_ID = '7999157430@upi';
+export const STORE_INSTAGRAM_URL = 'https://instagram.com/4nur4gmishr4';
+export const STORE_ADDRESS = '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh 482003';
+export const STORE_DELIVERY_RADIUS = '5–10 km across Jabalpur';
+
+/**
+ * Generate standard UPI deep link for 1-tap payment in Google Pay / PhonePe / Paytm / BHIM.
+ */
+export function getUpiPaymentUrl(params?: { amount?: number; orderId?: string; note?: string }): string {
+  const upiId = STORE_UPI_ID;
+  const payeeName = 'Sai Darshan Mart';
+  let url = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&cu=INR`;
+  if (params?.amount && params.amount > 0) {
+    url += `&am=${params.amount.toFixed(2)}`;
+  }
+  if (params?.orderId) {
+    url += `&tr=${encodeURIComponent(params.orderId)}&tn=${encodeURIComponent(`Order ${params.orderId}`)}`;
+  } else if (params?.note) {
+    url += `&tn=${encodeURIComponent(params.note)}`;
+  }
+  return url;
+}
 
 /**
  * Generate a unique order ID in format: SDM-YYMMDD-XXXX
