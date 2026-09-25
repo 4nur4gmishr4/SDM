@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
-import { MOCK_PRODUCTS, MOCK_CATEGORIES } from '../../lib/mockData';
 import { formatPrice } from '../../lib/orderUtils';
 import { AdminTableSkeleton } from '../../components/common';
-import type { Product } from '../../types/product';
+import { ExcelImportWidget } from '../../components/admin';
+import type { Product, ProductVariant } from '../../types/product';
 import type { Category } from '../../types/category';
 import './OrdersPage.css'; // Reusing table styles
 import './ProductsPage.css';
 
 export function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>(() => MOCK_PRODUCTS);
-  const [categories, setCategories] = useState<Category[]>(() => MOCK_CATEGORIES);
-  const [isLoading, setIsLoading] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const pageTitle = 'Products Catalog — Sai Darshan Mart Admin';
 
@@ -20,15 +20,16 @@ export function ProductsPage() {
     document.title = pageTitle;
   }, [pageTitle]);
   
-  // Modal state
+  // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchData = async () => {
     if (!isSupabaseConfigured) {
-      setProducts(MOCK_PRODUCTS);
-      setCategories(MOCK_CATEGORIES);
+      setProducts([]);
+      setCategories([]);
       setIsLoading(false);
       return;
     }
@@ -36,19 +37,19 @@ export function ProductsPage() {
     setIsLoading(true);
     try {
       const [productsRes, categoriesRes] = await Promise.all([
-        withTimeout(supabase.from('products').select('*, category:categories(name)').order('name'), 2000),
-        withTimeout(supabase.from('categories').select('*').order('name'), 2000)
+        withTimeout(supabase.from('products').select('*, category:categories(id, name, slug)').order('name'), 5000),
+        withTimeout(supabase.from('categories').select('*').order('name'), 5000)
       ]);
 
       if (productsRes.error) throw productsRes.error;
       if (categoriesRes.error) throw categoriesRes.error;
 
-      setProducts(productsRes.data && productsRes.data.length > 0 ? (productsRes.data as Product[]) : MOCK_PRODUCTS);
-      setCategories(categoriesRes.data && categoriesRes.data.length > 0 ? (categoriesRes.data as Category[]) : MOCK_CATEGORIES);
+      setProducts((productsRes.data as Product[]) || []);
+      setCategories((categoriesRes.data as Category[]) || []);
     } catch (error) {
-      console.warn('Falling back to testing products in admin:', error);
-      setProducts(MOCK_PRODUCTS);
-      setCategories(MOCK_CATEGORIES);
+      console.error('Error fetching products in admin:', error);
+      setProducts([]);
+      setCategories([]);
     } finally {
       setIsLoading(false);
     }
@@ -61,21 +62,48 @@ export function ProductsPage() {
   const handleOpenAdd = () => {
     setEditingProduct({
       name: '',
-      sku: '',
+      sku: `SDM-${Date.now().toString().slice(-6)}`,
       price: 0,
-      unit_size: '',
+      mrp: 0,
+      unit_size: '1 unit',
       category_id: categories[0]?.id || '',
       is_available: true,
       is_featured: false,
       is_archived: false,
       description: '',
-      image_url: ''
+      image_url: '',
+      variants: [
+        {
+          id: 'v-1',
+          unit_size: '1 unit',
+          price: 0,
+          mrp: 0,
+          stock_quantity: 50,
+          is_available: true
+        }
+      ]
     });
     setIsModalOpen(true);
   };
 
   const handleOpenEdit = (product: Product) => {
-    setEditingProduct({ ...product });
+    const defaultVariants: ProductVariant[] = (product.variants && product.variants.length > 0)
+      ? [...product.variants]
+      : [
+          {
+            id: 'v-1',
+            unit_size: product.unit_size || '1 unit',
+            price: product.price || 0,
+            mrp: product.mrp || product.price || 0,
+            stock_quantity: 50,
+            is_available: product.is_available
+          }
+        ];
+
+    setEditingProduct({
+      ...product,
+      variants: defaultVariants
+    });
     setIsModalOpen(true);
   };
 
@@ -84,35 +112,94 @@ export function ProductsPage() {
     setEditingProduct(null);
   };
 
+  // Quantity options (variants) handlers
+  const handleAddVariant = () => {
+    if (!editingProduct) return;
+    const currentVariants = editingProduct.variants || [];
+    const newVariant: ProductVariant = {
+      id: `v-${Date.now().toString().slice(-4)}`,
+      unit_size: '',
+      price: editingProduct.price || 0,
+      mrp: editingProduct.mrp || editingProduct.price || 0,
+      stock_quantity: 50,
+      is_available: true
+    };
+    setEditingProduct({
+      ...editingProduct,
+      variants: [...currentVariants, newVariant]
+    });
+  };
+
+  const handleUpdateVariant = (index: number, field: keyof ProductVariant, value: any) => {
+    if (!editingProduct || !editingProduct.variants) return;
+    const updated = [...editingProduct.variants];
+    updated[index] = { ...updated[index], [field]: value };
+
+    // If first variant's price or unit size changed, sync base product defaults
+    const updates: Partial<Product> = { variants: updated };
+    if (index === 0) {
+      if (field === 'price') updates.price = value;
+      if (field === 'mrp') updates.mrp = value;
+      if (field === 'unit_size') updates.unit_size = value;
+    }
+
+    setEditingProduct({ ...editingProduct, ...updates });
+  };
+
+  const handleRemoveVariant = (index: number) => {
+    if (!editingProduct || !editingProduct.variants) return;
+    const updated = editingProduct.variants.filter((_, i) => i !== index);
+    setEditingProduct({
+      ...editingProduct,
+      variants: updated
+    });
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingProduct) return;
     
     setIsSaving(true);
     try {
+      const variants = editingProduct.variants || [];
+      const primaryVariant = variants[0];
+
+      const payload = {
+        name: editingProduct.name,
+        sku: editingProduct.sku,
+        category_id: editingProduct.category_id || categories[0]?.id || null,
+        price: primaryVariant ? primaryVariant.price : (editingProduct.price || 0),
+        mrp: primaryVariant?.mrp || editingProduct.mrp || editingProduct.price || 0,
+        unit_size: primaryVariant?.unit_size || editingProduct.unit_size || '1 unit',
+        description: editingProduct.description || null,
+        image_url: editingProduct.image_url || null,
+        is_available: editingProduct.is_available ?? true,
+        is_featured: editingProduct.is_featured ?? false,
+        is_archived: editingProduct.is_archived ?? false,
+        variants: variants,
+        updated_at: new Date().toISOString()
+      };
+
       if (editingProduct.id) {
         // Update
         const { error } = await supabase
           .from('products')
-          .update({
-            ...editingProduct,
-            updated_at: new Date().toISOString()
-          })
+          .update(payload)
           .eq('id', editingProduct.id);
         if (error) throw error;
       } else {
         // Insert
         const { error } = await supabase
           .from('products')
-          .insert([editingProduct]);
+          .insert([payload]);
         if (error) throw error;
       }
       
       await fetchData();
       handleCloseModal();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving product:', error);
-      alert('Failed to save product.');
+      alert('Failed to save product: ' + (error.message || 'Unknown error'));
     } finally {
       setIsSaving(false);
     }
@@ -124,11 +211,22 @@ export function ProductsPage() {
         <title>{pageTitle}</title>
       </Helmet>
       <div className="admin-products-header">
-        <h1 className="admin-products-title">Products</h1>
-        <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">
-          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add</span>
-          <span>Add Product</span>
-        </button>
+        <h1 className="admin-products-title">Products ({products.length})</h1>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={() => setIsImportModalOpen(true)}
+            className="sdm-btn sdm-btn--outlined"
+            title="Drag and drop your excel catalog"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>upload_file</span>
+            <span>Import Excel Catalog</span>
+          </button>
+          <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add</span>
+            <span>Add Product</span>
+          </button>
+        </div>
       </div>
 
       <div className="admin-table-container">
@@ -136,107 +234,179 @@ export function ProductsPage() {
           <thead>
             <tr>
               <th>Image</th>
-              <th>Name</th>
+              <th>Name & Options</th>
               <th>Category</th>
-              <th>Price</th>
+              <th>Price & Quantity</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {isLoading && products.length === 0 ? (
+            {isLoading ? (
               <AdminTableSkeleton rows={6} cols={6} />
             ) : products.length === 0 ? (
               <tr>
-                <td colSpan={6} style={{ textAlign: 'center', padding: '32px' }}>
-                  No products found. Click "Add Product" to create one.
+                <td colSpan={6} style={{ textAlign: 'center', padding: '48px 24px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '48px', color: 'var(--md-sys-color-outline)' }}>
+                      inventory_2
+                    </span>
+                    <h3 style={{ fontSize: '18px', fontWeight: 600 }}>No products in database yet</h3>
+                    <p style={{ color: 'var(--md-sys-color-on-surface-variant)', maxWidth: '420px', fontSize: '14px' }}>
+                      Drag and drop your supermarket Excel price list or add products manually with multiple quantity options (e.g. 50g, 100g, 250g tea).
+                    </p>
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                      <button type="button" onClick={() => setIsImportModalOpen(true)} className="sdm-btn sdm-btn--primary">
+                        <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>upload_file</span>
+                        <span>Drag & Drop Excel File</span>
+                      </button>
+                      <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--outlined">
+                        <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add</span>
+                        <span>Add Manually</span>
+                      </button>
+                    </div>
+                  </div>
                 </td>
               </tr>
             ) : (
-              products.map((product) => (
-                <tr key={product.id} style={{ opacity: product.is_archived ? 0.5 : 1 }}>
-                  <td>
-                    {product.image_url ? (
-                      <img src={product.image_url} alt="" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
-                    ) : (
-                      <div style={{ width: '40px', height: '40px', backgroundColor: 'var(--md-sys-color-surface-container-high)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--md-sys-color-outline)' }}>image</span>
-                      </div>
-                    )}
-                  </td>
-                  <td>
-                    <div style={{ fontWeight: 500 }}>{product.name}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--md-sys-color-outline)' }}>{product.unit_size} • SKU: {product.sku}</div>
-                  </td>
-                  <td>{categories.find(c => c.id === product.category_id)?.name || (product as any).category?.name || 'General'}</td>
-                  <td>{formatPrice(product.price)}</td>
-                  <td>
-                    <div style={{ display: 'flex', gap: '4px', flexDirection: 'column', alignItems: 'flex-start' }}>
-                      {product.is_available ? (
-                        <span className="admin-badge admin-badge--delivered">In Stock</span>
+              products.map((product) => {
+                const variantsCount = product.variants?.length || 0;
+                return (
+                  <tr key={product.id} style={{ opacity: product.is_archived ? 0.5 : 1 }}>
+                    <td>
+                      {product.image_url ? (
+                        <img src={product.image_url} alt="" style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '6px' }} />
                       ) : (
-                        <span className="admin-badge admin-badge--pending">Out of Stock</span>
+                        <div style={{ width: '44px', height: '44px', backgroundColor: 'var(--md-sys-color-surface-container-high)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--md-sys-color-outline)' }}>image</span>
+                        </div>
                       )}
-                      {product.is_featured && <span className="admin-badge admin-badge--processing">Featured</span>}
-                      {product.is_archived && <span className="admin-badge admin-badge--cancelled">Archived</span>}
-                    </div>
-                  </td>
-                  <td>
-                    <md-icon-button onClick={() => handleOpenEdit(product)}>
-                      <md-icon>edit</md-icon>
-                    </md-icon-button>
-                  </td>
-                </tr>
-              ))
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 600, fontSize: '14px' }}>{product.name}</div>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '4px', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '12px', color: 'var(--md-sys-color-outline)' }}>
+                          SKU: {product.sku || 'N/A'}
+                        </span>
+                        {variantsCount > 1 ? (
+                          <span style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            background: 'var(--md-sys-color-primary-container)',
+                            color: 'var(--md-sys-color-on-primary-container)',
+                            padding: '2px 8px',
+                            borderRadius: '12px',
+                            fontSize: '11px',
+                            fontWeight: 600
+                          }}>
+                            {variantsCount} options ({product.variants?.map(v => v.unit_size).join(', ')})
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: '12px', color: 'var(--md-sys-color-outline)' }}>
+                            {product.unit_size || '1 unit'}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      {categories.find(c => c.id === product.category_id)?.name || (product as any).category?.name || 'General'}
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 600 }}>{formatPrice(product.price)}</div>
+                      {product.mrp && product.mrp > product.price && (
+                        <div style={{ fontSize: '12px', textDecoration: 'line-through', color: 'var(--md-sys-color-outline)' }}>
+                          MRP {formatPrice(product.mrp)}
+                        </div>
+                      )}
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', gap: '4px', flexDirection: 'column', alignItems: 'flex-start' }}>
+                        {product.is_available ? (
+                          <span className="admin-badge admin-badge--delivered">In Stock</span>
+                        ) : (
+                          <span className="admin-badge admin-badge--pending">Out of Stock</span>
+                        )}
+                        {product.is_featured && <span className="admin-badge admin-badge--processing">Featured</span>}
+                        {product.is_archived && <span className="admin-badge admin-badge--cancelled">Archived</span>}
+                      </div>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        className="sdm-btn sdm-btn--outlined"
+                        style={{ height: '36px', padding: '0 16px', fontSize: '13px' }}
+                        onClick={() => handleOpenEdit(product)}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>edit</span>
+                        <span>Edit</span>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
       </div>
 
-      {/* Modal */}
+      {/* Excel Drag & Drop Importer Modal */}
+      {isImportModalOpen && (
+        <div className="admin-modal-overlay">
+          <div className="admin-modal" style={{ maxWidth: '780px' }}>
+            <div className="admin-modal-header">
+              <h2 className="admin-modal-title">Bulk Import Excel Catalog</h2>
+              <button
+                type="button"
+                className="sdm-btn sdm-btn--text"
+                style={{ padding: '0 8px', height: '36px' }}
+                onClick={() => setIsImportModalOpen(false)}
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div className="admin-modal-content">
+              <ExcelImportWidget
+                categories={categories}
+                onImportComplete={fetchData}
+                onClose={() => setIsImportModalOpen(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Product Edit / Add Modal */}
       {isModalOpen && editingProduct && (
         <div className="admin-modal-overlay">
-          <div className="admin-modal">
+          <div className="admin-modal" style={{ maxWidth: '720px' }}>
             <div className="admin-modal-header">
               <h2 className="admin-modal-title">{editingProduct.id ? 'Edit Product' : 'Add Product'}</h2>
-              <md-icon-button onClick={handleCloseModal}>
-                <md-icon>close</md-icon>
-              </md-icon-button>
+              <button
+                type="button"
+                className="sdm-btn sdm-btn--text"
+                style={{ padding: '0 8px', height: '36px' }}
+                onClick={handleCloseModal}
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
             </div>
             
             <form id="product-form" onSubmit={handleSave} className="admin-modal-content">
               <div className="admin-form-row">
                 <md-outlined-text-field
-                  label="Product Name"
+                  label="Product Name (e.g. Wagh Bakri Tea)"
                   className="admin-form-field"
                   required
                   value={editingProduct.name || ''}
                   onInput={(e: any) => setEditingProduct({ ...editingProduct, name: e.target.value })}
                 />
                 <md-outlined-text-field
-                  label="SKU"
+                  label="SKU Code"
                   className="admin-form-field"
                   required
                   value={editingProduct.sku || ''}
                   onInput={(e: any) => setEditingProduct({ ...editingProduct, sku: e.target.value })}
-                />
-              </div>
-
-              <div className="admin-form-row">
-                <md-outlined-text-field
-                  label="Price (₹)"
-                  type="number"
-                  className="admin-form-field"
-                  required
-                  value={editingProduct.price?.toString() || ''}
-                  onInput={(e: any) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) })}
-                />
-                <md-outlined-text-field
-                  label="Unit Size (e.g., 500g, 1L)"
-                  className="admin-form-field"
-                  required
-                  value={editingProduct.unit_size || ''}
-                  onInput={(e: any) => setEditingProduct({ ...editingProduct, unit_size: e.target.value })}
                 />
               </div>
 
@@ -255,9 +425,156 @@ export function ProductsPage() {
                 </select>
               </div>
 
-              <div className="admin-form-group">
+              {/* Quantity Options / Variants Section */}
+              <div style={{
+                marginTop: '16px',
+                padding: '16px',
+                borderRadius: '12px',
+                backgroundColor: 'var(--md-sys-color-surface-container)',
+                border: '1px solid var(--md-sys-color-outline-variant)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}>
+                      Quantity & Pack Options (Variants)
+                    </h3>
+                    <p style={{ fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', margin: '2px 0 0 0' }}>
+                      Add options like 50g, 100g, 250g, 500g, 1kg with their respective selling price and stock.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddVariant}
+                    className="sdm-btn sdm-btn--tonal"
+                    style={{ height: '36px', padding: '0 16px', fontSize: '13px' }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
+                    <span>Add Pack Option</span>
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {(editingProduct.variants || []).map((variant, vIdx) => (
+                    <div
+                      key={variant.id || vIdx}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1.2fr 1fr 1fr 1fr auto auto',
+                        gap: '8px',
+                        alignItems: 'center',
+                        backgroundColor: 'var(--md-sys-color-surface)',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--md-sys-color-outline-variant)'
+                      }}
+                    >
+                      <div>
+                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--md-sys-color-outline)' }}>Pack / Weight</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 250g"
+                          required
+                          value={variant.unit_size}
+                          onChange={(e) => handleUpdateVariant(vIdx, 'unit_size', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '6px 8px',
+                            borderRadius: '4px',
+                            border: '1px solid var(--md-sys-color-outline)',
+                            fontSize: '13px',
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--md-sys-color-outline)' }}>Sale Price (₹)</label>
+                        <input
+                          type="number"
+                          placeholder="₹"
+                          required
+                          step="0.5"
+                          value={variant.price.toString()}
+                          onChange={(e) => handleUpdateVariant(vIdx, 'price', parseFloat(e.target.value) || 0)}
+                          style={{
+                            width: '100%',
+                            padding: '6px 8px',
+                            borderRadius: '4px',
+                            border: '1px solid var(--md-sys-color-outline)',
+                            fontSize: '13px',
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--md-sys-color-outline)' }}>MRP (₹)</label>
+                        <input
+                          type="number"
+                          placeholder="₹"
+                          step="0.5"
+                          value={variant.mrp?.toString() || ''}
+                          onChange={(e) => handleUpdateVariant(vIdx, 'mrp', parseFloat(e.target.value) || 0)}
+                          style={{
+                            width: '100%',
+                            padding: '6px 8px',
+                            borderRadius: '4px',
+                            border: '1px solid var(--md-sys-color-outline)',
+                            fontSize: '13px',
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--md-sys-color-outline)' }}>Stock Units</label>
+                        <input
+                          type="number"
+                          placeholder="Qty"
+                          value={variant.stock_quantity?.toString() || '50'}
+                          onChange={(e) => handleUpdateVariant(vIdx, 'stock_quantity', parseInt(e.target.value) || 0)}
+                          style={{
+                            width: '100%',
+                            padding: '6px 8px',
+                            borderRadius: '4px',
+                            border: '1px solid var(--md-sys-color-outline)',
+                            fontSize: '13px',
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+
+                      <div style={{ textAlign: 'center' }}>
+                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--md-sys-color-outline)', display: 'block' }}>In Stock</label>
+                        <input
+                          type="checkbox"
+                          checked={variant.is_available}
+                          onChange={(e) => handleUpdateVariant(vIdx, 'is_available', e.target.checked)}
+                          style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '11px', visibility: 'hidden', display: 'block' }}>X</label>
+                        <button
+                          type="button"
+                          className="sdm-btn sdm-btn--text"
+                          style={{ padding: '0 6px', height: '32px', color: 'var(--md-sys-color-error)' }}
+                          onClick={() => handleRemoveVariant(vIdx)}
+                          title="Remove pack option"
+                          disabled={(editingProduct.variants?.length || 0) <= 1}
+                        >
+                          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="admin-form-group" style={{ marginTop: '16px' }}>
                 <md-outlined-text-field
-                  label="Image URL"
+                  label="Product Image URL (Optional)"
                   className="admin-form-field"
                   value={editingProduct.image_url || ''}
                   onInput={(e: any) => setEditingProduct({ ...editingProduct, image_url: e.target.value })}
@@ -276,27 +593,33 @@ export function ProductsPage() {
 
               <div className="admin-form-row" style={{ gap: '24px', marginTop: '16px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <md-checkbox 
-                    checked={editingProduct.is_available} 
+                  <input 
+                    type="checkbox"
+                    checked={editingProduct.is_available ?? true} 
                     onChange={(e: any) => setEditingProduct({ ...editingProduct, is_available: e.target.checked })}
+                    style={{ width: '18px', height: '18px' }}
                   />
-                  In Stock (Available)
+                  Overall In Stock
                 </label>
                 
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <md-checkbox 
-                    checked={editingProduct.is_featured} 
+                  <input 
+                    type="checkbox"
+                    checked={editingProduct.is_featured ?? false} 
                     onChange={(e: any) => setEditingProduct({ ...editingProduct, is_featured: e.target.checked })}
+                    style={{ width: '18px', height: '18px' }}
                   />
-                  Featured
+                  Featured Item
                 </label>
 
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <md-checkbox 
-                    checked={editingProduct.is_archived} 
+                  <input 
+                    type="checkbox"
+                    checked={editingProduct.is_archived ?? false} 
                     onChange={(e: any) => setEditingProduct({ ...editingProduct, is_archived: e.target.checked })}
+                    style={{ width: '18px', height: '18px' }}
                   />
-                  Archived (Hidden)
+                  Archived (Hidden from Store)
                 </label>
               </div>
             </form>

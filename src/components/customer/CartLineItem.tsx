@@ -6,11 +6,12 @@ import './CartLineItem.css';
 
 interface CartLineItemProps {
   item: CartItem;
-  onUpdateQuantity: (productId: string, quantity: number) => void;
-  onRemove: (productId: string) => void;
+  itemKey?: string;
+  onUpdateQuantity: (productId: string, quantity: number, itemKey?: string) => void;
+  onRemove: (productId: string, itemKey?: string) => void;
 }
 
-export function CartLineItem({ item, onUpdateQuantity, onRemove }: CartLineItemProps) {
+export function CartLineItem({ item, itemKey, onUpdateQuantity, onRemove }: CartLineItemProps) {
   return (
     <div className="cart-item">
       <Link to={`/product/${item.product_id}`} className="cart-item__image-container" tabIndex={-1}>
@@ -30,7 +31,7 @@ export function CartLineItem({ item, onUpdateQuantity, onRemove }: CartLineItemP
           </Link>
           <button 
             className="cart-item__remove" 
-            onClick={() => onRemove(item.product_id)}
+            onClick={() => onRemove(item.product_id, itemKey)}
             aria-label="Remove item"
             title="Remove item"
           >
@@ -43,8 +44,8 @@ export function CartLineItem({ item, onUpdateQuantity, onRemove }: CartLineItemP
         <div className="cart-item__footer">
           <QuantityControl
             quantity={item.quantity}
-            onDecrease={() => onUpdateQuantity(item.product_id, item.quantity - 1)}
-            onIncrease={() => onUpdateQuantity(item.product_id, item.quantity + 1)}
+            onDecrease={() => onUpdateQuantity(item.product_id, item.quantity - 1, itemKey)}
+            onIncrease={() => onUpdateQuantity(item.product_id, item.quantity + 1, itemKey)}
             min={1}
           />
           <div className="cart-item__price">

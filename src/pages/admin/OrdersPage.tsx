@@ -3,13 +3,12 @@ import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { formatPrice } from '../../lib/orderUtils';
 import { AdminTableSkeleton } from '../../components/common';
-import { MOCK_ORDERS } from '../../lib/mockData';
 import type { Order } from '../../types/order';
 import './OrdersPage.css';
 
 export function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>(() => MOCK_ORDERS);
-  const [isLoading, setIsLoading] = useState(false);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const pageTitle = 'Orders Management — Sai Darshan Mart Admin';
 
@@ -19,7 +18,7 @@ export function OrdersPage() {
 
   const fetchOrders = async () => {
     if (!isSupabaseConfigured) {
-      setOrders(MOCK_ORDERS);
+      setOrders([]);
       setIsLoading(false);
       return;
     }
@@ -31,15 +30,15 @@ export function OrdersPage() {
           .from('orders')
           .select('*')
           .order('created_at', { ascending: false }),
-        2500
+        5000
       );
 
       const { data, error } = response as any;
       if (error) throw error;
-      setOrders((data as Order[]) || MOCK_ORDERS);
+      setOrders((data as Order[]) || []);
     } catch (error) {
-      console.warn('Orders fetch error or timeout, using test data:', error);
-      setOrders(MOCK_ORDERS);
+      console.error('Orders fetch error:', error);
+      setOrders([]);
     } finally {
       setIsLoading(false);
     }

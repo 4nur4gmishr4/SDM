@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
-import { MOCK_CATEGORIES } from '../../lib/mockData';
 import { AdminTableSkeleton } from '../../components/common';
 import type { Category } from '../../types/category';
 import './OrdersPage.css'; // Reusing table styles
 import './ProductsPage.css'; // Reusing modal/layout styles
 
 export function CategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>(() => MOCK_CATEGORIES);
-  const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const pageTitle = 'Categories Management — Sai Darshan Mart Admin';
 
@@ -24,7 +23,7 @@ export function CategoriesPage() {
 
   const fetchCategories = async () => {
     if (!isSupabaseConfigured) {
-      setCategories(MOCK_CATEGORIES);
+      setCategories([]);
       setIsLoading(false);
       return;
     }
@@ -36,14 +35,14 @@ export function CategoriesPage() {
           .from('categories')
           .select('*')
           .order('display_order'),
-        2000
+        5000
       );
 
       if (error) throw error;
-      setCategories(data && data.length > 0 ? (data as Category[]) : MOCK_CATEGORIES);
+      setCategories((data as Category[]) || []);
     } catch (error) {
-      console.warn('Falling back to testing categories in admin:', error);
-      setCategories(MOCK_CATEGORIES);
+      console.error('Error fetching categories in admin:', error);
+      setCategories([]);
     } finally {
       setIsLoading(false);
     }

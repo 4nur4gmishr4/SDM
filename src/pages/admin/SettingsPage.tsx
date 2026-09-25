@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
-import { seedDatabase } from '../../lib/seedDatabase';
 import { AdminFormSkeleton } from '../../components/common';
-import { MOCK_DELIVERY_SETTINGS } from '../../lib/mockData';
 import type { DeliverySettings } from '../../types/delivery';
 
+const DEFAULT_SETTINGS: DeliverySettings = {
+  id: 'default',
+  rules_text: 'Doorstep grocery delivery across Jabalpur. Free delivery on orders above ₹500.',
+  flat_fee: 30,
+  free_delivery_threshold: 500,
+  is_active: true
+};
+
 export function SettingsPage() {
-  const [settings, setSettings] = useState<DeliverySettings | null>(() => MOCK_DELIVERY_SETTINGS);
+  const [settings, setSettings] = useState<DeliverySettings>(DEFAULT_SETTINGS);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [isSeeding, setIsSeeding] = useState(false);
 
   const pageTitle = 'Store Settings — Sai Darshan Mart Admin';
 
@@ -20,7 +25,7 @@ export function SettingsPage() {
 
   const fetchSettings = async () => {
     if (!isSupabaseConfigured) {
-      setSettings(MOCK_DELIVERY_SETTINGS);
+      setSettings(DEFAULT_SETTINGS);
       setIsLoading(false);
       return;
     }
@@ -34,7 +39,7 @@ export function SettingsPage() {
           .eq('is_active', true)
           .limit(1)
           .single(),
-        2500
+        5000
       );
 
       const { data, error } = response as any;
@@ -44,12 +49,9 @@ export function SettingsPage() {
       
       if (data) {
         setSettings(data as DeliverySettings);
-      } else {
-        setSettings(MOCK_DELIVERY_SETTINGS);
       }
     } catch (error) {
-      console.warn('Error fetching settings, falling back to defaults:', error);
-      setSettings(MOCK_DELIVERY_SETTINGS);
+      console.warn('Error fetching settings, using defaults:', error);
     } finally {
       setIsLoading(false);
     }
@@ -96,19 +98,6 @@ export function SettingsPage() {
     }
   };
 
-  const handleSeedDatabase = async () => {
-    if (!window.confirm('WARNING: This will upsert mock data into your live database. Proceed?')) return;
-    setIsSeeding(true);
-    const result = await seedDatabase();
-    setIsSeeding(false);
-    
-    if (result.success) {
-      alert('Database seeded successfully! You can now remove mock bypasses.');
-    } else {
-      alert(`Seeding failed: ${result.error}`);
-    }
-  };
-
   return (
     <div className="admin-layout-content admin-products-page">
       <Helmet>
@@ -123,14 +112,13 @@ export function SettingsPage() {
       ) : (
         <div className="admin-table-container" style={{ padding: '24px', maxWidth: '600px', flex: 'none' }}>
           <form id="settings-form" onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            
             <h2 className="typescale-title-large">Delivery Configuration</h2>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <label style={{ fontSize: 'var(--md-sys-typescale-label-large-size)' }}>Delivery Rules / Information Text</label>
               <textarea
                 value={settings?.rules_text || ''}
-                onChange={(e) => setSettings(s => ({ ...s!, rules_text: e.target.value }))}
+                onChange={(e) => setSettings(s => ({ ...s, rules_text: e.target.value }))}
                 placeholder="e.g. Free delivery within 5km for orders above ₹500."
                 rows={4}
                 style={{
@@ -151,7 +139,7 @@ export function SettingsPage() {
               <input
                 type="number"
                 value={settings?.flat_fee?.toString() || '0'}
-                onChange={(e) => setSettings(s => ({ ...s!, flat_fee: parseFloat(e.target.value) || 0 }))}
+                onChange={(e) => setSettings(s => ({ ...s, flat_fee: parseFloat(e.target.value) || 0 }))}
                 style={{
                   padding: '12px',
                   borderRadius: '4px',
@@ -178,15 +166,27 @@ export function SettingsPage() {
           <hr style={{ margin: '32px 0', borderColor: 'var(--md-sys-color-outline-variant)', opacity: 0.5 }} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <h2 className="typescale-title-large">Developer Tools</h2>
-            <p style={{ fontSize: 'var(--md-sys-typescale-body-medium-size)', color: 'var(--md-sys-color-on-surface-variant)' }}>
-              Use this tool to populate your database with dummy categories, products, and banners. This is useful for testing without manually adding items.
-            </p>
-            <div>
-              <button type="button" className="sdm-btn sdm-btn--outlined" onClick={handleSeedDatabase} disabled={isSeeding}>
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>database</span>
-                <span>{isSeeding ? 'Seeding Database...' : 'Seed Mock Data'}</span>
-              </button>
+            <h2 className="typescale-title-large">Database Connection</h2>
+            <div style={{
+              padding: '16px',
+              borderRadius: '8px',
+              backgroundColor: isSupabaseConfigured ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-error-container)',
+              color: isSupabaseConfigured ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-error-container)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>
+                {isSupabaseConfigured ? 'check_circle' : 'warning'}
+              </span>
+              <div>
+                <strong>{isSupabaseConfigured ? 'Connected to Supabase' : 'Supabase Not Configured'}</strong>
+                <p style={{ margin: '4px 0 0 0', fontSize: '13px' }}>
+                  {isSupabaseConfigured 
+                    ? 'Products, categories, and orders are live and stored in your private database.'
+                    : 'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env to connect your database.'}
+                </p>
+              </div>
             </div>
           </div>
         </div>

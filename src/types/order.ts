@@ -23,9 +23,11 @@ export interface OrderItem {
   id: string;
   order_id: string;
   product_id: string | null;
+  variant_id?: string | null;
   product_name: string;
   product_sku: string;
   product_price: number;
+  unit_size?: string;
   quantity: number;
   line_total: number;
 }
@@ -36,6 +38,7 @@ export type OrderItemInsert = Omit<OrderItem, 'id'>;
 /** Cart item stored in client-side cart state */
 export interface CartItem {
   product_id: string;
+  variant_id?: string | null;
   product_name: string;
   product_sku: string;
   product_price: number;

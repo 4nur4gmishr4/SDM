@@ -1,0 +1,212 @@
+/* Excel Drag & Drop Importer Widget Styles */
+.excel-import-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.excel-dropzone {
+  border: 2px dashed var(--md-sys-color-outline-variant);
+  border-radius: 16px;
+  padding: 36px 24px;
+  background-color: var(--md-sys-color-surface-container-low);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+  outline: none;
+}
+
+.excel-dropzone:hover,
+.excel-dropzone:focus-visible {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.excel-dropzone--active {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+  border-style: solid;
+  transform: scale(1.01);
+}
+
+.excel-dropzone__icon-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease;
+}
+
+.excel-dropzone--active .excel-dropzone__icon-circle {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  transform: translateY(-4px);
+}
+
+.excel-dropzone__icon {
+  font-size: 32px;
+}
+
+.excel-dropzone__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 6px;
+}
+
+.excel-dropzone__subtitle {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 16px;
+  max-width: 420px;
+}
+
+.excel-dropzone__badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.excel-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.5px;
+}
+
+/* Preview Section */
+.excel-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.excel-preview__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.excel-stat-card {
+  padding: 14px 16px;
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.excel-stat-card__value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+}
+
+.excel-stat-card__label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
+}
+
+.excel-preview__table-wrapper {
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 10px;
+  background-color: var(--md-sys-color-surface);
+}
+
+.excel-preview__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.excel-preview__table th {
+  position: sticky;
+  top: 0;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  z-index: 1;
+}
+
+.excel-preview__table td {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.excel-preview__table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Progress bar */
+.excel-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.excel-progress__header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.excel-progress__track {
+  width: 100%;
+  height: 10px;
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.excel-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--md-sys-color-primary), #32a852);
+  transition: width 0.3s ease;
+  border-radius: 999px;
+}
+
+.excel-preview__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.excel-file-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
-import { MOCK_PRODUCTS } from '../lib/mockData';
 import type { Product } from '../types/product';
 
 interface UseProductsOptions {
@@ -11,39 +10,16 @@ interface UseProductsOptions {
   fetchAll?: boolean;
 }
 
-function getMockProducts(options: UseProductsOptions = {}): Product[] {
-  let list = [...MOCK_PRODUCTS];
-  if (!options.fetchAll) {
-    list = list.filter(p => !p.is_archived);
-  }
-  if (options.categoryId) {
-    list = list.filter(p => p.category_id === options.categoryId);
-  }
-  if (options.isFeatured) {
-    list = list.filter(p => p.is_featured);
-  }
-  if (options.searchQuery) {
-    const q = options.searchQuery.toLowerCase();
-    list = list.filter(p => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q));
-  }
-  if (options.limit) {
-    list = list.slice(0, options.limit);
-  }
-  return list;
-}
-
 export function useProducts(options: UseProductsOptions = {}) {
-  // Always initialize with mock data so pages render instantly without blank skeleton waiting
-  const [products, setProducts] = useState<Product[]>(() => getMockProducts(options));
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
 
-    // If no backend configured, immediately use mock data without waiting
     if (!isSupabaseConfigured) {
-      setProducts(getMockProducts(options));
+      setProducts([]);
       setIsLoading(false);
       return;
     }
@@ -51,7 +27,7 @@ export function useProducts(options: UseProductsOptions = {}) {
     async function fetchProducts() {
       try {
         setIsLoading(true);
-        let query = supabase.from('products').select('*');
+        let query = supabase.from('products').select('*, category:categories(id, name, slug)');
 
         if (!options.fetchAll) {
           query = query.eq('is_archived', false);
@@ -73,21 +49,18 @@ export function useProducts(options: UseProductsOptions = {}) {
           query = query.limit(options.limit);
         }
 
-        const { data, error: fetchError } = await withTimeout(query, 2000);
+        const { data, error: fetchError } = await withTimeout(query, 5000);
         if (fetchError) throw fetchError;
 
         if (mounted) {
-          if (data && data.length > 0) {
-            setProducts(data as Product[]);
-          } else {
-            setProducts(getMockProducts(options));
-          }
+          setProducts((data as Product[]) || []);
+          setError(null);
         }
       } catch (err: any) {
-        console.warn('Falling back to testing products:', err.message);
+        console.error('Error fetching products:', err.message);
         if (mounted) {
-          setError(err.message || null);
-          setProducts(getMockProducts(options));
+          setError(err.message || 'Failed to fetch products');
+          setProducts([]);
         }
       } finally {
         if (mounted) setIsLoading(false);
@@ -105,26 +78,20 @@ export function useProducts(options: UseProductsOptions = {}) {
 }
 
 export function useProduct(id?: string) {
-  const [product, setProduct] = useState<Product | null>(() => {
-    if (!id) return null;
-    return MOCK_PRODUCTS.find(p => p.id === id) || null;
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(() => {
-    if (!id) return false;
-    const initial = MOCK_PRODUCTS.find(p => p.id === id);
-    return !initial && isSupabaseConfigured;
-  });
+  const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
     if (!id) {
+      setProduct(null);
       setIsLoading(false);
       return;
     }
 
     if (!isSupabaseConfigured) {
-      setProduct(MOCK_PRODUCTS.find(p => p.id === id) || null);
+      setProduct(null);
       setIsLoading(false);
       return;
     }
@@ -135,26 +102,23 @@ export function useProduct(id?: string) {
         const { data, error: fetchError } = await withTimeout(
           supabase
             .from('products')
-            .select('*')
+            .select('*, category:categories(id, name, slug)')
             .eq('id', id)
             .single(),
-          2000
+          5000
         );
           
         if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
         
         if (mounted) {
-          if (data) {
-            setProduct(data as Product);
-          } else {
-            setProduct(MOCK_PRODUCTS.find(p => p.id === id) || null);
-          }
+          setProduct((data as Product) || null);
+          setError(null);
         }
       } catch (err: any) {
-        console.warn('Falling back to testing product details:', err.message);
+        console.error('Error fetching product details:', err.message);
         if (mounted) {
-          setError(err.message || null);
-          setProduct(MOCK_PRODUCTS.find(p => p.id === id) || null);
+          setError(err.message || 'Failed to load product');
+          setProduct(null);
         }
       } finally {
         if (mounted) setIsLoading(false);

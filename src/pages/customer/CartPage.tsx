@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useCart } from '../../contexts/CartContext';
+import { useCart, getCartItemKey } from '../../contexts/CartContext';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { CartLineItem } from '../../components/customer/CartLineItem';
 import { OrderSummary } from '../../components/customer/OrderSummary';
@@ -58,14 +58,18 @@ export function CartPage() {
 
       <div className="cart-page__content">
         <div className="cart-page__list">
-          {items.map(item => (
-            <CartLineItem
-              key={item.product_id}
-              item={item}
-              onUpdateQuantity={updateQuantity}
-              onRemove={removeItem}
-            />
-          ))}
+          {items.map(item => {
+            const itemKey = getCartItemKey(item);
+            return (
+              <CartLineItem
+                key={itemKey}
+                item={item}
+                itemKey={itemKey}
+                onUpdateQuantity={updateQuantity}
+                onRemove={removeItem}
+              />
+            );
+          })}
         </div>
 
         <div className="cart-page__sidebar">

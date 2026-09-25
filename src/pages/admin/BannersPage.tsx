@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
-import { MOCK_BANNERS } from '../../lib/mockData';
 import { AdminTableSkeleton } from '../../components/common';
 import type { Banner } from '../../types/banner';
 import './OrdersPage.css'; 
 import './ProductsPage.css';
 
 export function BannersPage() {
-  const [banners, setBanners] = useState<Banner[]>(() => MOCK_BANNERS);
-  const [isLoading, setIsLoading] = useState(false);
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const pageTitle = 'Banners Management — Sai Darshan Mart Admin';
 
@@ -23,7 +22,7 @@ export function BannersPage() {
 
   const fetchBanners = async () => {
     if (!isSupabaseConfigured) {
-      setBanners(MOCK_BANNERS);
+      setBanners([]);
       setIsLoading(false);
       return;
     }
@@ -35,14 +34,14 @@ export function BannersPage() {
           .from('banners')
           .select('*')
           .order('display_order'),
-        2000
+        5000
       );
 
       if (error) throw error;
-      setBanners(data && data.length > 0 ? (data as Banner[]) : MOCK_BANNERS);
+      setBanners((data as Banner[]) || []);
     } catch (error) {
-      console.warn('Falling back to testing banners in admin:', error);
-      setBanners(MOCK_BANNERS);
+      console.error('Error fetching banners:', error);
+      setBanners([]);
     } finally {
       setIsLoading(false);
     }

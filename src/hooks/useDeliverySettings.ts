@@ -1,17 +1,24 @@
 import { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
-import { MOCK_DELIVERY_SETTINGS } from '../lib/mockData';
 import type { DeliverySettings } from '../types/delivery';
 
+const DEFAULT_SETTINGS: DeliverySettings = {
+  id: 'default',
+  rules_text: 'Doorstep grocery delivery across Jabalpur. Free delivery on orders above ₹500.',
+  flat_fee: 30,
+  free_delivery_threshold: 500,
+  is_active: true
+};
+
 export function useDeliverySettings() {
-  const [settings, setSettings] = useState<DeliverySettings | null>(() => MOCK_DELIVERY_SETTINGS);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [settings, setSettings] = useState<DeliverySettings>(DEFAULT_SETTINGS);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     let mounted = true;
 
     if (!isSupabaseConfigured) {
-      setSettings(MOCK_DELIVERY_SETTINGS);
+      setSettings(DEFAULT_SETTINGS);
       setIsLoading(false);
       return;
     }
@@ -25,23 +32,16 @@ export function useDeliverySettings() {
             .eq('is_active', true)
             .limit(1)
             .single(),
-          2000
+          5000
         );
 
         if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
         
-        if (mounted) {
-          if (data) {
-            setSettings(data as DeliverySettings);
-          } else {
-            setSettings(MOCK_DELIVERY_SETTINGS);
-          }
+        if (mounted && data) {
+          setSettings(data as DeliverySettings);
         }
       } catch (error) {
-        console.warn('Falling back to testing delivery settings:', error);
-        if (mounted) {
-          setSettings(MOCK_DELIVERY_SETTINGS);
-        }
+        console.warn('Using standard delivery settings:', error);
       } finally {
         if (mounted) setIsLoading(false);
       }

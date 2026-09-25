@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/orderUtils';
+import type { ProductVariant } from '../../types/product';
 import './ProductDetailPage.css';
 
 import { ProductDetailSkeleton } from '../../components/common';
@@ -10,20 +11,30 @@ import { useProduct } from '../../hooks/useProducts';
 
 export function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { addItem, items, updateQuantity } = useCart();
+  const { addItem } = useCart();
   
   const { product, isLoading } = useProduct(id);
   
-  // Local state for quantity selector before adding to cart
+  // Local state for quantity counter
   const [quantity, setQuantity] = useState(1);
-  
-  // Check if item is already in cart
-  const cartItem = items.find(i => i.product_id === id);
+  // Active selected pack / quantity option
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
 
   useEffect(() => {
     // Reset quantity when product changes
     setQuantity(1);
-  }, [id]);
+    if (product?.variants && product.variants.length > 0) {
+      setSelectedVariant(product.variants[0]);
+    } else if (product) {
+      setSelectedVariant({
+        id: 'default',
+        unit_size: product.unit_size || '1 unit',
+        price: product.price,
+        mrp: product.mrp,
+        is_available: product.is_available
+      });
+    }
+  }, [id, product]);
 
   if (isLoading && !product) {
     return (
@@ -50,6 +61,11 @@ export function ProductDetailPage() {
     );
   }
 
+  const activePrice = selectedVariant?.price ?? product.price;
+  const activeMrp = selectedVariant?.mrp ?? product.mrp;
+  const activeUnitSize = selectedVariant?.unit_size ?? product.unit_size;
+  const isAvailable = selectedVariant ? selectedVariant.is_available : product.is_available;
+
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity(q => q - 1);
@@ -61,30 +77,22 @@ export function ProductDetailPage() {
   };
 
   const handleAddToCart = () => {
-    if (cartItem) {
-      // If already in cart, update quantity by adding the new amount
-      updateQuantity(product.id, cartItem.quantity + quantity);
-    } else {
-      addItem({
-        product_id: product.id,
-        product_name: product.name,
-        product_sku: product.sku,
-        product_price: product.price,
-        product_image_url: product.image_url,
-        unit_size: product.unit_size,
-        quantity: quantity,
-      });
-    }
+    addItem({
+      product_id: product.id,
+      variant_id: selectedVariant?.id,
+      product_name: product.name,
+      product_sku: selectedVariant?.sku || product.sku,
+      product_price: activePrice,
+      product_image_url: product.image_url,
+      unit_size: activeUnitSize,
+      quantity: quantity,
+    });
     
     // Reset quantity back to 1 after adding
     setQuantity(1);
   };
 
   const pageTitle = `${product.name} — Sai Darshan Mart`;
-
-  useEffect(() => {
-    document.title = pageTitle;
-  }, [pageTitle]);
 
   return (
     <div className="layout-container product-detail">
@@ -108,13 +116,71 @@ export function ProductDetailPage() {
       <div className="product-detail__info-section">
         <div className="product-detail__header">
           <h1 className="product-detail__title">{product.name}</h1>
-          <p className="product-detail__unit">{product.unit_size}</p>
-          <div className="product-detail__price">{formatPrice(product.price)}</div>
+          <p className="product-detail__unit">{activeUnitSize}</p>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+            <div className="product-detail__price">{formatPrice(activePrice)}</div>
+            {activeMrp && activeMrp > activePrice && (
+              <div style={{ textDecoration: 'line-through', color: 'var(--md-sys-color-outline)', fontSize: '18px' }}>
+                MRP {formatPrice(activeMrp)}
+              </div>
+            )}
+            {activeMrp && activeMrp > activePrice && (
+              <div style={{
+                background: 'var(--md-sys-color-primary-container)',
+                color: 'var(--md-sys-color-on-primary-container)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                fontSize: '12px',
+                fontWeight: 600
+              }}>
+                SAVE {Math.round(((activeMrp - activePrice) / activeMrp) * 100)}%
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Quantity / Pack Option Selector (Variants) */}
+        {product.variants && product.variants.length > 1 && (
+          <div style={{ margin: '16px 0' }}>
+            <label style={{
+              fontSize: '13px',
+              fontWeight: 600,
+              color: 'var(--md-sys-color-on-surface-variant)',
+              display: 'block',
+              marginBottom: '8px'
+            }}>
+              Choose Pack / Quantity:
+            </label>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {product.variants.map((v) => {
+                const isSelected = selectedVariant?.id === v.id || selectedVariant?.unit_size === v.unit_size;
+                return (
+                  <button
+                    key={v.id || v.unit_size}
+                    type="button"
+                    className={`sdm-btn ${isSelected ? 'sdm-btn--primary' : 'sdm-btn--outlined'}`}
+                    style={{
+                      padding: '0 16px',
+                      height: '38px',
+                      fontSize: '13px',
+                      borderRadius: '8px'
+                    }}
+                    onClick={() => setSelectedVariant(v)}
+                  >
+                    <span>{v.unit_size}</span>
+                    <span style={{ opacity: 0.85, fontSize: '12px', marginLeft: '6px' }}>
+                      • {formatPrice(v.price)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <div className="product-detail__actions">
           <div className="product-detail__status">
-            {product.is_available ? (
+            {isAvailable ? (
               <>
                 <span className="material-symbols-outlined product-detail__status--in-stock">check_circle</span>
                 <span className="product-detail__status--in-stock">In Stock</span>
@@ -127,7 +193,7 @@ export function ProductDetailPage() {
             )}
           </div>
 
-          {product.is_available && (
+          {isAvailable && (
             <div className="product-detail__add-container">
               <div className="product-detail__quantity">
                 <button 
@@ -156,31 +222,19 @@ export function ProductDetailPage() {
                   onClick={handleAddToCart}
                 >
                   <span className="material-symbols-outlined">shopping_cart</span>
-                  <span>Add {quantity > 1 ? `${quantity} items` : ''} to Cart</span>
+                  <span>Add {activeUnitSize ? `(${activeUnitSize})` : ''} to Cart</span>
                 </button>
               </div>
             </div>
           )}
-          
-          {cartItem && (
-            <p style={{ color: 'var(--md-sys-color-primary)', fontSize: 'var(--md-sys-typescale-label-medium-size)', marginTop: '8px' }}>
-              ✓ You have {cartItem.quantity} of this item in your cart.
-            </p>
-          )}
         </div>
 
         {product.description && (
-          <div className="product-detail__description-section">
-            <h3 className="product-detail__section-title">Description</h3>
-            <p className="product-detail__description">{product.description}</p>
+          <div className="product-detail__description">
+            <h2 className="product-detail__desc-heading">About this item</h2>
+            <p className="product-detail__desc-text">{product.description}</p>
           </div>
         )}
-        
-        <div style={{ marginTop: '32px', borderTop: '1px solid var(--md-sys-color-outline-variant)', paddingTop: '16px' }}>
-           <p style={{ fontSize: 'var(--md-sys-typescale-label-medium-size)', color: 'var(--md-sys-color-outline)' }}>
-             SKU: {product.sku}
-           </p>
-        </div>
       </div>
     </div>
   );
