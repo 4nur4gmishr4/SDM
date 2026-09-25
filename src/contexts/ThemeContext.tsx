@@ -39,6 +39,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       } else {
         document.documentElement.setAttribute('data-theme', theme);
       }
+
+      // Dynamically set mobile browser status bar / theme color
+      let metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (!metaTheme) {
+        metaTheme = document.createElement('meta');
+        metaTheme.setAttribute('name', 'theme-color');
+        document.head.appendChild(metaTheme);
+      }
+      metaTheme.setAttribute('content', resolved === 'dark' ? '#137333' : '#1E8E3E');
     };
 
     updateTheme();
