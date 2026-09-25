@@ -1,0 +1,275 @@
+/* ============================================================
+   Checkout Form & Page
+   ============================================================ */
+
+.checkout-page {
+  padding-bottom: var(--md-sys-spacing-8);
+}
+
+.checkout-page__header {
+  padding: var(--md-sys-spacing-4) 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: var(--md-sys-spacing-4);
+}
+
+.checkout-page__title {
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.checkout-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-6);
+}
+
+@media (min-width: 905px) {
+  .checkout-page__content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.checkout-page__form-section {
+  flex: 1;
+}
+
+.checkout-page__sidebar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-4);
+}
+
+@media (min-width: 905px) {
+  .checkout-page__sidebar {
+    width: 320px;
+    position: sticky;
+    top: 80px;
+  }
+}
+
+/* Form Styles */
+.checkout-form {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  padding: var(--md-sys-spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-4);
+}
+
+.checkout-form__title {
+  font-size: var(--md-sys-typescale-title-large-size);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  margin-bottom: var(--md-sys-spacing-2);
+}
+
+.checkout-form__field {
+  width: 100%;
+}
+
+.checkout-form__helper-text {
+  font-size: var(--md-sys-typescale-body-small-size);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 4px;
+}
+
+.checkout-page__submit-btn {
+  width: 100%;
+  --md-sys-color-primary: var(--sdm-color-success); /* Green for WhatsApp */
+  --md-filled-button-container-height: 48px;
+  --md-filled-button-container-shape: 10px;
+  --md-filled-button-label-text-weight: 600;
+  --md-filled-button-label-text-size: 1.02rem;
+  box-shadow: 0 4px 12px rgba(30, 124, 67, 0.22);
+}
+
+.checkout-page__whatsapp-notice {
+  font-size: var(--md-sys-typescale-body-small-size);
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  margin-top: var(--md-sys-spacing-2);
+}
+
+/* Chrome 1-Tap Autofill */
+.checkout-chrome-autofill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background-color: var(--md-sys-color-surface-container-high, #e8eaed);
+  border: 1px dashed var(--md-sys-color-primary, #1E8E3E);
+  border-radius: 10px;
+  color: var(--md-sys-color-primary, #1E8E3E);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: var(--md-sys-spacing-2);
+}
+
+.checkout-chrome-autofill-btn:hover {
+  background-color: var(--md-sys-color-primary-container, #CEEAD6);
+  border-style: solid;
+}
+
+/* Payment Mode Selector */
+.checkout-payment-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: var(--md-sys-spacing-3) 0;
+}
+
+.checkout-payment-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background-color: var(--md-sys-color-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkout-payment-option--selected {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.checkout-payment-option__radio {
+  accent-color: var(--md-sys-color-primary);
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.checkout-payment-option__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.checkout-payment-option__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.checkout-payment-option__sub {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Desktop QR Payment Modal */
+.checkout-qr-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+}
+
+.checkout-qr-modal-card {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border-radius: 28px;
+  max-width: 480px;
+  width: 100%;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.checkout-qr-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.checkout-qr-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  margin: 8px 0 4px 0;
+}
+
+.checkout-qr-modal-amount {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 12px;
+}
+
+.checkout-qr-modal-image {
+  max-width: 320px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin-bottom: 16px;
+}
+
+.checkout-qr-modal-upi-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--md-sys-color-surface-container-high);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.checkout-qr-modal-confirm-btn {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #25D366;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.checkout-qr-modal-confirm-btn:hover {
+  background-color: #1EBE5D;
+  transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
