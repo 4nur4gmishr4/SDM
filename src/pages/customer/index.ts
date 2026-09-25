@@ -6,3 +6,4 @@ export * from './CheckoutPage';
 export * from './QuickOrderPage';
 export * from './OrderConfirmationPage';
 export * from './AboutPage';
+export * from './NotFoundPage';

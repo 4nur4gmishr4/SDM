@@ -20,11 +20,11 @@ const DEMO_ADMIN_SESSION: any = {
   refresh_token: 'demo-admin-refresh-token',
   user: {
     id: 'admin-sdm-001',
-    email: 'admin@saidarshanmart.com',
+    email: 'saidarshanmart@gmail.com',
     role: 'authenticated',
     aud: 'authenticated',
     app_metadata: { role: 'admin' },
-    user_metadata: { name: 'Store Admin', role: 'admin' },
+    user_metadata: { name: 'Sai Darshan Mart Admin', role: 'admin' },
     created_at: new Date().toISOString()
   }
 };
@@ -71,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Default built-in admin credentials for instant preview and access
     if (
-      (cleanEmail === 'admin@saidarshanmart.com' || cleanEmail === 'admin') &&
+      (cleanEmail === 'saidarshanmart@gmail.com' || cleanEmail === 'admin@saidarshanmart.com' || cleanEmail === 'admin') &&
       (cleanPass === 'admin123' || cleanPass === 'admin')
     ) {
       setSession(DEMO_ADMIN_SESSION);

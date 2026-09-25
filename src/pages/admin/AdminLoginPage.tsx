@@ -103,7 +103,7 @@ export function AdminLoginPage() {
         <div style={{ marginTop: '20px', padding: '12px 16px', backgroundColor: 'var(--md-sys-color-surface-container)', borderRadius: '8px', fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: '1.5' }}>
           <div>Testing Credentials:</div>
           <div style={{ fontWeight: 600, color: 'var(--md-sys-color-primary)', marginTop: '2px' }}>
-            admin@saidarshanmart.com &bull; admin123
+            saidarshanmart@gmail.com &bull; admin123
           </div>
         </div>
       </div>

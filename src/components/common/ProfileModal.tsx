@@ -99,7 +99,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                   <span>Quick WhatsApp Order</span>
                 </Link>
                 <a 
-                  href="https://wa.me/917354155669?text=Hello%20Sai%20Darshan%20Mart,%20I%20have%20an%20order%20query" 
+                  href="https://wa.me/917999157430?text=Hello%20Sai%20Darshan%20Mart,%20I%20have%20an%20order%20query" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="profile-menu-item"

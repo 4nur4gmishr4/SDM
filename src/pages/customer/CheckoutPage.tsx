@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useCart, useLocationContext } from '../../contexts';
+import { useCart, useLocationContext, useSnackbar } from '../../contexts';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
+import { validateOrderInput } from '../../lib/validation';
 import type { CheckoutFormData } from '../../types/order';
 import './CheckoutPage.css';
 
 export function CheckoutPage() {
   const { items, itemCount, subtotal, clearCart } = useCart();
   const { location, openModal } = useLocationContext();
+  const { showSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -57,11 +59,31 @@ export function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!navigator.onLine) {
+      showSnackbar('You are currently offline. Please reconnect to the internet to place your order.');
+      return;
+    }
+
+    const validation = validateOrderInput({
+      customerName: formData.customer_name,
+      customerPhone: formData.customer_phone,
+      deliveryAddress: formData.delivery_address,
+    });
+
+    if (!validation.isValid) {
+      showSnackbar(validation.error || 'Please check your inputs.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const orderId = generateOrderId();
       const total = subtotal + deliveryFee;
+      const finalCustomerName = validation.cleanedName!;
+      const finalCustomerPhone = validation.cleanedPhone!;
+      const finalDeliveryAddress = validation.cleanedAddress!;
 
       // 1. Persist the order to Supabase if configured (non-blocking)
       if (isSupabaseConfigured) {
@@ -69,9 +91,9 @@ export function CheckoutPage() {
           await withTimeout(
             supabase.from('orders').insert({
               id: orderId,
-              customer_name: formData.customer_name,
-              customer_phone: formData.customer_phone,
-              delivery_address: formData.delivery_address,
+              customer_name: finalCustomerName,
+              customer_phone: finalCustomerPhone,
+              delivery_address: finalDeliveryAddress,
               map_link: formData.map_link || null,
               subtotal_amount: subtotal,
               delivery_fee: deliveryFee,
@@ -101,9 +123,9 @@ export function CheckoutPage() {
         subtotal,
         deliveryFee,
         total,
-        customerName: formData.customer_name,
-        customerPhone: formData.customer_phone,
-        deliveryAddress: formData.delivery_address,
+        customerName: finalCustomerName,
+        customerPhone: finalCustomerPhone,
+        deliveryAddress: finalDeliveryAddress,
         mapLink: formData.map_link || null,
       });
 
@@ -116,7 +138,7 @@ export function CheckoutPage() {
 
     } catch (error) {
       console.error('Error processing order:', error);
-      alert('There was an error processing your order. Please try again.');
+      showSnackbar('There was an error processing your order. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

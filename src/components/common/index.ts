@@ -13,4 +13,5 @@ export {
   AdminDashboardSkeleton,
   AdminFormSkeleton,
 } from './Skeleton';
+export { ErrorBoundary } from './ErrorBoundary';
 

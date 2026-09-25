@@ -74,9 +74,11 @@ export function AboutPage() {
             </div>
 
             <div className="about-info-block">
-              <span className="about-info-label">Proprietor</span>
+              <span className="about-info-label">Customer Email</span>
               <p className="about-info-value">
-                <strong>Amit Chouksey</strong>
+                <a href="mailto:saidarshanmart@gmail.com" style={{ color: 'var(--md-sys-color-primary, #1e7e34)', textDecoration: 'none', fontWeight: 600 }}>
+                  saidarshanmart@gmail.com
+                </a>
               </p>
             </div>
           </div>
@@ -96,7 +98,7 @@ export function AboutPage() {
 
             <div className="about-actions-list">
               <a 
-                href="https://wa.me/917354155669?text=Hello%20Sai%20Darshan%20Mart,%20I%20would%20like%20to%20place%20an%20order"
+                href="https://wa.me/917999157430?text=Hello%20Sai%20Darshan%20Mart,%20I%20would%20like%20to%20place%20an%20order"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="about-whatsapp-action"
@@ -109,13 +111,24 @@ export function AboutPage() {
               </a>
 
               <a 
-                href="tel:+917354155669"
+                href="tel:7999157430"
                 className="about-phone-action"
               >
                 <span className="material-symbols-outlined">call</span>
                 <div>
                   <strong>Call Store Directly</strong>
-                  <span>+91 73541 55669</span>
+                  <span>+91 79991 57430</span>
+                </div>
+              </a>
+
+              <a 
+                href="mailto:saidarshanmart@gmail.com"
+                className="about-phone-action"
+              >
+                <span className="material-symbols-outlined">mail</span>
+                <div>
+                  <strong>Email Support</strong>
+                  <span>saidarshanmart@gmail.com</span>
                 </div>
               </a>
 

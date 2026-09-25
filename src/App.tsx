@@ -12,6 +12,7 @@ import {
   QuickOrderPage,
   OrderConfirmationPage,
   AboutPage,
+  NotFoundPage,
 } from './pages/customer';
 
 // Admin pages
@@ -26,7 +27,7 @@ import {
 } from './pages/admin';
 
 // Layouts
-import { AppShell, ScrollToTop, Skeleton } from './components/common';
+import { AppShell, ScrollToTop, Skeleton, ErrorBoundary } from './components/common';
 import { AdminShell } from './components/admin';
 
 import './styles/global.css';
@@ -69,6 +70,7 @@ function AppRoutes() {
         <Route path="/quick-order" element={<QuickOrderPage />} />
         <Route path="/order/:orderId" element={<OrderConfirmationPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
 
       {/* ================================================
@@ -90,11 +92,7 @@ function AppRoutes() {
         <Route path="categories" element={<CategoriesPage />} />
         <Route path="banners" element={<BannersPage />} />
         <Route path="settings" element={<SettingsPage />} />
-        {/* We will add other admin routes here in subsequent tasks */}
       </Route>
-
-      {/* 404 fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
@@ -109,7 +107,9 @@ export default function App() {
             <SnackbarProvider>
               <LocationProvider>
                 <CartProvider>
-                  <AppRoutes />
+                  <ErrorBoundary>
+                    <AppRoutes />
+                  </ErrorBoundary>
                 </CartProvider>
               </LocationProvider>
             </SnackbarProvider>

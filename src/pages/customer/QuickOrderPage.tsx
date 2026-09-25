@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useLocationContext } from '../../contexts';
+import { useLocationContext, useSnackbar } from '../../contexts';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { generateOrderId, buildQuickOrderWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
+import { validateOrderInput } from '../../lib/validation';
 import type { QuickOrderFormData } from '../../types/order';
 import './CheckoutPage.css'; // Reusing checkout form styles
 
 export function QuickOrderPage() {
   const { location, openModal } = useLocationContext();
+  const { showSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -49,10 +51,32 @@ export function QuickOrderPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!navigator.onLine) {
+      showSnackbar('You are currently offline. Please reconnect to the internet to place your order.');
+      return;
+    }
+
+    const validation = validateOrderInput({
+      customerName: formData.customer_name,
+      customerPhone: formData.customer_phone,
+      deliveryAddress: formData.delivery_address,
+      shoppingList: formData.shopping_list,
+    });
+
+    if (!validation.isValid) {
+      showSnackbar(validation.error || 'Please check your inputs.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const orderId = generateOrderId();
+      const finalCustomerName = validation.cleanedName!;
+      const finalCustomerPhone = validation.cleanedPhone!;
+      const finalDeliveryAddress = validation.cleanedAddress!;
+      const finalShoppingList = validation.cleanedList!;
 
       // 1. Persist the quick order to Supabase if configured (non-blocking)
       if (isSupabaseConfigured) {
@@ -60,16 +84,16 @@ export function QuickOrderPage() {
           await withTimeout(
             supabase.from('orders').insert({
               id: orderId,
-              customer_name: formData.customer_name,
-              customer_phone: formData.customer_phone,
-              delivery_address: formData.delivery_address,
+              customer_name: finalCustomerName,
+              customer_phone: finalCustomerPhone,
+              delivery_address: finalDeliveryAddress,
               map_link: formData.map_link || null,
               subtotal_amount: 0,
               delivery_fee: settings?.flat_fee || 0,
               total_amount: settings?.flat_fee || 0,
               status: 'pending',
               is_quick_order: true,
-              quick_order_text: formData.shopping_list
+              quick_order_text: finalShoppingList
             }),
             3000
           );
@@ -81,10 +105,10 @@ export function QuickOrderPage() {
       // 2. Build WhatsApp message
       const message = buildQuickOrderWhatsAppMessage({
         orderId,
-        shoppingList: formData.shopping_list,
-        customerName: formData.customer_name,
-        customerPhone: formData.customer_phone,
-        deliveryAddress: formData.delivery_address,
+        shoppingList: finalShoppingList,
+        customerName: finalCustomerName,
+        customerPhone: finalCustomerPhone,
+        deliveryAddress: finalDeliveryAddress,
         mapLink: formData.map_link || null,
       });
 
@@ -96,7 +120,7 @@ export function QuickOrderPage() {
 
     } catch (error) {
       console.error('Error processing quick order:', error);
-      alert('There was an error processing your order. Please try again.');
+      showSnackbar('There was an error processing your order. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

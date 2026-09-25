@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -16,6 +16,26 @@ export function AppShell() {
   const { showSnackbar } = useSnackbar();
   const location = useLocation();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOffline(false);
+      showSnackbar('Internet connection restored.');
+    };
+    const handleOffline = () => {
+      setIsOffline(true);
+      showSnackbar('You are currently offline. Check your internet connection.');
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [showSnackbar]);
 
   const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
 
@@ -37,6 +57,33 @@ export function AppShell() {
 
   return (
     <div className="app-shell">
+      {/* Offline Connectivity Warning Banner */}
+      {isOffline && (
+        <div 
+          role="alert" 
+          aria-live="assertive"
+          style={{
+            backgroundColor: '#b00020',
+            color: '#ffffff',
+            textAlign: 'center',
+            padding: '8px 16px',
+            fontSize: '13px',
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            position: 'sticky',
+            top: 0,
+            zIndex: 9999,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>wifi_off</span>
+          <span>You are currently offline. Please check your internet connection to place orders.</span>
+        </div>
+      )}
+
       {/* Top App Bar (Desktop & Mobile header) */}
       <header className="app-shell__top-bar">
         <div className="app-shell__top-bar-inner">

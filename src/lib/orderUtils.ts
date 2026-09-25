@@ -1,7 +1,9 @@
 import type { CartItem } from '../types/order';
 
-export const STORE_WHATSAPP_NUMBER = '+91 73541 55669';
-export const STORE_WHATSAPP_CLEAN = '917354155669';
+export const STORE_WHATSAPP_NUMBER = '+91 79991 57430';
+export const STORE_WHATSAPP_CLEAN = '917999157430';
+export const STORE_PHONE_NUMBER = '7999157430';
+export const STORE_EMAIL = 'saidarshanmart@gmail.com';
 
 /**
  * Generate a unique order ID in format: SDM-YYMMDD-XXXX
