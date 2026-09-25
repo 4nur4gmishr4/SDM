@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useCart } from '../../contexts/CartContext';
+import { useCart, useLocationContext } from '../../contexts';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
+import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import type { CheckoutFormData } from '../../types/order';
 import './CheckoutPage.css';
 
 export function CheckoutPage() {
   const { items, itemCount, subtotal, clearCart } = useCart();
+  const { location, openModal } = useLocationContext();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -24,9 +26,20 @@ export function CheckoutPage() {
   const [formData, setFormData] = useState<CheckoutFormData>({
     customer_name: '',
     customer_phone: '',
-    delivery_address: '',
-    map_link: '',
+    delivery_address: location.formattedAddress || '',
+    map_link: getGoogleMapsNavigationUrl(location.lat, location.lng),
   });
+
+  // Keep delivery address and map link in sync when location updates
+  useEffect(() => {
+    if (location.formattedAddress) {
+      setFormData(prev => ({
+        ...prev,
+        delivery_address: location.formattedAddress,
+        map_link: getGoogleMapsNavigationUrl(location.lat, location.lng),
+      }));
+    }
+  }, [location]);
 
   const { settings } = useDeliverySettings();
   const deliveryFee = settings?.flat_fee || 0;
@@ -146,6 +159,39 @@ export function CheckoutPage() {
             >
               <md-icon slot="leading-icon">phone</md-icon>
             </md-outlined-text-field>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '12px',
+              padding: '12px 16px',
+              borderRadius: '12px',
+              backgroundColor: 'var(--md-sys-color-primary-container, #e6f4ea)',
+              color: 'var(--md-sys-color-on-primary-container, #1e7e34)',
+              border: '1px solid rgba(30, 126, 52, 0.2)',
+              width: '100%'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '24px', flexShrink: 0 }}>location_on</span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: '13px', fontWeight: 700 }}>
+                    GPS Pinned: {location.area || 'Jabalpur'}
+                  </div>
+                  <div style={{ fontSize: '11px', opacity: 0.85, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {location.formattedAddress}
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="sdm-btn sdm-btn--outlined"
+                style={{ padding: '6px 14px', fontSize: '12px', whiteSpace: 'nowrap', flexShrink: 0, background: 'var(--md-sys-color-surface, #fff)' }}
+                onClick={openModal}
+              >
+                Change on Map
+              </button>
+            </div>
 
             <div style={{ width: '100%' }}>
               <textarea

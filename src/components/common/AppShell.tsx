@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 import { Footer } from './Footer';
 import { ProfileModal } from './ProfileModal';
+import { HeaderLocationPill, GooeyLocationHero, LocationPickerModal } from '../customer';
 import './AppShell.css';
 
 export function AppShell() {
@@ -39,10 +40,13 @@ export function AppShell() {
       {/* Top App Bar (Desktop & Mobile header) */}
       <header className="app-shell__top-bar">
         <div className="app-shell__top-bar-inner">
-          <Link to="/" className="app-shell__brand">
-            <span className="app-shell__brand-name">Sai Darshan Mart</span>
-            <span className="app-shell__brand-tagline">There is only one Boss: The Customer</span>
-          </Link>
+          <div className="app-shell__brand-group">
+            <Link to="/" className="app-shell__brand">
+              <span className="app-shell__brand-name">Sai Darshan Mart</span>
+              <span className="app-shell__brand-tagline">There is only one Boss: The Customer</span>
+            </Link>
+            <HeaderLocationPill />
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="app-shell__nav">
@@ -156,6 +160,9 @@ export function AppShell() {
           );
         })}
       </nav>
+      {/* Geolocation Modals */}
+      <GooeyLocationHero />
+      <LocationPickerModal />
     </div>
   );
 }

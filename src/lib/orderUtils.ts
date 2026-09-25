@@ -59,7 +59,7 @@ export function buildCartWhatsAppMessage(params: {
   msg += `Phone: ${customerPhone}\n`;
   msg += `Address: ${deliveryAddress}\n`;
   if (mapLink) {
-    msg += `Location: ${mapLink}\n`;
+    msg += `🗺️ Live GPS Navigation: ${mapLink}\n`;
   }
 
   return msg;
@@ -91,7 +91,7 @@ export function buildQuickOrderWhatsAppMessage(params: {
   msg += `Phone: ${customerPhone}\n`;
   msg += `Address: ${deliveryAddress}\n`;
   if (mapLink) {
-    msg += `Location: ${mapLink}\n`;
+    msg += `🗺️ Live GPS Navigation: ${mapLink}\n`;
   }
 
   return msg;

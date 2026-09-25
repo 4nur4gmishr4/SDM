@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { CartProvider, AuthProvider, useAuth, ThemeProvider, SnackbarProvider } from './contexts';
+import { CartProvider, AuthProvider, useAuth, ThemeProvider, SnackbarProvider, LocationProvider } from './contexts';
 import { HelmetProvider } from 'react-helmet-async';
 
 // Customer pages
@@ -107,9 +107,11 @@ export default function App() {
         <ThemeProvider>
           <AuthProvider>
             <SnackbarProvider>
-              <CartProvider>
-                <AppRoutes />
-              </CartProvider>
+              <LocationProvider>
+                <CartProvider>
+                  <AppRoutes />
+                </CartProvider>
+              </LocationProvider>
             </SnackbarProvider>
           </AuthProvider>
         </ThemeProvider>

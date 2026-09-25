@@ -1,0 +1,359 @@
+/* Gooey Location Hero Overlay */
+.gooey-location-hero {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: sdm-fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.gooey-svg-filter {
+  position: absolute;
+  pointer-events: none;
+}
+
+.gooey-location-hero__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.gooey-location-hero__card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 28px;
+  padding: 32px 28px 24px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Gooey Fly-Up Animation to Top-Left */
+.gooey-location-hero--flying .gooey-location-hero__card {
+  transform: translate(-38vw, -42vh) scale(0.15);
+  opacity: 0;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.gooey-location-hero--flying .gooey-location-hero__backdrop {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.gooey-location-hero__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--md-sys-color-on-surface-variant, #666);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.gooey-location-hero__close:hover {
+  background: rgba(0, 0, 0, 0.06);
+  transform: scale(1.1);
+}
+
+/* Gooey Animation Stage */
+.gooey-stage-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 8px 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Radar Pulse Rings */
+.gooey-radar-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(16, 185, 129, 0.4);
+  pointer-events: none;
+}
+
+.gooey-radar-ring.ring-1 {
+  width: 100px;
+  height: 100px;
+  animation: sdm-radar 3s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gooey-radar-ring.ring-2 {
+  width: 140px;
+  height: 140px;
+  animation: sdm-radar 3s infinite cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s;
+}
+
+.gooey-radar-ring.ring-3 {
+  width: 170px;
+  height: 170px;
+  animation: sdm-radar 3s infinite cubic-bezier(0.2, 0.8, 0.2, 1) 1.6s;
+}
+
+@keyframes sdm-radar {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Gooey Liquid Blobs with SVG Filter */
+.gooey-blobs-wrapper {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  filter: url(#sdm-goo-effect);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gooey-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.blob-main {
+  width: 74px;
+  height: 74px;
+  animation: sdm-blob-pulse 4s infinite ease-in-out;
+}
+
+.blob-sub-1 {
+  width: 38px;
+  height: 38px;
+  animation: sdm-orbit-1 5s infinite ease-in-out;
+}
+
+.blob-sub-2 {
+  width: 32px;
+  height: 32px;
+  animation: sdm-orbit-2 6s infinite ease-in-out;
+}
+
+.blob-sub-3 {
+  width: 26px;
+  height: 26px;
+  animation: sdm-orbit-3 4.5s infinite ease-in-out;
+}
+
+@keyframes sdm-blob-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes sdm-orbit-1 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(32px, -24px) scale(0.9);
+  }
+  50% {
+    transform: translate(40px, 15px) scale(1.1);
+  }
+  75% {
+    transform: translate(15px, 35px) scale(0.85);
+  }
+}
+
+@keyframes sdm-orbit-2 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-30px, 20px) scale(1.05);
+  }
+  50% {
+    transform: translate(-35px, -20px) scale(0.9);
+  }
+  75% {
+    transform: translate(-10px, -35px) scale(1.1);
+  }
+}
+
+@keyframes sdm-orbit-3 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(25px, 28px) scale(0.8);
+  }
+  66% {
+    transform: translate(-25px, -25px) scale(1.1);
+  }
+}
+
+/* Center Pin Badge */
+.gooey-pin-badge {
+  position: relative;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gooey-pin-badge--pulse {
+  animation: sdm-pin-bounce 1s infinite alternate cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes sdm-pin-bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+.gooey-pin-icon {
+  font-size: 28px;
+}
+
+/* Text Styling */
+.gooey-location-hero__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #111);
+  margin: 0 0 8px;
+  letter-spacing: -0.3px;
+}
+
+.gooey-location-hero__subtitle {
+  font-size: 14px;
+  color: var(--md-sys-color-on-surface-variant, #666);
+  margin: 0;
+  line-height: 1.5;
+  max-width: 340px;
+}
+
+/* Action Buttons */
+.gooey-location-hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.gooey-btn-detect {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
+}
+
+.gooey-btn-manual {
+  width: 100%;
+  padding: 11px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
+}
+
+.gooey-btn-skip {
+  background: transparent;
+  border: none;
+  color: var(--md-sys-color-on-surface-variant, #666);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.gooey-btn-skip:hover {
+  color: var(--md-sys-color-primary, #1e7e34);
+}
+
+.spin-anim {
+  animation: sdm-spin 1s linear infinite;
+}
+
+@keyframes sdm-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sdm-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .gooey-location-hero__card {
+    padding: 24px 20px 20px;
+    border-radius: 24px;
+  }
+  .gooey-stage-container {
+    width: 130px;
+    height: 130px;
+  }
+  .blob-main {
+    width: 60px;
+    height: 60px;
+  }
+  .gooey-location-hero__title {
+    font-size: 18px;
+  }
+  .gooey-location-hero__subtitle {
+    font-size: 13px;
+  }
+}

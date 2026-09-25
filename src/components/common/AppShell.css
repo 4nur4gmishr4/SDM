@@ -35,6 +35,13 @@
   min-height: 56px;
 }
 
+.app-shell__brand-group {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-4);
+  flex-shrink: 0;
+}
+
 .app-shell__brand {
   display: flex;
   align-items: center;
@@ -299,6 +306,21 @@
 /* --------------------------------------------------------
    Responsive Breakpoints
    -------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .app-shell__top-bar-inner {
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  .app-shell__brand-group {
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+  .app-shell__brand-name {
+    font-size: 16px;
+  }
+}
 
 @media (min-width: 600px) {
   .app-shell__brand-tagline {

@@ -7,3 +7,7 @@ export * from './ProductGrid';
 export * from './ProductTile';
 export * from './QuantityControl';
 export * from './SearchBar';
+export * from './HeaderLocationPill';
+export * from './GooeyLocationHero';
+export * from './LocationPickerModal';
+
