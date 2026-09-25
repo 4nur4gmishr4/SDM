@@ -1,28 +1,29 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { CartProvider } from './contexts/CartContext';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { SnackbarProvider } from './contexts/SnackbarContext';
+import { CartProvider, AuthProvider, useAuth, ThemeProvider, SnackbarProvider } from './contexts';
 import { HelmetProvider } from 'react-helmet-async';
 
 // Customer pages
-import { HomePage } from './pages/customer/HomePage';
-import { ShopPage } from './pages/customer/ShopPage';
-import { ProductDetailPage } from './pages/customer/ProductDetailPage';
-import { CartPage } from './pages/customer/CartPage';
-import { CheckoutPage } from './pages/customer/CheckoutPage';
-import { QuickOrderPage } from './pages/customer/QuickOrderPage';
-import { OrderConfirmationPage } from './pages/customer/OrderConfirmationPage';
-import { AboutPage } from './pages/customer/AboutPage';
+import {
+  HomePage,
+  ShopPage,
+  ProductDetailPage,
+  CartPage,
+  CheckoutPage,
+  QuickOrderPage,
+  OrderConfirmationPage,
+  AboutPage,
+} from './pages/customer';
 
 // Admin pages
-import { AdminLoginPage } from './pages/admin/AdminLoginPage';
-import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
-import { OrdersPage } from './pages/admin/OrdersPage';
-import { ProductsPage } from './pages/admin/ProductsPage';
-import { CategoriesPage } from './pages/admin/CategoriesPage';
-import { BannersPage } from './pages/admin/BannersPage';
-import { SettingsPage } from './pages/admin/SettingsPage';
+import {
+  AdminLoginPage,
+  AdminDashboardPage,
+  OrdersPage,
+  ProductsPage,
+  CategoriesPage,
+  BannersPage,
+  SettingsPage,
+} from './pages/admin';
 
 // Layouts
 import { AppShell, ScrollToTop, Skeleton } from './components/common';
