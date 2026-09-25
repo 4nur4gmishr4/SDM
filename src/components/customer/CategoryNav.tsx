@@ -66,6 +66,9 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
                   alt="" 
                   className="category-nav__image" 
                   loading="lazy"
+                  decoding="async"
+                  width="48"
+                  height="48"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     const icon = e.currentTarget.parentElement?.querySelector('.category-nav__fallback-icon') as HTMLElement;

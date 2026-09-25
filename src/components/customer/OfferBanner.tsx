@@ -11,7 +11,7 @@ export function OfferBanner({ banner }: OfferBannerProps) {
     <div className="offer-banner">
       <div className="offer-banner__image-container">
         {banner.image_url ? (
-          <img src={banner.image_url} alt="" className="offer-banner__image" loading="lazy" />
+          <img src={banner.image_url} alt="" className="offer-banner__image" loading="lazy" decoding="async" />
         ) : (
           <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--md-sys-color-surface-container)' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '48px', color: 'var(--md-sys-color-outline-variant)' }}>image</span>

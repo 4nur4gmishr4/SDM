@@ -75,7 +75,9 @@ export function ShopPage() {
       }
       
       if (sortBy === 'newest') {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        const dateA = a.created_at || '';
+        const dateB = b.created_at || '';
+        return dateB.localeCompare(dateA);
       }
       if (sortBy === 'featured') {
         if (a.is_featured === b.is_featured) return 0;

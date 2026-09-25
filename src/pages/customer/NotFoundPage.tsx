@@ -34,8 +34,8 @@ export function NotFoundPage() {
           width: '72px',
           height: '72px',
           borderRadius: '50%',
-          backgroundColor: 'var(--md-sys-color-primary-container, #e6f4ea)',
-          color: 'var(--md-sys-color-primary, #1e7e34)',
+          backgroundColor: 'var(--md-sys-color-primary-container, #CEEAD6)',
+          color: 'var(--md-sys-color-primary, #1E8E3E)',
           marginBottom: '20px'
         }}>
           <span className="material-symbols-outlined" style={{ fontSize: '38px' }}>search_off</span>
@@ -46,7 +46,7 @@ export function NotFoundPage() {
           fontWeight: 900,
           lineHeight: 1,
           letterSpacing: '-2px',
-          color: 'var(--md-sys-color-primary, #1e7e34)',
+          color: 'var(--md-sys-color-primary, #1E8E3E)',
           marginBottom: '12px'
         }}>
           404

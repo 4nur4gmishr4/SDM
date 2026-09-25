@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useReducer, useEffect, useMemo, useCallback, type ReactNode } from 'react';
 import type { CartItem } from '../types/order';
 import { useSnackbar } from './SnackbarContext';
 
@@ -123,27 +123,43 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [state.items]);
 
-  const itemCount = state.items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = state.items.reduce(
-    (sum, item) => sum + item.quantity * item.product_price,
-    0
+  const itemCount = useMemo(
+    () => state.items.reduce((sum, item) => sum + item.quantity, 0),
+    [state.items]
   );
 
-  const value: CartContextValue = {
+  const subtotal = useMemo(
+    () => state.items.reduce((sum, item) => sum + item.quantity * item.product_price, 0),
+    [state.items]
+  );
+
+  const addItem = useCallback((item: CartItem) => {
+    dispatch({ type: 'ADD_ITEM', payload: item });
+    const variantSuffix = item.unit_size ? ` (${item.unit_size})` : '';
+    showSnackbar(`Added ${item.product_name}${variantSuffix} to cart`);
+  }, [showSnackbar]);
+
+  const removeItem = useCallback((productId: string, itemKey?: string) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: { product_id: productId, item_key: itemKey } });
+  }, []);
+
+  const updateQuantity = useCallback((productId: string, quantity: number, itemKey?: string) => {
+    dispatch({ type: 'UPDATE_QUANTITY', payload: { product_id: productId, quantity, item_key: itemKey } });
+  }, []);
+
+  const clearCart = useCallback(() => {
+    dispatch({ type: 'CLEAR' });
+  }, []);
+
+  const value: CartContextValue = useMemo(() => ({
     items: state.items,
     itemCount,
     subtotal,
-    addItem: (item) => {
-      dispatch({ type: 'ADD_ITEM', payload: item });
-      const variantSuffix = item.unit_size ? ` (${item.unit_size})` : '';
-      showSnackbar(`Added ${item.product_name}${variantSuffix} to cart`);
-    },
-    removeItem: (productId, itemKey) =>
-      dispatch({ type: 'REMOVE_ITEM', payload: { product_id: productId, item_key: itemKey } }),
-    updateQuantity: (productId, quantity, itemKey) =>
-      dispatch({ type: 'UPDATE_QUANTITY', payload: { product_id: productId, quantity, item_key: itemKey } }),
-    clearCart: () => dispatch({ type: 'CLEAR' }),
-  };
+    addItem,
+    removeItem,
+    updateQuantity,
+    clearCart,
+  }), [state.items, itemCount, subtotal, addItem, removeItem, updateQuantity, clearCart]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

@@ -192,14 +192,14 @@ img:hover {
 }
 
 .sdm-btn--primary {
-  background-color: var(--md-sys-color-primary, #1E7C43) !important;
+  background-color: var(--md-sys-color-primary, #1E8E3E) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 2px 6px rgba(30, 124, 67, 0.2);
+  box-shadow: 0 2px 6px rgba(30, 142, 62, 0.2);
 }
 
 .sdm-btn--primary:hover:not(:disabled) {
-  background-color: #176536 !important;
-  box-shadow: 0 4px 12px rgba(30, 124, 67, 0.32);
+  background-color: #137333 !important;
+  box-shadow: 0 4px 12px rgba(30, 142, 62, 0.32);
 }
 
 .sdm-btn--primary:active:not(:disabled) {
@@ -207,17 +207,17 @@ img:hover {
 }
 
 .sdm-btn--tonal {
-  background-color: var(--md-sys-color-primary-container, #E8F5E9) !important;
-  color: var(--md-sys-color-on-primary-container, #0B3519) !important;
-  border: 1px solid rgba(30, 124, 67, 0.2) !important;
+  background-color: var(--md-sys-color-primary-container, #CEEAD6) !important;
+  color: var(--md-sys-color-on-primary-container, #0D652D) !important;
+  border: 1px solid rgba(30, 142, 62, 0.2) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .sdm-btn--tonal:hover:not(:disabled) {
-  background-color: var(--md-sys-color-primary, #1E7C43) !important;
+  background-color: var(--md-sys-color-primary, #1E8E3E) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 12px rgba(30, 124, 67, 0.25) !important;
-  border-color: var(--md-sys-color-primary, #1E7C43) !important;
+  box-shadow: 0 4px 12px rgba(30, 142, 62, 0.25) !important;
+  border-color: var(--md-sys-color-primary, #1E8E3E) !important;
 }
 
 .sdm-btn--tonal:active:not(:disabled) {
@@ -226,22 +226,22 @@ img:hover {
 
 .sdm-btn--outlined {
   background-color: transparent !important;
-  color: var(--md-sys-color-primary, #1E7C43) !important;
-  border: 1.5px solid var(--md-sys-color-primary, #1E7C43) !important;
+  color: var(--md-sys-color-primary, #1E8E3E) !important;
+  border: 1.5px solid var(--md-sys-color-primary, #1E8E3E) !important;
 }
 
 .sdm-btn--outlined:hover:not(:disabled) {
-  background-color: var(--md-sys-color-primary-container, #E8F5E9) !important;
+  background-color: var(--md-sys-color-primary-container, #CEEAD6) !important;
 }
 
 .sdm-btn--text {
   background-color: transparent !important;
-  color: var(--md-sys-color-primary, #1E7C43) !important;
+  color: var(--md-sys-color-primary, #1E8E3E) !important;
   padding: 0 24px !important;
 }
 
 .sdm-btn--text:hover:not(:disabled) {
-  background-color: rgba(30, 124, 67, 0.08) !important;
+  background-color: rgba(30, 142, 62, 0.08) !important;
 }
 
 .sdm-btn--whatsapp {
@@ -262,14 +262,14 @@ img:hover {
 }
 
 [data-theme="dark"] .sdm-btn--tonal {
-  background-color: #173822 !important;
-  color: #A3E8B8 !important;
-  border-color: #2D633E !important;
+  background-color: #137333 !important;
+  color: #CEEAD6 !important;
+  border-color: #1E8E3E !important;
 }
 
 [data-theme="dark"] .sdm-btn--tonal:hover:not(:disabled) {
-  background-color: #1E482C !important;
-  color: #FFFFFF !important;
+  background-color: #1E8E3E !important;
+  color: #0D652D !important;
 }
 
 /* --------------------------------------------------------

@@ -17,7 +17,7 @@
 
 .header-location-pill:hover {
   background: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.08));
-  border-color: var(--md-sys-color-primary, #1e7e34);
+  border-color: var(--md-sys-color-primary, #1E8E3E);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
 }
@@ -35,7 +35,7 @@
   height: 32px;
   border-radius: 50%;
   background: var(--md-sys-color-primary-container, #e6f4ea);
-  color: var(--md-sys-color-primary, #1e7e34);
+  color: var(--md-sys-color-primary, #1E8E3E);
   flex-shrink: 0;
 }
 
@@ -54,7 +54,7 @@
   right: -2px;
   width: 10px;
   height: 10px;
-  background: #10b981;
+  background: #1E8E3E;
   border: 2px solid var(--md-sys-color-surface, #ffffff);
   border-radius: 50%;
 }
@@ -120,7 +120,7 @@
 
 .header-location-pill:hover .header-location-pill__chevron {
   transform: translateY(1px);
-  color: var(--md-sys-color-primary, #1e7e34);
+  color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .header-location-pill__address {

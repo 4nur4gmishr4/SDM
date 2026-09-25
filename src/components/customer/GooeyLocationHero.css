@@ -36,6 +36,8 @@
   align-items: center;
   text-align: center;
   z-index: 1;
+  will-change: transform, opacity;
+  contain: layout paint;
   transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -88,7 +90,7 @@
 .gooey-radar-ring {
   position: absolute;
   border-radius: 50%;
-  border: 1.5px solid rgba(16, 185, 129, 0.4);
+  border: 1.5px solid rgba(30, 142, 62, 0.4);
   pointer-events: none;
 }
 
@@ -135,7 +137,7 @@
 .gooey-blob {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #1E8E3E 0%, #0D652D 100%);
 }
 
 .blob-main {
@@ -221,7 +223,7 @@
   height: 52px;
   border-radius: 50%;
   background: #ffffff;
-  color: #059669;
+  color: #1E8E3E;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -310,7 +312,7 @@
 }
 
 .gooey-btn-skip:hover {
-  color: var(--md-sys-color-primary, #1e7e34);
+  color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .spin-anim {

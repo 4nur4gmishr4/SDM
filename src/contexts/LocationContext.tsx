@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, useCallback, type ReactNode } from 'react';
 import type { DeliveryLocation } from '../types/location';
 import { DEFAULT_JABALPUR_LOCATION, reverseGeocode } from '../lib/geocoding';
 
@@ -48,30 +48,33 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isGooeyFlying, setIsGooeyFlying] = useState<boolean>(false);
 
-  const updateLocation = (newLocation: DeliveryLocation) => {
+  const updateLocation = useCallback((newLocation: DeliveryLocation) => {
     setLocationState(newLocation);
     setHasLocationBeenSet(true);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newLocation));
     localStorage.setItem(PROMPT_DISMISSED_KEY, 'true');
-  };
+  }, []);
 
-  const openModal = () => {
+  const openModal = useCallback(() => {
     setShowGooeyPrompt(false);
     setIsModalOpen(true);
-  };
-  const closeModal = () => setIsModalOpen(false);
+  }, []);
 
-  const dismissGooeyPrompt = () => {
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
+
+  const dismissGooeyPrompt = useCallback(() => {
     setShowGooeyPrompt(false);
     localStorage.setItem(PROMPT_DISMISSED_KEY, 'true');
-  };
+  }, []);
 
   /**
    * Browser HTML5 Geolocation with 0 cost, 0 API key.
    */
-  const detectCurrentLocation = async (): Promise<boolean> => {
+  const detectCurrentLocation = useCallback(async (): Promise<boolean> => {
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
+      console.warn('Geolocation is not supported by your browser.');
       return false;
     }
 
@@ -115,7 +118,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         }
       );
     });
-  };
+  }, [openModal, updateLocation]);
 
   // Optional: Auto-detect once if permission was already granted previously
   useEffect(() => {
@@ -131,24 +134,36 @@ export function LocationProvider({ children }: { children: ReactNode }) {
           // Permissions API not supported or error
         });
     }
-  }, []);
+  }, [hasLocationBeenSet, detectCurrentLocation]);
+
+  const value: LocationContextValue = useMemo(() => ({
+    location,
+    isLocating,
+    hasLocationBeenSet,
+    isModalOpen,
+    showGooeyPrompt,
+    isGooeyFlying,
+    openModal,
+    closeModal,
+    dismissGooeyPrompt,
+    detectCurrentLocation,
+    updateLocation,
+  }), [
+    location,
+    isLocating,
+    hasLocationBeenSet,
+    isModalOpen,
+    showGooeyPrompt,
+    isGooeyFlying,
+    openModal,
+    closeModal,
+    dismissGooeyPrompt,
+    detectCurrentLocation,
+    updateLocation,
+  ]);
 
   return (
-    <LocationContext.Provider
-      value={{
-        location,
-        isLocating,
-        hasLocationBeenSet,
-        isModalOpen,
-        showGooeyPrompt,
-        isGooeyFlying,
-        openModal,
-        closeModal,
-        dismissGooeyPrompt,
-        detectCurrentLocation,
-        updateLocation,
-      }}
-    >
+    <LocationContext.Provider value={value}>
       {children}
     </LocationContext.Provider>
   );

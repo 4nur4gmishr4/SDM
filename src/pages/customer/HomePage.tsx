@@ -34,10 +34,14 @@ export function HomePage() {
       {/* Main Banner / Hero */}
       <section className="home-page__hero">
         <img 
-          src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1600&auto=format&fit=crop" 
+          src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop" 
           alt="Sai Darshan Mart Supermarket" 
           className="home-page__hero-image"
           loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          width="1200"
+          height="400"
         />
         <div className="home-page__hero-content">
           <h2 className="home-page__hero-title">Welcome to Sai Darshan Mart</h2>

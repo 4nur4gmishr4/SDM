@@ -149,7 +149,13 @@ export function CategoriesPage() {
                 <tr key={category.id} style={{ opacity: category.is_visible ? 1 : 0.5 }}>
                   <td>
                     {category.thumbnail_url ? (
-                      <img src={category.thumbnail_url} alt="" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                      <img
+                        src={category.thumbnail_url}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
+                      />
                     ) : (
                       <div style={{ width: '40px', height: '40px', backgroundColor: 'var(--md-sys-color-surface-container-high)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--md-sys-color-outline)' }}>category</span>

@@ -104,16 +104,23 @@ export function LocationPickerModal() {
     };
   }, [isModalOpen, location.lat, location.lng, fetchAddressForCoords]);
 
-  // Keep map container dimensions in sync with ResizeObserver
+  // Keep map container dimensions in sync with throttled ResizeObserver
   useEffect(() => {
     if (!isModalOpen || !mapContainerRef.current) return;
+    let rafId: number | null = null;
     const observer = new ResizeObserver(() => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.invalidateSize();
-      }
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.invalidateSize();
+        }
+      });
     });
     observer.observe(mapContainerRef.current);
-    return () => observer.disconnect();
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      observer.disconnect();
+    };
   }, [isModalOpen]);
 
   // Clean up map when component unmounts

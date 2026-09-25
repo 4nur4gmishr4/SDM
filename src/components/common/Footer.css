@@ -66,14 +66,14 @@
 
 .sdm-footer__brand-icon {
   font-size: 24px;
-  color: var(--md-sys-color-primary, #1e7e34);
+  color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .sdm-footer__brand-name {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.3px;
-  color: var(--md-sys-color-primary, #1e7e34);
+  color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .sdm-footer__brand-tagline {
@@ -155,7 +155,7 @@
 }
 
 .sdm-footer__link:hover {
-  color: var(--md-sys-color-primary, #1e7e34);
+  color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .sdm-footer__link--muted {
@@ -227,7 +227,7 @@
 }
 
 .sdm-footer__insta-link {
-  color: var(--md-sys-color-primary, #1e7e34);
+  color: var(--md-sys-color-primary, #1E8E3E);
   text-decoration: none;
   font-weight: 700;
   transition: all 0.2s ease;

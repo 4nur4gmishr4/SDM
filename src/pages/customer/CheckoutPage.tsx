@@ -189,9 +189,9 @@ export function CheckoutPage() {
               gap: '12px',
               padding: '12px 16px',
               borderRadius: '12px',
-              backgroundColor: 'var(--md-sys-color-primary-container, #e6f4ea)',
-              color: 'var(--md-sys-color-on-primary-container, #1e7e34)',
-              border: '1px solid rgba(30, 126, 52, 0.2)',
+              backgroundColor: 'var(--md-sys-color-primary-container, #CEEAD6)',
+              color: 'var(--md-sys-color-on-primary-container, #0D652D)',
+              border: '1px solid rgba(30, 142, 62, 0.2)',
               width: '100%'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>

@@ -76,7 +76,7 @@ export function AboutPage() {
             <div className="about-info-block">
               <span className="about-info-label">Customer Email</span>
               <p className="about-info-value">
-                <a href="mailto:saidarshanmart@gmail.com" style={{ color: 'var(--md-sys-color-primary, #1e7e34)', textDecoration: 'none', fontWeight: 600 }}>
+                <a href="mailto:saidarshanmart@gmail.com" style={{ color: 'var(--md-sys-color-primary, #1E8E3E)', textDecoration: 'none', fontWeight: 600 }}>
                   saidarshanmart@gmail.com
                 </a>
               </p>

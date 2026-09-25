@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 
 export type Theme = 'system' | 'light' | 'dark';
 
@@ -53,12 +53,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return () => mediaQuery.removeEventListener('change', handler);
   }, [theme]);
 
-  const setTheme = (t: Theme) => {
+  const setTheme = useCallback((t: Theme) => {
     setThemeState(t);
     localStorage.setItem('sdm-theme', t);
-  };
+  }, []);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     // Cycle: system -> light -> dark -> system
     if (theme === 'system') {
       setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
@@ -67,10 +67,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     } else {
       setTheme('system');
     }
-  };
+  }, [theme, resolvedTheme, setTheme]);
+
+  const value = useMemo(() => ({
+    theme,
+    resolvedTheme,
+    setTheme,
+    toggleTheme,
+  }), [theme, resolvedTheme, setTheme, toggleTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );

@@ -13,7 +13,7 @@ export default defineConfig({
         name: 'Sai Darshan Mart',
         short_name: 'SDM',
         description: 'Your local supermarket in Jabalpur',
-        theme_color: '#1E7C43',
+        theme_color: '#1E8E3E',
         background_color: '#F7FAF5',
         display: 'standalone',
         icons: [
@@ -32,4 +32,19 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/xlsx')) return 'vendor-xlsx';
+          if (id.includes('node_modules/leaflet')) return 'vendor-leaflet';
+          if (id.includes('node_modules/@supabase')) return 'vendor-supabase';
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router')) {
+            return 'vendor-react';
+          }
+        }
+      }
+    }
+  }
 })

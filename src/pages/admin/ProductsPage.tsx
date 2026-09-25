@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { formatPrice } from '../../lib/orderUtils';
@@ -13,6 +13,13 @@ export function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Filters & Pagination
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'in_stock' | 'out_of_stock' | 'featured' | 'archived'>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 25;
   
   const pageTitle = 'Products Catalog — Sai Darshan Mart Admin';
 
@@ -205,6 +212,33 @@ export function ProductsPage() {
     }
   };
 
+  const filteredProducts = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return products.filter((p) => {
+      const matchesSearch = !query ||
+        p.name.toLowerCase().includes(query) ||
+        (p.sku && p.sku.toLowerCase().includes(query));
+
+      const matchesCategory = !selectedCategory || p.category_id === selectedCategory;
+
+      let matchesStatus = true;
+      if (statusFilter === 'in_stock') matchesStatus = p.is_available && !p.is_archived;
+      else if (statusFilter === 'out_of_stock') matchesStatus = !p.is_available && !p.is_archived;
+      else if (statusFilter === 'featured') matchesStatus = !!p.is_featured;
+      else if (statusFilter === 'archived') matchesStatus = !!p.is_archived;
+
+      return matchesSearch && matchesCategory && matchesStatus;
+    });
+  }, [products, searchQuery, selectedCategory, statusFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+
+  const paginatedProducts = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return filteredProducts.slice(start, start + pageSize);
+  }, [filteredProducts, safePage, pageSize]);
+
   return (
     <div className="admin-layout-content admin-products-page">
       <Helmet>
@@ -227,6 +261,49 @@ export function ProductsPage() {
             <span>Add Product</span>
           </button>
         </div>
+      </div>
+
+      <div className="admin-toolbar-row">
+        <div className="admin-search-box">
+          <span className="material-symbols-outlined">search</span>
+          <input
+            type="text"
+            className="admin-search-input"
+            placeholder="Search products by name or SKU..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
+          />
+        </div>
+        <select
+          className="admin-filter-select"
+          value={selectedCategory}
+          onChange={(e) => {
+            setSelectedCategory(e.target.value);
+            setCurrentPage(1);
+          }}
+        >
+          <option value="">All Categories</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>{c.name}</option>
+          ))}
+        </select>
+        <select
+          className="admin-filter-select"
+          value={statusFilter}
+          onChange={(e) => {
+            setStatusFilter(e.target.value as any);
+            setCurrentPage(1);
+          }}
+        >
+          <option value="all">All Status</option>
+          <option value="in_stock">In Stock</option>
+          <option value="out_of_stock">Out of Stock</option>
+          <option value="featured">Featured</option>
+          <option value="archived">Archived</option>
+        </select>
       </div>
 
       <div className="admin-table-container">
@@ -268,14 +345,47 @@ export function ProductsPage() {
                   </div>
                 </td>
               </tr>
+            ) : filteredProducts.length === 0 ? (
+              <tr>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '48px 24px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '36px', color: 'var(--md-sys-color-outline)' }}>
+                      search_off
+                    </span>
+                    <h4 style={{ fontSize: '16px', fontWeight: 600 }}>No matching products</h4>
+                    <p style={{ color: 'var(--md-sys-color-on-surface-variant)', fontSize: '13px' }}>
+                      No items matched &ldquo;{searchQuery}&rdquo;. Try clearing filters or searching another keyword.
+                    </p>
+                    <button
+                      type="button"
+                      className="sdm-btn sdm-btn--tonal"
+                      style={{ marginTop: '8px' }}
+                      onClick={() => {
+                        setSearchQuery('');
+                        setSelectedCategory('');
+                        setStatusFilter('all');
+                        setCurrentPage(1);
+                      }}
+                    >
+                      Clear Filters
+                    </button>
+                  </div>
+                </td>
+              </tr>
             ) : (
-              products.map((product) => {
+              paginatedProducts.map((product) => {
                 const variantsCount = product.variants?.length || 0;
                 return (
                   <tr key={product.id} style={{ opacity: product.is_archived ? 0.5 : 1 }}>
                     <td>
                       {product.image_url ? (
-                        <img src={product.image_url} alt="" style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '6px' }} />
+                        <img
+                          src={product.image_url}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '6px' }}
+                        />
                       ) : (
                         <div style={{ width: '44px', height: '44px', backgroundColor: 'var(--md-sys-color-surface-container-high)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--md-sys-color-outline)' }}>image</span>
@@ -348,6 +458,34 @@ export function ProductsPage() {
             )}
           </tbody>
         </table>
+        {filteredProducts.length > pageSize && (
+          <div className="admin-pagination-container">
+            <span>
+              Showing {(safePage - 1) * pageSize + 1}–{Math.min(safePage * pageSize, filteredProducts.length)} of {filteredProducts.length} products
+            </span>
+            <div className="admin-pagination-controls">
+              <button
+                type="button"
+                className="admin-pagination-btn"
+                disabled={safePage <= 1}
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                title="Previous page"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>chevron_left</span>
+              </button>
+              <span>Page {safePage} of {totalPages}</span>
+              <button
+                type="button"
+                className="admin-pagination-btn"
+                disabled={safePage >= totalPages}
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                title="Next page"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>chevron_right</span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Excel Drag & Drop Importer Modal */}

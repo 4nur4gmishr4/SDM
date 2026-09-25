@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/orderUtils';
@@ -9,7 +9,7 @@ interface ProductTileProps {
   product: Product;
 }
 
-export function ProductTile({ product }: ProductTileProps) {
+export const ProductTile = memo(function ProductTile({ product }: ProductTileProps) {
   const { addItem } = useCart();
   const variants = product.variants || [];
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
@@ -20,7 +20,7 @@ export function ProductTile({ product }: ProductTileProps) {
   const currentUnit = activeVariant ? activeVariant.unit_size : product.unit_size;
   const isAvailable = activeVariant ? activeVariant.is_available : product.is_available;
 
-  const handleAdd = (e: React.MouseEvent) => {
+  const handleAdd = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     addItem({
       product_id: product.id,
@@ -32,7 +32,7 @@ export function ProductTile({ product }: ProductTileProps) {
       unit_size: currentUnit,
       quantity: 1,
     });
-  };
+  }, [addItem, product.id, product.name, product.sku, product.image_url, activeVariant?.id, activeVariant?.sku, currentPrice, currentUnit]);
 
   return (
     <article className="product-tile">
@@ -62,6 +62,9 @@ export function ProductTile({ product }: ProductTileProps) {
             alt={product.name} 
             className="product-tile__image" 
             loading="lazy" 
+            decoding="async"
+            width="180"
+            height="180"
             onError={(e) => {
               e.currentTarget.style.display = 'none';
               const icon = e.currentTarget.parentElement?.querySelector('.product-tile__placeholder-icon') as HTMLElement;
@@ -136,4 +139,4 @@ export function ProductTile({ product }: ProductTileProps) {
       </div>
     </article>
   );
-}
+});

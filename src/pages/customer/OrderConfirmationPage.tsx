@@ -88,7 +88,7 @@ export function OrderConfirmationPage() {
           marginBottom: '28px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary, #1e7e34)', fontSize: '24px' }}>
+            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary, #1E8E3E)', fontSize: '24px' }}>
               account_balance_wallet
             </span>
             <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--md-sys-color-on-surface, #1f2937)' }}>
@@ -112,7 +112,7 @@ export function OrderConfirmationPage() {
           }}>
             <div>
               <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant, #6b7280)', display: 'block' }}>Store UPI ID</span>
-              <strong style={{ fontSize: '14px', color: 'var(--md-sys-color-primary, #1e7e34)' }}>{STORE_UPI_ID}</strong>
+              <strong style={{ fontSize: '14px', color: 'var(--md-sys-color-primary, #1E8E3E)' }}>{STORE_UPI_ID}</strong>
             </div>
             <button
               type="button"
@@ -148,7 +148,7 @@ export function OrderConfirmationPage() {
           marginBottom: '28px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, color: 'var(--md-sys-color-on-surface, #111827)', marginBottom: '4px' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--md-sys-color-primary, #1e7e34)' }}>local_shipping</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--md-sys-color-primary, #1E8E3E)' }}>local_shipping</span>
             <span>Delivery Coverage: {STORE_DELIVERY_RADIUS}</span>
           </div>
           <div>Store Address: {STORE_ADDRESS}</div>
