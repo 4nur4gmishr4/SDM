@@ -21,6 +21,19 @@ export function LocationPickerModal() {
   const [isGeocoding, setIsGeocoding] = useState(false);
   const [isMapDragging, setIsMapDragging] = useState(false);
 
+  // Map view layer modes: street, satellite, terrain
+  type MapViewMode = 'street' | 'satellite' | 'terrain';
+  const [mapViewMode, setMapViewMode] = useState<MapViewMode>('street');
+  const tileLayersRef = useRef<{
+    street: L.TileLayer | null;
+    satelliteGroup: L.LayerGroup | null;
+    terrain: L.TileLayer | null;
+  }>({
+    street: null,
+    satelliteGroup: null,
+    terrain: null,
+  });
+
   // Address detail fields
   const [houseNo, setHouseNo] = useState(location.houseNo || '');
   const [landmark, setLandmark] = useState(location.landmark || '');
@@ -32,6 +45,26 @@ export function LocationPickerModal() {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const debounceTimerRef = useRef<any>(null);
+
+  // Switch between Street, Satellite, and Terrain view
+  const handleSwitchViewMode = (mode: MapViewMode) => {
+    setMapViewMode(mode);
+    const map = mapInstanceRef.current;
+    const layers = tileLayersRef.current;
+    if (!map || !layers.street || !layers.satelliteGroup || !layers.terrain) return;
+
+    if (map.hasLayer(layers.street)) map.removeLayer(layers.street);
+    if (map.hasLayer(layers.satelliteGroup)) map.removeLayer(layers.satelliteGroup);
+    if (map.hasLayer(layers.terrain)) map.removeLayer(layers.terrain);
+
+    if (mode === 'satellite') {
+      layers.satelliteGroup.addTo(map);
+    } else if (mode === 'terrain') {
+      layers.terrain.addTo(map);
+    } else {
+      layers.street.addTo(map);
+    }
+  };
 
   // Reverse geocode whenever pin coordinates change (debounced)
   const fetchAddressForCoords = useCallback(async (lat: number, lng: number) => {
@@ -57,19 +90,51 @@ export function LocationPickerModal() {
       const initialLng = location.lng || 79.9864;
 
       if (!mapInstanceRef.current) {
-        // Create Leaflet map instance
+        // Create Leaflet map instance without attribution bar
         const map = L.map(mapContainerRef.current, {
           center: [initialLat, initialLng],
           zoom: 15,
           zoomControl: false,
+          attributionControl: false,
         });
 
-        // Add clean OpenStreetMap tiles with full Indian & Jabalpur street coverage
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-          maxZoom: 19,
-          subdomains: 'abc',
-        }).addTo(map);
+        // 1. Street View Layer (High-contrast colorful roads, buildings, parks, and landmarks)
+        const streetLayer = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 19 }
+        );
+
+        // 2. Satellite View Layer (Real Earth aerial photography + hybrid street/locality labels)
+        const satImagery = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 19 }
+        );
+        const satLabels = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 19 }
+        );
+        const satelliteGroup = L.layerGroup([satImagery, satLabels]);
+
+        // 3. Terrain View Layer (Topographical elevation & contours)
+        const terrainLayer = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 19 }
+        );
+
+        tileLayersRef.current = {
+          street: streetLayer,
+          satelliteGroup,
+          terrain: terrainLayer,
+        };
+
+        // Add the currently active layer
+        if (mapViewMode === 'satellite') {
+          satelliteGroup.addTo(map);
+        } else if (mapViewMode === 'terrain') {
+          terrainLayer.addTo(map);
+        } else {
+          streetLayer.addTo(map);
+        }
 
         // Add Zoom Control to bottom right
         L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -286,6 +351,37 @@ export function LocationPickerModal() {
         {/* Interactive Map Area */}
         <div className="location-map-container">
           <div ref={mapContainerRef} className="location-leaflet-map" />
+
+          {/* Map View Mode Switcher (Street / Satellite / Terrain) */}
+          <div className="location-map-view-switcher" role="group" aria-label="Map view mode">
+            <button
+              type="button"
+              className={`location-map-view-btn ${mapViewMode === 'street' ? 'location-map-view-btn--active' : ''}`}
+              onClick={() => handleSwitchViewMode('street')}
+              title="Street View (Detailed roads and landmarks)"
+            >
+              <span className="material-symbols-outlined">map</span>
+              <span>Streets</span>
+            </button>
+            <button
+              type="button"
+              className={`location-map-view-btn ${mapViewMode === 'satellite' ? 'location-map-view-btn--active' : ''}`}
+              onClick={() => handleSwitchViewMode('satellite')}
+              title="Satellite View (Real Earth imagery with roads)"
+            >
+              <span className="material-symbols-outlined">satellite_alt</span>
+              <span>Satellite</span>
+            </button>
+            <button
+              type="button"
+              className={`location-map-view-btn ${mapViewMode === 'terrain' ? 'location-map-view-btn--active' : ''}`}
+              onClick={() => handleSwitchViewMode('terrain')}
+              title="Terrain View (Elevation and topography)"
+            >
+              <span className="material-symbols-outlined">terrain</span>
+              <span>Terrain</span>
+            </button>
+          </div>
 
           {/* Floating Center Pin (Swiggy / Blinkit style) */}
           <div className={`location-center-pin ${isMapDragging ? 'location-center-pin--dragging' : ''}`}>
