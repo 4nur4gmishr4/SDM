@@ -75,39 +75,37 @@
 }
 
 /* ------------------------------------------------------------
-   Instagram Story Style Segmented Progress Loader (Pinned At Top)
+   Segmented Progress Loader (Directly Below Banner Card - No Outer Widget)
    ------------------------------------------------------------ */
 .ios-banner__insta-loader-bar {
-  position: absolute;
-  top: 12px;
-  left: 16px;
-  right: 16px;
+  position: relative;
+  margin-top: 8px;
   z-index: 10;
   display: flex;
   gap: 6px;
-  padding: 6px 10px;
-  border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.38);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0 4px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .ios-banner__insta-loader-bar {
+  background: transparent !important;
+  border: none !important;
 }
 
 @media (min-width: 768px) {
   .ios-banner__insta-loader-bar {
-    top: 14px;
-    left: 20px;
-    right: 20px;
     gap: 8px;
-    padding: 6px 12px;
+    padding: 0 6px;
   }
 }
 
 .ios-banner__progress-track {
   flex: 1;
-  height: 3.5px;
+  height: 4px;
   border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.28);
+  background-color: var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
   overflow: hidden;
   border: none;
   padding: 0;
@@ -117,15 +115,18 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+[data-theme="dark"] .ios-banner__progress-track {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
 .ios-banner__progress-track:hover {
   height: 5px;
-  background-color: rgba(255, 255, 255, 0.45);
 }
 
 .ios-banner__progress-bar {
   height: 100%;
-  background-color: #81C995;
-  box-shadow: 0 0 8px rgba(129, 201, 149, 0.8);
+  background-color: var(--md-sys-color-primary, #1e8e3e);
+  box-shadow: 0 0 6px rgba(30, 142, 62, 0.4);
   border-radius: 9999px;
   will-change: width;
 }

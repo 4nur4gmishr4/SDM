@@ -29,7 +29,7 @@ export function HomePage() {
         <SearchBar />
       </section>
 
-      {/* iOS-Style Banner Carousel with Instagram Segmented Loader */}
+      {/* iOS-Style Banner Carousel with Instagram Segmented Loader & Logo Fallback */}
       <section className="home-page__section" style={{ marginTop: '14px', marginBottom: '28px' }}>
         <IOSBannerCarousel 
           banners={banners} 
@@ -59,7 +59,7 @@ export function HomePage() {
 
       {/* Shadowy Big Watermark Display */}
       <WatermarkBanner 
-        headline={<>There is only one boss: Customer <BeatingHeart /></>} 
+        headline={<>There is only one boss: The Customer <BeatingHeart /></>} 
         subline="Serving every family in Jabalpur with honest pricing, fresh goods & care"
       />
     </div>
