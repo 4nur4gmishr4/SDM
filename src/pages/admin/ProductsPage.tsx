@@ -4,6 +4,7 @@ import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase'
 import { formatPrice } from '../../lib/orderUtils';
 import { AdminTableSkeleton } from '../../components/common';
 import { ExcelImportWidget } from '../../components/admin';
+import { ImageUploadField } from '../../components/admin/ImageUploadField';
 import type { Product, ProductVariant } from '../../types/product';
 import type { Category } from '../../types/category';
 import './OrdersPage.css'; // Reusing table styles
@@ -711,11 +712,11 @@ export function ProductsPage() {
               </div>
 
               <div className="admin-form-group" style={{ marginTop: '16px' }}>
-                <md-outlined-text-field
-                  label="Product Image URL (Optional)"
-                  className="admin-form-field"
+                <ImageUploadField
+                  label="Product Image (Upload File or Paste Link)"
                   value={editingProduct.image_url || ''}
-                  onInput={(e: any) => setEditingProduct({ ...editingProduct, image_url: e.target.value })}
+                  onChange={(url) => setEditingProduct({ ...editingProduct, image_url: url })}
+                  helpText="Upload product packaging image from your device, or paste a link."
                 />
               </div>
 
