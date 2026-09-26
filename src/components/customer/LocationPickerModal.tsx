@@ -214,7 +214,7 @@ export function LocationPickerModal() {
       setSearchResults(results);
       setShowDropdown(true);
       setIsSearching(false);
-    }, 350);
+    }, 150);
 
     return () => clearTimeout(searchTimer);
   }, [searchQuery]);
@@ -222,6 +222,8 @@ export function LocationPickerModal() {
   const handleSelectSearchResult = (result: GeocodingSearchResult) => {
     setSearchQuery('');
     setShowDropdown(false);
+    setCurrentCoords({ lat: result.lat, lng: result.lng });
+    fetchAddressForCoords(result.lat, result.lng);
     if (mapInstanceRef.current) {
       mapInstanceRef.current.flyTo([result.lat, result.lng], 17, {
         duration: 1.2,

@@ -51,6 +51,24 @@ a, button, input, select, textarea {
   -webkit-tap-highlight-color: transparent !important;
 }
 
+/* Universal Search Bar & Input Overlays Reset: Eliminates all square box overlays on tap and typing */
+input[type="search"],
+.search-bar__input,
+.location-search-input,
+.admin-search-input {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+}
+
+input[type="search"]:focus,
+.search-bar__input:focus,
+.location-search-input:focus,
+.admin-search-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;

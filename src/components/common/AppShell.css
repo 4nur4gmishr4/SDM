@@ -310,15 +310,23 @@
 @media (max-width: 640px) {
   .app-shell__top-bar-inner {
     gap: 8px;
-    padding: 8px 12px;
+    padding: 6px 12px;
+    min-height: 52px;
   }
   .app-shell__brand-group {
-    gap: 8px;
+    gap: 0;
     flex: 1;
     min-width: 0;
   }
+  /* Remove Sai Darshan Mart text/link from top-left on mobile to let location setter own the top-left */
+  .app-shell__brand {
+    display: none !important;
+  }
   .app-shell__brand-name {
-    font-size: 16px;
+    display: none !important;
+  }
+  .app-shell__brand-tagline {
+    display: none !important;
   }
 }
 

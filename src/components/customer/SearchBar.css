@@ -1,7 +1,7 @@
 /* ============================================================
-   Search Bar
+   Google Pill Search Bar
    ============================================================
-   M3 standard search field
+   M3 Google Pill style search field. Zero square box overlays on tap/typing.
    ============================================================ */
 
 .search-bar {
@@ -10,15 +10,106 @@
   position: relative;
 }
 
-.search-bar form {
+.search-bar__form {
   width: 100%;
   display: flex;
   align-items: center;
+  background: var(--md-sys-color-surface-container-high, #f1f3f4);
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
+  border-radius: 9999px !important;
+  padding: 4px 8px 4px 18px;
+  min-height: 48px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
-.search-bar md-outlined-text-field {
-  width: 100%;
-  /* M3 text fields automatically handle their own internal styles */
+.search-bar__form:hover {
+  background: var(--md-sys-color-surface-container-highest, #eceff1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+.search-bar__form:focus-within {
+  background: var(--md-sys-color-surface, #ffffff);
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  box-shadow: 0 1px 6px rgba(30, 142, 62, 0.22), 0 0 0 2px rgba(30, 142, 62, 0.15);
+  border-radius: 9999px !important;
+  outline: none !important;
+}
 
+.search-bar__leading-icon {
+  font-size: 22px;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
+  margin-right: 10px;
+  flex-shrink: 0;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.search-bar__input {
+  flex: 1;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--md-sys-color-on-surface, #202124);
+  min-width: 0;
+  padding: 8px 0;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.search-bar__input::-webkit-search-decoration,
+.search-bar__input::-webkit-search-cancel-button,
+.search-bar__input::-webkit-search-results-button,
+.search-bar__input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.search-bar__input::placeholder {
+  color: var(--md-sys-color-on-surface-variant, #70757a);
+  font-size: 14px;
+}
+
+.search-bar__clear-btn,
+.search-bar__submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  flex-shrink: 0;
+  padding: 0;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.search-bar__clear-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--md-sys-color-on-surface, #202124);
+}
+
+.search-bar__submit-btn {
+  background: var(--md-sys-color-primary, #1E8E3E);
+  color: #ffffff !important;
+  margin-left: 4px;
+}
+
+.search-bar__submit-btn:hover {
+  background: #187733;
+}
+
+.search-bar__submit-btn:active {
+  transform: scale(0.94);
+}

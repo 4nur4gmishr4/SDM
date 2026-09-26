@@ -22,27 +22,48 @@ export function SearchBar({ initialQuery = '', placeholder = 'Search products...
     }
   };
 
+  const handleClear = () => {
+    setQuery('');
+    if (onInstantSearch) onInstantSearch('');
+  };
+
   return (
     <div className="search-bar">
-      <form onSubmit={handleSearch} role="search" style={{ width: '100%' }}>
-        <md-outlined-text-field
+      <form onSubmit={handleSearch} role="search" className="search-bar__form">
+        <span className="material-symbols-outlined search-bar__leading-icon">search</span>
+        <input
           type="search"
+          className="search-bar__input"
           placeholder={placeholder}
           value={query}
-          onInput={(e: any) => {
+          onChange={(e) => {
             const val = e.target.value;
             setQuery(val);
             if (onInstantSearch) {
               onInstantSearch(val);
             }
           }}
-          style={{ width: '100%' }}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck="false"
+        />
+        {query && (
+          <button
+            type="button"
+            className="search-bar__clear-btn"
+            onClick={handleClear}
+            aria-label="Clear search"
+          >
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        )}
+        <button
+          type="submit"
+          className="search-bar__submit-btn"
+          aria-label="Submit search"
         >
-          <md-icon slot="leading-icon">search</md-icon>
-          <md-icon-button slot="trailing-icon" type="submit" aria-label="Search">
-            <md-icon>arrow_forward</md-icon>
-          </md-icon-button>
-        </md-outlined-text-field>
+          <span className="material-symbols-outlined">arrow_forward</span>
+        </button>
       </form>
     </div>
   );
