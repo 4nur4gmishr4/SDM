@@ -32,22 +32,22 @@
 
 /* ------------------------------------------------------------
    Top: Pure Unobstructed Image Viewport (NO text/button on image)
+   Strict 16:9 Ratio for Both Mobile and Desktop (Zero Cropping)
    ------------------------------------------------------------ */
 .ios-banner__media-viewport {
   position: relative;
   width: 100%;
-  aspect-ratio: 2.5 / 1;
-  min-height: 240px;
-  max-height: 380px;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background-color: #0E1310;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
   .ios-banner__media-viewport {
     aspect-ratio: 16 / 9;
-    min-height: 190px;
-    max-height: 260px;
   }
 }
 
@@ -69,8 +69,8 @@
 .ios-banner-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
+  object-fit: contain;
+  object-position: center center;
   display: block;
 }
 
@@ -362,7 +362,7 @@
 
 .ios-banner__skeleton {
   width: 100%;
-  height: 340px;
+  aspect-ratio: 16 / 9;
   border-radius: 24px;
   background: linear-gradient(
     90deg,
