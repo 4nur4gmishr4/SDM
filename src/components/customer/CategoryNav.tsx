@@ -65,12 +65,12 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
               {category.thumbnail_url && (
                 <img 
                   src={category.thumbnail_url} 
-                  alt="" 
+                  alt={category.name} 
                   className="category-nav__image" 
                   loading="lazy"
                   decoding="async"
-                  width="48"
-                  height="48"
+                  width="72"
+                  height="72"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     const icon = e.currentTarget.parentElement?.querySelector('.category-nav__fallback-icon') as HTMLElement;
