@@ -1,0 +1,112 @@
+# ==============================================================================
+# SAI DARSHAN MART — PRODUCTION APACHE / LITESPEED CONFIGURATION (.htaccess)
+# Optimized for Hostinger Web Hosting & Cloud Hosting (LiteSpeed / Apache)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. HARDEN SERVER & DISABLE DIRECTORY LISTING
+# ------------------------------------------------------------------------------
+Options -Indexes -MultiViews
+ServerSignature Off
+
+# ------------------------------------------------------------------------------
+# 2. BLOCK ACCESS TO SENSITIVE FILES & EXTENSIONS
+# ------------------------------------------------------------------------------
+<FilesMatch "(^\.|\.(env|sql|bak|config|json|log|sh|md|yml|yaml|ts|tsx)$)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow public manifest and sitemap
+<Files "manifest.webmanifest">
+    Order allow,deny
+    Allow from all
+</Files>
+<Files "sitemap.xml">
+    Order allow,deny
+    Allow from all
+</Files>
+<Files "robots.txt">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# ------------------------------------------------------------------------------
+# 3. HTTP SECURITY HEADERS
+# ------------------------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Enforce HTTPS with HSTS Preload (1 year)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Prevent Clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Prevent MIME-type Sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Cross-Site Scripting Filter
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Referrer Information Privacy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Restrict Hardware Sensors & APIs
+    Header always set Permissions-Policy "geolocation=(self), camera=(), microphone=()"
+
+    # Cross-Origin Isolation
+    Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+
+    # Content Security Policy (CSP)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://apis.google.com https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.supabase.co https://*.tile.openstreetmap.org https://server.arcgisonline.com https://services.arcgisonline.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://geocode.arcgis.com https://api.bigdatacloud.net https://nominatim.openstreetmap.org; frame-src 'self' https://accounts.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;"
+
+    # Cache Control for Static Assets
+    <FilesMatch "\.(js|css|webp|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # Disable Caching on HTML Entry Point to allow instant updates
+    <FilesMatch "^(index\.html)?$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </FilesMatch>
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 4. REWRITE RULES (HTTPS FORCE, WAF BOT/ATTACK BLOCKING & SPA ROUTING)
+# ------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 4A. Force HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # 4B. Block Malicious Exploits & Probes (WordPress bot scanners, SQLi, XSS)
+    RewriteCond %{REQUEST_URI} (wp-admin|wp-login|xmlrpc\.php|phpmyadmin|adminer|\.git|\.env) [NC]
+    RewriteRule ^ - [F,L]
+
+    # 4C. Block Suspicious Query Strings (SQL Injection, Script tags, Base64)
+    RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (UNION|SELECT|INSERT|DELETE|DROP|CAST|DECLARE).*-- [NC,OR]
+    RewriteCond %{QUERY_STRING} base64_(en|de)code\( [NC,OR]
+    RewriteCond %{QUERY_STRING} (\.\./|\.\.\\) [NC]
+    RewriteRule ^ - [F,L]
+
+    # 4D. Single Page Application (SPA) Fallback for React Router
+    # If the requested file or directory does not physically exist, route to index.html
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 5. GZIP & BROTLI COMPRESSION FOR ULTRA-FAST DELIVERY
+# ------------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript application/json
+    AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml font/woff font/woff2
+</IfModule>
