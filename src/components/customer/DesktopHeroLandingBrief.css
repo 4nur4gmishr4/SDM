@@ -1,10 +1,11 @@
 /* ==========================================================================
-   DesktopHeroLandingBrief.css — 0-Vibe Coded Hero Showcase for Laptop/Desktop
-   Active ONLY on viewports >= 1024px (hidden on mobile/tablet)
+   DesktopHeroLandingBrief.css — Authentic Retail Storefront Companion
+   Strictly Human-Crafted Retail UI • Zero AI Fluff • Zero Vibe-Coded Tropes
+   Active ONLY on viewports >= 1024px (hidden on mobile & tablet)
    ========================================================================== */
 
 .desktop-hero-landing {
-  display: none; /* Default hidden on mobile & tablets */
+  display: none; /* Hidden on mobile and tablet screens */
 }
 
 @media (min-width: 1024px) {
@@ -13,395 +14,378 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    min-height: 420px;
-    border-radius: 24px;
+    min-height: 430px;
+    border-radius: 20px;
     position: relative;
-    overflow: hidden;
-    padding: 24px 28px;
+    padding: 22px 24px;
     box-sizing: border-box;
-    background: linear-gradient(145deg, var(--md-sys-color-surface-container, #ffffff) 0%, var(--md-sys-color-surface-container-high, #f2f7f4) 100%);
-    border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
-    transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+    background-color: var(--md-sys-color-surface-container, #ffffff);
+    border: 1px solid var(--md-sys-color-outline-variant, #e0e2dc);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    user-select: none;
   }
 
   [data-theme="dark"] .desktop-hero-landing {
-    background: linear-gradient(145deg, #181d19 0%, #0f1311 100%);
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-  }
-
-  /* Animated Ambient Glow Orb in background */
-  .desktop-hero-landing::before {
-    content: '';
-    position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(30, 142, 62, 0.16) 0%, rgba(52, 168, 83, 0.04) 60%, transparent 100%);
-    pointer-events: none;
-    animation: ambient-orb-float 6s ease-in-out infinite alternate;
-    z-index: 0;
-  }
-
-  [data-theme="dark"] .desktop-hero-landing::before {
-    background: radial-gradient(circle, rgba(52, 168, 83, 0.22) 0%, rgba(66, 133, 244, 0.06) 60%, transparent 100%);
+    background-color: var(--md-sys-color-surface-container, #1f2320);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
   /* --------------------------------------------------------------------------
-     1. Top Live Status Bar
+     1. Header: Authentic Store Title & Local Hub
      -------------------------------------------------------------------------- */
-  .desktop-hero__top-bar {
-    position: relative;
-    z-index: 1;
+  .desktop-hero__header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
-  .desktop-hero__status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: 9999px;
-    background: rgba(30, 142, 62, 0.08);
-    border: 1px solid rgba(30, 142, 62, 0.2);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.4px;
-    color: var(--md-sys-color-primary, #1e8e3e);
+  .desktop-hero__brand-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
 
-  [data-theme="dark"] .desktop-hero__status-badge {
-    background: rgba(52, 168, 83, 0.15);
-    border-color: rgba(52, 168, 83, 0.35);
-    color: #81c995;
-  }
-
-  .desktop-hero__pulse-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #34a853;
-    box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7);
-    animation: pulse-dot 2s infinite;
-  }
-
-  .desktop-hero__hub-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11.5px;
-    font-weight: 500;
-    color: var(--md-sys-color-on-surface-variant);
-    opacity: 0.85;
-  }
-
-  /* --------------------------------------------------------------------------
-     2. Brand Brief & Headings
-     -------------------------------------------------------------------------- */
-  .desktop-hero__content {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 14px;
-  }
-
-  .desktop-hero__title {
-    margin: 0 0 6px 0;
-    font-size: 26px;
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -0.5px;
+  .desktop-hero__brand-row {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .desktop-hero__title-gradient {
-    background: linear-gradient(135deg, #1e8e3e 0%, #2e7d32 40%, #f9ab00 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .desktop-hero__brand-icon {
+    font-size: 22px;
+    color: var(--md-sys-color-primary, #1e8e3e);
   }
 
-  [data-theme="dark"] .desktop-hero__title-gradient {
-    background: linear-gradient(135deg, #81c995 0%, #34a853 50%, #fdd663 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .desktop-hero__tagline {
-    margin: 0 0 8px 0;
-    font-size: 14.5px;
-    font-weight: 600;
-    color: var(--md-sys-color-on-surface);
-    letter-spacing: -0.2px;
-  }
-
-  .desktop-hero__description {
+  .desktop-hero__store-title {
     margin: 0;
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--md-sys-color-on-surface-variant);
-    max-width: 95%;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--md-sys-color-on-surface, #1a1c1e);
   }
 
-  /* --------------------------------------------------------------------------
-     3. Bento Live Stats Grid (4 interactive tiles)
-     -------------------------------------------------------------------------- */
-  .desktop-hero__bento-grid {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
+  .desktop-hero__store-subtitle {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--md-sys-color-on-surface-variant, #535f52);
+    font-weight: 500;
   }
 
-  .desktop-hero__bento-card {
-    background: var(--md-sys-color-surface, rgba(255, 255, 255, 0.7));
-    border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.06));
-    border-radius: 14px;
-    padding: 10px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    transition: transform 0.22s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    cursor: default;
-  }
-
-  [data-theme="dark"] .desktop-hero__bento-card {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.07);
-  }
-
-  .desktop-hero__bento-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--md-sys-color-primary, #1e8e3e);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-  }
-
-  [data-theme="dark"] .desktop-hero__bento-card:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-  }
-
-  .desktop-hero__bento-icon {
-    font-size: 18px;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    display: flex;
+  .desktop-hero__timing-badge {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    background: rgba(30, 142, 62, 0.1);
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background-color: rgba(30, 142, 62, 0.08);
+    border: 1px solid rgba(30, 142, 62, 0.2);
     color: var(--md-sys-color-primary, #1e8e3e);
-    margin-bottom: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
-  [data-theme="dark"] .desktop-hero__bento-icon {
-    background: rgba(52, 168, 83, 0.18);
+  [data-theme="dark"] .desktop-hero__timing-badge {
+    background-color: rgba(52, 168, 83, 0.15);
+    border-color: rgba(52, 168, 83, 0.3);
     color: #81c995;
   }
 
-  .desktop-hero__bento-val {
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--md-sys-color-on-surface);
-    line-height: 1.1;
-  }
-
-  .desktop-hero__bento-lbl {
-    font-size: 10.5px;
-    color: var(--md-sys-color-on-surface-variant);
-    font-weight: 500;
-    line-height: 1.15;
-  }
-
   /* --------------------------------------------------------------------------
-     4. CTAs Action Row (WhatsApp Quick Order + Explore Catalog)
+     2. Interactive Segmented Navigation Tabs
      -------------------------------------------------------------------------- */
-  .desktop-hero__actions {
-    position: relative;
-    z-index: 1;
+  .desktop-hero__tabs-bar {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    background-color: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.04));
+    border-radius: 10px;
+    padding: 3px;
+    gap: 4px;
     margin-bottom: 14px;
   }
 
-  .desktop-hero__btn-whatsapp {
-    flex: 1.2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-    color: #ffffff;
-    padding: 12px 18px;
-    border-radius: 12px;
-    font-size: 13.5px;
-    font-weight: 700;
-    letter-spacing: 0.2px;
-    text-decoration: none;
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
-    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  [data-theme="dark"] .desktop-hero__tabs-bar {
+    background-color: rgba(255, 255, 255, 0.05);
   }
 
-  .desktop-hero__btn-whatsapp:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(37, 211, 102, 0.5);
-    background: linear-gradient(135deg, #28e06c 0%, #159b8b 100%);
-  }
-
-  .desktop-hero__btn-whatsapp:active {
-    transform: translateY(0);
-  }
-
-  .desktop-hero__btn-whatsapp-icon {
-    font-size: 20px;
-  }
-
-  .desktop-hero__btn-whatsapp-text {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    line-height: 1.15;
-  }
-
-  .desktop-hero__btn-whatsapp-main {
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  .desktop-hero__btn-whatsapp-sub {
-    font-size: 10px;
-    font-weight: 500;
-    opacity: 0.9;
-  }
-
-  .desktop-hero__btn-shop {
-    flex: 0.9;
+  .desktop-hero__tab-btn {
+    flex: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 12px 16px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    background: var(--md-sys-color-surface, #ffffff);
-    color: var(--md-sys-color-on-surface);
-    border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
-    transition: all 0.2s ease;
-  }
-
-  [data-theme="dark"] .desktop-hero__btn-shop {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.12);
-  }
-
-  .desktop-hero__btn-shop:hover {
-    background: var(--md-sys-color-primary, #1e8e3e);
-    color: #ffffff;
-    border-color: var(--md-sys-color-primary, #1e8e3e);
-    transform: translateY(-2px);
-  }
-
-  /* --------------------------------------------------------------------------
-     5. Trending Category Quick-Pills
-     -------------------------------------------------------------------------- */
-  .desktop-hero__pills-wrapper {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    overflow-x: auto;
-    padding-top: 2px;
-    scrollbar-width: none;
-  }
-
-  .desktop-hero__pills-wrapper::-webkit-scrollbar {
-    display: none;
-  }
-
-  .desktop-hero__pills-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--md-sys-color-on-surface-variant);
-    opacity: 0.75;
-    flex-shrink: 0;
-  }
-
-  .desktop-hero__pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 11px;
-    border-radius: 9999px;
-    font-size: 11.5px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-size: 12.5px;
     font-weight: 500;
-    text-decoration: none;
-    color: var(--md-sys-color-on-surface);
-    background: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.04));
-    border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
-    white-space: nowrap;
+    color: var(--md-sys-color-on-surface-variant);
+    cursor: pointer;
     transition: all 0.18s ease;
   }
 
-  [data-theme="dark"] .desktop-hero__pill {
-    background: rgba(255, 255, 255, 0.04);
+  .desktop-hero__tab-btn .material-symbols-outlined {
+    font-size: 16px;
+  }
+
+  .desktop-hero__tab-btn:hover {
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .desktop-hero__tab-btn--active {
+    background-color: var(--md-sys-color-surface, #ffffff);
+    color: var(--md-sys-color-on-surface, #1a1c1e);
+    font-weight: 600;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  [data-theme="dark"] .desktop-hero__tab-btn--active {
+    background-color: var(--md-sys-color-surface-container-highest, #2b302c);
+    color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  }
+
+  /* --------------------------------------------------------------------------
+     3. Tab Content Panels (Smooth Fade Transition)
+     -------------------------------------------------------------------------- */
+  .desktop-hero__tab-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: tab-panel-fade 0.22s ease-out;
+  }
+
+  @keyframes tab-panel-fade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* --- Panel 1: WhatsApp Fast Order Tool --- */
+  .desktop-hero__whatsapp-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .desktop-hero__panel-intro {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--md-sys-color-on-surface-variant);
+    margin: 0;
+  }
+
+  .desktop-hero__input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .desktop-hero__order-textarea {
+    width: 100%;
+    min-height: 72px;
+    max-height: 90px;
+    resize: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    border: 1px solid var(--md-sys-color-outline-variant, #ccc);
+    background-color: var(--md-sys-color-surface, #ffffff);
+    color: var(--md-sys-color-on-surface);
+    box-sizing: border-box;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  [data-theme="dark"] .desktop-hero__order-textarea {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .desktop-hero__order-textarea:focus {
+    outline: none;
+    border-color: #25d366;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.15);
+  }
+
+  .desktop-hero__order-textarea::placeholder {
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: 0.6;
+  }
+
+  .desktop-hero__whatsapp-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #25d366;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+    transition: all 0.18s ease;
+  }
+
+  .desktop-hero__whatsapp-cta-btn:hover {
+    background-color: #20bd5a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+  }
+
+  .desktop-hero__whatsapp-cta-btn:active {
+    transform: translateY(0);
+  }
+
+  /* --- Panel 2: Live Store Offers List --- */
+  .desktop-hero__offers-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .desktop-hero__offer-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    background-color: var(--md-sys-color-surface, #ffffff);
+    border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.06));
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.18s ease;
+  }
+
+  [data-theme="dark"] .desktop-hero__offer-item {
+    background-color: rgba(255, 255, 255, 0.03);
     border-color: rgba(255, 255, 255, 0.08);
   }
 
-  .desktop-hero__pill:hover {
-    background: rgba(30, 142, 62, 0.12);
+  .desktop-hero__offer-item:hover {
     border-color: var(--md-sys-color-primary, #1e8e3e);
+    transform: translateX(3px);
+  }
+
+  .desktop-hero__offer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .desktop-hero__offer-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background-color: rgba(30, 142, 62, 0.1);
     color: var(--md-sys-color-primary, #1e8e3e);
-    transform: translateY(-1px);
   }
 
-  [data-theme="dark"] .desktop-hero__pill:hover {
-    background: rgba(52, 168, 83, 0.2);
-    color: #81c995;
-    border-color: #81c995;
+  .desktop-hero__offer-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--md-sys-color-on-surface);
   }
-}
 
-/* ==========================================================================
-   Keyframe Animations
-   ========================================================================== */
-@keyframes ambient-orb-float {
-  0% {
-    transform: translate(0, 0) scale(1);
+  .desktop-hero__offer-sub {
+    font-size: 11px;
+    color: var(--md-sys-color-on-surface-variant);
   }
-  100% {
-    transform: translate(-20px, 20px) scale(1.12);
-  }
-}
 
-@keyframes pulse-dot {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7);
+  /* --- Panel 3: Store & Delivery Details --- */
+  .desktop-hero__info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
   }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 7px rgba(52, 168, 83, 0);
+
+  .desktop-hero__info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--md-sys-color-on-surface);
   }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(52, 168, 83, 0);
+
+  .desktop-hero__info-icon {
+    font-size: 18px;
+    color: var(--md-sys-color-primary, #1e8e3e);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .desktop-hero__info-text strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 1px;
+  }
+
+  .desktop-hero__info-text span {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 11.5px;
+  }
+
+  /* --------------------------------------------------------------------------
+     4. Footer Utility Strip (Delivery Promise & Phone)
+     -------------------------------------------------------------------------- */
+  .desktop-hero__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
+    margin-top: 12px;
+    font-size: 11.5px;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  [data-theme="dark"] .desktop-hero__footer {
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .desktop-hero__footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+  }
+
+  .desktop-hero__footer-badge .material-symbols-outlined {
+    font-size: 15px;
+    color: var(--md-sys-color-primary, #1e8e3e);
+  }
+
+  .desktop-hero__footer-phone {
+    color: var(--md-sys-color-primary, #1e8e3e);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .desktop-hero__footer-phone:hover {
+    text-decoration: underline;
   }
 }
