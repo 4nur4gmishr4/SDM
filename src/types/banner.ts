@@ -10,5 +10,12 @@ export interface Banner {
   updated_at: string;
 }
 
-export type BannerInsert = Omit<Banner, 'id' | 'created_at' | 'updated_at'>;
-export type BannerUpdate = Partial<BannerInsert>;
+export interface DefaultLogoBannerConfig {
+  image_url: string;
+  local_url?: string;
+  title: string;
+  subtitle: string;
+  link_url: string;
+  is_enabled: boolean;
+  updated_at?: string;
+}
