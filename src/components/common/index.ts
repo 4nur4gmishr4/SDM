@@ -16,4 +16,5 @@ export {
 export { ErrorBoundary } from './ErrorBoundary';
 export { WatermarkBanner, BeatingHeart } from './WatermarkBanner';
 export { WhatsAppIcon } from './WhatsAppIcon';
+export { StrokeText } from './StrokeText';
 

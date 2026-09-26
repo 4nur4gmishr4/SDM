@@ -1,392 +1,116 @@
 /* ==========================================================================
-   DesktopHeroLandingBrief.css — Authentic Retail Storefront Companion
-   Strictly Human-Crafted Retail UI • Zero AI Fluff • Zero Vibe-Coded Tropes
+   DesktopHeroLandingBrief.css — StrokeText Hero Presentation
    Active ONLY on viewports >= 1024px (hidden on mobile & tablet)
    ========================================================================== */
 
-.desktop-hero-landing {
+.desktop-hero-stroke-card {
   display: none; /* Hidden on mobile and tablet screens */
 }
 
 @media (min-width: 1024px) {
-  .desktop-hero-landing {
+  .desktop-hero-stroke-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    min-height: 430px;
-    border-radius: 20px;
+    min-height: 420px;
+    border-radius: 24px;
     position: relative;
-    padding: 22px 24px;
+    padding: 24px 28px;
     box-sizing: border-box;
-    background-color: var(--md-sys-color-surface-container, #ffffff);
+    background: var(--md-sys-color-surface-container-lowest, #ffffff);
     border: 1px solid var(--md-sys-color-outline-variant, #e0e2dc);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    -webkit-user-select: none;
-    user-select: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
   }
 
-  [data-theme="dark"] .desktop-hero-landing {
-    background-color: var(--md-sys-color-surface-container, #1f2320);
+  [data-theme="dark"] .desktop-hero-stroke-card {
+    background: var(--md-sys-color-surface-container, #1f2320);
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
-  /* --------------------------------------------------------------------------
-     1. Header: Authentic Store Title & Local Hub
-     -------------------------------------------------------------------------- */
-  .desktop-hero__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-
-  .desktop-hero__brand-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .desktop-hero__brand-row {
-    display: flex;
+  .desktop-hero-stroke__top-tag {
+    display: inline-flex;
     align-items: center;
     gap: 8px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background-color: var(--md-sys-color-primary-container, #CEEAD6);
+    color: var(--md-sys-color-on-primary-container, #0D652D);
+    width: fit-content;
   }
 
-  .desktop-hero__brand-icon {
-    font-size: 22px;
-    color: var(--md-sys-color-primary, #1e8e3e);
+  [data-theme="dark"] .desktop-hero-stroke__top-tag {
+    background-color: rgba(30, 142, 62, 0.25);
+    color: #81C995;
+    border: 1px solid rgba(129, 201, 149, 0.25);
   }
 
-  .desktop-hero__store-title {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    color: var(--md-sys-color-on-surface, #1a1c1e);
-  }
-
-  .desktop-hero__store-subtitle {
-    margin: 0;
-    font-size: 12.5px;
-    color: var(--md-sys-color-on-surface-variant, #535f52);
-    font-weight: 500;
-  }
-
-  .desktop-hero__timing-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background-color: rgba(30, 142, 62, 0.08);
-    border: 1px solid rgba(30, 142, 62, 0.2);
-    color: var(--md-sys-color-primary, #1e8e3e);
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  [data-theme="dark"] .desktop-hero__timing-badge {
-    background-color: rgba(52, 168, 83, 0.15);
-    border-color: rgba(52, 168, 83, 0.3);
-    color: #81c995;
-  }
-
-  /* --------------------------------------------------------------------------
-     2. Interactive Segmented Navigation Tabs
-     -------------------------------------------------------------------------- */
-  .desktop-hero__tabs-bar {
-    display: flex;
-    background-color: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.04));
-    border-radius: 10px;
-    padding: 3px;
-    gap: 4px;
-    margin-bottom: 14px;
-  }
-
-  [data-theme="dark"] .desktop-hero__tabs-bar {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .desktop-hero__tab-btn {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 7px 12px;
-    border-radius: 8px;
-    border: none;
-    background: transparent;
-    font-size: 12.5px;
-    font-weight: 500;
-    color: var(--md-sys-color-on-surface-variant);
-    cursor: pointer;
-    transition: all 0.18s ease;
-  }
-
-  .desktop-hero__tab-btn .material-symbols-outlined {
+  .desktop-hero-stroke__tag-icon {
     font-size: 16px;
-  }
-
-  .desktop-hero__tab-btn:hover {
-    color: var(--md-sys-color-on-surface);
-  }
-
-  .desktop-hero__tab-btn--active {
-    background-color: var(--md-sys-color-surface, #ffffff);
-    color: var(--md-sys-color-on-surface, #1a1c1e);
-    font-weight: 600;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  }
-
-  [data-theme="dark"] .desktop-hero__tab-btn--active {
-    background-color: var(--md-sys-color-surface-container-highest, #2b302c);
-    color: #ffffff;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
-  }
-
-  /* --------------------------------------------------------------------------
-     3. Tab Content Panels (Smooth Fade Transition)
-     -------------------------------------------------------------------------- */
-  .desktop-hero__tab-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    animation: tab-panel-fade 0.22s ease-out;
-  }
-
-  @keyframes tab-panel-fade {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* --- Panel 1: WhatsApp Fast Order Tool --- */
-  .desktop-hero__whatsapp-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
-  }
-
-  .desktop-hero__panel-intro {
-    font-size: 12.5px;
-    line-height: 1.45;
-    color: var(--md-sys-color-on-surface-variant);
-    margin: 0;
-  }
-
-  .desktop-hero__input-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-  }
-
-  .desktop-hero__order-textarea {
-    width: 100%;
-    min-height: 72px;
-    max-height: 90px;
-    resize: none;
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1.4;
-    border: 1px solid var(--md-sys-color-outline-variant, #ccc);
-    background-color: var(--md-sys-color-surface, #ffffff);
-    color: var(--md-sys-color-on-surface);
-    box-sizing: border-box;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease;
-  }
-
-  [data-theme="dark"] .desktop-hero__order-textarea {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.15);
-  }
-
-  .desktop-hero__order-textarea:focus {
-    outline: none;
-    border-color: #25d366;
-    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.15);
-  }
-
-  .desktop-hero__order-textarea::placeholder {
-    color: var(--md-sys-color-on-surface-variant);
-    opacity: 0.6;
-  }
-
-  .desktop-hero__whatsapp-cta-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background-color: #25d366;
-    color: #ffffff;
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 600;
-    padding: 10px 18px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
-    transition: all 0.18s ease;
-  }
-
-  .desktop-hero__whatsapp-cta-btn:hover {
-    background-color: #20bd5a;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
-  }
-
-  .desktop-hero__whatsapp-cta-btn:active {
-    transform: translateY(0);
-  }
-
-  /* --- Panel 2: Live Store Offers List --- */
-  .desktop-hero__offers-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-  }
-
-  .desktop-hero__offer-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 9px 12px;
-    background-color: var(--md-sys-color-surface, #ffffff);
-    border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.06));
-    border-radius: 10px;
-    text-decoration: none;
     color: inherit;
-    transition: all 0.18s ease;
   }
 
-  [data-theme="dark"] .desktop-hero__offer-item {
-    background-color: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.08);
-  }
-
-  .desktop-hero__offer-item:hover {
-    border-color: var(--md-sys-color-primary, #1e8e3e);
-    transform: translateX(3px);
-  }
-
-  .desktop-hero__offer-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .desktop-hero__offer-tag {
+  .desktop-hero-stroke__tag-text {
     font-size: 11px;
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 6px;
-    background-color: rgba(30, 142, 62, 0.1);
-    color: var(--md-sys-color-primary, #1e8e3e);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
-  .desktop-hero__offer-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--md-sys-color-on-surface);
-  }
-
-  .desktop-hero__offer-sub {
-    font-size: 11px;
-    color: var(--md-sys-color-on-surface-variant);
-  }
-
-  /* --- Panel 3: Store & Delivery Details --- */
-  .desktop-hero__info-panel {
+  .desktop-hero-stroke__lines-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    flex: 1;
+    gap: 0;
+    margin: auto 0;
+    width: 100%;
   }
 
-  .desktop-hero__info-row {
+  .desktop-hero-stroke__line {
+    width: 100%;
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 12.5px;
-    line-height: 1.4;
-    color: var(--md-sys-color-on-surface);
+    align-items: center;
   }
 
-  .desktop-hero__info-icon {
-    font-size: 18px;
-    color: var(--md-sys-color-primary, #1e8e3e);
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .desktop-hero__info-text strong {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 1px;
-  }
-
-  .desktop-hero__info-text span {
-    color: var(--md-sys-color-on-surface-variant);
-    font-size: 11.5px;
-  }
-
-  /* --------------------------------------------------------------------------
-     4. Footer Utility Strip (Delivery Promise & Phone)
-     -------------------------------------------------------------------------- */
-  .desktop-hero__footer {
+  .desktop-hero-stroke__bottom-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 12px;
-    border-top: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
-    margin-top: 12px;
-    font-size: 11.5px;
-    color: var(--md-sys-color-on-surface-variant);
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
   }
 
-  [data-theme="dark"] .desktop-hero__footer {
+  [data-theme="dark"] .desktop-hero-stroke__bottom-row {
     border-top-color: rgba(255, 255, 255, 0.08);
   }
 
-  .desktop-hero__footer-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+  .desktop-hero-stroke__desc {
+    margin: 0;
+    font-size: 13px;
+    color: var(--md-sys-color-on-surface-variant, #5F6368);
+    line-height: 1.4;
     font-weight: 500;
   }
 
-  .desktop-hero__footer-badge .material-symbols-outlined {
-    font-size: 15px;
-    color: var(--md-sys-color-primary, #1e8e3e);
-  }
-
-  .desktop-hero__footer-phone {
-    color: var(--md-sys-color-primary, #1e8e3e);
-    text-decoration: none;
-    font-weight: 600;
+  .desktop-hero-stroke__shop-btn {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 9999px;
+    background-color: var(--md-sys-color-primary, #1E8E3E);
+    color: #ffffff !important;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: transform 0.15s ease, background-color 0.15s ease;
   }
 
-  .desktop-hero__footer-phone:hover {
-    text-decoration: underline;
+  .desktop-hero-stroke__shop-btn:hover {
+    background-color: var(--md-sys-color-tertiary, #137333);
+    transform: translateY(-1px);
   }
 }

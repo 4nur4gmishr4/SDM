@@ -125,15 +125,8 @@ export function ProductDetailPage() {
               </div>
             )}
             {activeMrp && activeMrp > activePrice && (
-              <div style={{
-                background: 'var(--md-sys-color-primary-container)',
-                color: 'var(--md-sys-color-on-primary-container)',
-                padding: '2px 8px',
-                borderRadius: '6px',
-                fontSize: '12px',
-                fontWeight: 600
-              }}>
-                SAVE {Math.round(((activeMrp - activePrice) / activeMrp) * 100)}%
+              <div className="product-detail__discount-badge">
+                {Math.round(((activeMrp - activePrice) / activeMrp) * 100)}% OFF
               </div>
             )}
           </div>

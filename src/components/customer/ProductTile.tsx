@@ -19,6 +19,9 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
   const currentMrp = activeVariant?.mrp || product.mrp;
   const currentUnit = activeVariant ? activeVariant.unit_size : product.unit_size;
   const isAvailable = activeVariant ? activeVariant.is_available : product.is_available;
+  const discountPercent = (currentMrp && currentMrp > currentPrice)
+    ? Math.round(((currentMrp - currentPrice) / currentMrp) * 100)
+    : 0;
 
   const handleAdd = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -37,16 +40,16 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
   return (
     <article className="product-tile">
       <div className="product-tile__badges">
+        {discountPercent > 0 && (
+          <span className="product-tile__badge product-tile__badge--discount">
+            {discountPercent}% OFF
+          </span>
+        )}
         {!isAvailable && (
           <span className="product-tile__badge product-tile__badge--unavailable">Out of Stock</span>
         )}
         {isAvailable && product.is_featured && (
           <span className="product-tile__badge product-tile__badge--featured">Featured</span>
-        )}
-        {currentMrp && currentMrp > currentPrice && (
-          <span className="product-tile__badge" style={{ backgroundColor: 'var(--md-sys-color-primary-container)', color: 'var(--md-sys-color-on-primary-container)' }}>
-            {Math.round(((currentMrp - currentPrice) / currentMrp) * 100)}% OFF
-          </span>
         )}
       </div>
 
@@ -117,11 +120,19 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
         )}
         
         <div className="product-tile__price-row">
-          <div>
-            <div className="product-tile__price">{formatPrice(currentPrice)}</div>
+          <div className="product-tile__price-col">
+            <div className="product-tile__price-line">
+              <span className="product-tile__price">{formatPrice(currentPrice)}</span>
+              {discountPercent > 0 && (
+                <span className="product-tile__discount-chip">
+                  {discountPercent}% OFF
+                </span>
+              )}
+            </div>
             {currentMrp && currentMrp > currentPrice && (
-              <div style={{ fontSize: '11px', textDecoration: 'line-through', color: 'var(--md-sys-color-outline)' }}>
-                {formatPrice(currentMrp)}
+              <div className="product-tile__mrp-line">
+                <span className="product-tile__mrp-label">MRP</span>
+                <span className="product-tile__mrp-value">{formatPrice(currentMrp)}</span>
               </div>
             )}
           </div>
