@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test:supabase": "node scripts/test_supabase.js"
+    "test:supabase": "node scripts/test_supabase.js",
+    "import:catalog": "node scripts/import_excel_catalog.js",
+    "import:sql": "node scripts/import_excel_catalog.js --sql"
   },
   "dependencies": {
     "@material/web": "^2.5.0",
