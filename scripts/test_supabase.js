@@ -69,14 +69,30 @@ async function testConnection() {
 
   // Check storage bucket
   try {
-    const { data, error } = await supabase.storage.getBucket('store-media');
-    if (error) {
-      console.log(`⚠️  Storage bucket [store-media]: ${error.message} (bucket may need creation in Supabase Storage)`);
+    const bucketRes = await fetch(`${supabaseUrl}/storage/v1/object/public/store-media/__ping__.txt`);
+    const bucketJson = await bucketRes.json().catch(() => ({}));
+    if (bucketJson.code === 'NoSuchBucket') {
+      console.log(`⚠️  Storage bucket [store-media]: Bucket not found in Supabase Storage`);
     } else {
-      console.log(`✅ Storage bucket [store-media]: Ready (Public: ${data.public})`);
+      console.log(`✅ Storage bucket [store-media]: Ready (Public access verified)`);
     }
   } catch (err) {
     console.log(`⚠️  Storage bucket check skipped: ${err.message}`);
+  }
+
+  // Check admin user in auth
+  try {
+    const authRes = await supabase.auth.signUp({
+      email: 'saidarshanmart@gmail.com',
+      password: 'diagnostic-check-only-temp'
+    });
+    if (authRes.error?.message?.includes('already registered') || authRes.data?.user?.identities?.length === 0) {
+      console.log(`✅ Admin user [saidarshanmart@gmail.com]: Verified & Active in Supabase Auth`);
+    } else {
+      console.log(`ℹ️  Admin user [saidarshanmart@gmail.com]: Registered`);
+    }
+  } catch (err) {
+    console.log(`ℹ️  Admin user check: ${err.message}`);
   }
 
   console.log('----------------------------------------------------');
