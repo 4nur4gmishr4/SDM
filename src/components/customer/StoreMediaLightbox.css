@@ -1,0 +1,329 @@
+/* StoreMediaLightbox.css — High-Resolution Master Lightbox */
+
+.sdm-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgba(10, 14, 12, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #F8FAF9;
+  user-select: none;
+  animation: sdmLightboxFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sdmLightboxFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sdm-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Header */
+.sdm-lightbox__header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: linear-gradient(180deg, rgba(10, 14, 12, 0.85) 0%, rgba(10, 14, 12, 0) 100%);
+  gap: 12px;
+}
+
+.sdm-lightbox__badge-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sdm-lightbox__tag {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(30, 142, 62, 0.28);
+  color: #81C995;
+  border: 1px solid rgba(129, 201, 149, 0.35);
+}
+
+.sdm-lightbox__res-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #E8EAED;
+}
+
+.sdm-lightbox__counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sdm-lightbox__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sdm-lightbox__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.sdm-lightbox__btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
+}
+
+.sdm-lightbox__btn:active {
+  transform: scale(0.96);
+}
+
+.sdm-lightbox__btn--close {
+  background: rgba(234, 67, 53, 0.2);
+  border-color: rgba(234, 67, 53, 0.4);
+  color: #F28B82;
+}
+
+.sdm-lightbox__btn--close:hover {
+  background: rgba(234, 67, 53, 0.4);
+  color: #FFFFFF;
+}
+
+.sdm-lightbox__btn-text {
+  font-size: 12px;
+}
+
+/* Viewport */
+.sdm-lightbox__viewport {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 16px;
+}
+
+.sdm-lightbox__media-container {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.sdm-lightbox__image {
+  max-width: 100%;
+  max-height: calc(85vh - 160px);
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+.sdm-lightbox__image.is-loaded {
+  opacity: 1;
+}
+
+.sdm-lightbox__video {
+  max-width: 100%;
+  max-height: calc(85vh - 160px);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+  outline: none;
+}
+
+.sdm-lightbox__media-container.is-zoomed {
+  overflow: auto;
+  cursor: zoom-out !important;
+}
+
+/* Nav arrows */
+.sdm-lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.sdm-lightbox__nav:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.sdm-lightbox__nav--prev {
+  left: 20px;
+}
+
+.sdm-lightbox__nav--next {
+  right: 20px;
+}
+
+/* Loader */
+.sdm-lightbox__loader {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+}
+
+.sdm-lightbox__spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #81C995;
+  border-radius: 50%;
+  animation: sdmSpin 0.7s linear infinite;
+}
+
+@keyframes sdmSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Footer Info Sheet */
+.sdm-lightbox__footer {
+  position: relative;
+  z-index: 10;
+  padding: 16px 24px 22px;
+  background: linear-gradient(0deg, rgba(10, 14, 12, 0.95) 0%, rgba(10, 14, 12, 0.7) 70%, rgba(10, 14, 12, 0) 100%);
+}
+
+.sdm-lightbox__footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sdm-lightbox__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.sdm-lightbox__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+}
+
+.sdm-lightbox__department-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #81C995;
+  background: rgba(30, 142, 62, 0.25);
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 201, 149, 0.3);
+}
+
+.sdm-lightbox__notes {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 820px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .sdm-lightbox__header {
+    padding: 12px 14px;
+  }
+  .sdm-lightbox__tag {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  .sdm-lightbox__res-tag {
+    display: none; /* Keep header clean on small phones */
+  }
+  .sdm-lightbox__btn {
+    height: 36px;
+    min-width: 36px;
+    padding: 0 8px;
+  }
+  .sdm-lightbox__btn-text {
+    display: none;
+  }
+  .sdm-lightbox__nav {
+    width: 40px;
+    height: 40px;
+  }
+  .sdm-lightbox__nav--prev {
+    left: 8px;
+  }
+  .sdm-lightbox__nav--next {
+    right: 8px;
+  }
+  .sdm-lightbox__footer {
+    padding: 12px 16px 20px;
+  }
+  .sdm-lightbox__title {
+    font-size: 15px;
+  }
+  .sdm-lightbox__notes {
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+}
