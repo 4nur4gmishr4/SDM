@@ -4,6 +4,7 @@ import { SearchBar } from '../../components/customer/SearchBar';
 import { CategoryNav } from '../../components/customer/CategoryNav';
 import { ProductGrid } from '../../components/customer/ProductGrid';
 import { IOSBannerCarousel } from '../../components/customer/IOSBannerCarousel';
+import { DesktopHeroLandingBrief } from '../../components/customer/DesktopHeroLandingBrief';
 import './HomePage.css';
 
 import { useCategories } from '../../hooks/useCategories';
@@ -29,13 +30,16 @@ export function HomePage() {
         <SearchBar />
       </section>
 
-      {/* iOS-Style Banner Carousel with Instagram Segmented Loader & Logo Fallback */}
-      <section className="home-page__section" style={{ marginTop: '14px', marginBottom: '28px' }}>
-        <IOSBannerCarousel 
-          banners={banners} 
-          isLoading={bannersLoading} 
-          slideDuration={4800} 
-        />
+      {/* Hero Split Showcase: Left iOS Banner Carousel + Right 0-Vibe Coded Desktop Landing Brief */}
+      <section className="home-page__hero-split-section" style={{ marginTop: '14px', marginBottom: '28px' }}>
+        <div className="home-page__hero-banner-wrap">
+          <IOSBannerCarousel 
+            banners={banners} 
+            isLoading={bannersLoading} 
+            slideDuration={4800} 
+          />
+        </div>
+        <DesktopHeroLandingBrief />
       </section>
 
       {/* Category Navigation */}
