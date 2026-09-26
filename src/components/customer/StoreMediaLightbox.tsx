@@ -37,7 +37,10 @@ export function StoreMediaLightbox({
     };
   }, [isOpen, initialIndex]);
 
-  const currentItem = items[currentIndex];
+  if (!isOpen || !items || items.length === 0) return null;
+
+  const currentItem = items[currentIndex] || items[0];
+  if (!currentItem) return null;
 
   const handleNext = useCallback(() => {
     if (items.length <= 1) return;
@@ -116,17 +119,6 @@ export function StoreMediaLightbox({
       <header className="sdm-lightbox__header">
         <div className="sdm-lightbox__badge-group">
           <span className="sdm-lightbox__tag">{currentItem.department}</span>
-          {currentItem.highlightTag && (
-            <span className="sdm-lightbox__res-tag">
-              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>
-                photo_camera
-              </span>
-              {currentItem.highlightTag}
-            </span>
-          )}
-          <span className="sdm-lightbox__counter">
-            {currentIndex + 1} / {items.length}
-          </span>
         </div>
 
         <div className="sdm-lightbox__actions">
@@ -200,9 +192,11 @@ export function StoreMediaLightbox({
             <video
               src={currentItem.url}
               className="sdm-lightbox__video"
-              controls
+              muted
               autoPlay
+              loop
               playsInline
+              controls={false}
               onLoadedData={() => setIsLoaded(true)}
             >
               Your browser does not support HTML5 video.
