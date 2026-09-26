@@ -4,7 +4,7 @@
 
 .ios-banner-container {
   width: 100%;
-  max-width: var(--sdm-layout-max-width, 1280px);
+  max-width: 740px;
   margin-inline: auto;
   position: relative;
   -webkit-user-select: none;

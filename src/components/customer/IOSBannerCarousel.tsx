@@ -19,7 +19,24 @@ export function IOSBannerCarousel({
 
   // Only display banners that are explicitly active
   const activeBanners = banners.filter((b) => b.is_active);
-  const displayBanners = activeBanners;
+
+  // If store logo banner is enabled, include it as the flagship premier banner
+  const logoBannerItem: Banner | null = (logoBanner?.is_enabled && logoBanner?.image_url) ? {
+    id: 'default-store-logo-banner',
+    title: logoBanner.title || 'Sai Darshan Shopping Mart',
+    text: logoBanner.subtitle || 'Aapki Apni Supermarket • Sanjeevni Nagar Main Road, Jabalpur',
+    image_url: logoBanner.image_url,
+    link_url: logoBanner.link_url || '/shop',
+    is_active: true,
+    display_order: 0,
+    created_at: '',
+    updated_at: '',
+  } : null;
+
+  const displayBanners: Banner[] = [
+    ...(logoBannerItem ? [logoBannerItem] : []),
+    ...activeBanners,
+  ];
   const totalSlides = displayBanners.length;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -126,46 +143,9 @@ export function IOSBannerCarousel({
     );
   }
 
-  // 2. If no active promotional banners configured by admin:
-  // Render the default store logo banner configured from Admin Panel
-  if (activeBanners.length === 0) {
-    if (!logoBanner?.is_enabled || !logoBanner?.image_url) {
-      return null;
-    }
-
-    return (
-      <section className="ios-banner-carousel" aria-label="Store Welcome Banner">
-        <div className="ios-banner-card">
-          <Link
-            to={logoBanner.link_url || '/shop'}
-            className="ios-banner__media-viewport"
-            style={{ display: 'block', textDecoration: 'none' }}
-          >
-            <img
-              src={logoBanner.image_url}
-              alt={logoBanner.title || 'Sai Darshan Shopping Mart'}
-              className="ios-banner-image"
-              loading="eager"
-              decoding="async"
-              onError={(e) => {
-                if (logoBanner.local_url && (e.target as HTMLImageElement).src !== logoBanner.local_url) {
-                  (e.target as HTMLImageElement).src = logoBanner.local_url;
-                }
-              }}
-            />
-          </Link>
-
-          <div className="ios-banner__merged-section">
-            <div className="ios-banner__merged-content">
-              <h2 className="ios-banner-title">{logoBanner.title || 'Sai Darshan Shopping Mart'}</h2>
-              {logoBanner.subtitle && (
-                <p className="ios-banner-subtitle">{logoBanner.subtitle}</p>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+  // 2. If no banners at all to display
+  if (displayBanners.length === 0) {
+    return null;
   }
 
   const currentBanner = displayBanners[currentIndex] || displayBanners[0];
@@ -202,9 +182,13 @@ export function IOSBannerCarousel({
                     loading={idx === 0 ? 'eager' : 'lazy'}
                     decoding="async"
                     onError={(e) => {
-                      const filename = banner.image_url.split('/').pop()?.split('?')[0];
-                      if (filename && !(e.target as HTMLImageElement).src.includes('/images/banners/' + filename)) {
-                        (e.target as HTMLImageElement).src = '/images/banners/' + filename;
+                      if (banner.id === 'default-store-logo-banner') {
+                        (e.target as HTMLImageElement).src = '/images/SaiDarshanLogoBanner.png';
+                      } else {
+                        const filename = banner.image_url.split('/').pop()?.split('?')[0];
+                        if (filename && !(e.target as HTMLImageElement).src.includes('/images/banners/' + filename)) {
+                          (e.target as HTMLImageElement).src = '/images/banners/' + filename;
+                        }
                       }
                     }}
                   />

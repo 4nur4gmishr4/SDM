@@ -114,7 +114,10 @@ export function AppShell() {
       <header className="app-shell__top-bar">
         <div className="app-shell__top-bar-inner">
           <div className="app-shell__brand-group">
-            <Link to="/" className="app-shell__brand">
+            <Link to="/" className="app-shell__brand" aria-label="Sai Darshan Mart Home" style={{ display: 'inline-flex', alignItems: 'center' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '24px', color: 'var(--md-sys-color-primary)', marginRight: '6px' }}>
+                storefront
+              </span>
               <span className="app-shell__brand-name">Sai Darshan Mart</span>
             </Link>
             <HeaderLocationPill />
