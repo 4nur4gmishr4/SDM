@@ -31,3 +31,7 @@ main_data/
 main_data
 *.xlsx
 *.xls
+
+# Test results and artifacts
+test-results/
+process_photos.py

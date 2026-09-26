@@ -1,0 +1,118 @@
+[
+  {
+    "type": "image",
+    "filename": "8f4f810f-f26c-4c1d-84e8-d91f62f37615.jpg",
+    "url": "/images/store/8f4f810f-f26c-4c1d-84e8-d91f62f37615.jpg",
+    "width": 1024,
+    "height": 768,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "8f4f810f-f26c-4c1d-84e8-d91f62f37615.jpg"
+  },
+  {
+    "type": "image",
+    "filename": "img_0525.jpg",
+    "url": "/images/store/img_0525.jpg",
+    "width": 4032,
+    "height": 3024,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_0525.HEIC"
+  },
+  {
+    "type": "video",
+    "filename": "img_0525.mp4",
+    "url": "/images/store/img_0525.mp4",
+    "original_name": "IMG_0525.MP4"
+  },
+  {
+    "type": "image",
+    "filename": "img_0526.jpg",
+    "url": "/images/store/img_0526.jpg",
+    "width": 4032,
+    "height": 3024,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_0526.HEIC"
+  },
+  {
+    "type": "image",
+    "filename": "img_0604.jpg",
+    "url": "/images/store/img_0604.jpg",
+    "width": 4032,
+    "height": 3024,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_0604.HEIC"
+  },
+  {
+    "type": "image",
+    "filename": "img_0605.jpg",
+    "url": "/images/store/img_0605.jpg",
+    "width": 4032,
+    "height": 3024,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_0605.HEIC"
+  },
+  {
+    "type": "image",
+    "filename": "img_0606.jpg",
+    "url": "/images/store/img_0606.jpg",
+    "width": 4032,
+    "height": 3024,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_0606.HEIC"
+  },
+  {
+    "type": "image",
+    "filename": "img_2552.jpg",
+    "url": "/images/store/img_2552.jpg",
+    "width": 3264,
+    "height": 2448,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_2552.JPG"
+  },
+  {
+    "type": "image",
+    "filename": "img_2554.jpg",
+    "url": "/images/store/img_2554.jpg",
+    "width": 3264,
+    "height": 2448,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_2554.JPG"
+  },
+  {
+    "type": "image",
+    "filename": "img_9082.jpg",
+    "url": "/images/store/img_9082.jpg",
+    "width": 4032,
+    "height": 3024,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_9082.HEIC"
+  },
+  {
+    "type": "image",
+    "filename": "img_9084.jpg",
+    "url": "/images/store/img_9084.jpg",
+    "width": 4032,
+    "height": 3024,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_9084.HEIC"
+  },
+  {
+    "type": "image",
+    "filename": "img_9085.jpg",
+    "url": "/images/store/img_9085.jpg",
+    "width": 4032,
+    "height": 3024,
+    "aspect_ratio": 1.333,
+    "aspect_label": "landscape",
+    "original_name": "IMG_9085.HEIC"
+  }
+]
