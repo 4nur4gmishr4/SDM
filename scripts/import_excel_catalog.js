@@ -1,12 +1,7 @@
 /**
- * Master Excel Catalog Importer for Sai Darshan Mart
- * 
- * Usage:
- * 1. Direct API Upsert (requires SUPABASE_SERVICE_ROLE_KEY or live admin auth):
- *    node scripts/import_excel_catalog.js
- * 
- * 2. Generate SQL file for Supabase SQL Editor:
- *    node scripts/import_excel_catalog.js --sql
+ * Clean Master Catalog Importer for Sai Darshan Mart
+ * Imports all products from pristine ALL PRODUCT LIST.xlsx into Supabase
+ * Strictly NO images (image_url = null)
  */
 
 import fs from 'fs';
@@ -22,7 +17,6 @@ const __dirname = path.dirname(__filename);
 // Read .env
 const envPath = path.resolve(__dirname, '../.env');
 let supabaseUrl = '';
-let supabaseKey = '';
 let serviceRoleKey = '';
 
 if (fs.existsSync(envPath)) {
@@ -33,12 +27,10 @@ if (fs.existsSync(envPath)) {
     const [k, ...v] = trimmed.split('=');
     const val = v.join('=').trim().replace(/^['"]|['"]$/g, '');
     if (k === 'VITE_SUPABASE_URL') supabaseUrl = val;
-    if (k === 'VITE_SUPABASE_ANON_KEY') supabaseKey = val;
     if (k === 'SUPABASE_SERVICE_ROLE_KEY') serviceRoleKey = val;
   }
 }
 
-// Pre-seeded categories mapping (matches supabase_schema.sql IDs)
 const CATEGORIES = [
   { id: 'c1111111-1111-1111-1111-111111111111', name: 'Fresh Vegetables & Fruits', keywords: ['VEG', 'POTATO', 'ONION', 'TOMATO', 'FRUIT', 'APPLE', 'BANANA', 'LEMON', 'MATAR', 'ALOO', 'PYAZ'] },
   { id: 'c2222222-2222-2222-2222-222222222222', name: 'Dairy & Bakery', keywords: ['MILK', 'AMUL', 'BUTTER', 'PANEER', 'CHEESE', 'BREAD', 'CURD', 'DAIRY', 'GHEE', 'TOAST', 'RUSK', 'EGG'] },
@@ -73,12 +65,6 @@ function parseNumber(val, fallback = 0) {
   return isNaN(num) ? fallback : num;
 }
 
-function generateSku(name, pack, index) {
-  const clean = name.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 8);
-  const packClean = (pack || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 4);
-  return `SDM-${clean}-${packClean}-${String(index).padStart(4, '0')}`;
-}
-
 async function main() {
   const excelPath = path.resolve(__dirname, '../main_data/ALL PRODUCT LIST.xlsx');
   if (!fs.existsSync(excelPath)) {
@@ -86,10 +72,11 @@ async function main() {
     process.exit(1);
   }
 
-  console.log('----------------------------------------------------');
-  console.log('Sai Darshan Mart — Master Catalog Import');
-  console.log('----------------------------------------------------');
-  console.log('Loading Excel:', excelPath);
+  console.log('====================================================');
+  console.log('Sai Darshan Mart — Clean Pristine Catalog Import');
+  console.log('Strictly NO images (image_url = null)');
+  console.log('====================================================');
+  console.log('Reading Excel:', excelPath);
 
   const workbook = XLSX.readFile(excelPath);
   const sheetName = workbook.SheetNames[0];
@@ -97,11 +84,10 @@ async function main() {
   const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
   console.log(`Read ${rows.length} total rows from sheet "${sheetName}".`);
-  console.log('Processing catalog and eliminating duplicates / headers...');
+  console.log('Cleaning data and filtering headers...');
 
   const items = [];
-  const seenNames = new Set();
-  let rowIndex = 0;
+  let itemIndex = 0;
 
   for (let i = 5; i < rows.length; i++) {
     const r = rows[i];
@@ -112,105 +98,76 @@ async function main() {
       continue;
     }
 
+    itemIndex++;
     const pack = cleanString(r[2]) || '1 unit';
     const brand = cleanString(r[3]);
     const mrp = parseNumber(r[4], 0);
     const srate = parseNumber(r[6], parseNumber(r[5], mrp));
     const price = srate > 0 ? srate : (mrp > 0 ? mrp : 10);
     const finalMrp = mrp >= price ? mrp : price;
-
-    rowIndex++;
-    const sku = generateSku(rawName, pack, rowIndex);
     const categoryId = categorizeProduct(rawName, brand);
+    const sku = `SDM-${String(itemIndex).padStart(6, '0')}`;
 
     items.push({
       sku,
       name: rawName,
-      brand: brand || null,
+      brand: brand && !/^\d+$/.test(brand) ? brand : null,
       category_id: categoryId,
       price: price,
       mrp: finalMrp,
       unit_size: pack,
       stock_quantity: 50,
       description: brand ? `${rawName} by ${brand}. Fresh stock available at Sai Darshan Mart, Jabalpur.` : `${rawName}. Fresh grocery item from Sai Darshan Mart, Jabalpur.`,
+      image_url: null, // Strictly NO images
       is_available: true,
-      is_featured: rowIndex <= 24, // First 24 items featured on home
-      variants: []
+      is_featured: itemIndex <= 24,
+      is_archived: false,
+      variants: [],
     });
   }
 
-  console.log(`✅ Extracted ${items.length} clean products.`);
+  console.log(`✅ Extracted ${items.length} clean products ready for import.`);
 
-  // If --sql flag is passed, generate SQL script
-  const isSqlMode = process.argv.includes('--sql');
-  if (isSqlMode) {
-    const outSqlPath = path.resolve(__dirname, '../main_data/imported_products.sql');
-    console.log(`Writing SQL insert script to: ${outSqlPath}`);
-
-    const writeStream = fs.createWriteStream(outSqlPath, { encoding: 'utf8' });
-    writeStream.write('-- SAI DARSHAN MART — MASTER IMPORTED PRODUCTS CATALOG\n');
-    writeStream.write('-- Generated automatically from ALL PRODUCT LIST.xlsx\n\n');
-
-    const chunkSize = 500;
-    for (let i = 0; i < items.length; i += chunkSize) {
-      const chunk = items.slice(i, i + chunkSize);
-      writeStream.write('INSERT INTO public.products (sku, name, brand, category_id, price, mrp, unit_size, stock_quantity, description, is_available, is_featured, variants)\nVALUES\n');
-      
-      const valuesSql = chunk.map(item => {
-        const escName = item.name.replace(/'/g, "''");
-        const escBrand = item.brand ? `'${item.brand.replace(/'/g, "''")}'` : 'NULL';
-        const escDesc = item.description ? `'${item.description.replace(/'/g, "''")}'` : 'NULL';
-        return `  ('${item.sku}', '${escName}', ${escBrand}, '${item.category_id}', ${item.price}, ${item.mrp}, '${item.unit_size.replace(/'/g, "''")}', ${item.stock_quantity}, ${escDesc}, ${item.is_available}, ${item.is_featured}, '[]'::jsonb)`;
-      }).join(',\n');
-
-      writeStream.write(valuesSql);
-      writeStream.write('\nON CONFLICT (sku) DO UPDATE SET\n  price = EXCLUDED.price,\n  mrp = EXCLUDED.mrp,\n  is_available = EXCLUDED.is_available;\n\n');
-    }
-
-    writeStream.end();
-    console.log(`🎉 SQL file generated with ${items.length} products!`);
-    return;
-  }
-
-  // Direct Supabase API import
-  const keyToUse = serviceRoleKey || supabaseKey;
-  if (!serviceRoleKey) {
-    console.log('----------------------------------------------------');
-    console.log('⚠️  Notice: SUPABASE_SERVICE_ROLE_KEY is not in .env.');
-    console.log('Direct insertion via node requires the Secret/Service Role key to bypass RLS.');
-    console.log('Options:');
-    console.log('1. Add SUPABASE_SERVICE_ROLE_KEY=your_secret_key in .env and run again.');
-    console.log('   OR');
-    console.log('2. Run with --sql: npm run import:sql');
-    console.log('   (Generates main_data/imported_products.sql to run directly in Supabase SQL Editor)');
-    console.log('   OR');
-    console.log('3. Import via Admin Panel UI: http://localhost:5173/admin/products');
-    console.log('----------------------------------------------------');
-    return;
+  if (!serviceRoleKey || !supabaseUrl) {
+    console.error('❌ Supabase service role key or URL missing in .env!');
+    process.exit(1);
   }
 
   console.log('Connecting to Supabase using Service Role Key...');
   const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-  const batchSize = 200;
+  // Clear products table
+  console.log('Clearing existing products in Supabase...');
+  const { error: delErr } = await supabase.from('products').delete().neq('name', '___NON_EXISTENT___');
+  if (delErr) {
+    console.warn('Delete warning:', delErr.message);
+  } else {
+    console.log('✅ Supabase products table cleared.');
+  }
+
+  console.log('Importing clean products in batches of 500...');
+  const batchSize = 500;
   let successCount = 0;
+  const startTime = Date.now();
 
   for (let i = 0; i < items.length; i += batchSize) {
     const batch = items.slice(i, i + batchSize);
-    const { error } = await supabase.from('products').upsert(batch, { onConflict: 'sku' });
+    const { error: insertErr } = await supabase.from('products').insert(batch);
 
-    if (error) {
-      console.error(`❌ Error on batch ${i} - ${i + batch.length}:`, error.message);
+    if (insertErr) {
+      console.error(`❌ Error on batch ${i} - ${i + batch.length}:`, insertErr.message);
     } else {
       successCount += batch.length;
-      process.stdout.write(`\rProgress: ${successCount} / ${items.length} products imported (${Math.round((successCount / items.length) * 100)}%)...`);
+      const pct = ((successCount / items.length) * 100).toFixed(1);
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+      process.stdout.write(`\rProgress: ${successCount} / ${items.length} products imported (${pct}%) in ${elapsed}s...`);
     }
   }
 
-  console.log(`\n🎉 Successfully imported ${successCount} products into Supabase!`);
+  console.log(`\n\n🎉 Done! Successfully imported ${successCount} clean products into Supabase (strictly zero images)!`);
 }
 
 main().catch(err => {
-  console.error('Fatal error during import:', err);
+  console.error('Fatal error during clean import:', err);
   process.exit(1);
 });

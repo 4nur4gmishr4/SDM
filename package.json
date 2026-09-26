@@ -8,12 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test:supabase": "node scripts/test_supabase.js",
-    "import:catalog": "node scripts/import_excel_catalog.js",
-    "import:sql": "node scripts/import_excel_catalog.js --sql",
-    "enrich:images": "node scripts/enrich_product_images.js",
-    "enrich:featured": "node scripts/enrich_product_images.js --featured --limit 50",
-    "enrich:branded": "node scripts/enrich_branded_images.js --concurrency 15"
+    "import:catalog": "node scripts/import_excel_catalog.js"
   },
   "dependencies": {
     "@material/web": "^2.5.0",
