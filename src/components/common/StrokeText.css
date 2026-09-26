@@ -16,5 +16,6 @@
 
 .stroke-text__stroke,
 .stroke-text__fill {
+  -webkit-user-select: none;
   user-select: none;
 }

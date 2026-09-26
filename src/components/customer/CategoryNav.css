@@ -14,7 +14,12 @@
   
   /* Hide scrollbar for standard browsers */
   -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+}
+
+@supports (scrollbar-width: none) {
+  .category-nav {
+    scrollbar-width: none;
+  }
 }
 
 .category-nav::-webkit-scrollbar {
