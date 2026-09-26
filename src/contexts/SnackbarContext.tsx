@@ -1,62 +1,197 @@
-import { createContext, useContext, useState, type ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, type ReactNode, useCallback, useEffect, useRef } from 'react';
+import '../components/common/GoogleSnackbar.css';
+
+export interface SnackbarOptions {
+  actionLabel?: string;
+  onAction?: () => void;
+  duration?: number;
+  icon?: string;
+  iconColor?: string;
+}
+
+interface ToastItem {
+  id: number;
+  message: string;
+  actionLabel?: string;
+  onAction?: () => void;
+  icon?: string;
+  iconColor?: string;
+  isExiting: boolean;
+}
 
 interface SnackbarContextType {
-  showSnackbar: (message: string) => void;
+  showSnackbar: (message: string, options?: SnackbarOptions) => void;
+  hideSnackbar: () => void;
 }
 
 const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined);
 
-export function SnackbarProvider({ children }: { children: ReactNode }) {
-  const [message, setMessage] = useState<string | null>(null);
+// Helper to deduce authentic Material Design contextual icon based on message content
+function getContextualIcon(msg: string): { icon: string; color: string } {
+  const lower = msg.toLowerCase();
+  if (lower.includes('cart') || lower.includes('added')) {
+    return { icon: 'check_circle', color: '#81C995' }; // Google Material Green
+  }
+  if (lower.includes('restored') || lower.includes('online')) {
+    return { icon: 'wifi', color: '#81C995' };
+  }
+  if (lower.includes('offline') || lower.includes('no internet')) {
+    return { icon: 'wifi_off', color: '#FDD663' }; // Google Material Amber
+  }
+  if (lower.includes('theme')) {
+    return { icon: 'palette', color: '#8AB4F8' }; // Google Material Blue
+  }
+  if (lower.includes('google sign-in') || lower.includes('redirecting')) {
+    return { icon: 'account_circle', color: '#8AB4F8' };
+  }
+  if (lower.includes('signed out') || lower.includes('logout')) {
+    return { icon: 'logout', color: '#E8EAED' };
+  }
+  if (lower.includes('error') || lower.includes('failed') || lower.includes('fail')) {
+    return { icon: 'error', color: '#F28B82' }; // Google Material Coral Red
+  }
+  if (lower.includes('check') || lower.includes('valid') || lower.includes('required') || lower.includes('please')) {
+    return { icon: 'info', color: '#FDD663' };
+  }
+  return { icon: 'info', color: '#8AB4F8' };
+}
 
-  const showSnackbar = useCallback((msg: string) => {
-    setMessage(msg);
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-      setMessage((currentMessage) => {
-        // Only clear if the message hasn't changed (in case a new one was just fired)
-        if (currentMessage === msg) return null;
-        return currentMessage;
-      });
-    }, 3000);
+export function SnackbarProvider({ children }: { children: ReactNode }) {
+  const [toast, setToast] = useState<ToastItem | null>(null);
+  const [mobileBottomOffset, setMobileBottomOffset] = useState<number>(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const exitTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Measure bottom nav height on mobile so toast sits right above it
+  const updateBottomOffset = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    if (window.innerWidth <= 640) {
+      const bottomNav = document.querySelector('.app-shell__bottom-nav') as HTMLElement | null;
+      if (bottomNav && bottomNav.offsetParent !== null) {
+        const rect = bottomNav.getBoundingClientRect();
+        setMobileBottomOffset(rect.height || 80);
+        return;
+      }
+      const adminNav = document.querySelector('.admin-shell__nav') as HTMLElement | null;
+      if (adminNav && adminNav.offsetParent !== null) {
+        const rect = adminNav.getBoundingClientRect();
+        setMobileBottomOffset(rect.height || 64);
+        return;
+      }
+      setMobileBottomOffset(0);
+    } else {
+      setMobileBottomOffset(0);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateBottomOffset();
+    window.addEventListener('resize', updateBottomOffset);
+    return () => window.removeEventListener('resize', updateBottomOffset);
+  }, [updateBottomOffset]);
+
+  const hideSnackbar = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+
+    setToast((prev) => (prev ? { ...prev, isExiting: true } : null));
+
+    exitTimerRef.current = setTimeout(() => {
+      setToast(null);
+    }, 210);
+  }, []);
+
+  const showSnackbar = useCallback((msg: string, options?: SnackbarOptions) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+
+    updateBottomOffset();
+
+    const contextual = getContextualIcon(msg);
+    const toastId = Date.now();
+    const duration = options?.duration || 3500;
+
+    setToast({
+      id: toastId,
+      message: msg,
+      actionLabel: options?.actionLabel,
+      onAction: options?.onAction,
+      icon: options?.icon || contextual.icon,
+      iconColor: options?.iconColor || contextual.color,
+      isExiting: false,
+    });
+
+    // Auto-dismiss after duration
+    timerRef.current = setTimeout(() => {
+      setToast((current) => (current && current.id === toastId ? { ...current, isExiting: true } : current));
+
+      exitTimerRef.current = setTimeout(() => {
+        setToast((current) => (current && current.id === toastId ? null : current));
+      }, 210);
+    }, duration);
+  }, [updateBottomOffset]);
+
+  // Clean up timers on unmount
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+    };
   }, []);
 
   return (
-    <SnackbarContext.Provider value={{ showSnackbar }}>
+    <SnackbarContext.Provider value={{ showSnackbar, hideSnackbar }}>
       {children}
-      
-      {message && (
-        <div 
+
+      {toast && (
+        <div
+          role="status"
+          aria-live="polite"
+          className={`google-snackbar-container ${toast.isExiting ? 'google-snackbar--exit' : 'google-snackbar--enter'}`}
           style={{
-            position: 'fixed',
-            bottom: '24px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            backgroundColor: 'var(--md-sys-color-inverse-surface)',
-            color: 'var(--md-sys-color-inverse-on-surface)',
-            padding: '14px 16px',
-            borderRadius: 'var(--md-sys-shape-corner-extra-small)',
-            fontFamily: 'var(--md-sys-typescale-body-medium-font-family)',
-            fontSize: 'var(--md-sys-typescale-body-medium-size)',
-            boxShadow: '0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px rgba(0, 0, 0, 0.3)',
-            zIndex: 9999,
-            display: 'flex',
-            alignItems: 'center',
-            minWidth: '300px',
-            maxWidth: '90vw',
-            animation: 'snackbar-fade-in 0.2s cubic-bezier(0.2, 0, 0, 1)'
+            bottom: mobileBottomOffset > 0 ? `${mobileBottomOffset}px` : undefined,
           }}
         >
-          {message}
+          {/* Left: Contextual Icon + Message */}
+          <div className="google-snackbar-content">
+            {toast.icon && (
+              <span
+                className="material-symbols-outlined google-snackbar-icon"
+                style={{ color: toast.iconColor || 'inherit' }}
+                aria-hidden="true"
+              >
+                {toast.icon}
+              </span>
+            )}
+            <span className="google-snackbar-text">{toast.message}</span>
+          </div>
+
+          {/* Right: Optional Action Button or Close ✕ */}
+          <div className="google-snackbar-action">
+            {toast.actionLabel ? (
+              <button
+                type="button"
+                className="google-snackbar-action-btn"
+                onClick={() => {
+                  if (toast.onAction) toast.onAction();
+                  hideSnackbar();
+                }}
+              >
+                {toast.actionLabel}
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="google-snackbar-close-btn"
+                onClick={hideSnackbar}
+                aria-label="Dismiss notification"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
-      
-      <style>{`
-        @keyframes snackbar-fade-in {
-          from { opacity: 0; transform: translate(-50%, 20px); }
-          to { opacity: 1; transform: translate(-50%, 0); }
-        }
-      `}</style>
     </SnackbarContext.Provider>
   );
 }
