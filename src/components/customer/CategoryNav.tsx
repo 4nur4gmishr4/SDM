@@ -18,22 +18,24 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
   // Helper to map category names to Material Symbols if no thumbnail is available
   const getCategoryIcon = (name: string) => {
     const nameLower = name.toLowerCase();
-    if (nameLower.includes('bakery')) return 'bakery_dining';
+    if (nameLower.includes('special')) return 'star';
+    if (nameLower.includes('grocery') || nameLower.includes('staple')) return 'shopping_basket';
+    if (nameLower.includes('grain') || nameLower.includes('atta') || nameLower.includes('dal')) return 'grain';
     if (nameLower.includes('dairy')) return 'egg';
-    if (nameLower.includes('grain')) return 'agriculture';
-    if (nameLower.includes('spice') || nameLower.includes('oil')) return 'oil_barrel';
-    if (nameLower.includes('chocolate')) return 'icecream';
-    if (nameLower.includes('cleaner')) return 'cleaning_services';
+    if (nameLower.includes('bakery')) return 'bakery_dining';
+    if (nameLower.includes('oil') || nameLower.includes('ghee')) return 'oil_barrel';
+    if (nameLower.includes('spice') || nameLower.includes('seasoning')) return 'soup_kitchen';
+    if (nameLower.includes('beverage') || nameLower.includes('drink')) return 'local_cafe';
+    if (nameLower.includes('chocolate') || nameLower.includes('confectionery')) return 'cookie';
     if (nameLower.includes('personal')) return 'face';
-    if (nameLower.includes('appliance')) return 'blender';
-    if (nameLower.includes('stationery')) return 'edit_document';
-    if (nameLower.includes('plastic')) return 'kitchen';
     if (nameLower.includes('baby')) return 'child_care';
-    if (nameLower.includes('chair')) return 'chair';
-    if (nameLower.includes('pets')) return 'pets';
-    if (nameLower.includes('beverage')) return 'local_cafe';
-    if (nameLower.includes('electrical')) return 'electrical_services';
-    if (nameLower.includes('offer')) return 'local_offer';
+    if (nameLower.includes('cleaner') || nameLower.includes('cleaning')) return 'cleaning_services';
+    if (nameLower.includes('plastic')) return 'kitchen';
+    if (nameLower.includes('stationery') || nameLower.includes('supplies')) return 'edit_document';
+    if (nameLower.includes('appliance')) return 'blender';
+    if (nameLower.includes('electrical')) return 'bolt';
+    if (nameLower.includes('chair') || nameLower.includes('furniture')) return 'chair';
+    if (nameLower.includes('pet')) return 'pets';
     return 'category';
   };
 
