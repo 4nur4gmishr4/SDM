@@ -135,7 +135,7 @@ async function main() {
       description: brand ? `${rawName} by ${brand}. Fresh stock available at Sai Darshan Mart, Jabalpur.` : `${rawName}. Fresh grocery item from Sai Darshan Mart, Jabalpur.`,
       is_available: true,
       is_featured: rowIndex <= 24, // First 24 items featured on home
-      variants: '[]'
+      variants: []
     });
   }
 
