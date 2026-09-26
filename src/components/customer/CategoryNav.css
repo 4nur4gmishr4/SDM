@@ -1,0 +1,167 @@
+/* ============================================================
+   Category Nav
+   Horizontal scrolling list of category boxes with 100% alignment
+   ============================================================ */
+
+.category-nav {
+  display: flex;
+  align-items: flex-start; /* Crucial: Aligns all square boxes on the exact same top horizontal line */
+  gap: 12px;
+  overflow-x: auto;
+  padding: 8px 0 12px 0;
+  margin: 0 calc(-1 * var(--sdm-layout-content-padding-mobile));
+  padding-inline: var(--sdm-layout-content-padding-mobile);
+  
+  /* Hide scrollbar for standard browsers */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+@supports (scrollbar-width: none) {
+  .category-nav {
+    scrollbar-width: none;
+  }
+}
+
+.category-nav::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+@media (min-width: 600px) {
+  .category-nav {
+    margin: 0 calc(-1 * var(--sdm-layout-content-padding-tablet));
+    padding-inline: var(--sdm-layout-content-padding-tablet);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 905px) {
+  .category-nav {
+    margin: 0 calc(-1 * var(--sdm-layout-content-padding-desktop));
+    padding-inline: var(--sdm-layout-content-padding-desktop);
+    gap: 18px;
+  }
+}
+
+/* Category item wrapper (Exact fixed width across every item for laser-straight alignment) */
+.category-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 82px;
+  min-width: 82px;
+  max-width: 82px;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+  position: relative;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: transform 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.category-nav__item:active {
+  transform: scale(0.94);
+}
+
+.category-nav__item:focus-visible {
+  outline: none;
+}
+
+.category-nav__item:focus-visible .category-nav__icon-wrapper {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* Exact Square Shape Category Box */
+.category-nav__icon-wrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  background-color: var(--md-sys-color-surface-container, #f2f4f2);
+  border: 1.5px solid var(--md-sys-color-outline-variant, #e0e2dc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), 
+              box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), 
+              border-color 0.2s ease;
+}
+
+[data-theme="dark"] .category-nav__icon-wrapper {
+  background-color: var(--md-sys-color-surface-container-high, #252a26);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.category-nav__item:hover .category-nav__icon-wrapper {
+  transform: translateY(-2px);
+  border-color: var(--md-sys-color-primary, #1e8e3e);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .category-nav__item:hover .category-nav__icon-wrapper {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.category-nav__item--active .category-nav__icon-wrapper {
+  border-color: var(--md-sys-color-primary, #1e8e3e);
+  border-width: 2.5px;
+  box-shadow: 0 4px 12px rgba(30, 142, 62, 0.25);
+}
+
+/* Material Symbol Icon inside Category Box */
+.category-nav__icon {
+  font-size: 32px;
+  color: var(--md-sys-color-primary, #1e8e3e);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), color 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+[data-theme="dark"] .category-nav__icon {
+  color: #81c995;
+}
+
+.category-nav__item:hover .category-nav__icon {
+  transform: scale(1.12);
+}
+
+.category-nav__item--active .category-nav__icon {
+  transform: scale(1.08);
+}
+
+/* Category Label: Fixed uniform height (32px) so 1-line or 2-line labels never shift boxes */
+.category-nav__label {
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.25;
+  color: var(--md-sys-color-on-surface);
+  width: 100%;
+  max-width: 82px;
+  height: 28px;
+  min-height: 28px;
+  margin-top: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  transition: color 0.18s ease;
+}
+
+.category-nav__item:hover .category-nav__label {
+  color: var(--md-sys-color-primary, #1e8e3e);
+}
+
+.category-nav__item--active .category-nav__label {
+  color: var(--md-sys-color-primary, #1e8e3e);
+  font-weight: 700;
+}
+
