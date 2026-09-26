@@ -29,7 +29,6 @@
   align-items: center;
   gap: 8px;
   overflow-x: auto;
-  scrollbar-width: none;
   -ms-overflow-style: none;
   padding-bottom: 8px;
   margin-bottom: var(--md-sys-spacing-3);

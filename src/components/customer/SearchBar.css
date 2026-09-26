@@ -60,6 +60,7 @@
   min-width: 0;
   padding: 8px 0;
   -webkit-appearance: none;
+  appearance: none;
   -webkit-tap-highlight-color: transparent !important;
 }
 

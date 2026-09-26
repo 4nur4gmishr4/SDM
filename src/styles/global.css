@@ -57,6 +57,7 @@ input[type="search"],
   outline: none !important;
   box-shadow: none !important;
   -webkit-appearance: none !important;
+  appearance: none !important;
 }
 
 input[type="search"]:focus,
