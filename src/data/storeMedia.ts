@@ -11,12 +11,14 @@ export interface StoreMediaItem {
   is_active?: boolean;
 }
 
+export const SUPABASE_STORE_MEDIA_BASE = 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/store/';
+
 // 5 Curated Unique Store Photos + 1 Master Video Tour in Natural Friendly Hinglish (Permanent items)
 export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [
   {
     id: 'store-billing-counter',
     type: 'image',
-    url: '/images/store/img_0604.jpg',
+    url: `${SUPABASE_STORE_MEDIA_BASE}img_0604.jpg`,
     width: 4032,
     height: 3024,
     title: 'Fast Computerized Billing Counter',
@@ -28,7 +30,7 @@ export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [
   {
     id: 'store-snacks-aisle',
     type: 'image',
-    url: '/images/store/img_0525.jpg',
+    url: `${SUPABASE_STORE_MEDIA_BASE}img_0525.jpg`,
     width: 4032,
     height: 3024,
     title: 'Fresh Namkeen, Chai-Nashta & Steel Bartan',
@@ -40,7 +42,7 @@ export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [
   {
     id: 'store-dry-fruits',
     type: 'image',
-    url: '/images/store/img_9084.jpg',
+    url: `${SUPABASE_STORE_MEDIA_BASE}img_9084.jpg`,
     width: 4032,
     height: 3024,
     title: 'Pure Dry Fruits, Kaju, Badam & Asli Masale',
@@ -52,7 +54,7 @@ export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [
   {
     id: 'store-packaged-groceries',
     type: 'image',
-    url: '/images/store/img_2552.jpg',
+    url: `${SUPABASE_STORE_MEDIA_BASE}img_2552.jpg`,
     width: 3264,
     height: 2448,
     title: 'Ghar Ka Rashan, Tel, Chakki Atta & Provisions',
@@ -64,7 +66,7 @@ export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [
   {
     id: 'store-personal-care',
     type: 'image',
-    url: '/images/store/8f4f810f-f26c-4c1d-84e8-d91f62f37615.jpg',
+    url: `${SUPABASE_STORE_MEDIA_BASE}8f4f810f-f26c-4c1d-84e8-d91f62f37615.jpg`,
     width: 1024,
     height: 768,
     title: 'Personal Care, Soaps, Shampoos & Daily Hygiene',
@@ -76,7 +78,7 @@ export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [
   {
     id: 'store-video-tour',
     type: 'video',
-    url: '/images/store/img_0525.mp4',
+    url: `${SUPABASE_STORE_MEDIA_BASE}img_0525.mp4`,
     title: 'Sai Darshan Mart Ka Supermarket Video Tour',
     department: 'Store Video Tour',
     badge: 'Live Store Tour',

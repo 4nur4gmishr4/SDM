@@ -3,7 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { SearchBar } from '../../components/customer/SearchBar';
 import { ProductGrid } from '../../components/customer/ProductGrid';
-import { WatermarkBanner, BeatingHeart } from '../../components/common';
+import { WatermarkBanner, BeatingHeart, Skeleton } from '../../components/common';
 import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
 import './ShopPage.css';
@@ -20,7 +20,7 @@ export function ShopPage() {
   const [sortBy, setSortBy] = useState('relevance');
   const [inStockOnly, setInStockOnly] = useState(false);
 
-  const { categories } = useCategories();
+  const { categories, isLoading: categoriesLoading } = useCategories();
   const currentCategory = categories.find(c => c.slug === categorySlug);
 
   // Fetch all products for the category
@@ -118,15 +118,27 @@ export function ShopPage() {
         >
           All Items
         </Link>
-        {categories.map(category => (
-          <Link 
-            key={category.id} 
-            to={`/shop/${category.slug}`} 
-            className={`shop-category-chip ${category.slug === categorySlug ? 'shop-category-chip--active' : ''}`}
-          >
-            {category.name}
-          </Link>
-        ))}
+        {categoriesLoading && categories.length === 0 ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              width={i % 2 === 0 ? '90px' : '120px'}
+              height="36px"
+              variant="rounded"
+              style={{ borderRadius: '9999px', flexShrink: 0 }}
+            />
+          ))
+        ) : (
+          categories.map(category => (
+            <Link 
+              key={category.id} 
+              to={`/shop/${category.slug}`} 
+              className={`shop-category-chip ${category.slug === categorySlug ? 'shop-category-chip--active' : ''}`}
+            >
+              {category.name}
+            </Link>
+          ))
+        )}
       </div>
 
       <div className="shop-page__layout">
@@ -141,15 +153,27 @@ export function ShopPage() {
               >
                 All Products
               </Link>
-              {categories.map(category => (
-                <Link 
-                  key={category.id} 
-                  to={`/shop/${category.slug}`} 
-                  className={`shop-page__category-link ${category.slug === categorySlug ? 'shop-page__category-link--active' : ''}`}
-                >
-                  {category.name}
-                </Link>
-              ))}
+              {categoriesLoading && categories.length === 0 ? (
+                Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton
+                    key={i}
+                    width={`${70 + (i % 3) * 10}%`}
+                    height="28px"
+                    variant="rounded"
+                    style={{ margin: '4px 0', borderRadius: '8px' }}
+                  />
+                ))
+              ) : (
+                categories.map(category => (
+                  <Link 
+                    key={category.id} 
+                    to={`/shop/${category.slug}`} 
+                    className={`shop-page__category-link ${category.slug === categorySlug ? 'shop-page__category-link--active' : ''}`}
+                  >
+                    {category.name}
+                  </Link>
+                ))
+              )}
             </div>
           </div>
         </aside>

@@ -59,8 +59,8 @@ function getContextualIcon(msg: string): { icon: string; color: string } {
 export function SnackbarProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<ToastItem | null>(null);
   const [mobileBottomOffset, setMobileBottomOffset] = useState<number>(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const exitTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Measure bottom nav height on mobile so toast sits right above it
   const updateBottomOffset = useCallback(() => {

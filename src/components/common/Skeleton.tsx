@@ -32,19 +32,20 @@ export function Skeleton({
 }
 
 /**
- * Product Tile Skeleton
+ * Product Tile Skeleton (Matches real ProductTile layout 1:1)
  */
 export function ProductTileSkeleton() {
   return (
-    <div className="product-tile-skeleton" aria-label="Loading product...">
-      <Skeleton className="product-tile-skeleton__image" />
-      <div className="product-tile-skeleton__content">
-        <Skeleton width="45%" height={12} variant="rounded" />
-        <Skeleton width="85%" height={16} variant="rounded" style={{ margin: '4px 0' }} />
-        <Skeleton width="60%" height={14} variant="rounded" />
-        <div className="product-tile-skeleton__bottom">
+    <div className="product-tile" style={{ pointerEvents: 'none' }} aria-label="Loading product...">
+      <div className="product-tile__image-link">
+        <Skeleton width="100%" height="100%" variant="rectangular" />
+      </div>
+      <div className="product-tile__content">
+        <Skeleton width="85%" height={16} variant="rounded" style={{ marginBottom: '6px' }} />
+        <Skeleton width="45%" height={12} variant="rounded" style={{ marginBottom: '12px' }} />
+        <div className="product-tile__price-row" style={{ marginTop: 'auto' }}>
           <Skeleton width="40%" height={22} variant="rounded" />
-          <Skeleton width="36px" height={36} variant="rounded" />
+          <Skeleton width="38px" height="38px" variant="rounded" style={{ borderRadius: '10px' }} />
         </div>
       </div>
     </div>
@@ -65,15 +66,25 @@ export function ProductGridSkeleton({ count = 8 }: { count?: number }) {
 }
 
 /**
- * Category Navigation Skeleton
+ * Category Navigation Skeleton (Matches real CategoryNav 72x72 square boxes 1:1)
  */
 export function CategoryNavSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="category-nav-skeleton" aria-label="Loading categories...">
+    <div className="category-nav" aria-label="Loading categories...">
+      {/* "All Items" skeleton item */}
+      <div className="category-nav__item">
+        <div className="category-nav__icon-wrapper">
+          <Skeleton width="100%" height="100%" variant="rectangular" />
+        </div>
+        <Skeleton width="54px" height={14} variant="rounded" style={{ marginTop: '6px' }} />
+      </div>
+
       {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="category-nav-skeleton__item">
-          <Skeleton width={56} height={56} variant="circular" />
-          <Skeleton width={48} height={12} variant="rounded" />
+        <div key={index} className="category-nav__item">
+          <div className="category-nav__icon-wrapper">
+            <Skeleton width="100%" height="100%" variant="rectangular" />
+          </div>
+          <Skeleton width="64px" height={14} variant="rounded" style={{ marginTop: '6px' }} />
         </div>
       ))}
     </div>
@@ -81,32 +92,53 @@ export function CategoryNavSkeleton({ count = 8 }: { count?: number }) {
 }
 
 /**
- * Banner Skeleton
+ * Banner Skeleton (Matches real 16:9 banner card and bottom pill bar 1:1)
  */
 export function BannerSkeleton() {
-  return <Skeleton className="banner-skeleton" variant="rounded" />;
+  return (
+    <div className="ios-banner-container" aria-label="Loading banner...">
+      <div className="ios-banner-card">
+        <div className="ios-banner__media-viewport sdm-skeleton" style={{ width: '100%', height: '100%', borderRadius: 0 }} />
+        <div className="ios-banner__merged-section" style={{ pointerEvents: 'none' }}>
+          <div className="ios-banner__merged-content">
+            <div className="ios-banner__meta-row" style={{ marginBottom: '8px' }}>
+              <Skeleton width="110px" height={22} variant="rounded" style={{ borderRadius: '9999px' }} />
+              <Skeleton width="48px" height={18} variant="rounded" style={{ borderRadius: '9999px' }} />
+            </div>
+            <Skeleton width="75%" height={24} variant="rounded" style={{ marginBottom: '8px' }} />
+            <Skeleton width="90%" height={14} variant="rounded" />
+          </div>
+          <Skeleton width="130px" height={42} variant="rounded" style={{ borderRadius: '9999px', flexShrink: 0 }} />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 /**
- * Product Detail Page Skeleton
+ * Product Detail Page Skeleton (Matches real ProductDetailPage layout 1:1)
  */
 export function ProductDetailSkeleton() {
   return (
-    <div className="product-detail-skeleton" aria-label="Loading product details...">
-      <Skeleton className="product-detail-skeleton__gallery" variant="rounded" />
-      <div className="product-detail-skeleton__info">
-        <Skeleton width="30%" height={18} variant="rounded" />
-        <Skeleton width="80%" height={32} variant="rounded" style={{ margin: '8px 0' }} />
-        <Skeleton width="50%" height={18} variant="rounded" />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', margin: '16px 0' }}>
-          <Skeleton width="120px" height={36} variant="rounded" />
-          <Skeleton width="80px" height={24} variant="rounded" />
+    <div className="layout-container product-detail" aria-label="Loading product details...">
+      <div className="product-detail__image-section">
+        <Skeleton width="100%" height="100%" variant="rectangular" />
+      </div>
+      <div className="product-detail__info-section">
+        <Skeleton width="75%" height={32} variant="rounded" style={{ marginBottom: '8px' }} />
+        <Skeleton width="30%" height={16} variant="rounded" style={{ marginBottom: '16px' }} />
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '20px' }}>
+          <Skeleton width="120px" height={32} variant="rounded" />
+          <Skeleton width="80px" height={20} variant="rounded" />
         </div>
-        <Skeleton width="160px" height={44} variant="rounded" style={{ marginBottom: '16px' }} />
-        <Skeleton width="100%" height={14} variant="text" />
-        <Skeleton width="95%" height={14} variant="text" />
-        <Skeleton width="90%" height={14} variant="text" />
-        <Skeleton width="70%" height={14} variant="text" />
+        <Skeleton width="100%" height={52} variant="rounded" style={{ marginBottom: '16px', borderRadius: '12px' }} />
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+          <Skeleton width="130px" height={44} variant="rounded" style={{ borderRadius: '10px' }} />
+          <Skeleton width="180px" height={44} variant="rounded" style={{ borderRadius: '10px' }} />
+        </div>
+        <Skeleton width="100%" height={14} variant="rounded" style={{ marginBottom: '8px' }} />
+        <Skeleton width="92%" height={14} variant="rounded" style={{ marginBottom: '8px' }} />
+        <Skeleton width="68%" height={14} variant="rounded" />
       </div>
     </div>
   );
@@ -131,7 +163,7 @@ export function AdminTableSkeleton({
               <Skeleton
                 width={colIndex === 0 ? '40px' : colIndex === 1 ? '70%' : '50%'}
                 height={colIndex === 0 ? 36 : 16}
-                variant={colIndex === 0 ? 'rounded' : 'rounded'}
+                variant="rounded"
               />
             </td>
           ))}
@@ -142,50 +174,49 @@ export function AdminTableSkeleton({
 }
 
 /**
- * Admin Dashboard Skeleton
+ * Admin Dashboard Skeleton (Matches real admin-dashboard-grid and stat cards 1:1)
  */
 export function AdminDashboardSkeleton() {
   return (
-    <div className="admin-dashboard-skeleton" aria-label="Loading dashboard...">
-      <div className="admin-dashboard-skeleton__grid">
+    <div aria-label="Loading dashboard...">
+      <div className="admin-dashboard-grid">
         {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="admin-dashboard-skeleton__card">
-            <Skeleton width={48} height={48} variant="circular" />
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <Skeleton width="50%" height={14} variant="rounded" />
-              <Skeleton width="80%" height={24} variant="rounded" />
+          <div key={index} className="admin-stat-card">
+            <Skeleton width={48} height={48} variant="rounded" style={{ borderRadius: '12px', flexShrink: 0 }} />
+            <div className="admin-stat-card__content" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <Skeleton width="60px" height={28} variant="rounded" />
+              <Skeleton width="90px" height={14} variant="rounded" />
             </div>
           </div>
         ))}
       </div>
-      <div
-        style={{
-          backgroundColor: 'var(--md-sys-color-surface-container-lowest)',
-          border: '1px solid var(--md-sys-color-outline-variant)',
-          borderRadius: 'var(--md-sys-shape-corner-medium, 12px)',
-          padding: '24px',
-        }}
-      >
-        <Skeleton width="200px" height={24} variant="rounded" style={{ marginBottom: '20px' }} />
-        <Skeleton width="100%" height={36} variant="rounded" style={{ marginBottom: '12px' }} />
-        <Skeleton width="100%" height={36} variant="rounded" style={{ marginBottom: '12px' }} />
-        <Skeleton width="100%" height={36} variant="rounded" />
+      <div className="admin-dashboard-section" style={{ marginTop: '24px' }}>
+        <Skeleton width="160px" height={24} variant="rounded" style={{ marginBottom: '12px' }} />
+        <Skeleton width="340px" height={16} variant="rounded" />
       </div>
     </div>
   );
 }
 
 /**
- * Admin Form Skeleton
+ * Admin Form Skeleton (Matches real admin-table-container form layout 1:1)
  */
 export function AdminFormSkeleton() {
   return (
-    <div className="admin-form-skeleton" aria-label="Loading form...">
-      <Skeleton width="140px" height={16} variant="rounded" />
-      <Skeleton width="100%" height={56} variant="rounded" />
-      <Skeleton width="180px" height={16} variant="rounded" />
-      <Skeleton width="100%" height={56} variant="rounded" />
-      <Skeleton width="120px" height={40} variant="rounded" style={{ marginTop: '12px' }} />
+    <div className="admin-table-container" style={{ padding: '24px', maxWidth: '600px', flex: 'none' }} aria-label="Loading form...">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Skeleton width="180px" height={24} variant="rounded" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <Skeleton width="160px" height={16} variant="rounded" />
+          <Skeleton width="100%" height={96} variant="rounded" />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <Skeleton width="140px" height={16} variant="rounded" />
+          <Skeleton width="100%" height={48} variant="rounded" />
+        </div>
+        <Skeleton width="140px" height={42} variant="rounded" style={{ borderRadius: '8px' }} />
+      </div>
     </div>
   );
 }
+

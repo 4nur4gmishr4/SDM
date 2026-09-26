@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { Skeleton, AdminTableSkeleton } from '../common';
 import './AdminShell.css';
 
 export function AdminShell() {
@@ -137,9 +139,27 @@ export function AdminShell() {
           </div>
         </header>
 
-        {/* Content Outlet */}
+        {/* Content Outlet with tailored admin skeleton fallback */}
         <div className="admin-shell__content">
-          <Outlet />
+          <Suspense
+            fallback={
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Skeleton width="220px" height={32} variant="rounded" />
+                  <Skeleton width="120px" height={40} variant="rounded" />
+                </div>
+                <div className="admin-table-container">
+                  <table className="admin-table">
+                    <tbody>
+                      <AdminTableSkeleton rows={6} cols={5} />
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            }
+          >
+            <Outlet />
+          </Suspense>
         </div>
       </main>
     </div>

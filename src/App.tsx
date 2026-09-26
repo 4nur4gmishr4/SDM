@@ -26,17 +26,62 @@ const BannersPage = lazy(() => import('./pages/admin/BannersPage').then(m => ({ 
 const SettingsPage = lazy(() => import('./pages/admin/SettingsPage').then(m => ({ default: m.SettingsPage })));
 
 // Layouts
-import { AppShell, ScrollToTop, Skeleton, ErrorBoundary } from './components/common';
+import { AppShell, ScrollToTop, Skeleton, ErrorBoundary, ProductTileSkeleton, AdminTableSkeleton } from './components/common';
 import { AdminShell } from './components/admin';
 
 import './styles/global.css';
 
 function PageLoadingFallback() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', gap: '16px' }}>
-      <Skeleton variant="circular" width={48} height={48} />
-      <Skeleton variant="rounded" width={200} height={20} />
-      <Skeleton variant="rounded" width={140} height={14} />
+    <div className="layout-container" style={{ padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
+        <Skeleton width="180px" height={28} variant="rounded" />
+        <Skeleton width="100px" height={36} variant="rounded" style={{ borderRadius: '18px' }} />
+      </div>
+      <div className="product-grid">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <ProductTileSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AdminLoadingShellSkeleton() {
+  return (
+    <div className="admin-shell" aria-label="Loading admin portal...">
+      <div className="admin-shell__nav" style={{ pointerEvents: 'none' }}>
+        <div className="admin-shell__nav-header">
+          <Skeleton width={36} height={36} variant="rounded" style={{ borderRadius: '8px' }} />
+        </div>
+        <div className="admin-shell__nav-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} width={44} height={44} variant="rounded" style={{ borderRadius: '12px' }} />
+          ))}
+        </div>
+      </div>
+      <main className="admin-shell__main">
+        <header className="admin-shell__top-bar">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Skeleton width={28} height={28} variant="rounded" />
+            <Skeleton width="140px" height={20} variant="rounded" />
+          </div>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Skeleton width="100px" height={34} variant="rounded" style={{ borderRadius: '9999px' }} />
+            <Skeleton width="80px" height={34} variant="rounded" style={{ borderRadius: '9999px' }} />
+          </div>
+        </header>
+        <div className="admin-shell__content" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <Skeleton width="200px" height={32} variant="rounded" />
+          <div className="admin-table-container">
+            <table className="admin-table">
+              <tbody>
+                <AdminTableSkeleton rows={5} cols={5} />
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
@@ -47,13 +92,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   if (isLoading) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: '16px', background: 'var(--md-sys-color-surface)' }}>
-        <Skeleton variant="circular" width={64} height={64} />
-        <Skeleton variant="rounded" width={180} height={20} />
-        <Skeleton variant="rounded" width={120} height={14} />
-      </div>
-    );
+    return <AdminLoadingShellSkeleton />;
   }
 
   if (!session) {

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import type { Banner } from '../../types/banner';
 import { useDefaultLogoBanner } from '../../hooks/useDefaultLogoBanner';
+import { Skeleton } from '../common';
 import './IOSBannerCarousel.css';
 
 interface IOSBannerCarouselProps {
@@ -134,11 +135,24 @@ export function IOSBannerCarousel({
     setIsPaused(false);
   };
 
-  // 1. Loading state
+  // 1. Loading state (1:1 identical shape, border-radius, media viewport and bottom capsule bar)
   if (isLoading && banners.length === 0) {
     return (
-      <div className="ios-banner__skeleton-wrapper">
-        <div className="ios-banner__skeleton" />
+      <div className="ios-banner-container" aria-label="Loading banner...">
+        <div className="ios-banner-card">
+          <div className="ios-banner__media-viewport sdm-skeleton" style={{ width: '100%', height: '100%', borderRadius: 0 }} />
+          <div className="ios-banner__merged-section" style={{ pointerEvents: 'none' }}>
+            <div className="ios-banner__merged-content">
+              <div className="ios-banner__meta-row" style={{ marginBottom: '8px' }}>
+                <Skeleton width="110px" height={22} variant="rounded" style={{ borderRadius: '9999px' }} />
+                <Skeleton width="48px" height={18} variant="rounded" style={{ borderRadius: '9999px' }} />
+              </div>
+              <Skeleton width="75%" height={24} variant="rounded" style={{ marginBottom: '8px' }} />
+              <Skeleton width="90%" height={14} variant="rounded" />
+            </div>
+            <Skeleton width="130px" height={42} variant="rounded" style={{ borderRadius: '9999px', flexShrink: 0 }} />
+          </div>
+        </div>
       </div>
     );
   }

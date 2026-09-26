@@ -11,13 +11,15 @@ import './OrdersPage.css';
 import './ProductsPage.css';
 import './BannersPage.css';
 
+const SUPABASE_STORE_MEDIA_BASE = 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/store/';
+
 // Preset Authentic Store Photography to pick with 1 click
 const PRESET_STORE_PHOTOS = [
-  { label: 'Billing Counter', url: '/images/store/img_0604.jpg' },
-  { label: 'Snacks & Steel Bartan', url: '/images/store/img_0525.jpg' },
-  { label: 'Dry Fruits & Masale', url: '/images/store/img_9084.jpg' },
-  { label: 'Daily Rashan Staples', url: '/images/store/img_2552.jpg' },
-  { label: 'Personal Care Hygiene', url: '/images/store/8f4f810f-f26c-4c1d-84e8-d91f62f37615.jpg' },
+  { label: 'Billing Counter', url: `${SUPABASE_STORE_MEDIA_BASE}img_0604.jpg` },
+  { label: 'Snacks & Steel Bartan', url: `${SUPABASE_STORE_MEDIA_BASE}img_0525.jpg` },
+  { label: 'Dry Fruits & Masale', url: `${SUPABASE_STORE_MEDIA_BASE}img_9084.jpg` },
+  { label: 'Daily Rashan Staples', url: `${SUPABASE_STORE_MEDIA_BASE}img_2552.jpg` },
+  { label: 'Personal Care Hygiene', url: `${SUPABASE_STORE_MEDIA_BASE}8f4f810f-f26c-4c1d-84e8-d91f62f37615.jpg` },
 ];
 
 export function BannersPage() {
@@ -134,7 +136,7 @@ export function BannersPage() {
     setEditingBanner({
       title: '',
       text: '',
-      image_url: '/images/store/img_0604.jpg',
+      image_url: `${SUPABASE_STORE_MEDIA_BASE}img_0604.jpg`,
       link_url: '/shop',
       display_order: banners.length + 1,
       is_active: true,
@@ -232,7 +234,7 @@ export function BannersPage() {
     setEditingVisual({
       id: `visual-${Date.now()}`,
       type: 'image',
-      url: '/images/store/img_0604.jpg',
+      url: `${SUPABASE_STORE_MEDIA_BASE}img_0604.jpg`,
       title: '',
       department: 'Store Aisle',
       badge: 'Store Feature',
@@ -462,9 +464,7 @@ export function BannersPage() {
                     label="Logo Banner Image"
                     value={logoBannerForm.image_url}
                     onChange={(url) => setLogoBannerForm({ ...logoBannerForm, image_url: url })}
-                    folder="banners"
-                    aspectRatio="16/9"
-                    helperText="Upload your official store logo banner (16:9 ratio, e.g. 1672x941 or 1920x1080)."
+                    helpText="Upload your official store logo banner (16:9 ratio, e.g. 1672x941 or 1920x1080)."
                   />
                 </div>
 

@@ -144,6 +144,7 @@
 /* Admin Table Skeleton */
 .admin-table-skeleton-row td {
   padding: 14px 16px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
 }
 
 /* Admin Dashboard Skeleton */

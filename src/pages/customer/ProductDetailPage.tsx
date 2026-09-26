@@ -38,12 +38,12 @@ export function ProductDetailPage() {
 
   if (isLoading && !product) {
     return (
-      <div className="layout-container" style={{ padding: '16px 0' }}>
+      <>
         <Helmet>
           <title>Loading Product - Sai Darshan Mart</title>
         </Helmet>
         <ProductDetailSkeleton />
-      </div>
+      </>
     );
   }
 
