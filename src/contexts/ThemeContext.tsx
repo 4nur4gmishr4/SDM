@@ -34,11 +34,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const resolved = isDark ? 'dark' : 'light';
       setResolvedTheme(resolved);
 
-      if (theme === 'system') {
-        document.documentElement.removeAttribute('data-theme');
-      } else {
-        document.documentElement.setAttribute('data-theme', theme);
-      }
+      // Always set data-theme to the resolved value so all [data-theme="dark"] styles match identically in both auto and manual dark mode
+      document.documentElement.setAttribute('data-theme', resolved);
+      document.documentElement.setAttribute('data-theme-mode', theme);
 
       // Dynamically set mobile browser status bar / theme color
       let metaTheme = document.querySelector('meta[name="theme-color"]');

@@ -4,8 +4,6 @@
    Reset, base styles, font imports, and Material Web theme
    variable overrides for Sai Darshan Mart brand identity.
    ============================================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..1000&family=Roboto+Mono:wght@400;500&display=swap');
 @import 'leaflet/dist/leaflet.css';
 
 @import './tokens.css';
@@ -207,10 +205,10 @@ img:not([class*="leaflet"]):not(.leaflet-tile):hover {
   justify-content: center;
   gap: 10px;
   min-height: 44px;
-  padding: 0 34px !important; /* Generous breathing room: no compacted text */
-  border-radius: 12px !important;
+  padding: 0 32px !important;
+  border-radius: 9999px !important;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   border: 1px solid transparent;
@@ -224,14 +222,14 @@ img:not([class*="leaflet"]):not(.leaflet-tile):hover {
 }
 
 .sdm-btn--primary {
-  background-color: var(--md-sys-color-primary, #1E8E3E) !important;
+  background-color: #1E8E3E !important;
   color: #FFFFFF !important;
-  box-shadow: 0 2px 6px rgba(30, 142, 62, 0.2);
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
 }
 
 .sdm-btn--primary:hover:not(:disabled) {
-  background-color: #137333 !important;
-  box-shadow: 0 4px 12px rgba(30, 142, 62, 0.32);
+  background-color: #178036 !important;
+  box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.2), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
 }
 
 .sdm-btn--primary:active:not(:disabled) {
@@ -649,12 +647,31 @@ md-select-option[aria-selected="true"] {
 }
 
 /* --------------------------------------------------------
-   Material Symbols icon setup
+/* --------------------------------------------------------
+   Material Symbols icon setup — Zero FOUT (No Text Flash)
    -------------------------------------------------------- */
 
+html.icons-loading .material-symbols-outlined {
+  visibility: hidden !important;
+}
+
 .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   vertical-align: middle;
+  user-select: none;
 }
 
 .material-symbols-outlined.filled {
@@ -723,17 +740,116 @@ md-select-option[aria-selected="true"] {
   }
 }
 
-.m3-page-transition {
-  animation: m3-fade-slide-in 220ms cubic-bezier(0.2, 0, 0, 1) forwards;
-  will-change: opacity, transform;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+/* ============================================================
+   Google / Android 14/15 Predictive Back & Forward Page Motion
+   (Strictly Mobile Only — Desktop is Instant/Static)
+   ============================================================ */
+
+@media (max-width: 904px) {
+  .android-page-viewport {
+    width: 100%;
+    transform-origin: center center;
+    will-change: transform, opacity, border-radius;
+    overflow-x: clip;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* Forward Navigation: Full page enters with subtle scale up and upward slide */
+  .android-transition--forward {
+    animation: android-m3-forward 260ms cubic-bezier(0.05, 0.7, 0.1, 1.0) forwards;
+  }
+
+  /* Predictive Back: Full page enters like Android 14/15 predictive back gesture card zoom */
+  .android-transition--back {
+    animation: android-m3-back 280ms cubic-bezier(0.05, 0.7, 0.1, 1.0) forwards;
+  }
+
+  @keyframes android-m3-forward {
+    0% {
+      opacity: 0;
+      transform: scale(0.95) translateY(14px);
+      border-radius: 20px;
+    }
+    45% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      border-radius: 0;
+    }
+  }
+
+  @keyframes android-m3-back {
+    0% {
+      opacity: 0;
+      transform: scale(0.93) translateX(-18px);
+      border-radius: 24px;
+      filter: brightness(0.96);
+    }
+    40% {
+      opacity: 1;
+      filter: brightness(1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+      border-radius: 0;
+      filter: brightness(1);
+    }
+  }
+
+  /* Native Mobile App Tactile Feedback */
+  button:active,
+  a.sdm-btn:active,
+  .sdm-footer__icon-btn:active,
+  .app-shell__bottom-nav-item:active,
+  .category-nav__item:active,
+  .app-shell__action-btn:active {
+    transform: scale(0.96);
+    transition: transform 90ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  /* Native touch-callout prevention on mobile app chrome */
+  .app-shell__top-bar,
+  .app-shell__bottom-nav,
+  .category-nav,
+  .ios-banner-container,
+  .watermark-banner {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
+  /* Native smooth momentum scrolling */
+  html, body {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Desktop (> 905px): Absolutely NO animations or scaling — Static & instant */
+@media (min-width: 905px) {
+  .android-page-viewport,
+  .android-transition--forward,
+  .android-transition--back,
+  .m3-page-transition {
+    animation: none !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    opacity: 1 !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .android-transition--forward,
+  .android-transition--back,
   .m3-page-transition {
     animation: none !important;
+    transform: none !important;
   }
 }
+
+
 
