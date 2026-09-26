@@ -1,0 +1,384 @@
+/* ============================================================
+   IOSBannerCarousel.css — Clean Image Top + Merged Vignette Footer
+   ============================================================ */
+
+.ios-banner-container {
+  width: 100%;
+  max-width: 740px;
+  margin-inline: auto;
+  position: relative;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Card Wrapper (Framed iOS Card) */
+.ios-banner-card {
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: var(--md-sys-color-surface-container, #F1F3F4);
+  border: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+}
+
+[data-theme="dark"] .ios-banner-card {
+  background-color: var(--md-sys-color-surface-container, #292A2D);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* ------------------------------------------------------------
+   Top: Pure Unobstructed Image Viewport (NO text/button on image)
+   Strict 16:9 Ratio for Both Mobile and Desktop (Zero Cropping)
+   ------------------------------------------------------------ */
+.ios-banner__media-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: #0E1310;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .ios-banner__media-viewport {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.ios-banner-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 500ms cubic-bezier(0.2, 0.9, 0.3, 1);
+  will-change: transform;
+}
+
+.ios-banner-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.ios-banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+}
+
+/* ------------------------------------------------------------
+   Segmented Progress Loader (Directly Below Banner Card - No Outer Widget)
+   ------------------------------------------------------------ */
+.ios-banner__insta-loader-bar {
+  position: relative;
+  margin-top: 8px;
+  z-index: 10;
+  display: flex;
+  gap: 6px;
+  padding: 0 4px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .ios-banner__insta-loader-bar {
+  background: transparent !important;
+  border: none !important;
+}
+
+@media (min-width: 768px) {
+  .ios-banner__insta-loader-bar {
+    gap: 8px;
+    padding: 0 6px;
+  }
+}
+
+.ios-banner__progress-track {
+  flex: 1;
+  height: 4px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
+  overflow: hidden;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  transition: height 0.15s ease, background-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-theme="dark"] .ios-banner__progress-track {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+.ios-banner__progress-track:hover {
+  height: 5px;
+}
+
+.ios-banner__progress-bar {
+  height: 100%;
+  background-color: var(--md-sys-color-primary, #1e8e3e);
+  box-shadow: 0 0 6px rgba(30, 142, 62, 0.4);
+  border-radius: 9999px;
+  will-change: width;
+}
+
+/* ------------------------------------------------------------
+   Navigation Arrows
+   ------------------------------------------------------------ */
+.ios-banner-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.ios-banner-container:hover .ios-banner-nav-btn {
+  opacity: 1;
+}
+
+.ios-banner-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.ios-banner-nav-btn--prev {
+  left: 14px;
+}
+
+.ios-banner-nav-btn--next {
+  right: 14px;
+}
+
+@media (max-width: 768px) {
+  .ios-banner-nav-btn {
+    display: none; /* Mobile uses natural touch swipe */
+  }
+}
+
+/* ------------------------------------------------------------
+   Bottom: Merged Section Below with Blurred Vignette Background
+   ------------------------------------------------------------ */
+.ios-banner__merged-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 24px;
+  border-top: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+  background: linear-gradient(
+    180deg,
+    var(--md-sys-color-surface-container, #F1F3F4) 0%,
+    var(--md-sys-color-surface-container-high, #E8EAED) 100%
+  );
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+[data-theme="dark"] .ios-banner__merged-section {
+  background: linear-gradient(
+    180deg,
+    rgba(41, 42, 45, 0.98) 0%,
+    rgba(32, 33, 36, 0.98) 100%
+  );
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.ios-banner__merged-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ios-banner__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.ios-banner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-primary-container, #CEEAD6);
+  color: var(--md-sys-color-on-primary-container, #0D652D);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="dark"] .ios-banner-badge {
+  background-color: rgba(30, 142, 62, 0.25);
+  color: #81C995;
+  border: 1px solid rgba(129, 201, 149, 0.25);
+}
+
+.ios-banner-badge-icon {
+  font-size: 14px;
+  color: var(--md-sys-color-primary, #1E8E3E);
+}
+
+.ios-banner__counter-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--md-sys-color-outline, #72777A);
+  background: var(--md-sys-color-surface, #FFFFFF);
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+}
+
+[data-theme="dark"] .ios-banner__counter-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #9AA0A6;
+}
+
+.ios-banner-title {
+  font-size: 1.35rem;
+  font-weight: 750;
+  color: var(--md-sys-color-on-surface, #1F1F1F);
+  margin: 0 0 4px;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  transition: color 0.2s ease;
+}
+
+.ios-banner-subtitle {
+  font-size: 0.92rem;
+  color: var(--md-sys-color-on-surface-variant, #5F6368);
+  margin: 0;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ios-banner-action-area {
+  flex-shrink: 0;
+}
+
+.ios-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-primary, #1E8E3E);
+  color: #FFFFFF;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(30, 142, 62, 0.3);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  white-space: nowrap;
+}
+
+.ios-banner-btn:hover {
+  background-color: #157330;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(30, 142, 62, 0.4);
+  color: #FFFFFF;
+}
+
+.ios-banner-btn:active {
+  transform: scale(0.97);
+}
+
+/* ------------------------------------------------------------
+   Mobile Responsiveness
+   ------------------------------------------------------------ */
+@media (max-width: 640px) {
+  .ios-banner-card {
+    border-radius: 20px;
+  }
+
+  .ios-banner__merged-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px 16px;
+  }
+
+  .ios-banner-title {
+    font-size: 1.15rem;
+  }
+
+  .ios-banner-subtitle {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .ios-banner-action-area {
+    width: 100%;
+  }
+
+  .ios-banner-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+}
+
+/* ------------------------------------------------------------
+   Skeleton Loading State
+   ------------------------------------------------------------ */
+.ios-banner__skeleton-wrapper {
+  width: 100%;
+  max-width: var(--sdm-layout-max-width, 1280px);
+  margin: 0 auto;
+}
+
+.ios-banner__skeleton {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 24px;
+  background: linear-gradient(
+    90deg,
+    var(--md-sys-color-surface-container, #F1F3F4) 25%,
+    var(--md-sys-color-surface-container-high, #E8EAED) 50%,
+    var(--md-sys-color-surface-container, #F1F3F4) 75%
+  );
+  background-size: 200% 100%;
+  animation: sdmSkeletonShimmer 1.5s infinite;
+}
+
+@keyframes sdmSkeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
