@@ -3,21 +3,19 @@ import { Helmet } from 'react-helmet-async';
 import { SearchBar } from '../../components/customer/SearchBar';
 import { CategoryNav } from '../../components/customer/CategoryNav';
 import { ProductGrid } from '../../components/customer/ProductGrid';
-import { OfferBanner } from '../../components/customer/OfferBanner';
+import { IOSBannerCarousel } from '../../components/customer/IOSBannerCarousel';
 import './HomePage.css';
 
 import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
 import { useBanners } from '../../hooks/useBanners';
 
-import { BannerSkeleton } from '../../components/common';
+import { WatermarkBanner, BeatingHeart } from '../../components/common';
 
 export function HomePage() {
   const { categories, isLoading: categoriesLoading } = useCategories();
   const { products: featuredProducts, isLoading: productsLoading } = useProducts({ isFeatured: true });
   const { banners, isLoading: bannersLoading } = useBanners();
-
-  const mainBanner = banners.length > 0 ? banners[0] : null;
 
   return (
     <div className="layout-container home-page">
@@ -27,26 +25,17 @@ export function HomePage() {
       </Helmet>
 
       {/* Search Section */}
-      <section className="home-page__section" style={{ marginTop: '24px' }}>
+      <section className="home-page__section" style={{ marginTop: '20px' }}>
         <SearchBar />
       </section>
 
-      {/* Main Banner / Hero */}
-      <section className="home-page__hero">
-        <img 
-          src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop" 
-          alt="Sai Darshan Mart Supermarket" 
-          className="home-page__hero-image"
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-          width="1200"
-          height="400"
+      {/* iOS-Style Banner Carousel with Instagram Segmented Loader */}
+      <section className="home-page__section" style={{ marginTop: '14px', marginBottom: '28px' }}>
+        <IOSBannerCarousel 
+          banners={banners} 
+          isLoading={bannersLoading} 
+          slideDuration={4800} 
         />
-        <div className="home-page__hero-content">
-          <h2 className="home-page__hero-title">Welcome to Sai Darshan Mart</h2>
-          <p>Your local supermarket in Jabalpur with quick WhatsApp doorstep delivery.</p>
-        </div>
       </section>
 
       {/* Category Navigation */}
@@ -56,16 +45,6 @@ export function HomePage() {
         </div>
         <CategoryNav categories={categories} isLoading={categoriesLoading} />
       </section>
-
-      {bannersLoading && !mainBanner ? (
-        <section className="home-page__section">
-          <BannerSkeleton />
-        </section>
-      ) : mainBanner ? (
-        <section className="home-page__section">
-          <OfferBanner banner={mainBanner} />
-        </section>
-      ) : null}
 
       {/* Featured Products */}
       <section className="home-page__section">
@@ -78,6 +57,11 @@ export function HomePage() {
         <ProductGrid products={featuredProducts} isLoading={productsLoading} skeletonCount={8} />
       </section>
 
+      {/* Shadowy Big Watermark Display */}
+      <WatermarkBanner 
+        headline={<>There is only one boss: Customer <BeatingHeart /></>} 
+        subline="Serving every family in Jabalpur with honest pricing, fresh goods & care"
+      />
     </div>
   );
 }
