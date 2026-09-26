@@ -29,50 +29,128 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
   const [progressPercent, setProgressPercent] = useState(0);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [parsedItems, setParsedItems] = useState<ParsedProductItem[]>([]);
+  const [rawProducts, setRawProducts] = useState<any[]>([]);
   const [groupVariants, setGroupVariants] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Helper to categorize product based on keywords
+  // Robust category classification rules
+  const CATEGORY_RULES: { slug: string; namePattern: RegExp; keywords: string[] }[] = [
+    {
+      slug: 'baby-care',
+      namePattern: /BABY/i,
+      keywords: [
+        'BABY', 'DIAPER', 'PAMPERS', 'HUGGIES', 'MAMY POKO', 'CERELAC', 'JOHNSON',
+        'BABY WIPES', 'BABY POWDER', 'BABY SOAP', 'BABY OIL', 'LACTOGEN', 'NAN PRO',
+        'NIPPLE', 'FEEDING BOTTLE', 'SEBAMED'
+      ]
+    },
+    {
+      slug: 'beverages',
+      namePattern: /BEVERAGE|DRINK/i,
+      keywords: [
+        'TEA', 'CHAI', 'COFFEE', 'JUICE', 'COLD DRINK', 'PEPSI', 'COKE', 'COCA', 'SPRITE',
+        'THUMS UP', 'LIMCA', 'MIRINDA', '7UP', 'MAAZA', 'FROOTI', 'SLICE', 'BOURN VITA',
+        'BOURNVITA', 'HORLICKS', 'COMPLAN', 'BOOST', 'SYRUP', 'WATER', 'SQUASH', 'CRANBERRY',
+        'BEVERAGE', 'SODA', 'RED BULL', 'STING', 'ROOHAFZA', 'SHARBAT', 'ENERGY DRINK',
+        'RASNA', 'TANG', 'MILKSHAKE', 'NESCAFE', 'BRU', 'TAJ MAHAL', 'RED LABEL', 'TATA TEA'
+      ]
+    },
+    {
+      slug: 'dairy-bakery',
+      namePattern: /DAIRY|BAKERY/i,
+      keywords: [
+        'MILK', 'AMUL', 'BUTTER', 'PANEER', 'CHEESE', 'BREAD', 'CURD', 'DAIRY', 'GHEE',
+        'EGG', 'DAHI', 'CHHAACH', 'BUTTERMILK', 'YOGURT', 'PAV', 'BUN', 'KHOA', 'MAWA'
+      ]
+    },
+    {
+      slug: 'snacks',
+      namePattern: /SNACK|MUNCHIES/i,
+      keywords: [
+        'BISCUIT', 'CHIPS', 'NAMKEEN', 'MAGGI', 'NOODLE', 'KURKURE', 'LAYS', 'CHIKKI',
+        'CHOCOLATE', 'CADBURY', 'SWEET', 'CANDY', 'SNACK', 'BHUJIA', 'SEV', 'POPCORN',
+        'WAFER', '50-50', 'MASKA', 'JELLY', 'CHOCLAIR', 'ECLAIR', 'TOFFEE', 'CRAX', 'BINGO',
+        'PARLE', 'BRITANNIA', 'SUNFEAST', 'OREO', 'KITKAT', 'GEMS', 'SNICKERS', 'MUNCH',
+        'PERK', 'LOLLIPOP', 'GUM', 'PASTA', 'MACARONI', 'CUP NOODLE', 'SOUP', 'MIXTURE',
+        'GATHIYA', 'PAPAD', 'RUSK', 'TOAST', 'MARIE', 'MONACO', 'KRACKJACK', 'GOOD DAY',
+        'HIDE & SEEK', 'BOURBON', 'TIGER', 'MILK BIKIS', 'BOUNCY', 'CHINGS', 'YIPPEE',
+        'TOP RAMEN', 'HALDIRAM', 'BIKAJI', 'BALAJI', 'UNCLE CHIPPS'
+      ]
+    },
+    {
+      slug: 'atta-rice-dals',
+      namePattern: /ATTA|RICE|DAL/i,
+      keywords: [
+        'ATTA', 'RICE', 'CHAWAL', 'DAL', 'PULSE', 'BESAN', 'SUJI', 'SOOJI', 'MAIDA', 'POHA',
+        'GRAIN', 'WHEAT', 'MOONG', 'CHANA', 'TOOR', 'URAD', 'RAJMA', 'CHICKPEA', 'LENTIL',
+        'ARHAR', 'MASOOR', 'DALLIA', 'SABUDANA', 'AASHIRVAAD', 'FORTUNE CHAKKI', 'DAAWAT',
+        'KOHINOOR', 'INDIA GATE', 'BASMATI'
+      ]
+    },
+    {
+      slug: 'masalas-oils',
+      namePattern: /OIL|MASALA/i,
+      keywords: [
+        'OIL', 'MASALA', 'SPICE', 'SALT', 'SUGAR', 'MIRCH', 'HALDI', 'DHANIYA', 'JEERA',
+        'MUSTARD', 'FORTUNE', 'SAFFOLA', 'SOYA OIL', 'SARSON', 'HING', 'GARAM', 'METHI',
+        'AJWAIN', 'ELAICHI', 'CARDAMOM', 'CLOVE', 'LAUNG', 'TEJPATTA', 'CINNAMON', 'KASURI',
+        'CHAT MASALA', 'SAMBHAR', 'BIRYANI', 'TASTEMAKER', 'MDH', 'EVEREST', 'CATCH',
+        'BADSHAH', 'TATA SALT', 'DHARA', 'GEMINI', 'FREEDOM'
+      ]
+    },
+    {
+      slug: 'household',
+      namePattern: /HOUSEHOLD|CLEANING/i,
+      keywords: [
+        'SURF', 'DETERGENT', 'VIM', 'CLEANER', 'HARPIC', 'COLIN', 'WASHING', 'SOAP POWDER',
+        'PHENYL', 'BROOM', 'POOJA', 'AGARBATTI', 'MOSQUITO', 'ALL OUT', 'GOOD KNIGHT',
+        'COMFORT', 'TIDE', 'WHEEL', 'RIN', 'ARIEL', 'DISHWASH', 'SCRUBBER', 'WIPER',
+        'POCHHA', 'HIT', 'BAYGON', 'ODONIL', 'AIR FRESHENER', 'MATCHBOX', 'KAPOOR', 'DIYA',
+        'EXO', 'PRIL', 'LIZOL', 'DOMEX'
+      ]
+    },
+    {
+      slug: 'personal-care',
+      namePattern: /PERSONAL|BEAUTY/i,
+      keywords: [
+        'SHAMPOO', 'SOAP', 'DETTOL', 'LIFEBUOY', 'DOVE', 'FACEWASH', 'CREAM', 'LOTION',
+        'TOOTHPASTE', 'COLGATE', 'PEPSODENT', 'CLOSE UP', 'SENSODYNE', 'BRUSH', 'HAIR OIL',
+        'PARACHUTE', 'BOROLINE', 'SUTHOL', 'POWDER', 'TALC', 'SHAVING', 'GILLETTE', 'RAZOR',
+        'BLADE', 'VASELINE', 'FAIR & LOVELY', 'GLOW & LOVELY', 'NIVEA', 'HIMALAYA', 'SANITARY',
+        'WHISPER', 'STAYFREE', 'DEO', 'DEODORANT', 'PERFUME', 'BODY WASH', 'HANDWASH',
+        'PANTENE', 'CLINIC PLUS', 'SUNSILK', 'HEAD & SHOULDERS', 'LUX', 'SANTOOR', 'MEDIMIX',
+        'CINTHOL', 'PEARS', 'FIAMA', 'WILD STONE', 'FOGG', 'AXE', 'DENVER', 'VICKS', 'IODEX',
+        'MOOV', 'VOLINI', 'BAND-AID', 'COTTON'
+      ]
+    },
+    {
+      slug: 'kitchenware',
+      namePattern: /PLASTIC|KITCHEN/i,
+      keywords: [
+        'PLASTIC', 'BOTTLE', 'CONTAINER', 'BUCKET', 'MUG', 'BOWL', 'STEEL', 'KITCHEN',
+        'BOX', 'BASKET', 'TRAY', 'CASSEROLE', 'JUG', 'GLASS', 'SPOON', 'FORK', 'KNIFE',
+        'CHOPPER', 'LIGHTER', 'FOIL', 'ALUMINIUM', 'DUSTBIN', 'CELLO', 'MILTON'
+      ]
+    }
+  ];
+
+  // Helper to accurately categorize product based on keywords
   const guessCategoryId = (name: string, brand: string): string => {
     const text = (name + ' ' + (brand || '')).toUpperCase();
-    
-    const findCat = (keywords: string[]) => {
-      return categories.find(c => {
-        const catName = c.name.toUpperCase();
-        return keywords.some(k => catName.includes(k) || text.includes(k));
-      });
-    };
 
-    if (/BABY|DIAPER|PAMPERS|CERELAC/.test(text)) {
-      const match = findCat(['BABY']);
-      if (match) return match.id;
-    }
-    if (/TEA|COFFEE|MILK|BUTTER|PANEER|GHEE|JUICE|BEVERAGE/.test(text)) {
-      const match = findCat(['DAIRY', 'BEVERAGE']);
-      if (match) return match.id;
-    }
-    if (/BISCUIT|RUSK|NOODLE|MAGGI|CHIPS|NAMKEEN|CHOCOLATE|SNACK/.test(text)) {
-      const match = findCat(['SNACK', 'MUNCHIES']);
-      if (match) return match.id;
-    }
-    if (/ATTA|RICE|CHAWAL|DAL|PULSE|BESAN|SUJI|FLOUR/.test(text)) {
-      const match = findCat(['ATTA', 'RICE', 'DAL']);
-      if (match) return match.id;
-    }
-    if (/OIL|TEL|MASALA|MIRCH|HALDI|DHANIYA|SALT|SPICE/.test(text)) {
-      const match = findCat(['OIL', 'MASALA', 'SPICE']);
-      if (match) return match.id;
-    }
-    if (/SOAP|SHAMPOO|CREAM|LOTION|DOVE|PONDS|FACE|HAIR|DEO/.test(text)) {
-      const match = findCat(['PERSONAL', 'BEAUTY']);
-      if (match) return match.id;
-    }
-    if (/DETERGENT|SURF|VIM|TIDE|CLEANER|HARPIC|HIT|BROOM|JHADU/.test(text)) {
-      const match = findCat(['HOUSEHOLD', 'CLEANING']);
-      if (match) return match.id;
+    for (const rule of CATEGORY_RULES) {
+      if (rule.keywords.some(k => text.includes(k))) {
+        const match = categories.find(c =>
+          c.slug === rule.slug ||
+          rule.namePattern.test(c.name)
+        );
+        if (match) return match.id;
+      }
     }
 
-    return categories[0]?.id || 'general';
+    // Default to Snacks & Munchies (general packaged groceries)
+    const fallback = categories.find(c => c.slug === 'snacks' || /SNACK/i.test(c.name)) || categories[0];
+    return fallback?.id || 'general';
   };
 
   // Extract base product name and pack quantity for grouping variants
@@ -97,6 +175,77 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
     }
 
     return { baseName: cleanName, unitSize };
+  };
+
+  // Convert raw parsed rows into either grouped variant cards or individual items
+  const buildFinalItems = (rawList: any[], shouldGroup: boolean): ParsedProductItem[] => {
+    if (shouldGroup) {
+      const groupedMap = new Map<string, ParsedProductItem>();
+
+      rawList.forEach((item, index) => {
+        const key = item.baseName.toLowerCase();
+        const existing = groupedMap.get(key);
+
+        const variantObj: ProductVariant = {
+          id: `v-${index + 1}`,
+          unit_size: item.unitSize,
+          price: item.price,
+          mrp: item.mrp,
+          stock_quantity: 50,
+          is_available: true,
+          sku: `SDM-${index + 1000}`
+        };
+
+        if (existing) {
+          if (!existing.variants) {
+            existing.variants = [];
+          }
+          const hasVariant = existing.variants.some(v => v.unit_size.toLowerCase() === item.unitSize.toLowerCase());
+          if (!hasVariant) {
+            existing.variants.push(variantObj);
+            // Minimum available price
+            if (item.price < existing.price) {
+              existing.price = item.price;
+              existing.mrp = item.mrp;
+              existing.pack = item.unitSize;
+            }
+          }
+        } else {
+          groupedMap.set(key, {
+            name: item.baseName,
+            pack: item.unitSize,
+            brand: item.brand,
+            mrp: item.mrp,
+            price: item.price,
+            sku: `SDM-${index + 1000}`,
+            category_id: item.categoryId,
+            variants: [variantObj]
+          });
+        }
+      });
+
+      return Array.from(groupedMap.values());
+    } else {
+      return rawList.map((item, index) => ({
+        name: item.fullName,
+        pack: item.unitSize,
+        brand: item.brand,
+        mrp: item.mrp,
+        price: item.price,
+        sku: `SDM-${index + 1000}`,
+        category_id: item.categoryId,
+        variants: [
+          {
+            id: `v-${index + 1}`,
+            unit_size: item.unitSize,
+            price: item.price,
+            mrp: item.mrp,
+            stock_quantity: 50,
+            is_available: true
+          }
+        ]
+      }));
+    }
   };
 
   const parseExcelFile = (file: File) => {
@@ -212,78 +361,8 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
           });
         }
 
-        // 3. Optional Variant Grouping (Group variants of the same product)
-        let finalItems: ParsedProductItem[] = [];
-
-        if (groupVariants) {
-          const groupedMap = new Map<string, ParsedProductItem>();
-
-          rawProductList.forEach((item, index) => {
-            const key = item.baseName.toLowerCase();
-            const existing = groupedMap.get(key);
-
-            const variantObj: ProductVariant = {
-              id: `v-${index + 1}`,
-              unit_size: item.unitSize,
-              price: item.price,
-              mrp: item.mrp,
-              stock_quantity: 50,
-              is_available: true,
-              sku: `SDM-${index + 1000}`
-            };
-
-            if (existing) {
-              // Add as a new quantity option / variant
-              if (!existing.variants) {
-                existing.variants = [];
-              }
-              const hasVariant = existing.variants.some(v => v.unit_size.toLowerCase() === item.unitSize.toLowerCase());
-              if (!hasVariant) {
-                existing.variants.push(variantObj);
-                // Keep base price as the minimum available variant price
-                if (item.price < existing.price) {
-                  existing.price = item.price;
-                  existing.mrp = item.mrp;
-                  existing.pack = item.unitSize;
-                }
-              }
-            } else {
-              groupedMap.set(key, {
-                name: item.baseName,
-                pack: item.unitSize,
-                brand: item.brand,
-                mrp: item.mrp,
-                price: item.price,
-                sku: `SDM-${index + 1000}`,
-                category_id: item.categoryId,
-                variants: [variantObj]
-              });
-            }
-          });
-
-          finalItems = Array.from(groupedMap.values());
-        } else {
-          finalItems = rawProductList.map((item, index) => ({
-            name: item.fullName,
-            pack: item.unitSize,
-            brand: item.brand,
-            mrp: item.mrp,
-            price: item.price,
-            sku: `SDM-${index + 1000}`,
-            category_id: item.categoryId,
-            variants: [
-              {
-                id: `v-${index + 1}`,
-                unit_size: item.unitSize,
-                price: item.price,
-                mrp: item.mrp,
-                stock_quantity: 50,
-                is_available: true
-              }
-            ]
-          }));
-        }
-
+        setRawProducts(rawProductList);
+        const finalItems = buildFinalItems(rawProductList, groupVariants);
         setParsedItems(finalItems);
         setIsProcessing(false);
         setStatusMessage(null);
@@ -452,6 +531,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
               style={{ marginLeft: 'auto', padding: '0 12px', height: '32px' }}
               onClick={() => {
                 setParsedItems([]);
+                setRawProducts([]);
                 setFileName(null);
               }}
               disabled={isUploading}
@@ -467,7 +547,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
             </div>
             <div className="excel-stat-card">
               <span className="excel-stat-card__value">{totalQuantityOptions}</span>
-              <span className="excel-stat-card__label">Quantity Options</span>
+              <span className="excel-stat-card__label">{groupVariants ? 'Quantity Options' : 'Individual SKUs'}</span>
             </div>
             <div className="excel-stat-card">
               <span className="excel-stat-card__value">100%</span>
@@ -481,8 +561,11 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
                 type="checkbox"
                 checked={groupVariants}
                 onChange={(e) => {
-                  setGroupVariants(e.target.checked);
-                  // Reparse if file is cached
+                  const isChecked = e.target.checked;
+                  setGroupVariants(isChecked);
+                  if (rawProducts.length > 0) {
+                    setParsedItems(buildFinalItems(rawProducts, isChecked));
+                  }
                 }}
                 disabled={isUploading}
               />
