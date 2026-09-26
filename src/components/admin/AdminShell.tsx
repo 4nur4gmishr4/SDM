@@ -1,9 +1,11 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import './AdminShell.css';
 
 export function AdminShell() {
   const { signOut } = useAuth();
+  const { resolvedTheme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -64,6 +66,24 @@ export function AdminShell() {
         </div>
 
         <div className="admin-shell__nav-footer">
+          {/* Theme toggle in rail */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="admin-shell__nav-item admin-shell__nav-item--theme"
+            title={`Switch to ${resolvedTheme === 'dark' ? 'Light' : 'Dark'} mode`}
+            style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            <div className="admin-shell__nav-icon-wrapper">
+              <span className="material-symbols-outlined">
+                {resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
+              </span>
+            </div>
+            <span className="admin-shell__nav-label">
+              {resolvedTheme === 'dark' ? 'Light' : 'Dark'}
+            </span>
+          </button>
+
           <button
             onClick={handleSignOut}
             className="admin-shell__nav-item"
@@ -82,10 +102,31 @@ export function AdminShell() {
       <main className="admin-shell__main">
         <header className="admin-shell__top-bar">
           <h1 className="admin-shell__top-bar-title">{pageTitle}</h1>
-          <a href="/" target="_blank" rel="noopener noreferrer" className="sdm-btn sdm-btn--outlined" style={{ height: '38px', padding: '0 22px' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>storefront</span>
-            <span>View Store</span>
-          </a>
+          <div className="admin-shell__top-bar-actions">
+            {/* Prominent Theme Toggle Button in Admin Top Bar */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="admin-shell__theme-btn"
+              title={`Switch to ${resolvedTheme === 'dark' ? 'Light' : 'Dark'} mode`}
+              aria-label="Toggle dark/light mode"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                {resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
+              </span>
+              <span>{resolvedTheme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+            </button>
+
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sdm-btn sdm-btn--outlined admin-shell__view-store-btn"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>storefront</span>
+              <span>View Store</span>
+            </a>
+          </div>
         </header>
 
         <div className="admin-shell__content">

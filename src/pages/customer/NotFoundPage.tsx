@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { STORE_WHATSAPP_CLEAN } from '../../lib/orderUtils';
+import { WhatsAppIcon } from '../../components/common';
 
 export function NotFoundPage() {
   return (
@@ -104,9 +105,10 @@ export function NotFoundPage() {
             href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent('Hello Sai Darshan Mart, I encountered a missing page on the website')}`}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#25D366', fontWeight: 600, textDecoration: 'none' }}
+            style={{ color: '#25D366', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
           >
-            Chat with us on WhatsApp &rarr;
+            <WhatsAppIcon size={16} color="#25D366" />
+            <span>Chat with us on WhatsApp &rarr;</span>
           </a>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { useState, useRef, type DragEvent, type ChangeEvent } from 'react';
-import * as XLSX from 'xlsx';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import type { Category } from '../../types/category';
 import type { ProductVariant } from '../../types/product';
@@ -106,8 +105,9 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
     setStatusMessage('Reading spreadsheet...');
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
+        const XLSX = await import('xlsx');
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];

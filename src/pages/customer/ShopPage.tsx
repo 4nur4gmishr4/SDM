@@ -3,10 +3,10 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { SearchBar } from '../../components/customer/SearchBar';
 import { ProductGrid } from '../../components/customer/ProductGrid';
-import './ShopPage.css';
-
+import { WatermarkBanner, BeatingHeart } from '../../components/common';
 import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
+import './ShopPage.css';
 
 export function ShopPage() {
   const { categorySlug } = useParams<{ categorySlug: string }>();
@@ -19,16 +19,14 @@ export function ShopPage() {
   const [localQuery, setLocalQuery] = useState(urlQuery);
   const [sortBy, setSortBy] = useState('relevance');
   const [inStockOnly, setInStockOnly] = useState(false);
-  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   const { categories } = useCategories();
   const currentCategory = categories.find(c => c.slug === categorySlug);
 
-  // Fetch all products for the category (no search query sent to hook)
-  // This allows lightning fast client-side filtering.
+  // Fetch all products for the category
   const { products, isLoading } = useProducts({
     categoryId: currentCategory?.id,
-    fetchAll: true // Let's fetch all (or all active) and filter locally
+    fetchAll: true
   });
 
   // Keep local query in sync if URL changes externally
@@ -61,7 +59,6 @@ export function ShopPage() {
     // Apply sorting
     filtered.sort((a, b) => {
       if (sortBy === 'relevance' && localQuery.trim()) {
-        // Simple relevance: exact match in name first, then starts with, then includes
         const q = localQuery.toLowerCase().trim();
         const aExact = a.name.toLowerCase() === q ? 1 : 0;
         const bExact = b.name.toLowerCase() === q ? 1 : 0;
@@ -71,7 +68,7 @@ export function ShopPage() {
         const bStarts = b.name.toLowerCase().startsWith(q) ? 1 : 0;
         if (aStarts !== bStarts) return bStarts - aStarts;
         
-        return 0; // fallback to default order
+        return 0;
       }
       
       if (sortBy === 'newest') {
@@ -113,34 +110,28 @@ export function ShopPage() {
         />
       </div>
 
-      <div className="shop-page__layout">
-        {/* Mobile Filters FAB */}
-        <div className="shop-page__mobile-fab">
-          <md-fab 
-            variant="tertiary" 
-            aria-label="Filters" 
-            onClick={() => setIsMobileFiltersOpen(true)}
+      {/* Horizontal Category Carousel for Mobile & Tablet */}
+      <div className="shop-page__mobile-categories">
+        <Link 
+          to="/shop" 
+          className={`shop-category-chip ${!categorySlug ? 'shop-category-chip--active' : ''}`}
+        >
+          All Items
+        </Link>
+        {categories.map(category => (
+          <Link 
+            key={category.id} 
+            to={`/shop/${category.slug}`} 
+            className={`shop-category-chip ${category.slug === categorySlug ? 'shop-category-chip--active' : ''}`}
           >
-            <md-icon slot="icon">filter_list</md-icon>
-          </md-fab>
-        </div>
+            {category.name}
+          </Link>
+        ))}
+      </div>
 
-        {/* Sidebar Backdrop for Mobile */}
-        {isMobileFiltersOpen && (
-          <div 
-            className="shop-page__sidebar-backdrop"
-            onClick={() => setIsMobileFiltersOpen(false)}
-          />
-        )}
-
-        <aside className={`shop-page__sidebar ${isMobileFiltersOpen ? 'shop-page__sidebar--open' : ''}`}>
-          <div className="shop-page__sidebar-header-mobile">
-            <h2 className="shop-page__sidebar-mobile-title">Filters</h2>
-            <md-icon-button onClick={() => setIsMobileFiltersOpen(false)}>
-              <md-icon>close</md-icon>
-            </md-icon-button>
-          </div>
-
+      <div className="shop-page__layout">
+        {/* Desktop Sidebar */}
+        <aside className="shop-page__sidebar">
           <div className="shop-page__sidebar-section">
             <h3 className="shop-page__sidebar-title">Categories</h3>
             <div className="shop-page__category-list">
@@ -161,50 +152,65 @@ export function ShopPage() {
               ))}
             </div>
           </div>
-
-          <div className="shop-page__sidebar-section">
-            <h3 className="shop-page__sidebar-title">Filters</h3>
-            <label className="shop-page__filter-row">
-              <md-checkbox 
-                checked={inStockOnly || undefined} 
-                onInput={(e: any) => setInStockOnly(e.target.checked)}
-              ></md-checkbox>
-              <span>In Stock Only</span>
-            </label>
-          </div>
         </aside>
 
         <div className="shop-page__main">
+          {/* Quick Filter & Sort Toolbar */}
           <div className="shop-page__results-header">
             <span className="shop-page__results-count">
               {isInitialLoading ? (
                 'Loading fresh products...'
               ) : (
                 <>
-                  Showing {displayedProducts.length} {displayedProducts.length === 1 ? 'result' : 'results'}
+                  Showing {displayedProducts.length} {displayedProducts.length === 1 ? 'item' : 'items'}
                   {localQuery && <span> for "{localQuery}"</span>}
                 </>
               )}
             </span>
             
             <div className="shop-page__filters">
-              <md-outlined-select 
-                label="Sort by" 
-                onInput={(e: any) => setSortBy(e.target.value)}
+              {/* In Stock Toggle Chip */}
+              <button
+                type="button"
+                className={`shop-pill-chip ${inStockOnly ? 'shop-pill-chip--active' : ''}`}
+                onClick={() => setInStockOnly(!inStockOnly)}
+                aria-pressed={inStockOnly}
               >
-                <md-select-option value="relevance" selected={sortBy === 'relevance'}>Relevance</md-select-option>
-                <md-select-option value="newest" selected={sortBy === 'newest'}>Newest Arrivals</md-select-option>
-                <md-select-option value="featured" selected={sortBy === 'featured'}>Featured First</md-select-option>
-                <md-select-option value="price_asc" selected={sortBy === 'price_asc'}>Price (Low to High)</md-select-option>
-                <md-select-option value="price_desc" selected={sortBy === 'price_desc'}>Price (High to Low)</md-select-option>
-                <md-select-option value="name" selected={sortBy === 'name'}>Name (A-Z)</md-select-option>
-              </md-outlined-select>
+                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                  {inStockOnly ? 'check_circle' : 'inventory_2'}
+                </span>
+                <span>In Stock Only</span>
+              </button>
+
+              {/* Native Google Pill Sort Select */}
+              <div className="shop-sort-wrap">
+                <span className="material-symbols-outlined shop-sort-icon">sort</span>
+                <select 
+                  className="shop-sort-select"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="Sort products by"
+                >
+                  <option value="relevance">Relevance</option>
+                  <option value="newest">Newest Arrivals</option>
+                  <option value="featured">Featured First</option>
+                  <option value="price_asc">Price: Low to High</option>
+                  <option value="price_desc">Price: High to Low</option>
+                  <option value="name">Name (A-Z)</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <ProductGrid products={displayedProducts} isLoading={isInitialLoading} skeletonCount={12} />
         </div>
       </div>
+
+      {/* Shadowy Big Watermark Display */}
+      <WatermarkBanner 
+        headline={<>Ghar ka rashan, apno ki dukaan <BeatingHeart /></>} 
+        subline="100% genuine groceries, grains & daily staples for your family"
+      />
     </div>
   );
 }

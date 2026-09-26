@@ -14,4 +14,6 @@ export {
   AdminFormSkeleton,
 } from './Skeleton';
 export { ErrorBoundary } from './ErrorBoundary';
+export { WatermarkBanner, BeatingHeart } from './WatermarkBanner';
+export { WhatsAppIcon } from './WhatsAppIcon';
 

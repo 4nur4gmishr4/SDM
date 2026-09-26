@@ -1,5 +1,5 @@
 /* ============================================================
-   Sai Darshan Mart — Ultra-Clean Minimal Footer (Swiggy / Zomato Style)
+   Sai Darshan Mart — Ultra-Clean Minimal Modern Footer
    ============================================================ */
 
 .sdm-footer {
@@ -9,234 +9,199 @@
   margin-top: auto;
   font-family: var(--md-sys-typescale-font-family);
   -webkit-tap-highlight-color: transparent;
+  padding-bottom: calc(var(--sdm-layout-bottom-nav-height, 64px) + 16px);
+}
+
+@media (min-width: 768px) {
+  .sdm-footer {
+    padding-bottom: 24px;
+  }
 }
 
 .sdm-footer__container {
   max-width: var(--sdm-layout-max-width, 1280px);
   margin-inline: auto;
-  padding: 28px var(--sdm-layout-content-padding-mobile, 16px) 20px;
+  padding: 32px var(--sdm-layout-content-padding-mobile, 16px) 16px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 20px;
 }
 
 @media (min-width: 600px) {
   .sdm-footer__container {
-    padding: 32px var(--sdm-layout-content-padding-tablet, 24px) 24px;
+    padding: 40px var(--sdm-layout-content-padding-tablet, 24px) 20px;
     gap: 24px;
-  }
-}
-
-@media (min-width: 905px) {
-  .sdm-footer__container {
-    padding: 36px var(--sdm-layout-content-padding-desktop, 32px) 24px;
   }
 }
 
 /* ------------------------------------------------------------
-   Top Row: Brand Info + Contact Pills
+   Brand Section (Minimal)
    ------------------------------------------------------------ */
-.sdm-footer__top {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-@media (min-width: 768px) {
-  .sdm-footer__top {
-    flex-direction: row;
-    align-items: center;
-    gap: 24px;
-  }
-}
-
 .sdm-footer__brand {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 6px;
+  max-width: 520px;
 }
 
 .sdm-footer__brand-title {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 
 .sdm-footer__brand-icon {
-  font-size: 24px;
+  font-size: 26px;
   color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .sdm-footer__brand-name {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.3px;
   color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .sdm-footer__brand-tagline {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--md-sys-color-on-surface-variant, #6b7280);
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
-/* Contact Pills */
-.sdm-footer__contacts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.sdm-footer__contact-pill {
+/* ------------------------------------------------------------
+   Clickable Exact Store Address
+   ------------------------------------------------------------ */
+.sdm-footer__address {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
+  justify-content: center;
+  gap: 8px;
+  max-width: 580px;
+  padding: 8px 16px;
   background-color: var(--md-sys-color-surface, #ffffff);
-  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.1));
   border-radius: 9999px;
-  font-size: 12.5px;
-  font-weight: 500;
   color: var(--md-sys-color-on-surface, #374151);
   text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-}
-
-.sdm-footer__contact-pill:hover {
-  background-color: var(--md-sys-color-surface-container-high, #e5e7eb);
-  border-color: var(--md-sys-color-outline, #9ca3af);
-  transform: translateY(-1px);
-}
-
-.sdm-footer__contact-pill--whatsapp {
-  background-color: #25D366;
-  color: #ffffff;
-  border-color: #25D366;
-}
-
-.sdm-footer__contact-pill--whatsapp:hover {
-  background-color: #1eb857;
-  border-color: #1eb857;
-  color: #ffffff;
-}
-
-.sdm-footer__pill-icon {
-  font-size: 16px;
-}
-
-/* ------------------------------------------------------------
-   Middle Row: Navigation Links
-   ------------------------------------------------------------ */
-.sdm-footer__nav-row {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  border-top: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.06));
-  border-bottom: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.06));
-}
-
-.sdm-footer__nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 12px;
-}
-
-.sdm-footer__link {
-  color: var(--md-sys-color-on-surface-variant, #4b5563);
-  text-decoration: none;
-  font-size: 13.5px;
+  font-size: 12.5px;
   font-weight: 500;
-  transition: color 0.15s ease;
+  line-height: 1.4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.sdm-footer__link:hover {
+[data-theme="dark"] .sdm-footer__address {
+  background-color: var(--md-sys-color-surface-container-high, #2a2a2a);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--md-sys-color-on-surface, #e5e7eb);
+}
+
+.sdm-footer__address:hover {
+  background-color: var(--md-sys-color-surface-container-high, #f3f4f6);
+  border-color: var(--md-sys-color-primary, #1E8E3E);
   color: var(--md-sys-color-primary, #1E8E3E);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
-.sdm-footer__link--muted {
-  font-size: 12px;
-  opacity: 0.65;
+.sdm-footer__address-icon {
+  font-size: 18px;
+  color: var(--md-sys-color-primary, #1E8E3E);
+  flex-shrink: 0;
 }
 
-.sdm-footer__link--muted:hover {
-  opacity: 1;
-}
-
-.sdm-footer__nav-dot {
-  color: var(--md-sys-color-outline-variant, #d1d5db);
-  font-size: 12px;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-/* ------------------------------------------------------------
-   Bottom Row: Copyright & Anurag Mishra Attribution
-   ------------------------------------------------------------ */
-.sdm-footer__bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
+.sdm-footer__address-text {
   text-align: center;
 }
 
-@media (min-width: 600px) {
-  .sdm-footer__bottom {
-    flex-direction: row;
-    text-align: left;
-  }
+.sdm-footer__address-arrow {
+  font-size: 15px;
+  color: var(--md-sys-color-outline, #9ca3af);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sdm-footer__address:hover .sdm-footer__address-arrow {
+  color: var(--md-sys-color-primary, #1E8E3E);
+  transform: translate(1px, -1px);
+}
+
+/* ------------------------------------------------------------
+   3 Unified Contact Icon Buttons (Same Color: Google Green)
+   ------------------------------------------------------------ */
+.sdm-footer__contact-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 4px 0;
+}
+
+.sdm-footer__icon-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-primary, #1E8E3E);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30, 142, 62, 0.25);
+  transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.22s cubic-bezier(0.2, 0, 0, 1),
+              background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sdm-footer__icon-btn:hover {
+  background-color: #177332;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 14px rgba(30, 142, 62, 0.35);
+  color: #ffffff;
+}
+
+.sdm-footer__icon-btn:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 1px 4px rgba(30, 142, 62, 0.2);
+}
+
+.sdm-footer__icon-btn .material-symbols-outlined {
+  font-size: 22px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sdm-footer__icon-btn svg {
+  display: block;
+}
+
+/* ------------------------------------------------------------
+   Bottom Minimal Copyright
+   ------------------------------------------------------------ */
+.sdm-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
+  width: 100%;
+  max-width: 600px;
 }
 
 .sdm-footer__copyright {
   font-size: 12.5px;
   color: var(--md-sys-color-on-surface-variant, #6b7280);
-}
-
-.sdm-footer__craft {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-
-@media (min-width: 600px) {
-  .sdm-footer__craft {
-    align-items: flex-end;
-  }
-}
-
-.sdm-footer__made-with {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--md-sys-color-on-surface, #1f2937);
-  letter-spacing: 0.1px;
-}
-
-.sdm-footer__author {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.6px;
-  color: var(--md-sys-color-on-surface-variant, #6b7280);
-  text-transform: uppercase;
-}
-
-.sdm-footer__insta-link {
-  color: var(--md-sys-color-primary, #1E8E3E);
-  text-decoration: none;
-  font-weight: 700;
-  transition: all 0.2s ease;
-  position: relative;
-  display: inline-block;
-}
-
-.sdm-footer__insta-link:hover {
-  color: #E1306C; /* Instagram gradient accent */
-  text-decoration: underline;
-  transform: translateY(-0.5px);
 }

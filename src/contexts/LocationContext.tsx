@@ -38,11 +38,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     return Boolean(localStorage.getItem(STORAGE_KEY));
   });
 
-  const [showGooeyPrompt, setShowGooeyPrompt] = useState<boolean>(() => {
-    const hasSeen = localStorage.getItem(PROMPT_DISMISSED_KEY);
-    const hasLoc = localStorage.getItem(STORAGE_KEY);
-    return !hasSeen && !hasLoc;
-  });
+  const [showGooeyPrompt, setShowGooeyPrompt] = useState<boolean>(false);
 
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

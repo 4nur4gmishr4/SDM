@@ -10,4 +10,4 @@ export * from './SearchBar';
 export * from './HeaderLocationPill';
 export * from './GooeyLocationHero';
 export * from './LocationPickerModal';
-
+export * from './IOSBannerCarousel';

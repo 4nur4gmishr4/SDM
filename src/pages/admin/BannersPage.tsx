@@ -105,13 +105,57 @@ export function BannersPage() {
     }
   };
 
+  const handleToggleActive = async (banner: Banner) => {
+    try {
+      const nextActive = !banner.is_active;
+      setBanners(prev => prev.map(b => b.id === banner.id ? { ...b, is_active: nextActive } : b));
+      
+      const { error } = await supabase
+        .from('banners')
+        .update({ is_active: nextActive, updated_at: new Date().toISOString() })
+        .eq('id', banner.id);
+
+      if (error) {
+        console.error('Error toggling banner status:', error);
+        await fetchBanners();
+      }
+    } catch (err) {
+      console.error('Error toggling banner status:', err);
+      await fetchBanners();
+    }
+  };
+
+  const handleDelete = async (bannerId: string) => {
+    if (!window.confirm('Are you sure you want to delete this banner?')) return;
+    try {
+      setBanners(prev => prev.filter(b => b.id !== bannerId));
+      const { error } = await supabase
+        .from('banners')
+        .delete()
+        .eq('id', bannerId);
+
+      if (error) {
+        console.error('Error deleting banner:', error);
+        await fetchBanners();
+      }
+    } catch (err) {
+      console.error('Error deleting banner:', err);
+      await fetchBanners();
+    }
+  };
+
   return (
     <div className="admin-layout-content admin-products-page">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
       <div className="admin-products-header">
-        <h1 className="admin-products-title">Banners</h1>
+        <div>
+          <h1 className="admin-products-title">Banners</h1>
+          <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+            Control which banners appear on the home page iOS carousel and their sliding order.
+          </p>
+        </div>
         <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">
           <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add</span>
           <span>Add Banner</span>
@@ -126,7 +170,7 @@ export function BannersPage() {
               <th>Title & Text</th>
               <th>Link</th>
               <th>Order</th>
-              <th>Status</th>
+              <th>Status (Tap to Toggle)</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -136,12 +180,12 @@ export function BannersPage() {
             ) : banners.length === 0 ? (
               <tr>
                 <td colSpan={6} style={{ textAlign: 'center', padding: '32px' }}>
-                  No banners found. Click "Add Banner" to create one.
+                  No custom banners found. Currently displaying fallback store banners on home page. Click "Add Banner" to create your first store banner.
                 </td>
               </tr>
             ) : (
               banners.map((banner) => (
-                <tr key={banner.id} style={{ opacity: banner.is_active ? 1 : 0.5 }}>
+                <tr key={banner.id} style={{ opacity: banner.is_active ? 1 : 0.55 }}>
                   <td>
                     {banner.image_url ? (
                       <img
@@ -149,31 +193,49 @@ export function BannersPage() {
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        style={{ width: '80px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
+                        style={{ width: '80px', height: '42px', objectFit: 'cover', borderRadius: '8px' }}
                       />
                     ) : (
-                      <div style={{ width: '80px', height: '40px', backgroundColor: 'var(--md-sys-color-surface-container-high)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{ width: '80px', height: '42px', backgroundColor: 'var(--md-sys-color-surface-container-high)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--md-sys-color-outline)' }}>image</span>
                       </div>
                     )}
                   </td>
                   <td>
-                    <div style={{ fontWeight: 500 }}>{banner.title}</div>
+                    <div style={{ fontWeight: 600 }}>{banner.title}</div>
                     <div style={{ fontSize: '12px', color: 'var(--md-sys-color-outline)' }}>{banner.text}</div>
                   </td>
-                  <td>{banner.link_url || 'None'}</td>
-                  <td>{banner.display_order}</td>
                   <td>
-                    {banner.is_active ? (
-                      <span className="admin-badge admin-badge--delivered">Active</span>
-                    ) : (
-                      <span className="admin-badge admin-badge--cancelled">Inactive</span>
-                    )}
+                    <span style={{ fontSize: '12.5px', fontFamily: 'monospace' }}>
+                      {banner.link_url || 'Default (/shop)'}
+                    </span>
                   </td>
                   <td>
-                    <md-icon-button onClick={() => handleOpenEdit(banner)}>
-                      <md-icon>edit</md-icon>
-                    </md-icon-button>
+                    <span style={{ fontWeight: 600 }}>{banner.display_order}</span>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleActive(banner)}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                      title="Click to toggle banner visibility on home page"
+                    >
+                      {banner.is_active ? (
+                        <span className="admin-badge admin-badge--delivered">Active</span>
+                      ) : (
+                        <span className="admin-badge admin-badge--cancelled">Inactive</span>
+                      )}
+                    </button>
+                  </td>
+                  <td>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <md-icon-button onClick={() => handleOpenEdit(banner)} title="Edit banner">
+                        <md-icon>edit</md-icon>
+                      </md-icon-button>
+                      <md-icon-button onClick={() => handleDelete(banner.id)} title="Delete banner">
+                        <md-icon style={{ color: 'var(--md-sys-color-error, #ba1a1a)' }}>delete</md-icon>
+                      </md-icon-button>
+                    </div>
                   </td>
                 </tr>
               ))

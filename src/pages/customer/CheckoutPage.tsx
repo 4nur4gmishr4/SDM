@@ -6,6 +6,7 @@ import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
+import { WhatsAppIcon } from '../../components/common';
 import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import { validateOrderInput } from '../../lib/validation';
@@ -270,8 +271,8 @@ export function CheckoutPage() {
               form="checkout-form"
               disabled={isSubmitting}
             >
+              <WhatsAppIcon size={20} />
               <span>{isSubmitting ? 'Preparing Order...' : 'Send Order via WhatsApp'}</span>
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>send</span>
             </button>
             <p className="checkout-page__whatsapp-notice">
               You will be redirected to WhatsApp to send your order.

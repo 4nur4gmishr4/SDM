@@ -10,6 +10,7 @@ import {
   STORE_DELIVERY_RADIUS,
   getUpiPaymentUrl 
 } from '../../lib/orderUtils';
+import { WhatsAppIcon } from '../../components/common';
 import './OrderConfirmationPage.css';
 
 export function OrderConfirmationPage() {
@@ -60,9 +61,9 @@ export function OrderConfirmationPage() {
             target="_blank"
             rel="noopener noreferrer"
             className="sdm-btn sdm-btn--whatsapp"
-            style={{ textDecoration: 'none', padding: '10px 20px' }}
+            style={{ textDecoration: 'none', padding: '10px 20px', gap: '8px' }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>chat</span>
+            <WhatsAppIcon size={20} />
             <span>Open WhatsApp Chat</span>
           </a>
 

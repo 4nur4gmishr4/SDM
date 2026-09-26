@@ -6,7 +6,7 @@ import { formatPrice } from '../../lib/orderUtils';
 import type { ProductVariant } from '../../types/product';
 import './ProductDetailPage.css';
 
-import { ProductDetailSkeleton } from '../../components/common';
+import { ProductDetailSkeleton, WatermarkBanner, BeatingHeart } from '../../components/common';
 import { useProduct } from '../../hooks/useProducts';
 
 export function ProductDetailPage() {
@@ -236,6 +236,12 @@ export function ProductDetailPage() {
           </div>
         )}
       </div>
+
+      {/* Shadowy Big Watermark Display */}
+      <WatermarkBanner 
+        headline={<>Shuddhata aur vishwas, seedhe aapke ghar <BeatingHeart /></>} 
+        subline="Handpicked fresh from Sai Darshan Mart store shelves"
+      />
     </div>
   );
 }

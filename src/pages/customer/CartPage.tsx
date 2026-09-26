@@ -6,6 +6,7 @@ import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { CartLineItem } from '../../components/customer/CartLineItem';
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
+import { WatermarkBanner, BeatingHeart } from '../../components/common';
 import './CartPage.css';
 
 export function CartPage() {
@@ -40,6 +41,12 @@ export function CartPage() {
           <Link to="/shop" style={{ textDecoration: 'none' }}>
             <button type="button" className="sdm-btn sdm-btn--primary">Start Shopping</button>
           </Link>
+          <p style={{ marginTop: '16px', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+            Have a grocery list?{' '}
+            <Link to="/quick-order" style={{ color: 'var(--md-sys-color-primary)', fontWeight: 600 }}>
+              Order via Quick Shopping List
+            </Link>
+          </p>
         </div>
       </div>
     );
@@ -84,9 +91,24 @@ export function CartPage() {
             <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_forward</span>
           </button>
 
+          <div style={{ textAlign: 'center', marginTop: '12px' }}>
+            <Link 
+              to="/quick-order" 
+              style={{ fontSize: '13px', color: 'var(--md-sys-color-primary)', textDecoration: 'none', fontWeight: 600 }}
+            >
+              Or type &amp; send shopping list on WhatsApp
+            </Link>
+          </div>
+
           <DeliveryInfo rulesText={settings?.rules_text} />
         </div>
       </div>
+
+      {/* Shadowy Big Watermark Display */}
+      <WatermarkBanner 
+        headline={<>Aapki daily grocery, doorstep fast <BeatingHeart /></>} 
+        subline="Direct WhatsApp ordering & quick delivery across Jabalpur"
+      />
     </div>
   );
 }

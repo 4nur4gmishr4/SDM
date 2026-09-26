@@ -1,22 +1,51 @@
-import { useState, useEffect } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Outlet, Link, useLocation, useNavigationType } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
-import { useAuth } from '../../contexts/AuthContext';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 import { Footer } from './Footer';
-import { ProfileModal } from './ProfileModal';
-import { HeaderLocationPill, GooeyLocationHero, LocationPickerModal } from '../customer';
+import { HeaderLocationPill, LocationPickerModal } from '../customer';
 import './AppShell.css';
 
 export function AppShell() {
   const { itemCount } = useCart();
   const { theme, resolvedTheme, toggleTheme } = useTheme();
-  const { user } = useAuth();
   const { showSnackbar } = useSnackbar();
   const location = useLocation();
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const navType = useNavigationType();
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  // Track history index to differentiate forward and backward (predictive back) transitions
+  const prevIdxRef = useRef<number>(
+    typeof window !== 'undefined' && window.history.state?.idx != null
+      ? window.history.state.idx
+      : 0
+  );
+  const [transitionClass, setTransitionClass] = useState<'android-transition--forward' | 'android-transition--back'>(
+    'android-transition--forward'
+  );
+
+  useEffect(() => {
+    const currentIdx = typeof window !== 'undefined' && window.history.state?.idx != null
+      ? window.history.state.idx
+      : 0;
+
+    if (navType === 'POP') {
+      if (currentIdx < prevIdxRef.current) {
+        setTransitionClass('android-transition--back');
+      } else {
+        setTransitionClass('android-transition--forward');
+      }
+    } else {
+      setTransitionClass('android-transition--forward');
+    }
+    prevIdxRef.current = currentIdx;
+
+    // Reset window scroll to top on route change for native app screen experience
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
+  }, [location.key, location.pathname, navType]);
 
   useEffect(() => {
     const handleOnline = () => {
@@ -37,11 +66,8 @@ export function AppShell() {
     };
   }, [showSnackbar]);
 
-  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
-
   const handleToggleTheme = () => {
     toggleTheme();
-    // compute what the next theme will be
     const nextTheme = theme === 'system' 
       ? (resolvedTheme === 'dark' ? 'Light Theme' : 'Dark Theme')
       : (theme === 'light' ? 'Dark Theme' : 'Auto (System Theme)');
@@ -51,7 +77,7 @@ export function AppShell() {
   const navItems = [
     { label: 'Home', path: '/', icon: 'home' },
     { label: 'Shop', path: '/shop', icon: 'storefront' },
-    { label: 'Quick Order', path: '/quick-order', icon: 'list_alt' },
+    { label: 'Cart', path: '/cart', icon: 'shopping_cart', badge: true },
     { label: 'Store Info', path: '/about', icon: 'info' },
   ];
 
@@ -111,12 +137,17 @@ export function AppShell() {
                   }`}
                 >
                   {item.label}
+                  {item.badge && itemCount > 0 && (
+                    <span className="app-shell__cart-badge" style={{ position: 'static', marginLeft: '6px' }}>
+                      {itemCount}
+                    </span>
+                  )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Actions (Theme Switcher, Cart, Profile) */}
+          {/* Actions (Theme Switcher, Cart) */}
           <div className="app-shell__actions">
             {/* Light / Dark Mode Switcher */}
             <button
@@ -138,49 +169,28 @@ export function AppShell() {
               aria-label="Shopping Cart"
             >
               <span className="material-symbols-outlined">shopping_cart</span>
-              {itemCount > 0 && <span className="app-shell__cart-badge">{itemCount}</span>}
-            </Link>
-
-            {/* Customer Profile / Google Login Button */}
-            <button
-              type="button"
-              className="app-shell__action-btn app-shell__profile-btn"
-              onClick={() => setIsProfileOpen(true)}
-              aria-label={user ? 'Customer Account' : 'Sign in with Google'}
-              title={user ? (user.user_metadata?.full_name || user.email || 'Customer Account') : 'Sign in with Google'}
-            >
-              {avatarUrl ? (
-                <img 
-                  src={avatarUrl} 
-                  alt="Profile" 
-                  className="app-shell__avatar-img" 
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <span className={`material-symbols-outlined ${user ? 'filled' : ''}`}>
-                  {user ? 'account_circle' : 'person'}
+              {itemCount > 0 && (
+                <span className="app-shell__cart-badge" aria-label={`${itemCount} items in cart`}>
+                  {itemCount > 99 ? '99+' : itemCount}
                 </span>
               )}
-            </button>
+            </Link>
           </div>
         </div>
       </header>
 
-      {/* Main Content Area with M3 page transition */}
-      <main className="app-shell__main">
-        <div key={location.pathname} className="m3-page-transition app-shell__page-content">
+      {/* Full Page Viewport with Google/Android predictive back & forward page transitions (Mobile only) */}
+      <div 
+        key={location.key || location.pathname} 
+        className={`android-page-viewport app-shell__page-viewport ${transitionClass}`}
+      >
+        <main className="app-shell__main">
           <Outlet />
-        </div>
-      </main>
+        </main>
 
-      {/* Customer Footer */}
-      <Footer />
-
-      {/* Customer Profile & Google Login Modal */}
-      <ProfileModal 
-        isOpen={isProfileOpen} 
-        onClose={() => setIsProfileOpen(false)} 
-      />
+        {/* Customer Footer */}
+        <Footer />
+      </div>
 
       {/* Mobile Bottom Navigation */}
       <nav className="app-shell__bottom-nav" aria-label="Mobile Navigation">
@@ -201,14 +211,19 @@ export function AppShell() {
                 <span className={`material-symbols-outlined ${isActive ? 'filled' : ''}`}>
                   {item.icon}
                 </span>
+                {item.badge && itemCount > 0 && (
+                  <span className="app-shell__cart-badge" style={{ top: '-4px', right: '-4px' }}>
+                    {itemCount > 99 ? '99+' : itemCount}
+                  </span>
+                )}
               </div>
               <span className="app-shell__bottom-nav-label">{item.label}</span>
             </Link>
           );
         })}
       </nav>
-      {/* Geolocation Modals */}
-      <GooeyLocationHero />
+
+      {/* Geolocation Modal */}
       <LocationPickerModal />
     </div>
   );

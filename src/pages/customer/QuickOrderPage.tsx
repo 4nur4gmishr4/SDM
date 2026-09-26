@@ -5,6 +5,7 @@ import { useLocationContext, useSnackbar } from '../../contexts';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
+import { WhatsAppIcon } from '../../components/common';
 import { generateOrderId, buildQuickOrderWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import { validateOrderInput } from '../../lib/validation';
@@ -280,8 +281,8 @@ export function QuickOrderPage() {
               form="quick-order-form"
               disabled={isSubmitting}
             >
+              <WhatsAppIcon size={20} />
               <span>{isSubmitting ? 'Preparing List...' : 'Send List via WhatsApp'}</span>
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>send</span>
             </button>
             <p className="checkout-page__whatsapp-notice">
               You will be redirected to WhatsApp.

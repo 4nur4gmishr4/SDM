@@ -12,59 +12,38 @@ export const DEFAULT_JABALPUR_LOCATION: DeliveryLocation = {
 };
 
 /**
- * 100% Free Reverse Geocoding using OpenStreetMap Nominatim with BigDataCloud fallback.
- * No API key, no credit card, zero cost.
+ * 100% Free Google-Grade Reverse Geocoding.
+ * Uses ArcGIS World Geocode API as primary (0 cost, no API keys, zero rate-limit blocks, full browser CORS)
+ * with BigDataCloud and OpenStreetMap as resilient fallbacks.
  */
 export async function reverseGeocode(lat: number, lng: number): Promise<DeliveryLocation> {
+  // 1. Primary provider: ArcGIS World Geocode (Fastest, ultra-reliable, zero-key, full CORS)
   try {
-    // 1. Primary provider: OpenStreetMap Nominatim
-    const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1`;
-    const res = await fetch(nominatimUrl, {
-      headers: {
-        'Accept-Language': 'en',
-      },
-    });
-
+    const arcgisUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${lng},${lat}&f=json`;
+    const res = await fetch(arcgisUrl);
     if (res.ok) {
       const data = await res.json();
-      const addr = data.address || {};
+      if (data && data.address) {
+        const a = data.address;
+        const area = a.Neighborhood || a.ShortLabel || a.Subregion || 'Jabalpur';
+        const city = a.City || 'Jabalpur';
+        const pincode = a.Postal || '482001';
+        const formatted = a.Match_addr || `${area}, ${city} ${pincode}`;
 
-      const area =
-        addr.suburb ||
-        addr.neighbourhood ||
-        addr.residential ||
-        addr.road ||
-        addr.commercial ||
-        'Jabalpur';
-      
-      const city =
-        addr.city ||
-        addr.town ||
-        addr.village ||
-        addr.county ||
-        'Jabalpur';
-
-      const pincode = addr.postcode || '';
-      const road = addr.road || '';
-      
-      const shortAddress = road && area !== road ? `${road}, ${area}` : area;
-      const formatted = data.display_name
-        ? data.display_name.split(',').slice(0, 4).join(',').trim()
-        : `${shortAddress}, ${city} ${pincode}`.trim();
-
-      return {
-        lat,
-        lng,
-        address: shortAddress,
-        area: area || 'Current Location',
-        city: city || 'Jabalpur',
-        pincode,
-        formattedAddress: formatted,
-        isCustom: true,
-      };
+        return {
+          lat,
+          lng,
+          address: a.ShortLabel || area,
+          area: area || 'Jabalpur',
+          city: city || 'Jabalpur',
+          pincode,
+          formattedAddress: formatted,
+          isCustom: true,
+        };
+      }
     }
   } catch (err) {
-    console.warn('Nominatim reverse geocode failed, trying fallback:', err);
+    console.warn('ArcGIS reverse geocode failed, trying BigDataCloud fallback:', err);
   }
 
   // 2. Fallback provider: BigDataCloud Free Client Reverse Geocoding API
@@ -75,7 +54,7 @@ export async function reverseGeocode(lat: number, lng: number): Promise<Delivery
       const data = await res.json();
       const area = data.locality || data.principalSubdivision || 'Jabalpur';
       const city = data.city || 'Jabalpur';
-      const pincode = data.postcode || '';
+      const pincode = data.postcode || '482001';
 
       return {
         lat,
@@ -89,36 +68,76 @@ export async function reverseGeocode(lat: number, lng: number): Promise<Delivery
       };
     }
   } catch (err) {
-    console.warn('Fallback reverse geocode failed:', err);
+    console.warn('BigDataCloud reverse geocode failed, trying Nominatim:', err);
   }
 
-  // Safe fallback to coordinates with city name
+  // 3. Fallback: OpenStreetMap Nominatim
+  try {
+    const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1`;
+    const res = await fetch(nominatimUrl, {
+      headers: {
+        'Accept-Language': 'en',
+      },
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      const addr = data.address || {};
+      const area =
+        addr.suburb ||
+        addr.neighbourhood ||
+        addr.residential ||
+        addr.road ||
+        'Jabalpur';
+      const city = addr.city || addr.town || 'Jabalpur';
+      const pincode = addr.postcode || '482001';
+      const shortAddress = addr.road && area !== addr.road ? `${addr.road}, ${area}` : area;
+      const formatted = data.display_name
+        ? data.display_name.split(',').slice(0, 4).join(',').trim()
+        : `${shortAddress}, ${city} ${pincode}`.trim();
+
+      return {
+        lat,
+        lng,
+        address: shortAddress,
+        area: area || 'Jabalpur',
+        city: city || 'Jabalpur',
+        pincode,
+        formattedAddress: formatted,
+        isCustom: true,
+      };
+    }
+  } catch (err) {
+    console.warn('Nominatim reverse geocode failed:', err);
+  }
+
+  // Safe default fallback
   return {
     lat,
     lng,
-    address: `GPS: ${lat.toFixed(4)}, ${lng.toFixed(4)}`,
+    address: `Near ${lat.toFixed(4)}, ${lng.toFixed(4)}`,
     area: 'Jabalpur Area',
     city: 'Jabalpur',
     pincode: '482001',
-    formattedAddress: `Pinpointed Location (${lat.toFixed(4)}, ${lng.toFixed(4)}), Jabalpur`,
+    formattedAddress: `Delivery Location (${lat.toFixed(4)}, ${lng.toFixed(4)}), Jabalpur`,
     isCustom: true,
   };
 }
 
 // Curated Jabalpur Localities & Landmarks for instant 0ms offline suggestions
-const JABALPUR_LOCAL_PLACES: Array<{ name: string; area: string; lat: number; lng: number }> = [
+export const JABALPUR_LOCAL_PLACES: Array<{ name: string; area: string; lat: number; lng: number }> = [
   { name: 'Sai Darshan Mart, Napier Town', area: 'Napier Town', lat: 23.1685, lng: 79.9550 },
-  { name: 'Napier Town', area: 'Napier Town', lat: 23.1685, lng: 79.9550 },
   { name: 'Civil Lines', area: 'Civil Lines', lat: 23.1646, lng: 79.9554 },
-  { name: 'South Civil Lines', area: 'South Civil Lines', lat: 23.1590, lng: 79.9580 },
   { name: 'Wright Town', area: 'Wright Town', lat: 23.1669, lng: 79.9255 },
+  { name: 'Napier Town', area: 'Napier Town', lat: 23.1685, lng: 79.9550 },
   { name: 'Vijay Nagar', area: 'Vijay Nagar', lat: 23.1892, lng: 79.9040 },
+  { name: 'Madan Mahal', area: 'Madan Mahal', lat: 23.1520, lng: 79.9140 },
   { name: 'Gorakhpur', area: 'Gorakhpur', lat: 23.1538, lng: 79.9319 },
   { name: 'Sadar Bazar / Cantt', area: 'Sadar', lat: 23.1535, lng: 79.9494 },
   { name: 'Russell Chowk', area: 'Russell Chowk', lat: 23.1680, lng: 79.9380 },
   { name: 'Golbazar', area: 'Golbazar', lat: 23.1657, lng: 79.9324 },
-  { name: 'Madan Mahal', area: 'Madan Mahal', lat: 23.1520, lng: 79.9140 },
   { name: 'Garha', area: 'Garha', lat: 23.1560, lng: 79.8970 },
+  { name: 'South Civil Lines', area: 'South Civil Lines', lat: 23.1590, lng: 79.9580 },
   { name: 'Ghamapur', area: 'Ghamapur', lat: 23.1810, lng: 79.9580 },
   { name: 'Adhartal', area: 'Adhartal', lat: 23.2080, lng: 79.9450 },
   { name: 'Ranjhi', area: 'Ranjhi', lat: 23.2030, lng: 80.0003 },

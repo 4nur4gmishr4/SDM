@@ -6,6 +6,19 @@ import { reverseGeocode, searchPlaces } from '../../lib/geocoding';
 import type { DeliveryLocation, GeocodingSearchResult } from '../../types/location';
 import './LocationPickerModal.css';
 
+// Popular 1-tap quick localities in Jabalpur
+const QUICK_LOCALITIES = [
+  { name: 'Civil Lines', lat: 23.1646, lng: 79.9554 },
+  { name: 'Wright Town', lat: 23.1669, lng: 79.9255 },
+  { name: 'Napier Town', lat: 23.1685, lng: 79.9550 },
+  { name: 'Vijay Nagar', lat: 23.1892, lng: 79.9040 },
+  { name: 'Madan Mahal', lat: 23.1520, lng: 79.9140 },
+  { name: 'Sadar Bazar', lat: 23.1535, lng: 79.9494 },
+  { name: 'Gorakhpur', lat: 23.1538, lng: 79.9319 },
+  { name: 'Adhartal', lat: 23.2080, lng: 79.9450 },
+  { name: 'Tilhari', lat: 23.1290, lng: 79.9720 },
+];
+
 export function LocationPickerModal() {
   const { location, isModalOpen, closeModal, updateLocation } = useLocationContext();
 
@@ -14,8 +27,8 @@ export function LocationPickerModal() {
 
   // Selected Pin coordinates & geocoded address
   const [currentCoords, setCurrentCoords] = useState<{ lat: number; lng: number }>({
-    lat: location.lat || 23.1815,
-    lng: location.lng || 79.9864,
+    lat: location.lat || 23.1685,
+    lng: location.lng || 79.9550,
   });
   const [geocodedLocation, setGeocodedLocation] = useState<DeliveryLocation>(location);
   const [isGeocoding, setIsGeocoding] = useState(false);
@@ -33,10 +46,6 @@ export function LocationPickerModal() {
     satelliteGroup: null,
     terrain: null,
   });
-
-  // Address detail fields
-  const [houseNo, setHouseNo] = useState(location.houseNo || '');
-  const [landmark, setLandmark] = useState(location.landmark || '');
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -88,25 +97,25 @@ export function LocationPickerModal() {
     const timer = setTimeout(() => {
       if (!mapContainerRef.current) return;
 
-      const initialLat = location.lat || 23.1815;
-      const initialLng = location.lng || 79.9864;
+      const initialLat = location.lat || 23.1685;
+      const initialLng = location.lng || 79.9550;
 
       if (!mapInstanceRef.current) {
         // Create Leaflet map instance without attribution bar
         const map = L.map(mapContainerRef.current, {
           center: [initialLat, initialLng],
-          zoom: 15,
+          zoom: 16,
           zoomControl: false,
           attributionControl: false,
         });
 
-        // 1. Street View Layer (High-contrast colorful roads, buildings, parks, and landmarks)
+        // 1. Street View Layer (ArcGIS World Street Map - crisp, high-res, Google-like roads)
         const streetLayer = L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
           { maxZoom: 19 }
         );
 
-        // 2. Satellite View Layer (Real Earth aerial photography + hybrid street/locality labels)
+        // 2. Satellite View Layer (Real Earth aerial imagery + hybrid street/locality labels)
         const satImagery = L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
           { maxZoom: 19 }
@@ -154,12 +163,12 @@ export function LocationPickerModal() {
           if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
           debounceTimerRef.current = setTimeout(() => {
             fetchAddressForCoords(center.lat, center.lng);
-          }, 400);
+          }, 350);
         });
 
         mapInstanceRef.current = map;
       } else {
-        mapInstanceRef.current.setView([initialLat, initialLng], 15);
+        mapInstanceRef.current.setView([initialLat, initialLng], 16);
       }
 
       // Force recalculate tiles
@@ -204,7 +213,6 @@ export function LocationPickerModal() {
   useEffect(() => {
     if (!searchQuery || searchQuery.trim().length < 2) {
       setSearchResults([]);
-      setShowDropdown(false);
       return;
     }
 
@@ -225,8 +233,20 @@ export function LocationPickerModal() {
     setCurrentCoords({ lat: result.lat, lng: result.lng });
     fetchAddressForCoords(result.lat, result.lng);
     if (mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo([result.lat, result.lng], 17, {
-        duration: 1.2,
+      mapInstanceRef.current.flyTo([result.lat, result.lng], 16.5, {
+        duration: 1.0,
+      });
+    }
+  };
+
+  const handleQuickLocalityTap = (loc: { name: string; lat: number; lng: number }) => {
+    setShowDropdown(false);
+    setSearchQuery('');
+    setCurrentCoords({ lat: loc.lat, lng: loc.lng });
+    fetchAddressForCoords(loc.lat, loc.lng);
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.flyTo([loc.lat, loc.lng], 16.5, {
+        duration: 1.0,
       });
     }
   };
@@ -238,9 +258,12 @@ export function LocationPickerModal() {
     }
 
     setIsGeocoding(true);
+    setShowDropdown(false);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
+        setCurrentCoords({ lat: latitude, lng: longitude });
+        fetchAddressForCoords(latitude, longitude);
         if (mapInstanceRef.current) {
           mapInstanceRef.current.flyTo([latitude, longitude], 17, {
             duration: 1.2,
@@ -250,30 +273,17 @@ export function LocationPickerModal() {
       (err) => {
         console.warn('Geolocation failed:', err);
         setIsGeocoding(false);
-        alert('Could not retrieve current GPS position. Please select manually on the map.');
+        alert('Could not retrieve GPS location. Please choose your area on the map.');
       },
-      { enableHighAccuracy: true, timeout: 8000 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   };
 
   const handleConfirmLocation = () => {
-    const finalFormatted = [
-      houseNo.trim(),
-      landmark ? `Near ${landmark.trim()}` : '',
-      geocodedLocation.address,
-      geocodedLocation.city,
-      geocodedLocation.pincode,
-    ]
-      .filter(Boolean)
-      .join(', ');
-
     const finalLocation: DeliveryLocation = {
       ...geocodedLocation,
       lat: currentCoords.lat,
       lng: currentCoords.lng,
-      houseNo: houseNo.trim(),
-      landmark: landmark.trim(),
-      formattedAddress: finalFormatted,
       isCustom: true,
     };
 
@@ -291,7 +301,7 @@ export function LocationPickerModal() {
         {/* Modal Header */}
         <div className="location-modal-header">
           <div className="location-modal-title-group">
-            <span className="material-symbols-outlined location-modal-icon">location_on</span>
+            <span className="material-symbols-outlined location-modal-icon">near_me</span>
             <h2 className="location-modal-title">Select Delivery Location</h2>
           </div>
           <button
@@ -309,12 +319,12 @@ export function LocationPickerModal() {
           <div className="location-search-bar">
             <span className="material-symbols-outlined location-search-icon">search</span>
             <input
-              type="text"
+              type="search"
               className="location-search-input"
               placeholder="Search area, landmark or street in Jabalpur..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => searchResults.length > 0 && setShowDropdown(true)}
+              onFocus={() => setShowDropdown(true)}
             />
             {isSearching && (
               <span className="material-symbols-outlined spin-anim location-search-spinner">
@@ -333,8 +343,19 @@ export function LocationPickerModal() {
           </div>
 
           {/* Autocomplete Dropdown */}
-          {showDropdown && searchResults.length > 0 && (
+          {showDropdown && (
             <ul className="location-search-dropdown">
+              {/* GPS Quick Action */}
+              <li className="location-search-item location-search-item--gps" onClick={handleLocateMe}>
+                <span className="material-symbols-outlined location-item-icon location-item-icon--gps">my_location</span>
+                <div className="location-item-info">
+                  <span className="location-item-primary" style={{ color: 'var(--md-sys-color-primary, #1E8E3E)', fontWeight: 600 }}>
+                    Use Current Location
+                  </span>
+                  <span className="location-item-secondary">Using device GPS sensor (exact location)</span>
+                </div>
+              </li>
+
               {searchResults.map((item, idx) => (
                 <li
                   key={`${item.lat}_${item.lng}_${idx}`}
@@ -350,6 +371,31 @@ export function LocationPickerModal() {
               ))}
             </ul>
           )}
+
+          {/* Quick Locality Carousel Pills */}
+          <div className="location-quick-chips">
+            <button
+              type="button"
+              className="location-quick-chip location-quick-chip--gps"
+              onClick={handleLocateMe}
+              title="Use current GPS location"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>my_location</span>
+              <span>Locate Me</span>
+            </button>
+            {QUICK_LOCALITIES.map((loc) => (
+              <button
+                key={loc.name}
+                type="button"
+                className={`location-quick-chip ${
+                  geocodedLocation.area === loc.name ? 'location-quick-chip--active' : ''
+                }`}
+                onClick={() => handleQuickLocalityTap(loc)}
+              >
+                {loc.name}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Interactive Map Area */}
@@ -387,7 +433,7 @@ export function LocationPickerModal() {
             </button>
           </div>
 
-          {/* Floating Center Pin (Swiggy / Blinkit style) */}
+          {/* Floating Center Pin with Drop Animation & Shadow */}
           <div className={`location-center-pin ${isMapDragging ? 'location-center-pin--dragging' : ''}`}>
             <div className="location-pin-marker">
               <span className="material-symbols-outlined location-pin-svg">location_on</span>
@@ -410,10 +456,12 @@ export function LocationPickerModal() {
           </button>
         </div>
 
-        {/* Address Confirmation Details */}
+        {/* Address Confirmation Details (Google Bottom Sheet) */}
         <div className="location-bottom-sheet">
           <div className="location-detected-pill">
-            <span className="material-symbols-outlined location-pill-icon">home_pin</span>
+            <div className="location-detected-icon-wrap">
+              <span className="material-symbols-outlined location-pill-icon">location_on</span>
+            </div>
             <div className="location-pill-text">
               <div className="location-pill-area">
                 {isGeocoding ? 'Finding area details...' : geocodedLocation.area || 'Jabalpur'}
@@ -421,31 +469,10 @@ export function LocationPickerModal() {
               <div className="location-pill-address" title={geocodedLocation.formattedAddress}>
                 {isGeocoding ? 'Reverse geocoding...' : geocodedLocation.formattedAddress}
               </div>
-            </div>
-          </div>
-
-          {/* Additional details input (House No & Landmark) */}
-          <div className="location-inputs-grid">
-            <div className="location-input-field">
-              <label htmlFor="houseNo">House / Flat / Floor No.</label>
-              <input
-                id="houseNo"
-                type="text"
-                placeholder="e.g. Flat 302, Sai Residency"
-                value={houseNo}
-                onChange={(e) => setHouseNo(e.target.value)}
-              />
-            </div>
-
-            <div className="location-input-field">
-              <label htmlFor="landmark">Nearby Landmark</label>
-              <input
-                id="landmark"
-                type="text"
-                placeholder="e.g. Near Golbazar / Temple"
-                value={landmark}
-                onChange={(e) => setLandmark(e.target.value)}
-              />
+              <div className="location-pill-status">
+                <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#1E8E3E' }}>check_circle</span>
+                <span>Delivery available in this area</span>
+              </div>
             </div>
           </div>
 
@@ -456,7 +483,7 @@ export function LocationPickerModal() {
             onClick={handleConfirmLocation}
             disabled={isGeocoding}
           >
-            <span className="material-symbols-outlined">check_circle</span>
+            <span className="material-symbols-outlined">check</span>
             <span>Confirm Delivery Location</span>
           </button>
         </div>
