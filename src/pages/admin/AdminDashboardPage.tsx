@@ -76,7 +76,10 @@ export function AdminDashboardPage() {
         <title>{pageTitle}</title>
       </Helmet>
       <div className="admin-dashboard-header">
-        <h1 className="admin-dashboard-title">Dashboard</h1>
+        <h1 className="admin-dashboard-title">Dashboard Overview</h1>
+        <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+          Real-time overview of store orders, product catalog, and promotions.
+        </p>
       </div>
 
       <div className="admin-dashboard-grid">

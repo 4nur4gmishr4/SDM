@@ -116,7 +116,6 @@ export function AppShell() {
           <div className="app-shell__brand-group">
             <Link to="/" className="app-shell__brand">
               <span className="app-shell__brand-name">Sai Darshan Mart</span>
-              <span className="app-shell__brand-tagline">There is only one Boss: The Customer</span>
             </Link>
             <HeaderLocationPill />
           </div>

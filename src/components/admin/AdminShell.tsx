@@ -5,7 +5,7 @@ import './AdminShell.css';
 
 export function AdminShell() {
   const { signOut } = useAuth();
-  const { resolvedTheme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -23,19 +23,12 @@ export function AdminShell() {
     navigate('/admin/login');
   };
 
-  // Get current page title
-  const currentItem = navItems.find((item) => {
-    if (item.path === '/admin') return location.pathname === '/admin';
-    return location.pathname.startsWith(item.path);
-  });
-  const pageTitle = currentItem ? currentItem.label : 'Admin';
-
   return (
     <div className="admin-shell">
-      {/* Navigation Rail / Bottom Nav */}
+      {/* Navigation Rail (Desktop) / Bottom Nav (Mobile) */}
       <nav className="admin-shell__nav">
         <div className="admin-shell__nav-header">
-          <span className="material-symbols-outlined admin-shell__brand-icon">store</span>
+          <span className="material-symbols-outlined admin-shell__brand-icon">storefront</span>
         </div>
 
         <div className="admin-shell__nav-list">
@@ -64,71 +57,87 @@ export function AdminShell() {
             );
           })}
         </div>
-
-        <div className="admin-shell__nav-footer">
-          {/* Theme toggle in rail */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="admin-shell__nav-item admin-shell__nav-item--theme"
-            title={`Switch to ${resolvedTheme === 'dark' ? 'Light' : 'Dark'} mode`}
-            style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}
-          >
-            <div className="admin-shell__nav-icon-wrapper">
-              <span className="material-symbols-outlined">
-                {resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
-              </span>
-            </div>
-            <span className="admin-shell__nav-label">
-              {resolvedTheme === 'dark' ? 'Light' : 'Dark'}
-            </span>
-          </button>
-
-          <button
-            onClick={handleSignOut}
-            className="admin-shell__nav-item"
-            title="Sign Out"
-            style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}
-          >
-            <div className="admin-shell__nav-icon-wrapper">
-              <span className="material-symbols-outlined">logout</span>
-            </div>
-            <span className="admin-shell__nav-label">Logout</span>
-          </button>
-        </div>
       </nav>
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <main className="admin-shell__main">
+        {/* Top Header Bar */}
         <header className="admin-shell__top-bar">
-          <h1 className="admin-shell__top-bar-title">{pageTitle}</h1>
-          <div className="admin-shell__top-bar-actions">
-            {/* Prominent Theme Toggle Button in Admin Top Bar */}
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="admin-shell__theme-btn"
-              title={`Switch to ${resolvedTheme === 'dark' ? 'Light' : 'Dark'} mode`}
-              aria-label="Toggle dark/light mode"
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-                {resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
-              </span>
-              <span>{resolvedTheme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-            </button>
+          {/* Store Branding (Left) */}
+          <div className="admin-shell__top-bar-brand">
+            <span className="material-symbols-outlined admin-shell__brand-icon-mini">
+              storefront
+            </span>
+            <div className="admin-shell__brand-info">
+              <span className="admin-shell__brand-title">Sai Darshan Mart</span>
+              <span className="admin-shell__brand-subtitle">Admin Panel</span>
+            </div>
+          </div>
 
+          {/* Actions (Right): 3-Way Theme Switcher, View Store, Logout */}
+          <div className="admin-shell__top-bar-actions">
+            {/* 3-Option Instant Theme Switcher */}
+            <div className="admin-theme-segmented" role="radiogroup" aria-label="Select theme mode">
+              <button
+                type="button"
+                className={`admin-theme-segment-btn ${theme === 'system' ? 'active' : ''}`}
+                onClick={() => setTheme('system')}
+                title="System Mode (Matches device theme)"
+                aria-label="System theme"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>desktop_windows</span>
+                <span>System</span>
+              </button>
+
+              <button
+                type="button"
+                className={`admin-theme-segment-btn ${theme === 'light' ? 'active' : ''}`}
+                onClick={() => setTheme('light')}
+                title="Light Mode (1-tap switch)"
+                aria-label="Light mode"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>light_mode</span>
+                <span>Light</span>
+              </button>
+
+              <button
+                type="button"
+                className={`admin-theme-segment-btn ${theme === 'dark' ? 'active' : ''}`}
+                onClick={() => setTheme('dark')}
+                title="Dark Mode (1-tap switch)"
+                aria-label="Dark mode"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>dark_mode</span>
+                <span>Dark</span>
+              </button>
+            </div>
+
+            {/* View Store Button */}
             <a
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="sdm-btn sdm-btn--outlined admin-shell__view-store-btn"
+              className="admin-shell__action-pill admin-shell__action-pill--store"
+              title="Open customer storefront in a new tab"
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>storefront</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>open_in_new</span>
               <span>View Store</span>
             </a>
+
+            {/* Logout Button */}
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="admin-shell__action-pill admin-shell__action-pill--logout"
+              title="Sign Out of Admin"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>logout</span>
+              <span>Logout</span>
+            </button>
           </div>
         </header>
 
+        {/* Content Outlet */}
         <div className="admin-shell__content">
           <Outlet />
         </div>

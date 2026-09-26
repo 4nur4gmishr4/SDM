@@ -259,28 +259,28 @@
 /* Floating Glassmorphic Map View Switcher (Streets / Satellite / Terrain) */
 .location-map-view-switcher {
   position: absolute;
-  top: 12px;
+  bottom: 12px;
   left: 12px;
   z-index: 500;
   display: flex;
   background: rgba(255, 255, 255, 0.95);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  border-radius: 24px;
-  padding: 3px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 2px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.06);
   gap: 2px;
 }
 
 .location-map-view-btn {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 6px 12px;
+  gap: 3px;
+  padding: 4px 8px;
   border: none;
   background: transparent;
-  border-radius: 20px;
-  font-size: 12px;
+  border-radius: 14px;
+  font-size: 11px;
   font-weight: 600;
   color: #374151;
   cursor: pointer;
@@ -291,7 +291,7 @@
 }
 
 .location-map-view-btn .material-symbols-outlined {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .location-map-view-btn:hover:not(.location-map-view-btn--active) {
@@ -388,22 +388,23 @@
 /* GPS Button inside Map */
 .location-gps-btn {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
+  bottom: 12px;
+  right: 12px;
+  left: auto;
   z-index: 500;
   background: rgba(255, 255, 255, 0.95);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 30px;
-  padding: 8px 16px;
+  border-radius: 20px;
+  padding: 5px 11px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  gap: 4px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
   cursor: pointer;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--md-sys-color-primary, #1E8E3E);
   transition: all 0.2s ease;
@@ -415,7 +416,7 @@
 }
 
 .location-gps-btn span {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 /* Bottom Sheet Details */
