@@ -29,8 +29,8 @@
   align-items: center;
   gap: 8px;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  -ms-overflow-style: none;
   padding-bottom: 8px;
   margin-bottom: var(--md-sys-spacing-3);
 }
@@ -189,6 +189,7 @@
   cursor: pointer;
   transition: all 180ms cubic-bezier(0.2, 0, 0, 1);
   outline: none !important;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -234,8 +235,8 @@
   font-weight: 500;
   cursor: pointer;
   outline: none !important;
-  appearance: none;
   -webkit-appearance: none;
+  appearance: none;
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%235f6368%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;

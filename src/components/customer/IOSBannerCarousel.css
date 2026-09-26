@@ -7,8 +7,8 @@
   max-width: var(--sdm-layout-max-width, 1280px);
   margin-inline: auto;
   position: relative;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 }
 
 /* Card Wrapper (Framed iOS Card) */
@@ -88,8 +88,8 @@
   padding: 6px 10px;
   border-radius: 9999px;
   background: rgba(0, 0, 0, 0.38);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -141,8 +141,8 @@
   height: 40px;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #FFFFFF;
   display: flex;
@@ -192,8 +192,8 @@
     var(--md-sys-color-surface-container, #F1F3F4) 0%,
     var(--md-sys-color-surface-container-high, #E8EAED) 100%
   );
-  backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 
 [data-theme="dark"] .ios-banner__merged-section {

@@ -237,8 +237,8 @@
   padding: 5px 11px;
   border-radius: 9999px;
   background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   color: #FFFFFF;
   font-size: 11.5px;
   font-weight: 600;
@@ -271,8 +271,8 @@
     var(--md-sys-color-surface-container, #F1F3F4) 0%,
     var(--md-sys-color-surface-container-high, #E8EAED) 100%
   );
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 [data-theme="dark"] .about-curated-card__merged-section {
