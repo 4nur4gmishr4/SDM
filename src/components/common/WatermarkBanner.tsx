@@ -50,6 +50,19 @@ export function WatermarkBanner({
             {subline}
           </p>
         )}
+        <div className="watermark-banner__developer">
+          <span className="watermark-banner__developer-text">Crafted &amp; Developed with precision by</span>
+          <a
+            href="https://instagram.com/4nur4gmishr4"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="watermark-banner__developer-link"
+            title="Connect with Anurag Mishra on Instagram"
+          >
+            <span>Anurag Mishra</span>
+            <span className="watermark-banner__developer-handle">(@4nur4gmishr4)</span>
+          </a>
+        </div>
       </div>
     </section>
   );

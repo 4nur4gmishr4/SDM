@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Outlet, Link, useLocation, useNavigationType } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useSnackbar } from '../../contexts/SnackbarContext';
@@ -14,40 +14,14 @@ export function AppShell() {
   const { theme, resolvedTheme, toggleTheme } = useTheme();
   const { showSnackbar } = useSnackbar();
   const location = useLocation();
-  const navType = useNavigationType();
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
 
-  // Track history index to differentiate forward and backward (predictive back) transitions
-  const prevIdxRef = useRef<number>(
-    typeof window !== 'undefined' && window.history.state?.idx != null
-      ? window.history.state.idx
-      : 0
-  );
-  const [transitionClass, setTransitionClass] = useState<'android-transition--forward' | 'android-transition--back'>(
-    'android-transition--forward'
-  );
-
   useEffect(() => {
-    const currentIdx = typeof window !== 'undefined' && window.history.state?.idx != null
-      ? window.history.state.idx
-      : 0;
-
-    if (navType === 'POP') {
-      if (currentIdx < prevIdxRef.current) {
-        setTransitionClass('android-transition--back');
-      } else {
-        setTransitionClass('android-transition--forward');
-      }
-    } else {
-      setTransitionClass('android-transition--forward');
-    }
-    prevIdxRef.current = currentIdx;
-
     // Reset window scroll to top on route change for native app screen experience
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
-  }, [location.key, location.pathname, navType]);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleOnline = () => {
@@ -180,11 +154,8 @@ export function AppShell() {
         </div>
       </header>
 
-      {/* Full Page Viewport with Google/Android predictive back & forward page transitions (Mobile only) */}
-      <div 
-        key={location.key || location.pathname} 
-        className={`android-page-viewport app-shell__page-viewport ${transitionClass}`}
-      >
+      {/* Main Page Viewport & Footer */}
+      <div className="app-shell__page-viewport">
         <main className="app-shell__main">
           <Outlet />
         </main>

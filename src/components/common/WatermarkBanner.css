@@ -91,6 +91,47 @@
   color: rgba(255, 255, 255, 0.25);
 }
 
+.watermark-banner__developer {
+  margin-top: 14px;
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+  font-weight: 500;
+  color: #8c93a0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+[data-theme="dark"] .watermark-banner__developer {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.watermark-banner__developer-link {
+  color: var(--md-sys-color-primary, #1E8E3E);
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.watermark-banner__developer-link:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .watermark-banner__developer-link {
+  color: #81C995;
+}
+
+.watermark-banner__developer-handle {
+  font-size: 0.9em;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
 @media (min-width: 905px) {
   .watermark-banner {
     padding: 56px 24px 40px 24px;

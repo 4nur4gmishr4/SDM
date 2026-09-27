@@ -11,72 +11,192 @@
     <meta name="author" content="Sai Darshan Shopping Mart" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="theme-color" content="#1E8E3E" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://saidarshanmart.com/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://saidarshanmart.com/" />
-    <meta property="og:title" content="Sai Darshan Shopping Mart — Jabalpur's Neighborhood Supermarket" />
-    <meta property="og:description" content="Order fresh groceries, staples, dairy & provisions directly in Jabalpur. There is only one Boss: The Customer." />
+    <meta property="og:title" content="Sai Darshan Shopping Mart — Jabalpur's Premier Supermarket" />
+    <meta property="og:description" content="Order fresh groceries, staples, pure spices, dairy & daily provisions directly in Jabalpur with fast doorstep delivery. There is only one Boss: The Customer." />
     <meta property="og:image" content="https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sai Darshan Shopping Mart Jabalpur Supermarket Storefront Logo" />
     <meta property="og:site_name" content="Sai Darshan Shopping Mart" />
     <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Sai Darshan Shopping Mart — Supermarket in Jabalpur" />
-    <meta name="twitter:description" content="Fresh groceries, spices, monthly rashan and WhatsApp ordering with fast local delivery." />
+    <meta name="twitter:description" content="Fresh groceries, pure spices, monthly rashan, and instant WhatsApp ordering with fast local delivery." />
     <meta name="twitter:image" content="https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png" />
 
     <!-- Local Business Geo SEO (Jabalpur, Madhya Pradesh) -->
     <meta name="geo.region" content="IN-MP" />
-    <meta name="geo.placename" content="Jabalpur" />
-    <meta name="geo.position" content="23.1815;79.9864" />
-    <meta name="ICBM" content="23.1815, 79.9864" />
+    <meta name="geo.placename" content="Jabalpur, Madhya Pradesh, India" />
+    <meta name="geo.position" content="23.1685;79.9550" />
+    <meta name="ICBM" content="23.1685, 79.9550" />
 
-    <!-- Schema.org JSON-LD Structured Data for Google Rich Results -->
+    <!-- Schema.org JSON-LD Structured Data: Google Sitelinks Searchbox, Quick Links & GroceryStore -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "GroceryStore",
-        "name": "Sai Darshan Shopping Mart",
-        "image": "https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png",
-        "@id": "https://saidarshanmart.com/#store",
-        "url": "https://saidarshanmart.com",
-        "telephone": "+917354155669",
-        "priceRange": "₹₹",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "1117 Sanjeevni Nagar Main Road",
-          "addressLocality": "Jabalpur",
-          "addressRegion": "Madhya Pradesh",
-          "postalCode": "482003",
-          "addressCountry": "IN"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 23.1815,
-          "longitude": 79.9864
-        },
-        "openingHoursSpecification": [
+        "@graph": [
           {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday"
+            "@type": "WebSite",
+            "@id": "https://saidarshanmart.com/#website",
+            "url": "https://saidarshanmart.com/",
+            "name": "Sai Darshan Shopping Mart",
+            "alternateName": [
+              "Sai Darshan Mart",
+              "SDM Jabalpur",
+              "Sai Darshan Supermarket Jabalpur"
             ],
-            "opens": "08:00",
-            "closes": "22:30"
+            "description": "Online grocery supermarket providing fresh vegetables, atta, dals, spices, and daily household provisions in Jabalpur.",
+            "inLanguage": "en-IN",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://saidarshanmart.com/shop?q={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "ItemList",
+            "@id": "https://saidarshanmart.com/#quicklinks",
+            "name": "Sai Darshan Shopping Mart Sitelinks Quick Navigation",
+            "itemListElement": [
+              {
+                "@type": "SiteNavigationElement",
+                "position": 1,
+                "name": "Shop All Groceries",
+                "description": "Browse hundreds of fresh supermarket products, dry fruits, staples, and daily essentials.",
+                "url": "https://saidarshanmart.com/shop"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "position": 2,
+                "name": "Quick Order via Shopping List",
+                "description": "Simply paste or type your handwritten grocery list for instant WhatsApp packing and fast doorstep delivery.",
+                "url": "https://saidarshanmart.com/quick-order"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "position": 3,
+                "name": "About Store & Location",
+                "description": "Store location at 1117 Sanjeevni Nagar Jabalpur, open all days 8:00 AM to 10:30 PM, photos and directions.",
+                "url": "https://saidarshanmart.com/about"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "position": 4,
+                "name": "Shopping Cart & 1-Tap UPI",
+                "description": "View cart items, review free delivery threshold, and pay seamlessly via Google Pay, PhonePe, Paytm, or BHIM.",
+                "url": "https://saidarshanmart.com/cart"
+              }
+            ]
+          },
+          {
+            "@type": "GroceryStore",
+            "@id": "https://saidarshanmart.com/#store",
+            "name": "Sai Darshan Shopping Mart",
+            "alternateName": [
+              "Sai Darshan Mart",
+              "Sai Darshan Supermarket Jabalpur",
+              "SDM Jabalpur"
+            ],
+            "image": "https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png",
+            "url": "https://saidarshanmart.com",
+            "telephone": "+917354155669",
+            "email": "saidarshanmart@gmail.com",
+            "priceRange": "₹₹",
+            "currenciesAccepted": "INR",
+            "paymentAccepted": "Cash, UPI, Google Pay, PhonePe, Paytm, BHIM, Debit Card, Credit Card",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "1117 Sanjeevni Nagar Main Road",
+              "addressLocality": "Jabalpur",
+              "addressRegion": "Madhya Pradesh",
+              "postalCode": "482003",
+              "addressCountry": "IN"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 23.1685,
+              "longitude": 79.9550
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                  "Sunday"
+                ],
+                "opens": "08:00",
+                "closes": "22:30"
+              }
+            ],
+            "areaServed": [
+              { "@type": "AdministrativeArea", "name": "Jabalpur" },
+              { "@type": "Place", "name": "Sanjeevni Nagar" },
+              { "@type": "Place", "name": "Garha" },
+              { "@type": "Place", "name": "Napier Town" },
+              { "@type": "Place", "name": "Wright Town" },
+              { "@type": "Place", "name": "Civil Lines" },
+              { "@type": "Place", "name": "Vijay Nagar" },
+              { "@type": "Place", "name": "Madan Mahal" },
+              { "@type": "Place", "name": "Gorakhpur" },
+              { "@type": "Place", "name": "Sadar" }
+            ],
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Supermarket Grocery Catalog",
+              "itemListElement": [
+                {
+                  "@type": "OfferCatalog",
+                  "name": "Daily Fresh Groceries & Staples",
+                  "url": "https://saidarshanmart.com/shop"
+                },
+                {
+                  "@type": "OfferCatalog",
+                  "name": "Atta, Rice & Dals",
+                  "url": "https://saidarshanmart.com/shop"
+                },
+                {
+                  "@type": "OfferCatalog",
+                  "name": "Cooking Oils & Pure Ghee",
+                  "url": "https://saidarshanmart.com/shop"
+                },
+                {
+                  "@type": "OfferCatalog",
+                  "name": "Pure Spices & Seasonings",
+                  "url": "https://saidarshanmart.com/shop"
+                },
+                {
+                  "@type": "OfferCatalog",
+                  "name": "Personal Care & Household Cleaners",
+                  "url": "https://saidarshanmart.com/shop"
+                }
+              ]
+            },
+            "sameAs": [
+              "https://wa.me/917354155669",
+              "https://instagram.com/4nur4gmishr4"
+            ]
           }
-        ],
-        "sameAs": [
-          "https://wa.me/917354155669"
         ]
       }
     </script>

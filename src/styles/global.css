@@ -743,66 +743,6 @@ html.icons-loading .material-symbols-outlined {
   }
 }
 
-/* ============================================================
-   Google / Android 14/15 Predictive Back & Forward Page Motion
-   (Strictly Mobile Only — Desktop is Instant/Static)
-   ============================================================ */
-
-@media (max-width: 904px) {
-  .android-page-viewport {
-    width: 100%;
-    transform-origin: center center;
-    will-change: transform, opacity, border-radius;
-    overflow-x: clip;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-
-  /* Forward Navigation: Full page enters with subtle scale up and upward slide */
-  .android-transition--forward {
-    animation: android-m3-forward 260ms cubic-bezier(0.05, 0.7, 0.1, 1.0) forwards;
-  }
-
-  /* Predictive Back: Full page enters like Android 14/15 predictive back gesture card zoom */
-  .android-transition--back {
-    animation: android-m3-back 280ms cubic-bezier(0.05, 0.7, 0.1, 1.0) forwards;
-  }
-
-  @keyframes android-m3-forward {
-    0% {
-      opacity: 0;
-      transform: scale(0.95) translateY(14px);
-      border-radius: 20px;
-    }
-    45% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-      border-radius: 0;
-    }
-  }
-
-  @keyframes android-m3-back {
-    0% {
-      opacity: 0;
-      transform: scale(0.93) translateX(-18px);
-      border-radius: 24px;
-      filter: brightness(0.96);
-    }
-    40% {
-      opacity: 1;
-      filter: brightness(1);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) translateX(0);
-      border-radius: 0;
-      filter: brightness(1);
-    }
-  }
-
   /* Native Mobile App Tactile Feedback */
   button:active,
   a.sdm-btn:active,
@@ -824,34 +764,6 @@ html.icons-loading .material-symbols-outlined {
     -webkit-user-select: none !important;
     user-select: none !important;
   }
-
-  /* Native smooth momentum scrolling */
-  html, body {
-    overscroll-behavior-y: contain;
-  }
-}
-
-/* Desktop (> 905px): Absolutely NO animations or scaling — Static & instant */
-@media (min-width: 905px) {
-  .android-page-viewport,
-  .android-transition--forward,
-  .android-transition--back,
-  .m3-page-transition {
-    animation: none !important;
-    transform: none !important;
-    border-radius: 0 !important;
-    opacity: 1 !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .android-transition--forward,
-  .android-transition--back,
-  .m3-page-transition {
-    animation: none !important;
-    transform: none !important;
-  }
-}
 
 
 
