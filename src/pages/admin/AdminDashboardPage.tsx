@@ -175,14 +175,7 @@ export function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="admin-dashboard-summary-item">
-            <span className="admin-dashboard-summary-item__label">
-              Store Catalog Departments
-            </span>
-            <div className="admin-dashboard-summary-item__value">
-              21 Categories
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

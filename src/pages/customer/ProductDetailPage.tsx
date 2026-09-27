@@ -217,14 +217,7 @@ export function ProductDetailPage() {
 
               {/* Flipkart Rating & Assured Badge Row */}
               <div className="product-detail__badges-row">
-                <span className="product-detail__rating-badge">
-                  <span>4.8</span>
-                  <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>star</span>
-                </span>
-                <span className="product-detail__assured-badge">
-                  <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>verified</span>
-                  <span>Sai Darshan Assured</span>
-                </span>
+
                 {isAvailable ? (
                   <span className="product-detail__stock-tag product-detail__stock-tag--in">
                     <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>check_circle</span>
