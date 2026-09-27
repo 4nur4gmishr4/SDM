@@ -5,7 +5,6 @@ export const STORE_WHATSAPP_CLEAN = '917999157430';
 export const STORE_PHONE_NUMBER = '7999157430';
 export const STORE_EMAIL = 'saidarshanmart@gmail.com';
 export const STORE_UPI_ID = '7999157430@upi';
-export const STORE_INSTAGRAM_URL = 'https://instagram.com/4nur4gmishr4';
 export const STORE_ADDRESS = '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh 482003';
 export const STORE_DELIVERY_RADIUS = '5–10 km across Jabalpur';
 

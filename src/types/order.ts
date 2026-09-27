@@ -1,4 +1,3 @@
-export type OrderType = 'cart' | 'quick';
 export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
 
 export interface Order {
@@ -31,9 +30,6 @@ export interface OrderItem {
   quantity: number;
   line_total: number;
 }
-
-export type OrderInsert = Omit<Order, 'id' | 'created_at' | 'updated_at' | 'order_items'>;
-export type OrderItemInsert = Omit<OrderItem, 'id'>;
 
 /** Cart item stored in client-side cart state */
 export interface CartItem {

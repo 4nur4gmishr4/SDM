@@ -27,7 +27,7 @@ const SettingsPage = lazy(() => import('./pages/admin/SettingsPage').then(m => (
 
 // Layouts
 import { AppShell, ScrollToTop, Skeleton, ErrorBoundary, ProductTileSkeleton, AdminTableSkeleton } from './components/common';
-import { AdminShell } from './components/admin';
+import { AdminShell } from './components/admin/AdminShell';
 
 import './styles/global.css';
 

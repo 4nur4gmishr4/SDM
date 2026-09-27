@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import type { DefaultLogoBannerConfig } from '../types/banner';
 
-export const INITIAL_DEFAULT_LOGO_BANNER: DefaultLogoBannerConfig = {
+const INITIAL_DEFAULT_LOGO_BANNER: DefaultLogoBannerConfig = {
   image_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/SaiDarshanLogoBanner.png',
   local_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/SaiDarshanLogoBanner.png',
   title: 'Sai Darshan Shopping Mart',

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { formatPrice } from '../../lib/orderUtils';
 import { AdminTableSkeleton } from '../../components/common';
-import { ExcelImportWidget } from '../../components/admin';
+import { ExcelImportWidget } from '../../components/admin/ExcelImportWidget';
 import { ImageUploadField } from '../../components/admin/ImageUploadField';
 import type { Product, ProductVariant } from '../../types/product';
 import type { Category } from '../../types/category';

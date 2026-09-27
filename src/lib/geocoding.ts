@@ -125,7 +125,7 @@ export async function reverseGeocode(lat: number, lng: number): Promise<Delivery
 }
 
 // Curated Jabalpur Localities & Landmarks for instant 0ms offline suggestions
-export const JABALPUR_LOCAL_PLACES: Array<{ name: string; area: string; lat: number; lng: number }> = [
+const JABALPUR_LOCAL_PLACES: Array<{ name: string; area: string; lat: number; lng: number }> = [
   { name: 'Sai Darshan Mart, Napier Town', area: 'Napier Town', lat: 23.1685, lng: 79.9550 },
   { name: 'Civil Lines', area: 'Civil Lines', lat: 23.1646, lng: 79.9554 },
   { name: 'Wright Town', area: 'Wright Town', lat: 23.1669, lng: 79.9255 },

@@ -7,7 +7,7 @@
  * Normalizes an Indian phone number by removing country codes (+91, 91), leading zeroes,
  * spaces, hyphens, and parentheses, returning the 10-digit clean string if possible.
  */
-export function cleanIndianPhone(rawPhone: string): string {
+function cleanIndianPhone(rawPhone: string): string {
   if (!rawPhone) return '';
   
   // Remove all non-numeric characters
@@ -30,7 +30,7 @@ export function cleanIndianPhone(rawPhone: string): string {
  * Validates whether the given phone number is a valid 10-digit Indian mobile number
  * (starting with 6, 7, 8, or 9).
  */
-export function isValidIndianPhone(rawPhone: string): boolean {
+function isValidIndianPhone(rawPhone: string): boolean {
   const cleaned = cleanIndianPhone(rawPhone);
   return /^[6-9]\d{9}$/.test(cleaned);
 }
@@ -38,7 +38,7 @@ export function isValidIndianPhone(rawPhone: string): boolean {
 /**
  * Sanitizes plain text input by trimming and removing potential script tags or control characters.
  */
-export function sanitizeText(input: string): string {
+function sanitizeText(input: string): string {
   if (!input) return '';
   return input
     .trim()
@@ -46,7 +46,7 @@ export function sanitizeText(input: string): string {
     .slice(0, 1000); // cap length to prevent payload abuse
 }
 
-export interface OrderValidationResult {
+interface OrderValidationResult {
   isValid: boolean;
   error?: string;
   cleanedName?: string;

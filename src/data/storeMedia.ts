@@ -11,7 +11,7 @@ export interface StoreMediaItem {
   is_active?: boolean;
 }
 
-export const SUPABASE_STORE_MEDIA_BASE = 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/store/';
+const SUPABASE_STORE_MEDIA_BASE = 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/store/';
 
 // 5 Curated Unique Store Photos + 1 Master Video Tour in Natural Friendly Hinglish (Permanent items)
 export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [

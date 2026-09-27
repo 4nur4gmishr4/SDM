@@ -9,7 +9,7 @@ if (typeof window !== 'undefined') {
 
 const DEFAULT_TEXT = 'Draw Attention';
 
-export interface StrokeTextProps {
+interface StrokeTextProps {
   text?: string;
   strokeColor?: string;
   fillColor?: string;
@@ -295,5 +295,3 @@ export const StrokeText = ({
     </span>
   );
 };
-
-export default StrokeText;

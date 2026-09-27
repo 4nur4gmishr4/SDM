@@ -4,7 +4,8 @@ import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 import { Footer } from './Footer';
-import { HeaderLocationPill, LocationPickerModal } from '../customer';
+import { HeaderLocationPill } from '../customer/HeaderLocationPill';
+import { LocationPickerModal } from '../customer/LocationPickerModal';
 import './AppShell.css';
 
 export function AppShell() {

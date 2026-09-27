@@ -1,7 +1,7 @@
 import React from 'react';
 import './Skeleton.css';
 
-export interface SkeletonProps {
+interface SkeletonProps {
   variant?: 'text' | 'circular' | 'rounded' | 'rectangular';
   width?: string | number;
   height?: string | number;
@@ -91,29 +91,6 @@ export function CategoryNavSkeleton({ count = 8 }: { count?: number }) {
   );
 }
 
-/**
- * Banner Skeleton (Matches real 16:9 banner card and bottom pill bar 1:1)
- */
-export function BannerSkeleton() {
-  return (
-    <div className="ios-banner-container" aria-label="Loading banner...">
-      <div className="ios-banner-card">
-        <div className="ios-banner__media-viewport sdm-skeleton" style={{ width: '100%', height: '100%', borderRadius: 0 }} />
-        <div className="ios-banner__merged-section" style={{ pointerEvents: 'none' }}>
-          <div className="ios-banner__merged-content">
-            <div className="ios-banner__meta-row" style={{ marginBottom: '8px' }}>
-              <Skeleton width="110px" height={22} variant="rounded" style={{ borderRadius: '9999px' }} />
-              <Skeleton width="48px" height={18} variant="rounded" style={{ borderRadius: '9999px' }} />
-            </div>
-            <Skeleton width="75%" height={24} variant="rounded" style={{ marginBottom: '8px' }} />
-            <Skeleton width="90%" height={14} variant="rounded" />
-          </div>
-          <Skeleton width="130px" height={42} variant="rounded" style={{ borderRadius: '9999px', flexShrink: 0 }} />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /**
  * Product Detail Page Skeleton (Matches real ProductDetailPage layout 1:1)

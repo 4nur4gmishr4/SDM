@@ -2,7 +2,7 @@ import { useState, useRef, type ChangeEvent, type DragEvent } from 'react';
 import { uploadImageFile } from '../../lib/uploadImage';
 import './ImageUploadField.css';
 
-export interface PresetImage {
+interface PresetImage {
   label: string;
   url: string;
 }

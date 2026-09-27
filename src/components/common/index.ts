@@ -6,7 +6,6 @@ export {
   ProductTileSkeleton,
   ProductGridSkeleton,
   CategoryNavSkeleton,
-  BannerSkeleton,
   ProductDetailSkeleton,
   AdminTableSkeleton,
   AdminDashboardSkeleton,
