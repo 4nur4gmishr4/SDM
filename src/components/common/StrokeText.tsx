@@ -87,6 +87,7 @@ export const StrokeText = ({
   const strokeTextRef = useRef<SVGTextElement | null>(null);
   const wipeRectRef = useRef<SVGRectElement | null>(null);
   const hasMountedAnimRef = useRef(false);
+  const [isAnimComplete, setIsAnimComplete] = useState(false);
 
   const [isMobile, setIsMobile] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
@@ -107,7 +108,7 @@ export const StrokeText = ({
   const scaleXVal = isMobile && mobileScaleX ? mobileScaleX : 1;
 
   const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark' || (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark');
+  const isDark = resolvedTheme === 'dark';
 
   // Theme-aware colors matching supermarket brand:
   // Dark mode: Primary in crisp #FFFFFF, Highlight in vibrant brand green #81C995
@@ -263,6 +264,7 @@ export const StrokeText = ({
     if (prefersReducedMotion) {
       setEnd();
       hasMountedAnimRef.current = true;
+      setIsAnimComplete(true);
       return () => gsap.killTweensOf(targets);
     }
 
@@ -276,6 +278,7 @@ export const StrokeText = ({
         defaults: { overwrite: 'auto' },
         onComplete: () => {
           hasMountedAnimRef.current = true;
+          setIsAnimComplete(true);
         },
       });
 
@@ -362,6 +365,22 @@ export const StrokeText = ({
     reverse,
   ]);
 
+  // Ensure that when theme toggles, stroke & fill stay visible with full width
+  useEffect(() => {
+    if (hasMountedAnimRef.current) {
+      if (wipeRectRef.current && box) {
+        gsap.set(wipeRectRef.current, { attr: { width: box.width } });
+      }
+      const root = rootRef.current;
+      if (root) {
+        const strokes = root.querySelectorAll('[data-stroke-char]');
+        const fills = root.querySelectorAll('[data-fill-char]');
+        gsap.set(strokes, { strokeDashoffset: 0 });
+        gsap.set(fills, { opacity: 1 });
+      }
+    }
+  }, [resolvedTheme, box]);
+
   const viewBox = box
     ? `${box.x} ${box.y} ${box.width} ${box.height}`
     : `0 ${-fontSize} 800 ${fontSize * 2.2}`;
@@ -391,7 +410,7 @@ export const StrokeText = ({
                 ref={wipeRectRef}
                 x={box.x}
                 y={box.y}
-                width="0"
+                width={isAnimComplete ? box.width : 0}
                 height={box.height}
               />
             </clipPath>

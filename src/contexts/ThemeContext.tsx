@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 
 export type Theme = 'system' | 'light' | 'dark';
 
@@ -10,6 +10,21 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
+
+function applyThemeToDOM(resolved: 'light' | 'dark', mode: Theme) {
+  if (typeof document !== 'undefined') {
+    document.documentElement.setAttribute('data-theme', resolved);
+    document.documentElement.setAttribute('data-theme-mode', mode);
+
+    let metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (!metaTheme) {
+      metaTheme = document.createElement('meta');
+      metaTheme.setAttribute('name', 'theme-color');
+      document.head.appendChild(metaTheme);
+    }
+    metaTheme.setAttribute('content', resolved === 'dark' ? '#137333' : '#1E8E3E');
+  }
+}
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
@@ -44,20 +59,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const resolvedTheme: 'light' | 'dark' = theme === 'system' ? systemTheme : theme;
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', resolvedTheme);
-    document.documentElement.setAttribute('data-theme-mode', theme);
-
-    let metaTheme = document.querySelector('meta[name="theme-color"]');
-    if (!metaTheme) {
-      metaTheme = document.createElement('meta');
-      metaTheme.setAttribute('name', 'theme-color');
-      document.head.appendChild(metaTheme);
-    }
-    metaTheme.setAttribute('content', resolvedTheme === 'dark' ? '#137333' : '#1E8E3E');
+  useLayoutEffect(() => {
+    applyThemeToDOM(resolvedTheme, theme);
   }, [theme, resolvedTheme]);
 
   const setTheme = useCallback((t: Theme) => {
+    const nextResolved = t === 'system' 
+      ? (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : t;
+    applyThemeToDOM(nextResolved, t);
     setThemeState(t);
     try {
       if (t === 'system') {
