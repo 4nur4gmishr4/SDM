@@ -45,13 +45,43 @@
 .app-shell__brand {
   display: flex;
   align-items: center;
-  gap: var(--md-sys-spacing-2);
   text-decoration: none;
-  color: var(--md-sys-color-on-surface);
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent !important;
   -webkit-user-select: none;
   user-select: none;
+}
+
+.app-shell__brand-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  border-radius: 9px;
+  background: var(--md-sys-color-primary, #1E8E3E);
+  color: #FFFFFF;
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(30, 142, 62, 0.22);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-shell__brand:hover .app-shell__brand-box {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(30, 142, 62, 0.32);
+}
+
+.app-shell__brand:active .app-shell__brand-box {
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .app-shell__brand-box {
+  background: #81C995;
+  color: #003915;
+  box-shadow: 0 2px 8px rgba(129, 201, 149, 0.2);
 }
 
 .app-shell__brand-name {

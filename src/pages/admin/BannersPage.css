@@ -7,8 +7,13 @@
   margin-bottom: 20px;
   border-bottom: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
   padding-bottom: 12px;
+  padding-top: 8px;
   gap: 16px;
   flex-wrap: wrap;
+  position: sticky;
+  top: 64px;
+  background: var(--md-sys-color-surface-container-lowest, #ffffff);
+  z-index: 20;
 }
 
 .admin-banners-tabs {

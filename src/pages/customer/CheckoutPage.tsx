@@ -21,7 +21,7 @@ export function CheckoutPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const pageTitle = 'Checkout & WhatsApp Order — Sai Darshan Mart';
+  const pageTitle = 'Checkout & WhatsApp Order | Sai Darshan Mart';
 
   useEffect(() => {
     document.title = pageTitle;

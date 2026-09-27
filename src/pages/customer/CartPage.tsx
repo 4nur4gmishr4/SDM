@@ -18,7 +18,7 @@ export function CartPage() {
   // Use settings or fallback to 0
   const deliveryFee = settings?.flat_fee || 0;
 
-  const pageTitle = 'Shopping Cart — Sai Darshan Mart';
+  const pageTitle = 'Shopping Cart | Sai Darshan Mart';
 
   useEffect(() => {
     document.title = pageTitle;

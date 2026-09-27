@@ -14,7 +14,7 @@ export function NotFoundPage() {
       fontFamily: 'var(--md-sys-typescale-font-family, sans-serif)',
     }}>
       <Helmet>
-        <title>404 — Page Not Found | Sai Darshan Mart Jabalpur</title>
+        <title>404 | Page Not Found | Sai Darshan Mart Jabalpur</title>
         <meta name="description" content="The requested page could not be found on Sai Darshan Mart." />
       </Helmet>
 

@@ -49,9 +49,9 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
 
       <div className="desktop-hero-stroke__narrative">
         <TypingText
-          text="Jabalpur's trusted neighborhood supermarket delivering authentic quality, farm-fresh grocery essentials, pure unadulterated spices, daily dairy, and household provisions directly to your doorstep. Backed by honest wholesale pricing, spotless hygienic packaging, and dedicated care — from your morning chai and breakfast staples to monthly rashan packages, we take pride in serving every home with genuine trust and prompt local delivery."
-          speed={16}
-          startDelay={350}
+          text="Jabalpur's trusted neighborhood supermarket delivering authentic quality, farm-fresh grocery essentials, pure spices, daily dairy, and household provisions directly to your doorstep. Backed by honest wholesale pricing, spotless packaging, and dedicated care, from your morning chai and breakfast staples to monthly rashan packages, we take pride in serving every home with genuine trust and prompt local delivery."
+          speed={5}
+          startDelay={150}
         />
       </div>
 

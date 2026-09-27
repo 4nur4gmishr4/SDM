@@ -14,7 +14,7 @@ export function AboutPage() {
   const { activeItems: storeVisuals } = useStoreMedia();
 
   useEffect(() => {
-    document.title = 'About Store — Sai Darshan Mart Jabalpur';
+    document.title = 'About Store | Sai Darshan Mart Jabalpur';
   }, []);
 
   // Lightbox State
@@ -38,7 +38,7 @@ export function AboutPage() {
   return (
     <div className="layout-container about-page">
       <Helmet>
-        <title>About Store — Sai Darshan Mart Jabalpur</title>
+        <title>About Store | Sai Darshan Mart Jabalpur</title>
         <meta
           name="description"
           content="Visit Sai Darshan Mart at 1117 Sanjeevni Nagar, Jabalpur. View high-resolution supermarket aisles, daily groceries, dry fruits, personal care, and direct WhatsApp delivery."

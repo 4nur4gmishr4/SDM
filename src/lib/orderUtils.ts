@@ -59,7 +59,7 @@ export function buildCartWhatsAppMessage(params: {
 }): string {
   const { orderId, items, subtotal, deliveryFee, total, customerName, customerPhone, deliveryAddress, mapLink } = params;
 
-  let msg = `🛒 *New Order — Sai Darshan Mart*\n`;
+  let msg = `🛒 *New Order | Sai Darshan Mart*\n`;
   msg += `Order ID: ${orderId}\n`;
   msg += `──────────────\n\n`;
 
@@ -101,7 +101,7 @@ export function buildQuickOrderWhatsAppMessage(params: {
 }): string {
   const { orderId, shoppingList, customerName, customerPhone, deliveryAddress, mapLink } = params;
 
-  let msg = `📝 *Quick Order — Sai Darshan Mart*\n`;
+  let msg = `📝 *Quick Order | Sai Darshan Mart*\n`;
   msg += `Order ID: ${orderId}\n`;
   msg += `──────────────\n\n`;
 

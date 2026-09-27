@@ -11,8 +11,8 @@ interface TypingTextProps {
 
 export function TypingText({
   text,
-  speed = 28,
-  startDelay = 600,
+  speed = 6,
+  startDelay = 150,
   showCursor = true,
   className = '',
 }: TypingTextProps) {

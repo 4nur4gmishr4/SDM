@@ -92,7 +92,7 @@ export function ProductDetailPage() {
     setQuantity(1);
   };
 
-  const pageTitle = `${product.name} — Sai Darshan Mart`;
+  const pageTitle = `${product.name} | Sai Darshan Mart`;
 
   return (
     <div className="layout-container product-detail">

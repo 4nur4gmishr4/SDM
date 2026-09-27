@@ -17,7 +17,7 @@ export function OrderConfirmationPage() {
   const { orderId } = useParams<{ orderId: string }>();
   const [copiedUpi, setCopiedUpi] = useState(false);
 
-  const pageTitle = 'Order Confirmed — Sai Darshan Mart Jabalpur';
+  const pageTitle = 'Order Confirmed | Sai Darshan Mart Jabalpur';
 
   useEffect(() => {
     document.title = pageTitle;

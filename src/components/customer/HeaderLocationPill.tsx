@@ -20,19 +20,13 @@ export function HeaderLocationPill() {
       </div>
 
       <div className="header-location-pill__content">
-        <div className="header-location-pill__top">
-          <span className="header-location-pill__label">Deliver to</span>
-          <span className="header-location-pill__area">
-            {isLocating ? 'Locating...' : location.area || 'Jabalpur'}
-          </span>
-          <span className="material-symbols-outlined header-location-pill__chevron">
-            expand_more
-          </span>
-        </div>
-
-        <div className="header-location-pill__address" title={location.formattedAddress}>
-          {isLocating ? 'Fetching GPS...' : location.address || location.city || 'Civil Lines, Jabalpur'}
-        </div>
+        <span className="header-location-pill__label">Delivering to</span>
+        <span className="header-location-pill__area">
+          {isLocating ? 'Locating...' : location.area || 'Jabalpur'}
+        </span>
+        <span className="material-symbols-outlined header-location-pill__chevron">
+          expand_more
+        </span>
       </div>
     </button>
   );

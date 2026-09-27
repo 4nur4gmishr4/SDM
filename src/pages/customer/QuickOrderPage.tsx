@@ -19,7 +19,7 @@ export function QuickOrderPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const pageTitle = 'Quick Order via Shopping List — Sai Darshan Mart';
+  const pageTitle = 'Quick Order via Shopping List | Sai Darshan Mart';
 
   useEffect(() => {
     document.title = pageTitle;

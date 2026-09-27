@@ -30,7 +30,7 @@ export function AnalyticsPage() {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [lastRefreshedAt, setLastRefreshedAt] = useState<Date>(new Date());
 
-  const pageTitle = 'Store Analytics & Traffic — Sai Darshan Mart Admin';
+  const pageTitle = 'Store Analytics & Traffic | Sai Darshan Mart Admin';
 
   const loadData = async (isManual = false) => {
     if (isManual) setIsRefreshing(true);

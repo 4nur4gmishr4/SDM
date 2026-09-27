@@ -34,7 +34,7 @@ export function PipelinesPage() {
   const [dbPingMs, setDbPingMs] = useState<number | null>(null);
   const [isPinging, setIsPinging] = useState<boolean>(false);
 
-  const pageTitle = 'Pipelines & Automation — Sai Darshan Mart Admin';
+  const pageTitle = 'Pipelines & Automation | Sai Darshan Mart Admin';
 
   useEffect(() => {
     document.title = pageTitle;

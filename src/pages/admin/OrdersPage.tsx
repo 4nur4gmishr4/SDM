@@ -16,7 +16,7 @@ export function OrdersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 20;
 
-  const pageTitle = 'Orders Management — Sai Darshan Mart Admin';
+  const pageTitle = 'Orders Management | Sai Darshan Mart Admin';
 
   useEffect(() => {
     document.title = pageTitle;
