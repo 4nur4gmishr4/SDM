@@ -1,162 +1,176 @@
 /* ============================================================
-   Product Detail Page
+   Product Detail Page — Exact Flipkart Desktop & Mobile Layout
    ============================================================ */
 
 .product-detail-page {
   width: 100%;
+  padding-top: 14px;
+  padding-bottom: 48px;
 }
 
-.product-detail {
-  max-width: 1120px;
-  margin-inline: auto;
-  padding-top: var(--md-sys-spacing-4);
-  padding-bottom: var(--md-sys-spacing-8);
+/* ------------------------------------------------------------
+   Flipkart Style Breadcrumbs
+   ------------------------------------------------------------ */
+.product-detail__breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant, #878787);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  line-height: 1.4;
+}
+
+.product-detail__breadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.product-detail__breadcrumbs a:hover {
+  color: var(--md-sys-color-primary, #1E8E3E);
+}
+
+.breadcrumb-sep {
+  font-size: 14px;
+  color: #a0a6ac;
+}
+
+.breadcrumb-current {
+  color: var(--md-sys-color-on-surface, #212121);
+  font-weight: 500;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ------------------------------------------------------------
+   Dual Column Product Card (Flipkart Signature)
+   ------------------------------------------------------------ */
+.product-detail-card {
+  background-color: var(--md-sys-color-surface-container-lowest, #FFFFFF);
+  border: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
-  gap: var(--md-sys-spacing-6);
-  width: 100%;
+  gap: 24px;
   box-sizing: border-box;
 }
 
+[data-theme="dark"] .product-detail-card {
+  background-color: var(--md-sys-color-surface-container, #1f2320);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
 @media (min-width: 905px) {
-  .product-detail {
-    flex-direction: row;
-    gap: var(--md-sys-spacing-8);
-    padding-top: var(--md-sys-spacing-8);
+  .product-detail-card {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    gap: 36px;
+    padding: 32px 36px;
+    align-items: start;
   }
 }
 
-/* Image Section */
-.product-detail__image-section {
+/* ------------------------------------------------------------
+   Left Column: Sticky Image & Action Panel
+   ------------------------------------------------------------ */
+.product-detail__left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+@media (min-width: 905px) {
+  .product-detail__left-col {
+    position: sticky;
+    top: 84px;
+  }
+}
+
+.product-detail__image-box {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: var(--md-sys-color-surface-container-low);
-  border-radius: var(--md-sys-shape-corner-medium);
+  max-height: 420px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--md-sys-color-outline-variant, #EDEDED);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
   overflow: hidden;
-  position: relative;
-  border: 1px solid var(--md-sys-color-outline-variant);
 }
 
-@media (min-width: 905px) {
-  .product-detail__image-section {
-    width: 50%;
-    position: sticky;
-    top: 80px; /* Below top app bar */
-  }
+[data-theme="dark"] .product-detail__image-box {
+  background-color: #171816;
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .product-detail__image {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Using contain here in case images aren't perfect squares */
-  background-color: white;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.product-detail__image-box:hover .product-detail__image {
+  transform: scale(1.04);
 }
 
 .product-detail__placeholder {
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .product-detail__placeholder-icon {
-  font-size: 64px;
-  color: var(--md-sys-color-outline-variant);
+  font-size: 72px;
+  color: var(--md-sys-color-outline-variant, #D1D5DB);
 }
 
-/* Info Section */
-.product-detail__info-section {
+/* Action Panel Directly Under Image (Flipkart Signature) */
+.product-detail__action-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
+}
+
+.product-detail__qty-cart-row {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
-@media (min-width: 905px) {
-  .product-detail__info-section {
-    width: 50%;
-  }
-}
-
-.product-detail__header {
-  margin-bottom: var(--md-sys-spacing-4);
-  padding-bottom: var(--md-sys-spacing-4);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
-}
-
-.product-detail__title {
-  font-size: var(--md-sys-typescale-display-small-size);
-  font-weight: var(--md-sys-typescale-display-small-weight);
-  color: var(--md-sys-color-on-surface);
-  margin-bottom: var(--md-sys-spacing-1);
-}
-
-.product-detail__unit {
-  font-size: var(--md-sys-typescale-title-medium-size);
-  color: var(--md-sys-color-on-surface-variant);
-  margin-bottom: var(--md-sys-spacing-4);
-}
-
-.product-detail__price {
-  font-size: var(--md-sys-typescale-display-medium-size);
-  font-weight: var(--md-sys-typescale-display-medium-weight);
-  color: var(--md-sys-color-primary);
-}
-
-.product-detail__discount-badge {
-  background-color: #0D652D;
-  color: #FFFFFF !important;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-[data-theme="dark"] .product-detail__discount-badge {
-  background-color: #81C995;
-  color: #003915 !important;
-}
-
-/* Actions Section */
-.product-detail__actions {
-  margin-bottom: var(--md-sys-spacing-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--md-sys-spacing-3);
-}
-
-.product-detail__status {
+/* Quantity Control */
+.product-detail__quantity {
   display: inline-flex;
   align-items: center;
-  gap: var(--md-sys-spacing-1);
-  font-size: var(--md-sys-typescale-label-large-size);
-  font-weight: var(--md-sys-typescale-label-large-weight);
-}
-
-.product-detail__status--in-stock {
-  color: var(--sdm-color-success);
-}
-
-.product-detail__status--out-of-stock {
-  color: var(--md-sys-color-error);
-}
-
-.product-detail__add-container {
-  display: flex;
-  align-items: center;
-  gap: var(--md-sys-spacing-4);
-}
-
-.product-detail__quantity {
-  display: flex;
-  align-items: center;
-  background-color: var(--md-sys-color-surface-container);
+  background-color: var(--md-sys-color-surface-container, #F1F3F4);
+  border: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
   border-radius: 10px;
-  height: 44px;
+  height: 46px;
   padding: 2px 4px;
-  border: 1px solid var(--md-sys-color-outline-variant);
   box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .product-detail__quantity {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .product-detail__quantity-btn {
@@ -167,55 +181,406 @@
   justify-content: center;
   border-radius: 8px;
   color: var(--md-sys-color-on-surface);
-  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              transform var(--md-sys-motion-duration-short1) var(--md-sys-motion-easing-standard);
   background: transparent;
   border: none;
   cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .product-detail__quantity-btn:hover:not(:disabled) {
-  background-color: var(--md-sys-color-surface-container-highest);
+  background-color: rgba(0, 0, 0, 0.06);
 }
 
-.product-detail__quantity-btn:active:not(:disabled) {
-  transform: scale(0.9);
+.product-detail__quantity-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .product-detail__quantity-value {
-  width: 40px;
+  width: 36px;
   text-align: center;
-  font-size: var(--md-sys-typescale-title-medium-size);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Add to Cart Button (Flipkart Style Bold CTA) */
+.product-detail__cart-btn {
+  flex: 1;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  background-color: #1E8E3E;
+  color: #FFFFFF !important;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30, 142, 62, 0.25);
+  transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.product-detail__cart-btn:hover {
+  background-color: #178036;
+  box-shadow: 0 4px 12px rgba(30, 142, 62, 0.35);
+  transform: translateY(-1px);
+}
+
+.product-detail__cart-btn:active {
+  transform: translateY(1px);
+}
+
+/* WhatsApp Direct Order Button */
+.product-detail__whatsapp-order-btn {
+  width: 100%;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  background-color: #25D366;
+  color: #FFFFFF !important;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  box-sizing: border-box;
+}
+
+.product-detail__whatsapp-order-btn:hover {
+  background-color: #1EBE5D;
+  transform: translateY(-1px);
+}
+
+.product-detail__unavailable-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background-color: rgba(186, 26, 26, 0.08);
+  color: var(--md-sys-color-error, #ba1a1a);
+  font-size: 14px;
   font-weight: 600;
 }
 
-.product-detail__add-btn-wrapper {
-  flex: 1;
-}
-
-.product-detail__add-btn-wrapper md-filled-button {
+/* ------------------------------------------------------------
+   Right Column: Flipkart Product Information Architecture
+   ------------------------------------------------------------ */
+.product-detail__right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 100%;
-  --md-filled-button-container-height: 44px;
-  --md-filled-button-container-shape: 10px;
-  --md-filled-button-label-text-weight: 600;
-  --md-filled-button-label-text-size: 0.95rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Description Section */
-.product-detail__description-section {
-  margin-top: var(--md-sys-spacing-2);
+/* Header & Title */
+.product-detail__header-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+  padding-bottom: 14px;
 }
 
-.product-detail__section-title {
-  font-size: var(--md-sys-typescale-title-large-size);
-  font-weight: var(--md-sys-typescale-title-large-weight);
-  margin-bottom: var(--md-sys-spacing-2);
+[data-theme="dark"] .product-detail__header-block {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
-.product-detail__description {
-  font-size: var(--md-sys-typescale-body-large-size);
-  line-height: var(--md-sys-typescale-body-large-line-height);
-  color: var(--md-sys-color-on-surface-variant);
+.product-detail__title {
+  margin: 0;
+  font-size: clamp(20px, 2.5vw, 24px);
+  font-weight: 650;
+  line-height: 1.32;
+  color: var(--md-sys-color-on-surface, #212121);
+  letter-spacing: -0.015em;
+}
+
+.product-detail__unit-pill {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #5F6368);
+}
+
+/* Ratings & Assured Badges Row (Flipkart Signature) */
+.product-detail__badges-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.product-detail__rating-badge {
+  background-color: #388E3C;
+  color: #FFFFFF !important;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  line-height: 1;
+}
+
+.product-detail__assured-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--md-sys-color-primary, #1E8E3E);
+  background-color: rgba(30, 142, 62, 0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(30, 142, 62, 0.25);
+  line-height: 1;
+}
+
+[data-theme="dark"] .product-detail__assured-badge {
+  color: #81C995;
+  background-color: rgba(129, 201, 149, 0.12);
+  border-color: rgba(129, 201, 149, 0.3);
+}
+
+.product-detail__stock-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.product-detail__stock-tag--in {
+  color: #1E8E3E;
+}
+
+[data-theme="dark"] .product-detail__stock-tag--in {
+  color: #81C995;
+}
+
+.product-detail__stock-tag--out {
+  color: var(--md-sys-color-error, #ba1a1a);
+}
+
+/* Flipkart Signature Price Block */
+.product-detail__price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-detail__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.product-detail__price-main {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--md-sys-color-on-surface, #212121);
+  letter-spacing: -0.02em;
+}
+
+.product-detail__mrp {
+  font-size: 15px;
+  color: #878787;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.product-detail__discount-tag {
+  color: #388E3C;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+}
+
+[data-theme="dark"] .product-detail__discount-tag {
+  color: #81C995;
+}
+
+.product-detail__tax-sub {
+  font-size: 11px;
+  color: #878787;
+  font-weight: 500;
+}
+
+/* Pack / Variant Selector Chips */
+.product-detail__variants-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-detail__variants-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.product-detail__variants-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.product-detail__variant-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--md-sys-color-outline-variant, #E1E3DF);
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.product-detail__variant-chip:hover {
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  background-color: rgba(30, 142, 62, 0.04);
+}
+
+.product-detail__variant-chip--active {
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  background-color: var(--md-sys-color-primary-container, #E6F4EA);
+  color: var(--md-sys-color-on-primary-container, #0D652D);
+}
+
+[data-theme="dark"] .product-detail__variant-chip--active {
+  background-color: rgba(129, 201, 149, 0.18);
+  color: #81C995;
+  border-color: #81C995;
+}
+
+.product-detail__variant-price {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.product-detail__variant-check {
+  font-size: 16px;
+  color: inherit;
+}
+
+/* Guarantees & Delivery Card (Flipkart Assured Services) */
+.product-detail__guarantees-card {
+  background-color: var(--md-sys-color-surface-container-low, #F8F9FA);
+  border: 1px solid var(--md-sys-color-outline-variant, #E8EAED);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+[data-theme="dark"] .product-detail__guarantees-card {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.product-detail__guarantee-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--md-sys-color-on-surface-variant, #4B5563);
+}
+
+.product-detail__guarantee-item .material-symbols-outlined {
+  font-size: 18px;
+  color: var(--md-sys-color-primary, #1E8E3E);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+[data-theme="dark"] .product-detail__guarantee-item .material-symbols-outlined {
+  color: #81C995;
+}
+
+/* Specifications Table (Flipkart Signature) */
+.product-detail__specs-section {
+  border-top: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+  padding-top: 16px;
+}
+
+[data-theme="dark"] .product-detail__specs-section {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.product-detail__specs-heading {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.product-detail__specs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-detail__specs-table tr {
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #F0F2F5);
+}
+
+[data-theme="dark"] .product-detail__specs-table tr {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.product-detail__specs-key {
+  width: 35%;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant, #878787);
+  font-weight: 500;
+}
+
+.product-detail__specs-val {
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface, #212121);
+  font-weight: 600;
+}
+
+/* About this item / Description */
+.product-detail__desc-section {
+  border-top: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+  padding-top: 16px;
+}
+
+[data-theme="dark"] .product-detail__desc-section {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.product-detail__desc-heading {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.product-detail__desc-body {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant, #4B5563);
   white-space: pre-wrap;
 }
