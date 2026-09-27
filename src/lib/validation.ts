@@ -63,6 +63,7 @@ export function validateOrderInput(params: {
   customerPhone: string;
   deliveryAddress: string;
   shoppingList?: string;
+  hasImage?: boolean;
 }): OrderValidationResult {
   const cleanedName = sanitizeText(params.customerName);
   if (!cleanedName || cleanedName.length < 2) {
@@ -88,20 +89,23 @@ export function validateOrderInput(params: {
     };
   }
 
-  if (params.shoppingList !== undefined) {
-    const cleanedList = sanitizeText(params.shoppingList);
-    if (!cleanedList || cleanedList.length < 3) {
+  if (params.shoppingList !== undefined || params.hasImage !== undefined) {
+    const cleanedList = sanitizeText(params.shoppingList || '');
+    const hasImage = Boolean(params.hasImage);
+
+    if (!hasImage && (!cleanedList || cleanedList.length < 3)) {
       return {
         isValid: false,
-        error: 'Please enter your grocery list items.'
+        error: 'Please enter your grocery list items or snap/upload a photo of your list.'
       };
     }
+
     return {
       isValid: true,
       cleanedName,
       cleanedPhone,
       cleanedAddress,
-      cleanedList
+      cleanedList: cleanedList || (hasImage ? '(Handwritten grocery list photo attached)' : '')
     };
   }
 

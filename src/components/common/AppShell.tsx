@@ -48,10 +48,17 @@ export function AppShell() {
     showSnackbar(`Theme set to ${nextThemeName}`);
   };
 
-  const navItems = [
+  interface NavItem {
+    label: string;
+    path: string;
+    icon: string;
+    badge?: boolean;
+  }
+
+  const navItems: NavItem[] = [
     { label: 'Home', path: '/', icon: 'home' },
     { label: 'Shop', path: '/shop', icon: 'storefront' },
-    { label: 'Cart', path: '/cart', icon: 'shopping_cart', badge: true },
+    { label: 'Quick Order', path: '/quick-order', icon: 'edit_note' },
     { label: 'Store Info', path: '/about', icon: 'info' },
   ];
 

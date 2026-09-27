@@ -101,15 +101,24 @@ export function buildQuickOrderWhatsAppMessage(params: {
   customerPhone: string;
   deliveryAddress: string;
   mapLink: string | null;
+  hasAttachedImage?: boolean;
 }): string {
-  const { orderId, shoppingList, customerName, customerPhone, deliveryAddress, mapLink } = params;
+  const { orderId, shoppingList, customerName, customerPhone, deliveryAddress, mapLink, hasAttachedImage } = params;
 
   let msg = `📝 *Quick Order | ${STORE_NAME}*\n`;
   msg += `Order ID: ${orderId}\n`;
   msg += `──────────────\n\n`;
 
-  msg += `*Shopping List:*\n`;
-  msg += `${shoppingList}\n\n`;
+  if (hasAttachedImage) {
+    msg += `📸 *Attached: Manual / Handwritten Shopping List Photo*\n`;
+    msg += `_(Photo captured and being shared in this WhatsApp chat)_\n\n`;
+  }
+
+  const isPlaceholderOnly = shoppingList.startsWith('(Handwritten grocery list photo attached)');
+  if (shoppingList && !isPlaceholderOnly) {
+    msg += `*Shopping List (Typed/Pasted):*\n`;
+    msg += `${shoppingList.trim()}\n\n`;
+  }
 
   msg += `──────────────\n`;
   msg += `*Customer Details:*\n`;
