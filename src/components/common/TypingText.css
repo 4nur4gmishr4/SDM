@@ -1,0 +1,36 @@
+/* ============================================================
+   TypingText.css — Typewriter & Cursor Animation
+   ============================================================ */
+
+.typing-text-wrapper {
+  display: inline;
+  position: relative;
+  word-break: break-word;
+}
+
+.typing-cursor {
+  display: inline-block;
+  color: var(--md-sys-color-primary, #1E8E3E);
+  font-weight: 300;
+  margin-left: 2px;
+  animation: typingCursorBlink 0.8s infinite;
+  opacity: 1;
+}
+
+[data-theme="dark"] .typing-cursor {
+  color: #81C995;
+}
+
+.typing-cursor--idle {
+  animation: typingCursorBlink 1.4s infinite;
+  opacity: 0.6;
+}
+
+@keyframes typingCursorBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

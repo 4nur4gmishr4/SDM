@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../contexts';
-import { StrokeText } from '../common/StrokeText';
+import { StrokeText, BeatingHeart, TypingText } from '../common';
 import './DesktopHeroLandingBrief.css';
 
 interface DesktopHeroLandingBriefProps {
@@ -20,8 +20,8 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
 
       <div className="desktop-hero-stroke__lines-container">
         <StrokeText
-          lines={["SAI", "DARSHAN", "MART"]}
-          lineHeight={1.15}
+          lines={["SAI DARSHAN", "MART"]}
+          lineHeight={1.16}
           mobileFontSize={100}
           highlightWord="MART"
           highlightColor={isDark ? '#81C995' : '#1E8E3E'}
@@ -33,12 +33,25 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
           ease="power2.out"
           trigger="mount"
           fillMode="wipe"
-          fontSize={100}
+          fontSize={88}
           fontWeight={800}
           fontFamily="var(--font-syne), 'Syne', sans-serif"
           letterSpacing={0}
           align="left"
           className="w-full"
+        />
+      </div>
+
+      <div className="desktop-hero-stroke__motto-line">
+        <span className="desktop-hero-stroke__motto-text">There is only one boss: The Customer</span>
+        <BeatingHeart />
+      </div>
+
+      <div className="desktop-hero-stroke__narrative">
+        <TypingText
+          text="Jabalpur's trusted neighborhood supermarket delivering authentic quality, farm-fresh grocery essentials, pure unadulterated spices, and household provisions directly to your doorstep with honest pricing and genuine care."
+          speed={22}
+          startDelay={500}
         />
       </div>
 

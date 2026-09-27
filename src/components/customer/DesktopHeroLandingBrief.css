@@ -11,9 +11,9 @@
   .desktop-hero-stroke-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     height: 100%;
-    min-height: 420px;
+    min-height: 440px;
     border-radius: 24px;
     position: relative;
     padding: 24px 28px;
@@ -59,27 +59,60 @@
     text-transform: uppercase;
   }
 
+  /* Lines container moved directly below top pill */
   .desktop-hero-stroke__lines-container {
     display: flex;
     flex-direction: column;
     gap: 0;
-    margin: auto 0;
+    margin-top: 12px;
+    margin-bottom: 4px;
     width: 100%;
   }
 
-  .desktop-hero-stroke__line {
-    width: 100%;
+  /* Subline: "There is only one boss: The Customer" */
+  .desktop-hero-stroke__motto-line {
     display: flex;
     align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--md-sys-color-primary, #1E8E3E);
   }
 
+  [data-theme="dark"] .desktop-hero-stroke__motto-line {
+    color: #81C995;
+  }
+
+  .desktop-hero-stroke__motto-text {
+    color: inherit;
+  }
+
+  /* Store narrative paragraph in typing effect */
+  .desktop-hero-stroke__narrative {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--md-sys-color-on-surface-variant, #5F6368);
+    font-weight: 450;
+    min-height: 60px;
+    margin-bottom: auto;
+  }
+
+  [data-theme="dark"] .desktop-hero-stroke__narrative {
+    color: #B0B5B0;
+  }
+
+  /* Bottom Row with Shop Now CTA */
   .desktop-hero-stroke__bottom-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding-top: 16px;
+    padding-top: 14px;
     border-top: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+    margin-top: 12px;
   }
 
   [data-theme="dark"] .desktop-hero-stroke__bottom-row {
