@@ -118,7 +118,7 @@ export function CategoriesPage() {
       <div className="admin-products-header">
         <h1 className="admin-products-title">Categories</h1>
         <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">
-          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add</span>
+          <span className="material-symbols-outlined admin-btn-icon">add</span>
           <span>Add Category</span>
         </button>
       </div>
@@ -138,20 +138,20 @@ export function CategoriesPage() {
               <AdminTableSkeleton rows={5} cols={4} />
             ) : categories.length === 0 ? (
               <tr>
-                <td colSpan={4} style={{ textAlign: 'center', padding: '32px' }}>
+                <td colSpan={4} className="admin-products-table-empty">
                   No categories found. Click "Add Category" to create one.
                 </td>
               </tr>
             ) : (
               categories.map((category) => (
-                <tr key={category.id} style={{ opacity: category.is_visible ? 1 : 0.5 }}>
+                <tr key={category.id} className={category.is_visible ? "" : "admin-table-row--archived"}>
                   <td>
-                    <div style={{ fontWeight: 500 }}>{category.name}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--md-sys-color-outline)' }}>{category.slug}</div>
+                    <div className="admin-product-title">{category.name}</div>
+                    <div className="admin-product-meta-text">{category.slug}</div>
                   </td>
                   <td>{category.display_order}</td>
                   <td>
-                    <div style={{ display: 'flex', gap: '4px', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <div className="admin-product-status-list">
                       {category.is_visible ? (
                         <span className="admin-badge admin-badge--delivered">Visible</span>
                       ) : (
@@ -228,8 +228,8 @@ export function CategoriesPage() {
                 />
               </div>
 
-              <div className="admin-form-row" style={{ gap: '24px', marginTop: '16px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div className="admin-form-row admin-form-row--spaced">
+                <label className="admin-product-checkbox-label">
                   <md-checkbox 
                     checked={editingCategory.is_visible} 
                     onChange={(e: any) => setEditingCategory({ ...editingCategory, is_visible: e.target.checked })}
@@ -237,7 +237,7 @@ export function CategoriesPage() {
                   Visible to Customers
                 </label>
                 
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <label className="admin-product-checkbox-label">
                   <md-checkbox 
                     checked={editingCategory.is_offer_category} 
                     onChange={(e: any) => setEditingCategory({ ...editingCategory, is_offer_category: e.target.checked })}

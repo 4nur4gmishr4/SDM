@@ -152,14 +152,14 @@ export function AdminLoginPage() {
 
         {error && (
           <div className="admin-login-error" role="alert">
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>warning</span>
+            <span className="material-symbols-outlined admin-login__alert-icon">warning</span>
             <span>{error}</span>
           </div>
         )}
 
         {lockoutRemaining > 0 && (
           <div className="admin-login-lockout-banner">
-            <span className="material-symbols-outlined spin-anim" style={{ fontSize: '20px' }}>lock_clock</span>
+            <span className="material-symbols-outlined spin-anim admin-login__lock-icon">lock_clock</span>
             <div>
               <strong>Security Cooldown:</strong> Please wait {lockoutRemaining}s
             </div>
@@ -215,7 +215,7 @@ export function AdminLoginPage() {
                 tabIndex={-1}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                <span className="material-symbols-outlined admin-login__input-icon">
                   {showPassword ? 'visibility_off' : 'visibility'}
                 </span>
               </button>
@@ -228,12 +228,12 @@ export function AdminLoginPage() {
             disabled={isSubmitting || lockoutRemaining > 0}
           >
             <span>{isSubmitting ? 'Authenticating...' : 'Sign In Securely'}</span>
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
+            <span className="material-symbols-outlined admin-login__btn-icon">arrow_forward</span>
           </button>
         </form>
 
         <div className="admin-login-footer-info">
-          <span className="material-symbols-outlined" style={{ fontSize: '14px', color: '#1E8E3E' }}>verified_user</span>
+          <span className="material-symbols-outlined admin-login__secure-icon">verified_user</span>
           <span>Encrypted session &bull; Direct store authentication</span>
         </div>
       </div>

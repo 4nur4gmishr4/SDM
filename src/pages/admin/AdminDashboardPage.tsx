@@ -92,14 +92,14 @@ export function AdminDashboardPage() {
       </Helmet>
       <div className="admin-dashboard-header">
         <h1 className="admin-dashboard-title">Dashboard Overview</h1>
-        <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+        <p className="admin-dashboard-subtitle">
           Real-time overview of store orders, product catalog, and promotions.
         </p>
       </div>
 
       <div className="admin-dashboard-grid">
         <div className="admin-stat-card">
-          <div className="admin-stat-card__icon-wrapper" style={{ backgroundColor: 'var(--md-sys-color-primary-container)', color: 'var(--md-sys-color-on-primary-container)' }}>
+          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--primary">
             <span className="material-symbols-outlined admin-stat-card__icon">shopping_bag</span>
           </div>
           <div className="admin-stat-card__content">
@@ -109,7 +109,7 @@ export function AdminDashboardPage() {
         </div>
 
         <div className="admin-stat-card">
-          <div className="admin-stat-card__icon-wrapper" style={{ backgroundColor: 'var(--md-sys-color-error-container)', color: 'var(--md-sys-color-on-error-container)' }}>
+          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--error">
             <span className="material-symbols-outlined admin-stat-card__icon">pending_actions</span>
           </div>
           <div className="admin-stat-card__content">
@@ -119,7 +119,7 @@ export function AdminDashboardPage() {
         </div>
 
         <div className="admin-stat-card">
-          <div className="admin-stat-card__icon-wrapper" style={{ backgroundColor: 'var(--md-sys-color-secondary-container)', color: 'var(--md-sys-color-on-secondary-container)' }}>
+          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--secondary">
             <span className="material-symbols-outlined admin-stat-card__icon">group</span>
           </div>
           <div className="admin-stat-card__content">
@@ -129,7 +129,7 @@ export function AdminDashboardPage() {
         </div>
 
         <div className="admin-stat-card">
-          <div className="admin-stat-card__icon-wrapper" style={{ backgroundColor: 'var(--md-sys-color-tertiary-container)', color: 'var(--md-sys-color-on-tertiary-container)' }}>
+          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--tertiary">
             <span className="material-symbols-outlined admin-stat-card__icon">inventory_2</span>
           </div>
           <div className="admin-stat-card__content">
@@ -139,67 +139,47 @@ export function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="admin-dashboard-section" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+      <div className="admin-dashboard-section">
+        <div className="admin-dashboard-section__header">
           <div>
-            <h2 className="admin-dashboard-section__title" style={{ margin: 0 }}>Website Activity & Traffic Summary</h2>
-            <p style={{ margin: '4px 0 0', color: 'var(--md-sys-color-on-surface-variant)', fontSize: '0.875rem' }}>
+            <h2 className="admin-dashboard-section__title">Website Activity & Traffic Summary</h2>
+            <p className="admin-dashboard-section__subtitle">
               Real-time impressions, visitor count, and order status counts (PRD 4.2 #33 compliant).
             </p>
           </div>
           <Link
             to="/admin/analytics"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              borderRadius: '9999px',
-              backgroundColor: 'var(--md-sys-color-primary)',
-              color: 'var(--md-sys-color-on-primary, #ffffff)',
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              textDecoration: 'none',
-              boxShadow: '0 2px 6px rgba(30, 142, 62, 0.25)'
-            }}
+            className="admin-dashboard-analytics-link"
           >
             <span>View Full Analytics</span>
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
+            <span className="material-symbols-outlined admin-dashboard-analytics-icon">arrow_forward</span>
           </Link>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '12px',
-          padding: '16px',
-          borderRadius: '12px',
-          backgroundColor: 'var(--md-sys-color-surface-container-low, #f8faf8)',
-          border: '1px solid var(--md-sys-color-outline-variant, #e0e2dc)'
-        }}>
-          <div>
-            <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+        <div className="admin-dashboard-summary-grid">
+          <div className="admin-dashboard-summary-item">
+            <span className="admin-dashboard-summary-item__label">
               All-Time Page Views
             </span>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>
+            <div className="admin-dashboard-summary-item__value">
               {stats.totalPageViews.toLocaleString('en-IN')}
             </div>
           </div>
 
-          <div>
-            <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+          <div className="admin-dashboard-summary-item">
+            <span className="admin-dashboard-summary-item__label">
               Active Promotional Banners
             </span>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--md-sys-color-primary)' }}>
+            <div className="admin-dashboard-summary-item__value admin-dashboard-summary-item__value--primary">
               {stats.activeOffers}
             </div>
           </div>
 
-          <div>
-            <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+          <div className="admin-dashboard-summary-item">
+            <span className="admin-dashboard-summary-item__label">
               Store Catalog Departments
             </span>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>
+            <div className="admin-dashboard-summary-item__value">
               21 Categories
             </div>
           </div>

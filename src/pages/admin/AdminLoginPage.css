@@ -202,3 +202,24 @@
   padding-top: 6px;
   border-top: 1px solid var(--md-sys-color-outline-variant, #f1f3f4);
 }
+
+.admin-login__alert-icon {
+  font-size: 18px;
+}
+
+.admin-login__lock-icon {
+  font-size: 20px;
+}
+
+.admin-login__input-icon {
+  font-size: 20px;
+}
+
+.admin-login__btn-icon {
+  font-size: 18px;
+}
+
+.admin-login__secure-icon {
+  font-size: 14px;
+  color: var(--md-sys-color-primary, #1E8E3E);
+}

@@ -424,3 +424,17 @@
   font-family: monospace;
   font-size: 0.8125rem;
 }
+
+.admin-analytics__table-th-right {
+  text-align: right !important;
+}
+
+.admin-analytics__table-td-count {
+  text-align: right !important;
+  font-weight: 600;
+}
+
+.admin-analytics__table-td-share {
+  text-align: right !important;
+  color: var(--md-sys-color-primary, #1E8E3E) !important;
+}

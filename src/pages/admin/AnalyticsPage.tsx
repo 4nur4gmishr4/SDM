@@ -390,8 +390,8 @@ export function AnalyticsPage() {
                 <tr>
                   <th>Store Section</th>
                   <th>Path</th>
-                  <th style={{ textAlign: 'right' }}>Page Views</th>
-                  <th style={{ textAlign: 'right' }}>Share</th>
+                  <th className="admin-analytics__table-th-right">Page Views</th>
+                  <th className="admin-analytics__table-th-right">Share</th>
                 </tr>
               </thead>
               <tbody>
@@ -414,10 +414,10 @@ export function AnalyticsPage() {
                       <td>
                         <code>{path}</code>
                       </td>
-                      <td style={{ textAlign: 'right', fontWeight: 600 }}>
+                      <td className="admin-analytics__table-td-count">
                         {count.toLocaleString('en-IN')}
                       </td>
-                      <td style={{ textAlign: 'right', color: 'var(--md-sys-color-primary)' }}>
+                      <td className="admin-analytics__table-td-share">
                         {share}%
                       </td>
                     </tr>
