@@ -84,6 +84,8 @@ interface CartContextValue {
   items: CartItem[];
   itemCount: number;
   subtotal: number;
+  originalTotal: number;
+  savings: number;
   addItem: (item: CartItem) => void;
   removeItem: (productId: string, itemKey?: string) => void;
   updateQuantity: (productId: string, quantity: number, itemKey?: string) => void;
@@ -133,6 +135,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [state.items]
   );
 
+  const originalTotal = useMemo(
+    () => state.items.reduce((sum, item) => {
+      const orig = (item.original_price && item.original_price > item.product_price) ? item.original_price : item.product_price;
+      return sum + item.quantity * orig;
+    }, 0),
+    [state.items]
+  );
+
+  const savings = useMemo(
+    () => Math.max(0, originalTotal - subtotal),
+    [originalTotal, subtotal]
+  );
+
   const addItem = useCallback((item: CartItem) => {
     dispatch({ type: 'ADD_ITEM', payload: item });
     const variantSuffix = item.unit_size ? ` (${item.unit_size})` : '';
@@ -155,11 +170,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     items: state.items,
     itemCount,
     subtotal,
+    originalTotal,
+    savings,
     addItem,
     removeItem,
     updateQuantity,
     clearCart,
-  }), [state.items, itemCount, subtotal, addItem, removeItem, updateQuantity, clearCart]);
+  }), [state.items, itemCount, subtotal, originalTotal, savings, addItem, removeItem, updateQuantity, clearCart]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

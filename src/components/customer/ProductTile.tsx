@@ -31,11 +31,12 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
       product_name: product.name,
       product_sku: activeVariant?.sku || product.sku,
       product_price: currentPrice,
+      original_price: currentMrp,
       product_image_url: product.image_url,
       unit_size: currentUnit,
       quantity: 1,
     });
-  }, [addItem, product.id, product.name, product.sku, product.image_url, activeVariant?.id, activeVariant?.sku, currentPrice, currentUnit]);
+  }, [addItem, product.id, product.name, product.sku, product.image_url, activeVariant?.id, activeVariant?.sku, currentPrice, currentMrp, currentUnit]);
 
   return (
     <article className="product-tile">

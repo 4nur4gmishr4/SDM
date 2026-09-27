@@ -73,6 +73,7 @@ export function SettingsPage() {
           .update({
             rules_text: settings.rules_text,
             flat_fee: settings.flat_fee,
+            free_delivery_threshold: settings.free_delivery_threshold,
             updated_at: new Date().toISOString()
           })
           .eq('id', settings.id);
@@ -83,6 +84,7 @@ export function SettingsPage() {
           .insert([{
             rules_text: settings.rules_text,
             flat_fee: settings.flat_fee,
+            free_delivery_threshold: settings.free_delivery_threshold,
             is_active: true
           }]);
         if (error) throw error;
@@ -152,7 +154,29 @@ export function SettingsPage() {
                 required
               />
               <p style={{ fontSize: 'var(--md-sys-typescale-body-small-size)', color: 'var(--md-sys-color-on-surface-variant)' }}>
-                Set to 0 for free delivery.
+                Charged to customer when order is below free delivery threshold. Set to 0 for free delivery on all orders.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: 'var(--md-sys-typescale-label-large-size)' }}>Free Delivery Threshold (₹)</label>
+              <input
+                type="number"
+                value={settings?.free_delivery_threshold?.toString() || '0'}
+                onChange={(e) => setSettings(s => ({ ...s, free_delivery_threshold: parseFloat(e.target.value) || 0 }))}
+                placeholder="500"
+                style={{
+                  padding: '12px',
+                  borderRadius: '4px',
+                  border: '1px solid var(--md-sys-color-outline)',
+                  backgroundColor: 'var(--md-sys-color-surface)',
+                  fontFamily: 'inherit',
+                  fontSize: 'inherit',
+                  width: '200px'
+                }}
+              />
+              <p style={{ fontSize: 'var(--md-sys-typescale-body-small-size)', color: 'var(--md-sys-color-on-surface-variant)' }}>
+                Orders above this subtotal get 100% FREE Delivery automatically (e.g. ₹500).
               </p>
             </div>
 

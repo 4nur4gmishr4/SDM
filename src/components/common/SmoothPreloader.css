@@ -11,7 +11,6 @@
   height: 100vh;
   z-index: 999999;
   background-color: #090d0a;
-  background-image: radial-gradient(circle at 50% 38%, rgba(30, 142, 62, 0.14) 0%, #090d0a 75%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -42,20 +41,6 @@
   cursor: pointer;
 }
 
-/* Subtle atmospheric ambient glow in center */
-.sdm-smooth-preloader__glow {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(500px, 80vw);
-  height: min(500px, 80vw);
-  background: radial-gradient(circle, rgba(129, 201, 149, 0.12) 0%, transparent 70%);
-  filter: blur(48px);
-  pointer-events: none;
-  z-index: 1;
-}
-
 /* Center Content */
 .sdm-smooth-preloader__center {
   position: relative;
@@ -65,7 +50,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .sdm-smooth-preloader__logo-wrap {
@@ -76,7 +61,7 @@
   margin-bottom: 22px;
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(30, 142, 62, 0.2);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.12);
   background-color: #ffffff;
   animation: sdmLogoFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -96,7 +81,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #137333 0%, #1E8E3E 100%);
+  background-color: #1E8E3E;
 }
 
 .sdm-smooth-preloader__fallback-icon {
@@ -137,6 +122,64 @@
   letter-spacing: 0.01em;
 }
 
+/* Center Action: Tap to Begin in the middle */
+.sdm-smooth-preloader__center-action {
+  margin-top: 24px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sdm-smooth-preloader__center-tap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  background-color: #1E8E3E;
+  color: #FFFFFF;
+  font-size: 14.5px;
+  font-weight: 700;
+  border: 1px solid rgba(129, 201, 149, 0.4);
+  box-shadow: 0 4px 20px rgba(30, 142, 62, 0.45);
+  cursor: pointer;
+  animation: sdmTapPulse 1.6s infinite ease-in-out;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.sdm-smooth-preloader__center-tap:hover {
+  background-color: #137333;
+  transform: scale(1.04);
+}
+
+.sdm-smooth-preloader__center-tap-icon {
+  font-size: 20px;
+  color: #FFFFFF;
+}
+
+.sdm-smooth-preloader__center-arrow-icon {
+  font-size: 18px;
+  color: #81C995;
+}
+
+.sdm-smooth-preloader__center-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #9AA0A6;
+}
+
+.sdm-smooth-preloader__pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #1E8E3E;
+  animation: sdmDotPulse 1.2s infinite ease-in-out;
+}
+
 /* Bottom Floating Bar */
 .sdm-smooth-preloader__bottom {
   position: relative;
@@ -148,64 +191,12 @@
   gap: 16px;
 }
 
-@media (max-width: 520px) {
-  .sdm-smooth-preloader__bottom {
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 18px;
-  }
-}
-
-/* Tap to Begin Pill (Loaded State) */
-.sdm-smooth-preloader__tap-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 22px;
-  border-radius: 9999px;
-  background-color: #1E8E3E;
-  color: #FFFFFF;
-  font-size: 14px;
-  font-weight: 700;
-  border: 1px solid rgba(129, 201, 149, 0.35);
-  box-shadow: 0 4px 24px rgba(30, 142, 62, 0.55), 0 0 12px rgba(129, 201, 149, 0.3);
-  cursor: pointer;
-  animation: sdmTapPulse 1.6s infinite ease-in-out;
-  transition: transform 0.18s ease, background-color 0.18s ease;
-}
-
-.sdm-smooth-preloader__tap-pill:hover {
-  background-color: #137333;
-  transform: scale(1.04);
-}
-
-.sdm-smooth-preloader__tap-icon {
-  font-size: 18px;
-  color: #FFFFFF;
-}
-
-.sdm-smooth-preloader__arrow-icon {
-  font-size: 18px;
-  color: #81C995;
-}
-
-/* Loading Tag (Before 100%) */
-.sdm-smooth-preloader__loading-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: #9AA0A6;
-}
-
-.sdm-smooth-preloader__pulse-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #81C995;
-  box-shadow: 0 0 8px #81C995;
-  animation: sdmDotPulse 1.2s infinite ease-in-out;
+.sdm-smooth-preloader__bottom-info {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 /* Large Counter Display (Bottom Right) */
@@ -229,7 +220,7 @@
 .sdm-smooth-preloader__counter-percent {
   font-size: clamp(26px, 4.5vw, 48px);
   font-weight: 800;
-  color: #81C995;
+  color: #1E8E3E;
 }
 
 /* Hairline Progress Track */
@@ -246,8 +237,7 @@
 
 .sdm-smooth-preloader__bar {
   height: 100%;
-  background: linear-gradient(90deg, #1E8E3E 0%, #81C995 100%);
-  box-shadow: 0 0 10px rgba(129, 201, 149, 0.8);
+  background-color: #1E8E3E;
   transition: width 0.04s linear;
 }
 

@@ -38,6 +38,7 @@ export interface CartItem {
   product_name: string;
   product_sku: string;
   product_price: number;
+  original_price?: number | null;
   product_image_url: string | null;
   unit_size: string;
   quantity: number;

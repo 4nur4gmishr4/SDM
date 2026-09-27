@@ -39,7 +39,7 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
 
       <div className="desktop-hero-stroke__motto-line">
         <span className="desktop-hero-stroke__motto-text">There is only one boss: The Customer</span>
-        <BeatingHeart />
+        <BeatingHeart size={16} />
       </div>
 
       <div className="desktop-hero-stroke__narrative">

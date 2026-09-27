@@ -94,6 +94,21 @@
   margin-top: auto;
 }
 
+.cart-item__price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.cart-item__original-price {
+  font-size: 11.5px;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: line-through;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
 .cart-item__price {
   font-size: var(--md-sys-typescale-title-medium-size);
   font-weight: var(--md-sys-typescale-title-medium-weight);

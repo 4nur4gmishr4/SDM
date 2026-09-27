@@ -99,9 +99,6 @@ export function SmoothPreloader({
       tabIndex={0}
       data-testid="smooth-preloader"
     >
-      {/* Ambient background glow */}
-      <div className="sdm-smooth-preloader__glow" aria-hidden="true" />
-
       {/* Center Store Brand Presentation */}
       <div className="sdm-smooth-preloader__center">
         <div className="sdm-smooth-preloader__logo-wrap">
@@ -129,33 +126,32 @@ export function SmoothPreloader({
             There is only one Boss: The Customer ❤️
           </p>
         </div>
-      </div>
 
-      {/* Bottom Floating Bar */}
-      <div className="sdm-smooth-preloader__bottom">
-        {/* Left/Center Prompt: Tap to Begin when 100% loaded */}
-        <div className="sdm-smooth-preloader__prompt-wrap">
+        {/* Center Prompt: Show Tap anywhere to begin in the middle after 100% */}
+        <div className="sdm-smooth-preloader__center-action">
           {isLoaded ? (
-            <button
-              type="button"
-              className="sdm-smooth-preloader__tap-pill"
-              onClick={handleDismiss}
-              aria-label="Tap to begin shopping"
-            >
-              <span className="material-symbols-outlined sdm-smooth-preloader__tap-icon">
+            <div className="sdm-smooth-preloader__center-tap">
+              <span className="material-symbols-outlined sdm-smooth-preloader__center-tap-icon">
                 touch_app
               </span>
-              <span className="sdm-smooth-preloader__tap-text">Tap anywhere to begin</span>
-              <span className="material-symbols-outlined sdm-smooth-preloader__arrow-icon">
+              <span>Tap anywhere to begin</span>
+              <span className="material-symbols-outlined sdm-smooth-preloader__center-arrow-icon">
                 arrow_upward
               </span>
-            </button>
+            </div>
           ) : (
-            <div className="sdm-smooth-preloader__loading-tag">
+            <div className="sdm-smooth-preloader__center-loading">
               <span className="sdm-smooth-preloader__pulse-dot" />
               <span>Preparing fresh groceries...</span>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Bottom Minimal Bar */}
+      <div className="sdm-smooth-preloader__bottom">
+        <div className="sdm-smooth-preloader__bottom-info">
+          <span>Jabalpur Supermarket</span>
         </div>
 
         {/* Right: Counter Number (Exact Framer percentage counter) */}

@@ -83,6 +83,7 @@ export function ProductDetailPage() {
       product_name: product.name,
       product_sku: selectedVariant?.sku || product.sku,
       product_price: activePrice,
+      original_price: activeMrp,
       product_image_url: product.image_url,
       unit_size: activeUnitSize,
       quantity: quantity,

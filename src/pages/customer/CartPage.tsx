@@ -10,13 +10,16 @@ import { WatermarkBanner, BeatingHeart } from '../../components/common';
 import './CartPage.css';
 
 export function CartPage() {
-  const { items, itemCount, subtotal, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, itemCount, subtotal, originalTotal, updateQuantity, removeItem, clearCart } = useCart();
   const navigate = useNavigate();
 
   const { settings } = useDeliverySettings();
   
-  // Use settings or fallback to 0
-  const deliveryFee = settings?.flat_fee || 0;
+  // Calculate delivery fee dynamically based on admin free_delivery_threshold
+  const flatFee = settings?.flat_fee ?? 50;
+  const freeThreshold = settings?.free_delivery_threshold ?? 500;
+  const isFreeDelivery = freeThreshold > 0 && subtotal >= freeThreshold;
+  const deliveryFee = isFreeDelivery ? 0 : flatFee;
 
   const pageTitle = 'Shopping Cart | Sai Darshan Mart';
 
@@ -80,7 +83,12 @@ export function CartPage() {
         </div>
 
         <div className="cart-page__sidebar">
-          <OrderSummary subtotal={subtotal} deliveryFee={deliveryFee} />
+          <OrderSummary
+            subtotal={subtotal}
+            deliveryFee={deliveryFee}
+            originalTotal={originalTotal}
+            freeDeliveryThreshold={freeThreshold}
+          />
           
           <button 
             type="button"

@@ -48,8 +48,15 @@ export function CartLineItem({ item, itemKey, onUpdateQuantity, onRemove }: Cart
             onIncrease={() => onUpdateQuantity(item.product_id, item.quantity + 1, itemKey)}
             min={1}
           />
-          <div className="cart-item__price">
-            {formatPrice(item.product_price * item.quantity)}
+          <div className="cart-item__price-container">
+            {item.original_price && item.original_price > item.product_price ? (
+              <span className="cart-item__original-price">
+                {formatPrice(item.original_price * item.quantity)}
+              </span>
+            ) : null}
+            <span className="cart-item__price">
+              {formatPrice(item.product_price * item.quantity)}
+            </span>
           </div>
         </div>
       </div>

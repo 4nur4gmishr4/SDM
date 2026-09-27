@@ -4,31 +4,109 @@ import './OrderSummary.css';
 interface OrderSummaryProps {
   subtotal: number;
   deliveryFee?: number;
+  originalTotal?: number;
+  freeDeliveryThreshold?: number;
   total?: number;
 }
 
-export function OrderSummary({ subtotal, deliveryFee = 0, total }: OrderSummaryProps) {
+export function OrderSummary({
+  subtotal,
+  deliveryFee = 0,
+  originalTotal,
+  freeDeliveryThreshold,
+  total,
+}: OrderSummaryProps) {
   const finalTotal = total ?? (subtotal + deliveryFee);
+  const hasSavings = Boolean(originalTotal && originalTotal > subtotal);
+  const savingsAmount = hasSavings ? (originalTotal! - subtotal) : 0;
+  const savingsPercent = hasSavings ? Math.round((savingsAmount / originalTotal!) * 100) : 0;
+
+  // Free delivery threshold calculations
+  const threshold = freeDeliveryThreshold ?? 0;
+  const isFreeDeliveryEligible = threshold > 0 && subtotal >= threshold;
+  const amountNeededForFree = threshold > 0 ? Math.max(0, threshold - subtotal) : 0;
+  const progressPercent = threshold > 0 ? Math.min(100, Math.round((subtotal / threshold) * 100)) : 100;
 
   return (
     <div className="order-summary">
       <h2 className="order-summary__title">Order Summary</h2>
+
+      {/* Dynamic Free Delivery Tracker Banner */}
+      {threshold > 0 && (
+        <div className={`order-summary__free-delivery-card ${isFreeDeliveryEligible ? 'order-summary__free-delivery-card--unlocked' : ''}`}>
+          <div className="order-summary__free-delivery-header">
+            <span className="material-symbols-outlined order-summary__free-delivery-icon">
+              {isFreeDeliveryEligible ? 'verified' : 'local_shipping'}
+            </span>
+            <span className="order-summary__free-delivery-text">
+              {isFreeDeliveryEligible ? (
+                <strong>You unlocked FREE Delivery!</strong>
+              ) : (
+                <>Add <strong>{formatPrice(amountNeededForFree)}</strong> more for <strong>FREE Delivery</strong></>
+              )}
+            </span>
+          </div>
+          <div className="order-summary__progress-track">
+            <div
+              className="order-summary__progress-fill"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
+      )}
       
+      {/* Original Price / MRP if higher than selling price */}
+      {hasSavings && (
+        <div className="order-summary__row order-summary__row--mrp">
+          <span>Total MRP</span>
+          <span className="order-summary__mrp-cut">{formatPrice(originalTotal!)}</span>
+        </div>
+      )}
+
+      {/* Selling Price / Subtotal */}
       <div className="order-summary__row">
-        <span>Subtotal</span>
-        <span>{formatPrice(subtotal)}</span>
+        <span>Selling Price</span>
+        <span className="order-summary__selling-price">{formatPrice(subtotal)}</span>
       </div>
+
+      {/* Total Savings */}
+      {hasSavings && (
+        <div className="order-summary__row order-summary__row--savings">
+          <span>You Save</span>
+          <span className="order-summary__savings-val">
+            -{formatPrice(savingsAmount)} ({savingsPercent}% OFF)
+          </span>
+        </div>
+      )}
       
+      {/* Delivery Fee */}
       <div className="order-summary__row">
         <span>Delivery Fee</span>
         <span>
-          {deliveryFee === 0 ? 'Free' : formatPrice(deliveryFee)}
+          {deliveryFee === 0 ? (
+            <span className="order-summary__free-badge">FREE</span>
+          ) : (
+            formatPrice(deliveryFee)
+          )}
         </span>
       </div>
       
+      {/* Final Total */}
       <div className="order-summary__row order-summary__row--total">
-        <span>Total</span>
-        <span>{formatPrice(finalTotal)}</span>
+        <div>
+          <span>Total Amount</span>
+          {hasSavings && (
+            <div className="order-summary__total-subtext">Inclusive of all taxes</div>
+          )}
+        </div>
+        <div className="order-summary__total-val-wrap">
+          {hasSavings && (
+            <span className="order-summary__total-mrp-cut">
+              {formatPrice(originalTotal! + deliveryFee)}
+            </span>
+          )}
+          <span>{formatPrice(finalTotal)}</span>
+        </div>
       </div>
     </div>
   );
