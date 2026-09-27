@@ -334,24 +334,24 @@ export function BannersPage() {
       <div className="admin-products-header">
         <div>
           <h1 className="admin-products-title">Banners & Store Visuals</h1>
-          <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+          <p className="admin-products-subtitle">
             Configure home promotional banners and authentic store aisle visuals for the About Store section.
           </p>
         </div>
 
         {activeTab === 'banners' ? (
-          <button type="button" onClick={handleOpenAddBanner} className="sdm-btn sdm-btn--primary">
-            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add</span>
+          <button type="button" onClick={handleOpenAddBanner} className="sdm-btn sdm-btn--primary admin-icon-btn">
+            <span className="material-symbols-outlined admin-btn-icon">add</span>
             <span>Add Banner</span>
           </button>
         ) : (
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button type="button" onClick={handleResetVisuals} className="sdm-btn sdm-btn--outlined" title="Restore the 6 permanent authentic store items">
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>restart_alt</span>
+          <div className="admin-products-header__actions">
+            <button type="button" onClick={handleResetVisuals} className="sdm-btn sdm-btn--outlined admin-icon-btn" title="Restore the 6 permanent authentic store items">
+              <span className="material-symbols-outlined admin-btn-icon--small">restart_alt</span>
               <span>Restore 6 Permanent Items</span>
             </button>
-            <button type="button" onClick={handleOpenAddVisual} className="sdm-btn sdm-btn--primary">
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add_photo_alternate</span>
+            <button type="button" onClick={handleOpenAddVisual} className="sdm-btn sdm-btn--primary admin-icon-btn">
+              <span className="material-symbols-outlined admin-btn-icon">add_photo_alternate</span>
               <span>Add Store Visual</span>
             </button>
           </div>
@@ -368,7 +368,7 @@ export function BannersPage() {
             role="tab"
             aria-selected={activeTab === 'banners'}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>view_carousel</span>
+            <span className="material-symbols-outlined admin-btn-icon--small">view_carousel</span>
             <span>Home Screen Banners</span>
             <span className="admin-banners-tab-count">
               {activeBannersCount} / {banners.length} Active
@@ -382,7 +382,7 @@ export function BannersPage() {
             role="tab"
             aria-selected={activeTab === 'store_visuals'}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>storefront</span>
+            <span className="material-symbols-outlined admin-btn-icon--small">storefront</span>
             <span>About Store Visuals & Aisles</span>
             <span className="admin-banners-tab-count">
               {activeVisualsCount} / {storeVisuals.length} Active
@@ -399,45 +399,28 @@ export function BannersPage() {
           {/* Default Store Logo Banner (Fallback Widget) */}
           <div className="admin-logo-banner-widget">
             <div className="admin-logo-banner-widget__header">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '10px',
-                  backgroundColor: 'rgba(30, 142, 62, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--md-sys-color-primary)',
-                  flexShrink: 0
-                }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>
+              <div className="admin-logo-banner-title-group">
+                <div className="admin-logo-banner-icon-box">
+                  <span className="material-symbols-outlined admin-logo-banner-icon">
                     storefront
                   </span>
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Default Store Logo Banner (Fallback)</h3>
-                  <p style={{ margin: '2px 0 0', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+                  <h3 className="admin-logo-banner-title">Default Store Logo Banner (Fallback)</h3>
+                  <p className="admin-logo-banner-subtitle">
                     Jab home screen pe koi promotional banner nahi hoga ya sab disabled honge, tab ye logo banner display hoga.
                   </p>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div className="admin-logo-banner-actions">
                 <button
                   type="button"
                   onClick={handleToggleLogoBanner}
-                  className={`sdm-btn ${logoBanner.is_enabled ? 'sdm-btn--tonal' : 'sdm-btn--outlined'}`}
-                  style={{
-                    height: '34px',
-                    padding: '0 14px',
-                    fontSize: '12px',
-                    borderColor: logoBanner.is_enabled ? 'transparent' : 'var(--md-sys-color-outline)',
-                    color: logoBanner.is_enabled ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-on-surface-variant)',
-                  }}
+                  className={`sdm-btn admin-logo-banner-toggle-btn ${logoBanner.is_enabled ? 'admin-logo-banner-toggle-btn--active' : 'admin-logo-banner-toggle-btn--inactive'}`}
                   title="Toggle Fallback Logo Banner visibility on/off"
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                  <span className="material-symbols-outlined admin-btn-icon--small">
                     {logoBanner.is_enabled ? 'check_circle' : 'do_not_disturb_on'}
                   </span>
                   <span>{logoBanner.is_enabled ? 'Logo Banner Active' : 'Logo Banner Disabled'}</span>
@@ -449,10 +432,9 @@ export function BannersPage() {
                     setLogoBannerForm(logoBanner);
                     setIsEditingLogoBanner(!isEditingLogoBanner);
                   }}
-                  className="sdm-btn sdm-btn--outlined"
-                  style={{ height: '34px', padding: '0 14px', fontSize: '12px' }}
+                  className="sdm-btn sdm-btn--outlined admin-icon-btn admin-logo-banner-toggle-btn"
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                  <span className="material-symbols-outlined admin-btn-icon--small">
                     {isEditingLogoBanner ? 'close' : 'edit'}
                   </span>
                   <span>{isEditingLogoBanner ? 'Cancel Edit' : 'Edit Logo Banner'}</span>
@@ -475,14 +457,14 @@ export function BannersPage() {
                   />
                 </div>
                 <div className="admin-logo-banner-meta">
-                  <div style={{ fontWeight: 600, fontSize: '15px', color: 'var(--md-sys-color-on-surface)' }}>
+                  <div className="admin-logo-banner-meta-title">
                     {logoBanner.title || 'Sai Darshan Shopping Mart'}
                   </div>
-                  <div style={{ fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '3px' }}>
-                    <span style={{ fontWeight: 500, color: 'var(--md-sys-color-primary)' }}>Text below banner:</span>{' '}
+                  <div className="admin-logo-banner-meta-subtitle">
+                    <span>Text below banner:</span>{' '}
                     {logoBanner.subtitle || 'None'}
                   </div>
-                  <div style={{ fontSize: '12px', color: 'var(--md-sys-color-outline)', marginTop: '4px' }}>
+                  <div className="admin-logo-banner-meta-link">
                     Destination link: <code>{logoBanner.link_url || '/shop'}</code>
                   </div>
                 </div>
@@ -492,7 +474,7 @@ export function BannersPage() {
             {/* Inline Edit Form */}
             {isEditingLogoBanner && (
               <form onSubmit={handleSaveLogoBanner} className="admin-logo-banner-form">
-                <div style={{ marginBottom: '16px' }}>
+                <div className="admin-form-group admin-form-group--spaced">
                   <ImageUploadField
                     label="Logo Banner Image"
                     value={logoBannerForm.image_url}
@@ -501,7 +483,7 @@ export function BannersPage() {
                   />
                 </div>
 
-                <div className="admin-modal-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                <div className="admin-modal-row admin-modal-row--grid admin-form-group--spaced">
                   <div className="admin-form-group">
                     <label className="admin-label">Banner Title</label>
                     <input
@@ -526,7 +508,7 @@ export function BannersPage() {
                   </div>
                 </div>
 
-                <div className="admin-form-group" style={{ marginBottom: '16px' }}>
+                <div className="admin-form-group admin-form-group--spaced">
                   <label className="admin-label">
                     Text To Show Below Banner (Subtitle / Tagline)
                   </label>
@@ -537,12 +519,12 @@ export function BannersPage() {
                     onChange={(e) => setLogoBannerForm({ ...logoBannerForm, subtitle: e.target.value })}
                     placeholder="Aapki Apni Supermarket • Sanjeevni Nagar Main Road, Jabalpur"
                   />
-                  <div style={{ fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '4px' }}>
+                  <div className="admin-form-help-text">
                     Ye text home screen pe banner image ke theek neeche dikhega.
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <div className="admin-modal-footer admin-modal-footer--right admin-form-group--spaced">
                   <button
                     type="button"
                     onClick={() => setIsEditingLogoBanner(false)}
@@ -564,15 +546,15 @@ export function BannersPage() {
           </div>
 
           {/* Section Divider & Header for Promotional Banners */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '28px 0 14px', flexWrap: 'wrap', gap: '12px' }}>
+          <div className="admin-promotional-header">
             <div>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Active Promotional Campaign Banners</h3>
-              <p style={{ margin: '2px 0 0', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+              <h3 className="admin-promotional-title">Active Promotional Campaign Banners</h3>
+              <p className="admin-promotional-subtitle">
                 Jab yaha 1 ya zyada promotional banners active honge, to home screen par unka auto-sliding carousel chalega.
               </p>
             </div>
-            <button type="button" onClick={handleOpenAddBanner} className="sdm-btn sdm-btn--tonal" style={{ height: '36px', fontSize: '13px' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
+            <button type="button" onClick={handleOpenAddBanner} className="sdm-btn sdm-btn--tonal admin-btn-action">
+              <span className="material-symbols-outlined admin-btn-icon--small">add</span>
               <span>Add Promotional Banner</span>
             </button>
           </div>
@@ -581,12 +563,12 @@ export function BannersPage() {
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th style={{ width: '100px' }}>Image</th>
+                  <th className="admin-table-col-img">Image</th>
                   <th>Title & Text Below Banner</th>
                   <th>Link Destination</th>
-                  <th style={{ width: '80px' }}>Order</th>
-                  <th style={{ width: '150px' }}>Status (Tap to Toggle)</th>
-                  <th style={{ width: '100px' }}>Actions</th>
+                  <th className="admin-table-col-order">Order</th>
+                  <th className="admin-table-col-status">Status (Tap to Toggle)</th>
+                  <th className="admin-table-col-actions">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -594,24 +576,23 @@ export function BannersPage() {
                   <AdminTableSkeleton rows={4} cols={6} />
                 ) : banners.length === 0 ? (
                   <tr>
-                    <td colSpan={6} style={{ textAlign: 'center', padding: '36px 16px' }}>
-                      <div style={{ color: 'var(--md-sys-color-on-surface-variant)', fontSize: '14px' }}>
+                    <td colSpan={6} className="admin-products-table-empty">
+                      <div className="admin-form-help-text">
                         No banners configured. Currently <strong>no banner is shown on the home screen</strong>.
                       </div>
                       <button
                         type="button"
                         onClick={handleOpenAddBanner}
-                        className="sdm-btn sdm-btn--primary"
-                        style={{ marginTop: '12px' }}
+                        className="sdm-btn sdm-btn--primary admin-form-group--spaced"
                       >
-                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
+                        <span className="material-symbols-outlined admin-btn-icon--small">add</span>
                         <span>Add Your First Banner</span>
                       </button>
                     </td>
                   </tr>
                 ) : (
                   banners.map((banner) => (
-                    <tr key={banner.id} style={{ opacity: banner.is_active ? 1 : 0.6 }}>
+                    <tr key={banner.id} className={banner.is_active ? '' : 'admin-table-row--archived'}>
                       <td>
                         {banner.image_url ? (
                           <img
@@ -619,59 +600,27 @@ export function BannersPage() {
                             alt=""
                             loading="lazy"
                             decoding="async"
-                            style={{
-                              width: '90px',
-                              height: '48px',
-                              objectFit: 'cover',
-                              borderRadius: '8px',
-                              border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.1))',
-                            }}
+                            className="admin-banner-img"
                           />
                         ) : (
-                          <div
-                            style={{
-                              width: '90px',
-                              height: '48px',
-                              backgroundColor: 'var(--md-sys-color-surface-container-high)',
-                              borderRadius: '8px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--md-sys-color-outline)' }}>image</span>
+                          <div className="admin-banner-img-placeholder">
+                            <span className="material-symbols-outlined">image</span>
                           </div>
                         )}
                       </td>
                       <td>
-                        <div style={{ fontWeight: 600, fontSize: '14px' }}>{banner.title}</div>
-                        <div
-                          style={{
-                            fontSize: '12px',
-                            color: 'var(--md-sys-color-on-surface-variant)',
-                            marginTop: '2px',
-                          }}
-                        >
-                          <span style={{ fontWeight: 500, color: 'var(--md-sys-color-primary)' }}>Text below:</span>{' '}
+                        <div className="admin-banner-title">{banner.title}</div>
+                        <div className="admin-banner-text">
+                          <span>Text below:</span>{' '}
                           {banner.text || 'None (title only)'}
                         </div>
                         {(() => {
                           const linked = getLinkedCategoryInfo(banner);
                           if (!linked) return null;
                           return (
-                            <div style={{ marginTop: '5px' }}>
-                              <span style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                fontSize: '11px',
-                                fontWeight: 600,
-                                padding: '2px 8px',
-                                borderRadius: '999px',
-                                backgroundColor: banner.is_active ? 'rgba(30, 142, 62, 0.12)' : 'rgba(186, 26, 26, 0.12)',
-                                color: banner.is_active ? 'var(--md-sys-color-primary, #1e8e3e)' : 'var(--md-sys-color-error, #ba1a1a)',
-                              }}>
-                                <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>sync_alt</span>
+                            <div className="admin-banner-category-badge">
+                              <span className={`admin-badge ${banner.is_active ? 'admin-badge--delivered' : 'admin-badge--cancelled'}`}>
+                                <span className="material-symbols-outlined admin-btn-icon--small">sync_alt</span>
                                 Category: {linked.name} ({banner.is_active ? 'Visible in store' : 'Hidden in store'})
                               </span>
                             </div>
@@ -679,12 +628,12 @@ export function BannersPage() {
                         })()}
                       </td>
                       <td>
-                        <span style={{ fontSize: '12.5px', fontFamily: 'monospace' }}>
+                        <span className="admin-banner-link-text">
                           {banner.link_url || 'Default (/shop)'}
                         </span>
                       </td>
                       <td>
-                        <span style={{ fontWeight: 600 }}>{banner.display_order}</span>
+                        <span className="admin-banner-order">{banner.display_order}</span>
                       </td>
                       <td>
                         <button
@@ -697,19 +646,19 @@ export function BannersPage() {
                           }`}
                           title="Click to toggle banner visibility on home page"
                         >
-                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                          <span className="material-symbols-outlined admin-toggle-switch-btn__icon">
                             {banner.is_active ? 'check_circle' : 'do_not_disturb_on'}
                           </span>
                           <span>{banner.is_active ? 'Enabled' : 'Disabled'}</span>
                         </button>
                       </td>
                       <td>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <div className="admin-table-actions">
                           <md-icon-button onClick={() => handleOpenEditBanner(banner)} title="Edit banner">
                             <md-icon>edit</md-icon>
                           </md-icon-button>
                           <md-icon-button onClick={() => handleDeleteBanner(banner.id)} title="Delete banner">
-                            <md-icon style={{ color: 'var(--md-sys-color-error, #ba1a1a)' }}>delete</md-icon>
+                            <md-icon className="admin-icon-btn--error">delete</md-icon>
                           </md-icon-button>
                         </div>
                       </td>
@@ -740,11 +689,11 @@ export function BannersPage() {
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th style={{ width: '100px' }}>Media</th>
+                  <th className="admin-table-col-img">Media</th>
                   <th>Title & Department</th>
                   <th>Hinglish Caption & Description</th>
-                  <th style={{ width: '150px' }}>Status (Tap to Toggle)</th>
-                  <th style={{ width: '100px' }}>Actions</th>
+                  <th className="admin-table-col-status">Status (Tap to Toggle)</th>
+                  <th className="admin-table-col-actions">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -752,40 +701,28 @@ export function BannersPage() {
                   <AdminTableSkeleton rows={4} cols={5} />
                 ) : storeVisuals.length === 0 ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '36px 16px' }}>
-                      <div style={{ color: 'var(--md-sys-color-on-surface-variant)', fontSize: '14px' }}>
+                    <td colSpan={5} className="admin-products-table-empty">
+                      <div className="admin-form-help-text">
                         No store visuals found. Click below to restore the 6 permanent items.
                       </div>
                       <button
                         type="button"
                         onClick={handleResetVisuals}
-                        className="sdm-btn sdm-btn--primary"
-                        style={{ marginTop: '12px' }}
+                        className="sdm-btn sdm-btn--primary admin-form-group--spaced"
                       >
-                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>restart_alt</span>
+                        <span className="material-symbols-outlined admin-btn-icon--small">restart_alt</span>
                         <span>Restore 6 Permanent Store Visuals</span>
                       </button>
                     </td>
                   </tr>
                 ) : (
                   storeVisuals.map((item) => (
-                    <tr key={item.id} style={{ opacity: item.is_active !== false ? 1 : 0.6 }}>
+                    <tr key={item.id} className={item.is_active !== false ? "" : "admin-table-row--archived"}>
                       <td>
-                        <div style={{ position: 'relative', width: '90px', height: '52px' }}>
+                        <div className="admin-store-visual-container">
                           {item.type === 'video' ? (
-                            <div
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                backgroundColor: '#1e293b',
-                                borderRadius: '8px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: '#ffffff',
-                              }}
-                            >
-                              <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>videocam</span>
+                            <div className="admin-store-visual-video">
+                              <span className="material-symbols-outlined admin-store-visual-video-icon">videocam</span>
                             </div>
                           ) : item.url ? (
                             <img
@@ -793,79 +730,35 @@ export function BannersPage() {
                               alt=""
                               loading="lazy"
                               decoding="async"
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                borderRadius: '8px',
-                                border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.1))',
-                              }}
+                              className="admin-store-visual-img"
                             />
                           ) : (
-                            <div
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                backgroundColor: 'var(--md-sys-color-surface-container-high)',
-                                borderRadius: '8px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                              }}
-                            >
+                            <div className="admin-store-visual-placeholder">
                               <span className="material-symbols-outlined">image</span>
                             </div>
                           )}
                           {item.type === 'video' && (
-                            <span
-                              style={{
-                                position: 'absolute',
-                                bottom: '2px',
-                                right: '2px',
-                                background: 'rgba(0,0,0,0.7)',
-                                color: '#fff',
-                                fontSize: '9px',
-                                padding: '1px 4px',
-                                borderRadius: '3px',
-                                textTransform: 'uppercase',
-                              }}
-                            >
+                            <span className="admin-store-visual-video-badge">
                               Video
                             </span>
                           )}
                         </div>
                       </td>
                       <td>
-                        <div style={{ fontWeight: 600, fontSize: '14px' }}>{item.title}</div>
-                        <div style={{ display: 'flex', gap: '6px', marginTop: '4px', flexWrap: 'wrap' }}>
-                          <span
-                            style={{
-                              fontSize: '11px',
-                              padding: '1px 6px',
-                              borderRadius: '4px',
-                              background: 'var(--md-sys-color-surface-container-high)',
-                              color: 'var(--md-sys-color-on-surface-variant)',
-                            }}
-                          >
+                        <div className="admin-store-visual-title">{item.title}</div>
+                        <div className="admin-store-visual-tags">
+                          <span className="admin-store-visual-tag">
                             {item.department || 'Store Section'}
                           </span>
                           {item.badge && (
-                            <span
-                              style={{
-                                fontSize: '11px',
-                                padding: '1px 6px',
-                                borderRadius: '4px',
-                                background: 'rgba(30, 142, 62, 0.1)',
-                                color: '#1e8e3e',
-                              }}
-                            >
+                            <span className="admin-store-visual-tag admin-store-visual-tag--highlight">
                               {item.badge}
                             </span>
                           )}
                         </div>
                       </td>
                       <td>
-                        <div style={{ fontSize: '12.5px', color: 'var(--md-sys-color-on-surface)', lineHeight: 1.4 }}>
+                        <div className="admin-store-visual-notes">
                           {item.notes}
                         </div>
                       </td>
@@ -880,19 +773,19 @@ export function BannersPage() {
                           }`}
                           title="Click to toggle visibility on About Store page"
                         >
-                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                          <span className="material-symbols-outlined admin-toggle-switch-btn__icon">
                             {item.is_active !== false ? 'check_circle' : 'do_not_disturb_on'}
                           </span>
                           <span>{item.is_active !== false ? 'Enabled' : 'Disabled'}</span>
                         </button>
                       </td>
                       <td>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <div className="admin-table-actions">
                           <md-icon-button onClick={() => handleOpenEditVisual(item)} title="Edit store visual">
                             <md-icon>edit</md-icon>
                           </md-icon-button>
                           <md-icon-button onClick={() => handleDeleteVisual(item.id)} title="Delete visual">
-                            <md-icon style={{ color: 'var(--md-sys-color-error, #ba1a1a)' }}>delete</md-icon>
+                            <md-icon className="admin-icon-btn--error">delete</md-icon>
                           </md-icon-button>
                         </div>
                       </td>
@@ -942,7 +835,7 @@ export function BannersPage() {
                     setEditingBanner({ ...editingBanner, text: e.target.value })
                   }
                 />
-                <span style={{ fontSize: '11.5px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '4px', display: 'block' }}>
+                <span className="admin-form-field-hint">
                   This text will display right below the banner card on the home page.
                 </span>
               </div>
@@ -983,15 +876,15 @@ export function BannersPage() {
                 />
               </div>
 
-              <div className="admin-form-row" style={{ marginTop: '16px', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+              <div className="admin-form-group admin-form-group--spaced">
+                <label className="admin-product-checkbox-label">
                   <md-checkbox
                     checked={editingBanner.is_active}
                     onChange={(e: any) =>
                       setEditingBanner({ ...editingBanner, is_active: e.target.checked })
                     }
                   />
-                  <span style={{ fontSize: '14px', fontWeight: 500 }}>
+                  <span>
                     Enable Banner (Visible on Home Page)
                   </span>
                 </label>
@@ -999,19 +892,8 @@ export function BannersPage() {
                   const linked = getLinkedCategoryInfo(editingBanner);
                   if (!linked) return null;
                   return (
-                    <div style={{
-                      marginTop: '4px',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      backgroundColor: 'rgba(30, 142, 62, 0.08)',
-                      border: '1px solid rgba(30, 142, 62, 0.2)',
-                      fontSize: '12px',
-                      color: 'var(--md-sys-color-primary, #1e8e3e)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                    }}>
-                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>sync_alt</span>
+                    <div className="admin-modal-info-box">
+                      <span className="material-symbols-outlined admin-btn-icon--small">sync_alt</span>
                       <span>
                         <strong>Live Category Sync:</strong> This banner controls the <strong>{linked.name}</strong> category. When this banner is enabled, the category appears right after Specials; when disabled, the category is hidden.
                       </span>
@@ -1089,8 +971,8 @@ export function BannersPage() {
               </div>
 
               <div className="admin-form-row">
-                <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>
+                <div className="admin-form-col-flex-1">
+                  <label className="admin-form-label-small">
                     Media Type
                   </label>
                   <select
@@ -1098,22 +980,14 @@ export function BannersPage() {
                     onChange={(e) =>
                       setEditingVisual({ ...editingVisual, type: e.target.value as 'image' | 'video' })
                     }
-                    style={{
-                      width: '100%',
-                      padding: '10px 12px',
-                      borderRadius: '8px',
-                      border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.2))',
-                      background: 'var(--md-sys-color-surface)',
-                      color: 'var(--md-sys-color-on-surface)',
-                      fontSize: '14px',
-                    }}
+                    className="admin-modal-select"
                   >
                     <option value="image">Image (High-Res Photo)</option>
                     <option value="video">Video (Soundless Tour)</option>
                   </select>
                 </div>
 
-                <div style={{ flex: 2 }}>
+                <div className="admin-form-col-flex-2">
                   <ImageUploadField
                     label={editingVisual.type === 'video' ? 'Video File / URL' : 'Photo File / URL'}
                     required
@@ -1128,7 +1002,7 @@ export function BannersPage() {
               </div>
 
               <div className="admin-form-group">
-                <label style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>
+                <label className="admin-form-label-small">
                   Description / Caption (in Natural Friendly Hinglish) *
                 </label>
                 <textarea
@@ -1139,29 +1013,19 @@ export function BannersPage() {
                     setEditingVisual({ ...editingVisual, notes: e.target.value })
                   }
                   placeholder="e.g. California badam, kaju, kismis aur asli masale hamesha fresh stock me available..."
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.2))',
-                    background: 'var(--md-sys-color-surface)',
-                    color: 'var(--md-sys-color-on-surface)',
-                    fontSize: '13.5px',
-                    fontFamily: 'inherit',
-                    resize: 'vertical',
-                  }}
+                  className="admin-modal-textarea"
                 />
               </div>
 
-              <div className="admin-form-row" style={{ marginTop: '16px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+              <div className="admin-form-group admin-form-group--spaced">
+                <label className="admin-product-checkbox-label">
                   <md-checkbox
                     checked={editingVisual.is_active !== false}
                     onChange={(e: any) =>
                       setEditingVisual({ ...editingVisual, is_active: e.target.checked })
                     }
                   />
-                  <span style={{ fontSize: '14px', fontWeight: 500 }}>
+                  <span>
                     Enable Visual (Visible on About Store Page)
                   </span>
                 </label>

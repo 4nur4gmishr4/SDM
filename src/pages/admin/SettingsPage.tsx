@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { AdminFormSkeleton } from '../../components/common';
 import type { DeliverySettings } from '../../types/delivery';
+import './SettingsPage.css';
 
 const DEFAULT_SETTINGS: DeliverySettings = {
   id: 'default',
@@ -112,100 +113,68 @@ export function SettingsPage() {
       {isLoading ? (
         <AdminFormSkeleton />
       ) : (
-        <div className="admin-table-container" style={{ padding: '24px', maxWidth: '600px', flex: 'none' }}>
-          <form id="settings-form" onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="admin-table-container admin-settings-container">
+          <form id="settings-form" onSubmit={handleSave} className="admin-settings-form">
             <h2 className="typescale-title-large">Delivery Configuration</h2>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: 'var(--md-sys-typescale-label-large-size)' }}>Delivery Rules / Information Text</label>
+            <div className="admin-form-group">
+              <label className="admin-form-group__label">Delivery Rules / Information Text</label>
               <textarea
                 value={settings?.rules_text || ''}
                 onChange={(e) => setSettings(s => ({ ...s, rules_text: e.target.value }))}
                 placeholder="e.g. Free delivery within 5km for orders above ₹500."
                 rows={4}
-                style={{
-                  padding: '12px',
-                  borderRadius: '4px',
-                  border: '1px solid var(--md-sys-color-outline)',
-                  backgroundColor: 'var(--md-sys-color-surface)',
-                  fontFamily: 'inherit',
-                  fontSize: 'inherit',
-                  resize: 'vertical'
-                }}
+                className="admin-form-group__textarea"
                 required
               />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: 'var(--md-sys-typescale-label-large-size)' }}>Flat Delivery Fee (₹)</label>
+            <div className="admin-form-group">
+              <label className="admin-form-group__label">Flat Delivery Fee (₹)</label>
               <input
                 type="number"
                 value={settings?.flat_fee?.toString() || '0'}
                 onChange={(e) => setSettings(s => ({ ...s, flat_fee: parseFloat(e.target.value) || 0 }))}
-                style={{
-                  padding: '12px',
-                  borderRadius: '4px',
-                  border: '1px solid var(--md-sys-color-outline)',
-                  backgroundColor: 'var(--md-sys-color-surface)',
-                  fontFamily: 'inherit',
-                  fontSize: 'inherit',
-                  width: '200px'
-                }}
+                className="admin-form-group__input"
                 required
               />
-              <p style={{ fontSize: 'var(--md-sys-typescale-body-small-size)', color: 'var(--md-sys-color-on-surface-variant)' }}>
+              <p className="admin-form-group__hint">
                 Charged to customer when order is below free delivery threshold. Set to 0 for free delivery on all orders.
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: 'var(--md-sys-typescale-label-large-size)' }}>Free Delivery Threshold (₹)</label>
+            <div className="admin-form-group">
+              <label className="admin-form-group__label">Free Delivery Threshold (₹)</label>
               <input
                 type="number"
                 value={settings?.free_delivery_threshold?.toString() || '0'}
                 onChange={(e) => setSettings(s => ({ ...s, free_delivery_threshold: parseFloat(e.target.value) || 0 }))}
                 placeholder="500"
-                style={{
-                  padding: '12px',
-                  borderRadius: '4px',
-                  border: '1px solid var(--md-sys-color-outline)',
-                  backgroundColor: 'var(--md-sys-color-surface)',
-                  fontFamily: 'inherit',
-                  fontSize: 'inherit',
-                  width: '200px'
-                }}
+                className="admin-form-group__input"
               />
-              <p style={{ fontSize: 'var(--md-sys-typescale-body-small-size)', color: 'var(--md-sys-color-on-surface-variant)' }}>
+              <p className="admin-form-group__hint">
                 Orders above this subtotal get 100% FREE Delivery automatically (e.g. ₹500).
               </p>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '16px' }}>
+            <div className="admin-settings-actions">
               <button type="submit" className="sdm-btn sdm-btn--primary" disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Settings'}
               </button>
             </div>
           </form>
 
-          <hr style={{ margin: '32px 0', borderColor: 'var(--md-sys-color-outline-variant)', opacity: 0.5 }} />
+          <hr className="admin-settings-divider" />
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="admin-form-group">
             <h2 className="typescale-title-large">Database Connection</h2>
-            <div style={{
-              padding: '16px',
-              borderRadius: '8px',
-              backgroundColor: isSupabaseConfigured ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-error-container)',
-              color: isSupabaseConfigured ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-error-container)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px'
-            }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>
+            <div className={`admin-db-status ${isSupabaseConfigured ? 'admin-db-status--connected' : 'admin-db-status--disconnected'}`}>
+              <span className="material-symbols-outlined admin-db-status__icon">
                 {isSupabaseConfigured ? 'check_circle' : 'warning'}
               </span>
-              <div>
+              <div className="admin-db-status__content">
                 <strong>{isSupabaseConfigured ? 'Connected to Supabase' : 'Supabase Not Configured'}</strong>
-                <p style={{ margin: '4px 0 0 0', fontSize: '13px' }}>
+                <p className="admin-db-status__desc">
                   {isSupabaseConfigured 
                     ? 'Products, categories, and orders are live and stored in your private database.'
                     : 'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env to connect your database.'}
