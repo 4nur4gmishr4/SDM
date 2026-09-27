@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview",
-    "import:catalog": "node scripts/import_excel_catalog.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@material/web": "^2.5.0",

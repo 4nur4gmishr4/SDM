@@ -196,13 +196,9 @@ export function IOSBannerCarousel({
                     loading={idx === 0 ? 'eager' : 'lazy'}
                     decoding="async"
                     onError={(e) => {
-                      if (banner.id === 'default-store-logo-banner') {
-                        (e.target as HTMLImageElement).src = '/images/SaiDarshanLogoBanner.png';
-                      } else {
-                        const filename = banner.image_url.split('/').pop()?.split('?')[0];
-                        if (filename && !(e.target as HTMLImageElement).src.includes('/images/banners/' + filename)) {
-                          (e.target as HTMLImageElement).src = '/images/banners/' + filename;
-                        }
+                      const img = e.target as HTMLImageElement;
+                      if (!img.src.includes('SaiDarshanLogoBanner.png')) {
+                        img.src = 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/SaiDarshanLogoBanner.png';
                       }
                     }}
                   />

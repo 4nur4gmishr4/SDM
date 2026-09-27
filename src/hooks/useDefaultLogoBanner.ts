@@ -4,7 +4,7 @@ import type { DefaultLogoBannerConfig } from '../types/banner';
 
 export const INITIAL_DEFAULT_LOGO_BANNER: DefaultLogoBannerConfig = {
   image_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/SaiDarshanLogoBanner.png',
-  local_url: '/images/SaiDarshanLogoBanner.png',
+  local_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/SaiDarshanLogoBanner.png',
   title: 'Sai Darshan Shopping Mart',
   subtitle: 'Aapki Apni Supermarket • Sanjeevni Nagar Main Road, Jabalpur',
   link_url: '/shop',

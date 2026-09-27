@@ -7,9 +7,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependencies and build artifacts
+node_modules/
+dist/
+dist-ssr/
+build/
+out/
+.next/
+
+# Environment files
 *.local
 .env
 .env.*
@@ -25,6 +31,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Database and migration scripts
+supabase/
+*.sql
+scripts/
 
 # Confidential store data
 main_data/
