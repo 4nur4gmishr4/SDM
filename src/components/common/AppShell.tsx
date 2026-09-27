@@ -11,7 +11,7 @@ import './AppShell.css';
 
 export function AppShell() {
   const { itemCount } = useCart();
-  const { theme, resolvedTheme, toggleTheme } = useTheme();
+  const { resolvedTheme, toggleTheme } = useTheme();
   const { showSnackbar } = useSnackbar();
   const location = useLocation();
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
@@ -43,11 +43,9 @@ export function AppShell() {
   }, [showSnackbar]);
 
   const handleToggleTheme = () => {
+    const nextThemeName = resolvedTheme === 'dark' ? 'Light Theme' : 'Dark Theme';
     toggleTheme();
-    const nextTheme = theme === 'system' 
-      ? (resolvedTheme === 'dark' ? 'Light Theme' : 'Dark Theme')
-      : (theme === 'light' ? 'Dark Theme' : 'Auto (System Theme)');
-    showSnackbar(`Theme set to ${nextTheme}`);
+    showSnackbar(`Theme set to ${nextThemeName}`);
   };
 
   const navItems = [
@@ -129,11 +127,11 @@ export function AppShell() {
               type="button"
               className="app-shell__action-btn"
               onClick={handleToggleTheme}
-              aria-label={`Current theme: ${theme}. Click to switch theme`}
-              title={`Theme: ${theme === 'system' ? `Auto (System: ${resolvedTheme})` : theme}`}
+              aria-label={`Current theme: ${resolvedTheme}. Click to switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
+              title={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
             >
               <span className="material-symbols-outlined">
-                {theme === 'system' ? 'brightness_auto' : resolvedTheme === 'dark' ? 'dark_mode' : 'light_mode'}
+                {resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
               </span>
             </button>
 

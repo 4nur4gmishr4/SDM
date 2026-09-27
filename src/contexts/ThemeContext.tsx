@@ -13,68 +13,67 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem('sdm-theme') as Theme | null;
-    return saved === 'light' || saved === 'dark' || saved === 'system' ? saved : 'system';
-  });
-
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => {
-    if (theme === 'system') {
-      return typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
+    if (typeof window === 'undefined') return 'system';
+    try {
+      const saved = localStorage.getItem('sdm-theme') as Theme | null;
+      return saved === 'light' || saved === 'dark' ? saved : 'system';
+    } catch {
+      return 'system';
     }
-    return theme;
   });
 
+  const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return 'light';
+  });
+
+  // Track system theme changes in real-time
   useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const updateTheme = () => {
-      const isDark = theme === 'system' ? mediaQuery.matches : theme === 'dark';
-      const resolved = isDark ? 'dark' : 'light';
-      setResolvedTheme(resolved);
-
-      // Always set data-theme to the resolved value so all [data-theme="dark"] styles match identically in both auto and manual dark mode
-      document.documentElement.setAttribute('data-theme', resolved);
-      document.documentElement.setAttribute('data-theme-mode', theme);
-
-      // Dynamically set mobile browser status bar / theme color
-      let metaTheme = document.querySelector('meta[name="theme-color"]');
-      if (!metaTheme) {
-        metaTheme = document.createElement('meta');
-        metaTheme.setAttribute('name', 'theme-color');
-        document.head.appendChild(metaTheme);
-      }
-      metaTheme.setAttribute('content', resolved === 'dark' ? '#137333' : '#1E8E3E');
-    };
-
-    updateTheme();
-
-    const handler = () => {
-      if (theme === 'system') {
-        updateTheme();
-      }
+    const handler = (e: MediaQueryListEvent) => {
+      setSystemTheme(e.matches ? 'dark' : 'light');
     };
 
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
-  }, [theme]);
+  }, []);
+
+  const resolvedTheme: 'light' | 'dark' = theme === 'system' ? systemTheme : theme;
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', resolvedTheme);
+    document.documentElement.setAttribute('data-theme-mode', theme);
+
+    let metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (!metaTheme) {
+      metaTheme = document.createElement('meta');
+      metaTheme.setAttribute('name', 'theme-color');
+      document.head.appendChild(metaTheme);
+    }
+    metaTheme.setAttribute('content', resolvedTheme === 'dark' ? '#137333' : '#1E8E3E');
+  }, [theme, resolvedTheme]);
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t);
-    localStorage.setItem('sdm-theme', t);
+    try {
+      if (t === 'system') {
+        localStorage.removeItem('sdm-theme');
+      } else {
+        localStorage.setItem('sdm-theme', t);
+      }
+    } catch {
+      // Ignore
+    }
   }, []);
 
   const toggleTheme = useCallback(() => {
-    // Cycle: system -> light -> dark -> system
-    if (theme === 'system') {
-      setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
-    } else if (theme === 'light') {
-      setTheme('dark');
-    } else {
-      setTheme('system');
-    }
-  }, [theme, resolvedTheme, setTheme]);
+    const next = resolvedTheme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+  }, [resolvedTheme, setTheme]);
 
   const value = useMemo(() => ({
     theme,

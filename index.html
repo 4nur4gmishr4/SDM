@@ -224,7 +224,8 @@
       (function() {
         try {
           var saved = localStorage.getItem('sdm-theme');
-          var isDark = saved === 'dark' || (saved !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark = saved ? saved === 'dark' : systemDark;
           var resolved = isDark ? 'dark' : 'light';
           document.documentElement.setAttribute('data-theme', resolved);
           document.documentElement.setAttribute('data-theme-mode', saved || 'system');

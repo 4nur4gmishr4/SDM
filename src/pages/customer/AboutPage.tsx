@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
@@ -14,36 +14,15 @@ import {
   STORE_DAYS
 } from '../../lib/orderUtils';
 import { WatermarkBanner, BeatingHeart, WhatsAppIcon } from '../../components/common';
-import { useStoreMedia } from '../../hooks/useStoreMedia';
-import { StoreMediaLightbox } from '../../components/customer/StoreMediaLightbox';
-import { StoreVisualsMasterShowcase } from '../../components/customer/StoreVisualsMasterShowcase';
+import { SUPABASE_BANNERS_MEDIA_BASE } from '../../lib/supabase';
 import './AboutPage.css';
 
 export function AboutPage() {
   const { settings: deliverySettings } = useDeliverySettings();
-  const { activeItems: storeVisuals } = useStoreMedia();
 
   useEffect(() => {
     document.title = `About Store | ${STORE_NAME} Jabalpur`;
   }, []);
-
-  // Lightbox State
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
-
-  const openLightbox = (mediaIdOrIndex: string | number) => {
-    if (typeof mediaIdOrIndex === 'number') {
-      setActiveMediaIndex(mediaIdOrIndex);
-    } else {
-      const idx = storeVisuals.findIndex((item) => item.id === mediaIdOrIndex);
-      setActiveMediaIndex(idx >= 0 ? idx : 0);
-    }
-    setLightboxOpen(true);
-  };
-
-  const closeLightbox = () => {
-    setLightboxOpen(false);
-  };
 
   return (
     <div className="layout-container about-page">
@@ -51,39 +30,78 @@ export function AboutPage() {
         <title>{`About Store | ${STORE_NAME} Jabalpur`}</title>
         <meta
           name="description"
-          content={`Visit ${STORE_NAME} at ${STORE_ADDRESS}. View high-resolution supermarket aisles, daily groceries, dry fruits, personal care, and direct WhatsApp delivery.`}
+          content={`Visit ${STORE_NAME} at ${STORE_ADDRESS}. Fresh groceries, daily essentials, spices, dry fruits, and fast doorstep delivery in Jabalpur. There is only one Boss: The Customer.`}
         />
       </Helmet>
 
-      {/* Hero Header */}
-      <header className="about-hero">
-        <h1 className="about-hero__title">{STORE_NAME}</h1>
-
-        <p className="about-hero__motto">
-          &ldquo;There is only one Boss: The Customer&rdquo;
-        </p>
-
-        <p className="about-hero__lead">
-          Jabalpur ke har parivar ke liye saaf-suthri dukan, fresh grocery, pure masale, dry fruits aur seedhe aapke ghar tak fast doorstep delivery.
-        </p>
-      </header>
-
-      {/* Curated Store Departments & Aisles - Master Banner Showcase */}
-      <section className="about-section">
-        <div className="about-section-header">
-          <div className="about-section-header__text">
-            <span className="about-section-sub">Hamara Supermarket</span>
-            <h2 className="about-section-title">Store Ke Sections Aur Aisle Views</h2>
-          </div>
+      {/* Permanent Flagship Store Banner (Side by Side Logo & Official Store Presentation) */}
+      <section className="about-permanent-banner" aria-label="Sai Darshan Shopping Mart Store Overview">
+        {/* Left: Unobstructed Pure Logo Media Viewport (Permanent, NO tap-to-view) */}
+        <div className="about-permanent-banner__media-viewport">
+          <img
+            src={`${SUPABASE_BANNERS_MEDIA_BASE}Logo.png`}
+            alt="Sai Darshan Shopping Mart Logo"
+            className="about-permanent-banner__image"
+            loading="eager"
+            decoding="async"
+            onError={(e) => {
+              const img = e.target as HTMLImageElement;
+              if (!img.src.includes('SaiDarshanLogoBanner.png')) {
+                img.src = `${SUPABASE_BANNERS_MEDIA_BASE}SaiDarshanLogoBanner.png`;
+              }
+            }}
+          />
         </div>
 
-        {/* Master Showcase Banner Carousel */}
-        {storeVisuals.length > 0 && (
-          <StoreVisualsMasterShowcase
-            items={storeVisuals}
-            onOpenLightbox={openLightbox}
-          />
-        )}
+        {/* Right: Store Identity & Narrative (Side by Side) */}
+        <div className="about-permanent-banner__content">
+          <div className="about-permanent-banner__badge">
+            <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>storefront</span>
+            <span>AAPKI APNI SUPERMARKET • JABALPUR</span>
+          </div>
+
+          <h1 className="about-permanent-banner__title">Sai Darshan Shopping Mart</h1>
+
+          <p className="about-permanent-banner__motto">
+            <span>“There is only one Boss: The Customer”</span>
+            <BeatingHeart size={16} />
+          </p>
+
+          <p className="about-permanent-banner__lead">
+            Jabalpur ke har parivar ke liye saaf-suthri dukan, fresh grocery, pure masale, dry fruits aur seedhe aapke ghar tak fast doorstep delivery.
+          </p>
+
+          <div className="about-permanent-banner__highlights">
+            <span className="about-permanent-banner__chip">
+              <span className="material-symbols-outlined">schedule</span>
+              <span>Open All Days (8:00 AM – 10:30 PM)</span>
+            </span>
+            <span className="about-permanent-banner__chip">
+              <span className="material-symbols-outlined">local_shipping</span>
+              <span>Fast Doorstep Delivery</span>
+            </span>
+            <span className="about-permanent-banner__chip">
+              <span className="material-symbols-outlined">verified</span>
+              <span>100% Pure & Fresh</span>
+            </span>
+          </div>
+
+          <div className="about-permanent-banner__actions">
+            <Link to="/shop" className="about-permanent-banner__btn about-permanent-banner__btn--primary">
+              <span>Shop All Groceries</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
+            </Link>
+            <a
+              href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent('Namaste Sai Darshan Shopping Mart! Mujhe grocery order karni hai.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="about-permanent-banner__btn about-permanent-banner__btn--whatsapp"
+            >
+              <WhatsAppIcon size={18} />
+              <span>Order on WhatsApp</span>
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* Store Location, Hours, Contact & Delivery Rules - Combined Master Widget */}
@@ -241,16 +259,6 @@ export function AboutPage() {
         headline={<>Made with <BeatingHeart /> in Jabalpur</>}
         subline="Born in Jabalpur, built for our community with trust & love"
       />
-
-      {/* Full Resolution Tap-to-View Lightbox */}
-      {storeVisuals.length > 0 && (
-        <StoreMediaLightbox
-          items={storeVisuals}
-          initialIndex={activeMediaIndex}
-          isOpen={lightboxOpen}
-          onClose={closeLightbox}
-        />
-      )}
     </div>
   );
 }
