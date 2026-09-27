@@ -105,6 +105,27 @@ async function syncTrafficToServer(pathname: string, isNewToday: boolean, device
   if (!isSupabaseConfigured) return;
 
   try {
+    const normPath = pathname.split('?')[0] || '/';
+
+    // 1. Primary: Try calling secure Postgres RPC (works under strict RLS without table write privileges)
+    try {
+      const { error: rpcErr } = await withTimeout(
+        supabase.rpc('record_page_view', {
+          p_path: normPath,
+          p_is_new: isNewToday,
+          p_device: device
+        }),
+        3000
+      );
+      if (!rpcErr) {
+        localStorage.removeItem(STORAGE_KEY_LOCAL_BUFFER);
+        return;
+      }
+    } catch {
+      // RPC not yet deployed in database, proceed with fallback
+    }
+
+    // 2. Fallback: Direct row update
     const { data, error } = await withTimeout(
       supabase
         .from('store_settings')
@@ -146,7 +167,6 @@ async function syncTrafficToServer(pathname: string, isNewToday: boolean, device
 
     // Page breakdown
     if (!traffic.page_breakdown) traffic.page_breakdown = {};
-    const normPath = pathname.split('?')[0] || '/';
     traffic.page_breakdown[normPath] = (traffic.page_breakdown[normPath] || 0) + 1;
 
     // Devices

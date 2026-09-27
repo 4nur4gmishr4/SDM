@@ -178,7 +178,7 @@ export function LocationPickerModal() {
     return () => {
       clearTimeout(timer);
     };
-  }, [isModalOpen, location.lat, location.lng, fetchAddressForCoords]);
+  }, [isModalOpen, location.lat, location.lng, fetchAddressForCoords, mapViewMode]);
 
   // Keep map container dimensions in sync with throttled ResizeObserver
   useEffect(() => {

@@ -13,20 +13,20 @@ export function StoreVisualsMasterShowcase({
   onOpenLightbox,
   autoSlideInterval = 5000,
 }: StoreVisualsMasterShowcaseProps) {
-  if (!items || items.length === 0) return null;
+  const total = items?.length || 0;
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const touchStartXRef = useRef<number | null>(null);
 
-  const total = items.length;
-
   const nextSlide = useCallback(() => {
+    if (total <= 0) return;
     setActiveIndex((prev) => (prev + 1) % total);
   }, [total]);
 
   const prevSlide = useCallback(() => {
+    if (total <= 0) return;
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
@@ -46,6 +46,8 @@ export function StoreVisualsMasterShowcase({
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isPaused, nextSlide, autoSlideInterval, total]);
+
+  if (!items || items.length === 0) return null;
 
   // Touch gesture handling
   const handleTouchStart = (e: React.TouchEvent) => {

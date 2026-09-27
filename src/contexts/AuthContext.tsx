@@ -34,14 +34,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Check local storage for persistent demo admin session
-    const storedDemo = localStorage.getItem('sdm_admin_session');
-    if (storedDemo) {
-      try {
-        setSession(JSON.parse(storedDemo));
-        setIsLoading(false);
-      } catch {
-        localStorage.removeItem('sdm_admin_session');
+    // 1. Check local storage for persistent demo admin session (strictly in dev only)
+    if (import.meta.env.PROD) {
+      localStorage.removeItem('sdm_admin_session');
+    } else {
+      const storedDemo = localStorage.getItem('sdm_admin_session');
+      if (storedDemo) {
+        try {
+          setSession(JSON.parse(storedDemo));
+          setIsLoading(false);
+        } catch {
+          localStorage.removeItem('sdm_admin_session');
+        }
       }
     }
 
@@ -69,28 +73,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPass = password.trim();
 
-    // Default built-in admin credentials for instant preview and access
-    if (
-      (cleanEmail === 'saidarshanmart@gmail.com' || cleanEmail === 'admin@saidarshanmart.com' || cleanEmail === 'admin') &&
-      (cleanPass === 'admin123' || cleanPass === 'admin')
-    ) {
-      setSession(DEMO_ADMIN_SESSION);
-      localStorage.setItem('sdm_admin_session', JSON.stringify(DEMO_ADMIN_SESSION));
-      return { error: null };
-    }
-
-    // Attempt live Supabase authentication
+    // Live Supabase authentication (Primary & Authoritative)
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email: cleanEmail, password: cleanPass });
-      if (error) {
-        return { error: error.message };
-      }
       if (data?.session) {
         setSession(data.session);
         localStorage.removeItem('sdm_admin_session');
+        return { error: null };
       }
-      return { error: null };
+      if (error) {
+        // Only allow fallback in local development if explicitly enabled
+        if (
+          import.meta.env.DEV &&
+          (cleanEmail === 'saidarshanmart@gmail.com' || cleanEmail === 'admin@saidarshanmart.com' || cleanEmail === 'admin') &&
+          (cleanPass === 'admin123' || cleanPass === 'admin')
+        ) {
+          console.warn('[SECURITY WARNING] Using local development fallback session. This is strictly disabled in production builds.');
+          setSession(DEMO_ADMIN_SESSION);
+          localStorage.setItem('sdm_admin_session', JSON.stringify(DEMO_ADMIN_SESSION));
+          return { error: null };
+        }
+        return { error: error.message };
+      }
+      return { error: 'Authentication failed.' };
     } catch (err: any) {
+      // In local dev, allow fallback if network is offline or Supabase unconfigured
+      if (
+        import.meta.env.DEV &&
+        (cleanEmail === 'saidarshanmart@gmail.com' || cleanEmail === 'admin@saidarshanmart.com' || cleanEmail === 'admin') &&
+        (cleanPass === 'admin123' || cleanPass === 'admin')
+      ) {
+        console.warn('[SECURITY WARNING] Using offline development fallback session.');
+        setSession(DEMO_ADMIN_SESSION);
+        localStorage.setItem('sdm_admin_session', JSON.stringify(DEMO_ADMIN_SESSION));
+        return { error: null };
+      }
       return { error: err.message || 'Invalid email or password' };
     }
   };

@@ -53,6 +53,13 @@ export async function savePipelineConfig(config: Partial<PipelineAutomationConfi
   if (!isSupabaseConfigured) return false;
 
   try {
+    if (config.webhook_url && config.webhook_url.trim()) {
+      const trimmed = config.webhook_url.trim();
+      if (!trimmed.startsWith('https://')) {
+        throw new Error('Webhook URL must use secure HTTPS protocol (https://)');
+      }
+    }
+
     const current = await getPipelineConfig();
     const updated: PipelineAutomationConfig = {
       ...current,
@@ -94,7 +101,8 @@ export async function dispatchOrderWebhook(order: {
 }): Promise<boolean> {
   try {
     const config = await getPipelineConfig();
-    if (!config.webhook_enabled || !config.webhook_url.trim()) {
+    const targetUrl = config.webhook_url?.trim();
+    if (!config.webhook_enabled || !targetUrl || !targetUrl.startsWith('https://')) {
       return false;
     }
 
