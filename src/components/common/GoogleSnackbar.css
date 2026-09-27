@@ -18,6 +18,7 @@
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   pointer-events: auto;
+  -webkit-user-select: none;
   user-select: none;
 }
 
