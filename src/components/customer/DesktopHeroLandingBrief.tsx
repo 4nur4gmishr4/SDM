@@ -11,10 +11,6 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
 
-  // Exact color update matching our supermarket brand
-  const strokeColor = isDark ? '#81C995' : '#1E8E3E';
-  const fillColor = isDark ? '#F8FAFC' : '#1E8E3E';
-
   return (
     <aside className={`desktop-hero-stroke-card ${className}`} aria-label="Sai Darshan Mart">
       <div className="desktop-hero-stroke__top-tag">
@@ -23,56 +19,27 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
       </div>
 
       <div className="desktop-hero-stroke__lines-container">
-        {/* Line 1: SAI */}
-        <div className="desktop-hero-stroke__line">
-          <StrokeText
-            text="SAI"
-            strokeColor={strokeColor}
-            fillColor={fillColor}
-            fontSize={56}
-            fontWeight={900}
-            letterSpacing={-1}
-            strokeWidth={1.4}
-            drawDuration={1.4}
-            fillDelay={0.15}
-            trigger="mount"
-            fillMode="wipe"
-          />
-        </div>
-
-        {/* Line 2: DARSHAN */}
-        <div className="desktop-hero-stroke__line">
-          <StrokeText
-            text="DARSHAN"
-            strokeColor={strokeColor}
-            fillColor={fillColor}
-            fontSize={56}
-            fontWeight={900}
-            letterSpacing={-1}
-            strokeWidth={1.4}
-            drawDuration={1.6}
-            fillDelay={0.25}
-            trigger="mount"
-            fillMode="wipe"
-          />
-        </div>
-
-        {/* Line 3: MART */}
-        <div className="desktop-hero-stroke__line">
-          <StrokeText
-            text="MART"
-            strokeColor={strokeColor}
-            fillColor={fillColor}
-            fontSize={56}
-            fontWeight={900}
-            letterSpacing={-1}
-            strokeWidth={1.4}
-            drawDuration={1.4}
-            fillDelay={0.35}
-            trigger="mount"
-            fillMode="wipe"
-          />
-        </div>
+        <StrokeText
+          lines={["SAI", "DARSHAN", "MART"]}
+          lineHeight={1.15}
+          mobileFontSize={100}
+          highlightWord="MART"
+          highlightColor={isDark ? '#81C995' : '#1E8E3E'}
+          highlightStrokeColor={isDark ? '#81C995' : '#1E8E3E'}
+          strokeWidth={1.8}
+          drawDuration={1.3}
+          fillDelay={0.12}
+          stagger={0.035}
+          ease="power2.out"
+          trigger="mount"
+          fillMode="wipe"
+          fontSize={100}
+          fontWeight={800}
+          fontFamily="var(--font-syne), 'Syne', sans-serif"
+          letterSpacing={0}
+          align="left"
+          className="w-full"
+        />
       </div>
 
       <div className="desktop-hero-stroke__bottom-row">

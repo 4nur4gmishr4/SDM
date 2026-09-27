@@ -1,72 +1,172 @@
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import {
+  type CSSProperties,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import './StrokeText.css';
+import { useTheme } from '../../contexts';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const DEFAULT_TEXT = 'Draw Attention';
+export type StrokeTextTrigger = 'mount' | 'hover' | 'scroll' | 'loop';
+export type StrokeTextFillMode = 'wipe' | 'fade' | 'none';
 
-interface StrokeTextProps {
-  text?: string;
+export interface StrokeTextProps {
+  text?: string | string[];
+  lines?: string[];
+  lineHeight?: number;
+  delay?: number;
+  mobileScaleX?: number;
   strokeColor?: string;
   fillColor?: string;
+  highlightWord?: string;
+  highlightColor?: string;
+  highlightStrokeColor?: string;
   strokeWidth?: number;
   drawDuration?: number;
   fillDelay?: number;
   stagger?: number;
   ease?: string;
-  trigger?: 'mount' | 'hover' | 'scroll' | 'loop';
-  fillMode?: 'wipe' | 'fade' | 'none';
+  trigger?: StrokeTextTrigger;
+  fillMode?: StrokeTextFillMode;
   fontSize?: number;
+  mobileFontSize?: number;
   fontWeight?: number | string;
+  fontFamily?: string;
   letterSpacing?: number;
   reverse?: boolean;
+  align?: 'left' | 'center';
   className?: string;
   style?: CSSProperties;
 }
 
+interface StrokeTextBox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+const DEFAULT_TEXT = 'SAI DARSHAN MART';
+
 export const StrokeText = ({
   text = DEFAULT_TEXT,
-  strokeColor = '#1E8E3E',
-  fillColor = '#F8FAFC',
-  strokeWidth = 1.4,
-  drawDuration = 1.6,
-  fillDelay = 0.2,
-  stagger = 0.05,
+  lines,
+  lineHeight = 1.26,
+  delay = 0,
+  mobileScaleX = 1,
+  strokeColor,
+  fillColor,
+  highlightWord = 'MART',
+  highlightColor,
+  highlightStrokeColor,
+  strokeWidth = 1.8,
+  drawDuration = 1.3,
+  fillDelay = 0.12,
+  stagger = 0.035,
   ease = 'power2.out',
   trigger = 'mount',
   fillMode = 'wipe',
-  fontSize = 128,
+  fontSize = 100,
+  mobileFontSize,
   fontWeight = 800,
-  letterSpacing = -4,
+  fontFamily = "var(--font-syne), 'Syne', sans-serif",
+  letterSpacing = 0,
   reverse = false,
+  align = 'left',
   className = '',
   style = {},
 }: StrokeTextProps) => {
-  const rootRef = useRef<HTMLSpanElement>(null);
-  const strokeTextRef = useRef<SVGTextElement>(null);
-  const wipeRectRef = useRef<SVGRectElement>(null);
-  const [box, setBox] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
+  const rootRef = useRef<HTMLSpanElement | null>(null);
+  const strokeTextRef = useRef<SVGTextElement | null>(null);
+  const wipeRectRef = useRef<SVGRectElement | null>(null);
+  const hasMountedAnimRef = useRef(false);
+
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 640;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mql = window.matchMedia('(max-width: 639px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
+  const effectiveFontSize = isMobile && mobileFontSize ? mobileFontSize : fontSize;
+  const scaleXVal = isMobile && mobileScaleX ? mobileScaleX : 1;
+
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark' || (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark');
+
+  // Theme-aware colors matching supermarket brand:
+  // Dark mode: Primary in crisp #FFFFFF, Highlight in vibrant brand green #81C995
+  // Light mode: Primary in rich #1A1C19, Highlight in fresh brand green #1E8E3E
+  const activeFillColor =
+    fillColor ?? (isDark ? '#FFFFFF' : '#1A1C19');
+  const activeStrokeColor =
+    strokeColor ?? (isDark ? '#FFFFFF' : '#1A1C19');
+  const activeHighlightColor =
+    highlightColor ?? (isDark ? '#81C995' : '#1E8E3E');
+  const activeHighlightStrokeColor =
+    highlightStrokeColor ?? activeHighlightColor;
+
+  // Parse lines: supports lines prop, array of strings, or newline-delimited text
+  const parsedLines = useMemo<string[]>(() => {
+    if (lines && lines.length > 0) return lines;
+    if (Array.isArray(text)) return text;
+    if (typeof text === 'string') return text.split('\n');
+    return [DEFAULT_TEXT];
+  }, [text, lines]);
+
+  // Stable pre-computed initial bounding box prevents layout thrashing & CLS
+  const [box, setBox] = useState<StrokeTextBox>(() => {
+    const maxChars = Math.max(...(lines || [DEFAULT_TEXT]).map((l) => l.length), 9);
+    const estW = maxChars * (fontSize || 100) * 0.74;
+    const estH = ((lines || [DEFAULT_TEXT]).length || 2) * (fontSize || 100) * (lineHeight || 1.26) + 30;
+    return {
+      x: 0,
+      y: -(fontSize || 100) * 0.85,
+      width: estW,
+      height: estH,
+    };
+  });
 
   const rawId = useId();
   const wipeId = `stroke-text-wipe-${rawId.replace(/[^a-zA-Z0-9_-]/g, '')}`;
 
-  const characters = useMemo(() => Array.from(String(text ?? '')), [text]);
-  const dash = Math.max(fontSize * 7, 200);
+  // Determine if a character in a given line belongs to the highlight word
+  const isCharHighlight = (lineText: string, charIndex: number) => {
+    if (!highlightWord) return false;
+    const idx = lineText.indexOf(highlightWord);
+    if (idx === -1) return false;
+    return charIndex >= idx && charIndex < idx + highlightWord.length;
+  };
 
-  const fontStyle = useMemo(
+  const dash = Math.max(effectiveFontSize * 7, 200);
+
+  const fontStyle = useMemo<CSSProperties>(
     () => ({
-      fontSize: `${fontSize}px`,
+      fontSize: `${effectiveFontSize}px`,
       fontWeight,
+      fontFamily,
       letterSpacing: `${letterSpacing}px`,
     }),
-    [fontSize, fontWeight, letterSpacing]
+    [effectiveFontSize, fontWeight, fontFamily, letterSpacing]
   );
 
-  useLayoutEffect(() => {
+  // Asynchronous measurement with requestAnimationFrame so layout is never blocked
+  useEffect(() => {
     const node = strokeTextRef.current;
     if (!node) return undefined;
 
@@ -74,7 +174,7 @@ export const StrokeText = ({
 
     const measure = () => {
       if (cancelled || !strokeTextRef.current) return;
-      let bbox: DOMRect | SVGRect | undefined;
+      let bbox: DOMRect | undefined;
       try {
         bbox = strokeTextRef.current.getBBox();
       } catch {
@@ -82,50 +182,58 @@ export const StrokeText = ({
       }
       if (!bbox || !bbox.width) return;
 
-      const pad = Math.max(Number(strokeWidth) || 1, fontSize * 0.1);
+      const pad = Math.max(Number(strokeWidth) || 1, effectiveFontSize * 0.08);
       const next = {
         x: bbox.x - pad,
         y: bbox.y - pad,
-        width: bbox.width + pad * 2,
+        width: (bbox.width * scaleXVal) + pad * 2,
         height: bbox.height + pad * 2,
       };
 
       setBox((prev) =>
         prev &&
-        Math.abs(prev.x - next.x) < 0.5 &&
-        Math.abs(prev.width - next.width) < 0.5 &&
-        Math.abs(prev.y - next.y) < 0.5
+        Math.abs(prev.x - next.x) < 1 &&
+        Math.abs(prev.width - next.width) < 1 &&
+        Math.abs(prev.y - next.y) < 1
           ? prev
           : next
       );
+
+      if (hasMountedAnimRef.current && wipeRectRef.current) {
+        gsap.set(wipeRectRef.current, { attr: { width: next.width } });
+      }
     };
 
-    measure();
-
-    if (typeof document !== 'undefined' && (document as any).fonts?.ready) {
-      (document as any).fonts.ready.then(measure).catch(() => {});
-    }
+    const rafId = requestAnimationFrame(() => {
+      measure();
+      if (typeof document !== 'undefined' && document.fonts?.ready) {
+        document.fonts.ready.then(measure).catch(() => {});
+      }
+    });
 
     return () => {
       cancelled = true;
+      cancelAnimationFrame(rafId);
     };
-  }, [characters, fontSize, fontWeight, letterSpacing, strokeWidth]);
+  }, [parsedLines, effectiveFontSize, fontWeight, fontFamily, letterSpacing, strokeWidth, lineHeight, scaleXVal]);
 
   useEffect(() => {
     const root = rootRef.current;
     if (typeof window === 'undefined' || !root || !box) return undefined;
 
-    const strokes = gsap.utils.toArray(root.querySelectorAll('[data-stroke-char]'));
+    const strokes = gsap.utils.toArray(
+      root.querySelectorAll('[data-stroke-char]')
+    );
     const fills = gsap.utils.toArray(root.querySelectorAll('[data-fill-char]'));
     const wipe = wipeRectRef.current;
-
     if (!strokes.length) return undefined;
 
     const fillEnabled = fillMode !== 'none';
     const useWipe = fillEnabled && fillMode === 'wipe';
     const fillDuration = Math.max(0.4, drawDuration * 0.5);
-    const staggerConfig = reverse ? { each: stagger, from: 'end' } : stagger;
-
+    const staggerConfig: number | gsap.StaggerVars = reverse
+      ? { each: stagger, from: 'end' as const }
+      : stagger;
     const targets = [...strokes, ...fills, wipe].filter(Boolean);
 
     const setStart = () => {
@@ -139,23 +247,36 @@ export const StrokeText = ({
       gsap.killTweensOf(targets);
       gsap.set(strokes, { strokeDasharray: dash, strokeDashoffset: 0 });
       gsap.set(fills, { opacity: fillEnabled ? 1 : 0 });
-      if (wipe) gsap.set(wipe, { attr: { width: fillEnabled ? box.width : 0 } });
+      if (wipe)
+        gsap.set(wipe, { attr: { width: fillEnabled ? box.width : 0 } });
     };
 
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    // If already animated on initial mount, keep the text rendered and do NOT restart
+    if (hasMountedAnimRef.current && trigger !== 'hover' && trigger !== 'loop') {
+      setEnd();
+      return undefined;
+    }
+
+    const prefersReducedMotion = window.matchMedia?.(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
     if (prefersReducedMotion) {
       setEnd();
+      hasMountedAnimRef.current = true;
       return () => gsap.killTweensOf(targets);
     }
 
     const build = () => {
       setStart();
-
       const tl = gsap.timeline({
         paused: true,
+        delay: delay ?? 0,
         repeat: trigger === 'loop' ? -1 : 0,
         repeatDelay: trigger === 'loop' ? 0.9 : 0,
         defaults: { overwrite: 'auto' },
+        onComplete: () => {
+          hasMountedAnimRef.current = true;
+        },
       });
 
       tl.to(
@@ -164,7 +285,7 @@ export const StrokeText = ({
           strokeDashoffset: 0,
           duration: drawDuration,
           ease,
-          stagger: staggerConfig as any,
+          stagger: staggerConfig,
         },
         0
       );
@@ -186,7 +307,7 @@ export const StrokeText = ({
             opacity: 1,
             duration: fillDuration,
             ease: 'power2.out',
-            stagger: staggerConfig as any,
+            stagger: staggerConfig,
           },
           drawDuration + fillDelay
         );
@@ -196,7 +317,7 @@ export const StrokeText = ({
     };
 
     let timeline: gsap.core.Timeline | null = null;
-    let scrollTrigger: ScrollTrigger | null = null;
+    let scrollTrigger: ReturnType<typeof ScrollTrigger.create> | null = null;
     let removeHover: (() => void) | null = null;
 
     if (trigger === 'hover') {
@@ -228,66 +349,120 @@ export const StrokeText = ({
       timeline?.kill();
       gsap.killTweensOf(targets);
     };
-  }, [box, dash, drawDuration, fillDelay, stagger, ease, trigger, fillMode, reverse]);
+  }, [
+    box,
+    dash,
+    drawDuration,
+    fillDelay,
+    delay,
+    stagger,
+    ease,
+    trigger,
+    fillMode,
+    reverse,
+  ]);
 
-  const viewBox = box ? `${box.x} ${box.y} ${box.width} ${box.height}` : `0 ${-fontSize} 600 ${fontSize * 1.3}`;
+  const viewBox = box
+    ? `${box.x} ${box.y} ${box.width} ${box.height}`
+    : `0 ${-fontSize} 800 ${fontSize * 2.2}`;
+
+  const aspect = align === 'left' ? 'xMinYMin meet' : 'xMidYMin meet';
 
   return (
     <span
       ref={rootRef}
-      className={`stroke-text ${trigger === 'hover' ? 'stroke-text--hover' : ''} ${className}`.trim()}
-      style={{
-        ...style,
-        '--stroke-text-height': `${Math.round(fontSize * 1.3)}px`,
-      } as any}
+      className={`block w-full leading-[0] select-none ${
+        trigger === 'hover' ? 'cursor-pointer' : ''
+      } ${className}`.trim()}
+      style={style}
       role="img"
-      aria-label={String(text ?? '')}
+      aria-label={parsedLines.join(' ')}
     >
       <svg
-        className="stroke-text__svg"
+        className="block w-full h-auto overflow-visible"
         viewBox={viewBox}
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio={aspect}
         aria-hidden="true"
       >
         {fillMode === 'wipe' && box && (
           <defs>
             <clipPath id={wipeId} clipPathUnits="userSpaceOnUse">
-              <rect ref={wipeRectRef} x={box.x} y={box.y} width="0" height={box.height} />
+              <rect
+                ref={wipeRectRef}
+                x={box.x}
+                y={box.y}
+                width="0"
+                height={box.height}
+              />
             </clipPath>
           </defs>
         )}
 
+        {/* 1. Animated Stroke Outlines */}
         <text
           ref={strokeTextRef}
-          className="stroke-text__stroke"
+          className="select-none"
           x="0"
           y="0"
+          transform={scaleXVal !== 1 ? `scale(${scaleXVal}, 1)` : undefined}
           fill="none"
-          stroke={strokeColor}
           strokeWidth={strokeWidth}
           strokeLinejoin="round"
           strokeLinecap="round"
           style={fontStyle}
         >
-          {characters.map((char, index) => (
-            <tspan data-stroke-char key={`s-${index}`}>
-              {char}
+          {parsedLines.map((lineText, lineIdx) => (
+            <tspan
+              key={`line-s-${lineIdx}`}
+              x="0"
+              dy={lineIdx === 0 ? '0' : `${lineHeight}em`}
+            >
+              {Array.from(lineText).map((char, charIdx) => {
+                const isHighlight = isCharHighlight(lineText, charIdx);
+                return (
+                  <tspan
+                    data-stroke-char
+                    key={`s-${lineIdx}-${charIdx}`}
+                    stroke={
+                      isHighlight ? activeHighlightStrokeColor : activeStrokeColor
+                    }
+                  >
+                    {char}
+                  </tspan>
+                );
+              })}
             </tspan>
           ))}
         </text>
 
+        {/* 2. Revealed Fills */}
         <text
-          className="stroke-text__fill"
+          className="select-none"
           x="0"
           y="0"
-          fill={fillColor}
+          transform={scaleXVal !== 1 ? `scale(${scaleXVal}, 1)` : undefined}
           stroke="none"
           style={fontStyle}
           clipPath={fillMode === 'wipe' && box ? `url(#${wipeId})` : undefined}
         >
-          {characters.map((char, index) => (
-            <tspan data-fill-char key={`f-${index}`}>
-              {char}
+          {parsedLines.map((lineText, lineIdx) => (
+            <tspan
+              key={`line-f-${lineIdx}`}
+              x="0"
+              dy={lineIdx === 0 ? '0' : `${lineHeight}em`}
+            >
+              {Array.from(lineText).map((char, charIdx) => {
+                const isHighlight = isCharHighlight(lineText, charIdx);
+                return (
+                  <tspan
+                    data-fill-char
+                    key={`f-${lineIdx}-${charIdx}`}
+                    fill={isHighlight ? activeHighlightColor : activeFillColor}
+                  >
+                    {char}
+                  </tspan>
+                );
+              })}
             </tspan>
           ))}
         </text>
@@ -295,3 +470,5 @@ export const StrokeText = ({
     </span>
   );
 };
+
+export default StrokeText;
