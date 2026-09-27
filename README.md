@@ -260,6 +260,21 @@ The admin interface (`/admin`) is protected by Supabase authentication and clien
 - Update flat delivery fee (₹) and free delivery qualifying order threshold.
 - Modify delivery policy terms and store operating hours.
 
+### 10. Pipelines & Automation Control Center (`/admin/pipelines`)
+- **CI/CD Deployment Pipeline (GitHub Actions)**:
+  - Automated workflow (`.github/workflows/ci.yml`) triggering on pushes to `master`.
+  - Strict TypeScript checking (`tsc -b`), production bundle rollup (`vite build`), and Playwright responsive smoke tests.
+  - Live status badge and direct links to GitHub Actions run history.
+- **Order Webhook & Notification Pipeline**:
+  - Outbound webhook automation dispatching real-time JSON payloads to Discord, Telegram, Make.com, Zapier, or Google Sheets upon new customer checkout.
+  - Manual endpoint test ping utility with instant response verification.
+- **1-Click Database & Catalog Backup Pipeline**:
+  - 1-tap Excel export (`.xlsx`) of all 21 categories, products, prices, MRPs, and variants.
+  - 1-tap Excel export (`.xlsx`) of all customer orders, itemized lines, and delivery GPS links.
+  - Complete disaster recovery JSON snapshot export.
+- **System Health Diagnostics**:
+  - Live Supabase database ping latency (ms) and real-time operational status.
+
 ---
 
 ## Phase 7: Supabase Cloud Database & Storage

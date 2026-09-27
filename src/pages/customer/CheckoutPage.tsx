@@ -10,6 +10,7 @@ import { WhatsAppIcon } from '../../components/common';
 import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import { validateOrderInput } from '../../lib/validation';
+import { dispatchOrderWebhook } from '../../lib/webhookPipeline';
 import type { CheckoutFormData } from '../../types/order';
 import './CheckoutPage.css';
 
@@ -116,6 +117,25 @@ export function CheckoutPage() {
           console.warn('Database save skipped or timed out, proceeding to WhatsApp:', dbErr);
         }
       }
+
+      // Non-blocking outbound order webhook pipeline
+      dispatchOrderWebhook({
+        id: orderId,
+        customer_name: finalCustomerName,
+        customer_phone: finalCustomerPhone,
+        delivery_address: finalDeliveryAddress,
+        map_link: formData.map_link || null,
+        subtotal,
+        delivery_fee: deliveryFee,
+        total,
+        items: items.map(item => ({
+          name: item.product_name,
+          quantity: item.quantity,
+          price: item.product_price,
+          unit_size: item.unit_size
+        })),
+        is_quick_order: false
+      }).catch(() => {});
 
       // 2. Build WhatsApp message
       const message = buildCartWhatsAppMessage({

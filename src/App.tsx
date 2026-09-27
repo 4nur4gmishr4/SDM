@@ -24,6 +24,7 @@ const ProductsPage = lazy(() => import('./pages/admin/ProductsPage').then(m => (
 const CategoriesPage = lazy(() => import('./pages/admin/CategoriesPage').then(m => ({ default: m.CategoriesPage })));
 const BannersPage = lazy(() => import('./pages/admin/BannersPage').then(m => ({ default: m.BannersPage })));
 const AnalyticsPage = lazy(() => import('./pages/admin/AnalyticsPage').then(m => ({ default: m.AnalyticsPage })));
+const PipelinesPage = lazy(() => import('./pages/admin/PipelinesPage').then(m => ({ default: m.PipelinesPage })));
 const SettingsPage = lazy(() => import('./pages/admin/SettingsPage').then(m => ({ default: m.SettingsPage })));
 
 import { useTrafficTracker } from './hooks/useTrafficTracker';
@@ -146,6 +147,7 @@ function AppRoutes() {
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="banners" element={<BannersPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
+          <Route path="pipelines" element={<PipelinesPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>
