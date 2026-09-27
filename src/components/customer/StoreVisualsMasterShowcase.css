@@ -185,7 +185,11 @@
     overflow-x: auto;
     padding-bottom: 4px;
     -ms-overflow-style: none;
-    scrollbar-width: none;
+  }
+  @supports (scrollbar-width: none) {
+    .store-showcase-thumbs-strip {
+      scrollbar-width: none;
+    }
   }
   .store-showcase-thumbs-strip::-webkit-scrollbar {
     display: none;

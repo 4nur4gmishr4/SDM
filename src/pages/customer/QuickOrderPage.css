@@ -239,6 +239,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -524,6 +525,7 @@
   justify-content: center;
   z-index: 10000;
   padding: 20px;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 
