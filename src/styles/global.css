@@ -1,8 +1,8 @@
 /* ============================================================
-   SAI DARSHAN MART — GLOBAL STYLES
+   SAI DARSHAN SHOPPING MART — GLOBAL STYLES
    ============================================================
    Reset, base styles, font imports, and Material Web theme
-   variable overrides for Sai Darshan Mart brand identity.
+   variable overrides for Sai Darshan Shopping Mart brand identity.
    ============================================================ */
 @import 'leaflet/dist/leaflet.css';
 
@@ -148,7 +148,7 @@ ol {
 
 /* --------------------------------------------------------
    Material Web component theme overrides
-   Apply Sai Darshan Mart brand tokens to @material/web
+   Apply Sai Darshan Shopping Mart brand tokens to @material/web
    -------------------------------------------------------- */
 
 :root {

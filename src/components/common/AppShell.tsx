@@ -4,6 +4,7 @@ import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useSnackbar } from '../../contexts/SnackbarContext';
 import { Footer } from './Footer';
+import { STORE_NAME } from '../../lib/orderUtils';
 import { HeaderLocationPill } from '../customer/HeaderLocationPill';
 import { LocationPickerModal } from '../customer/LocationPickerModal';
 import './AppShell.css';
@@ -115,8 +116,8 @@ export function AppShell() {
       <header className="app-shell__top-bar">
         <div className="app-shell__top-bar-inner">
           <div className="app-shell__brand-group">
-            <Link to="/" className="app-shell__brand" aria-label="Sai Darshan Mart Home">
-              <span className="app-shell__brand-box">Sai Darshan Mart</span>
+            <Link to="/" className="app-shell__brand" aria-label={`${STORE_NAME} Home`}>
+              <span className="app-shell__brand-box">{STORE_NAME}</span>
             </Link>
             <HeaderLocationPill />
           </div>

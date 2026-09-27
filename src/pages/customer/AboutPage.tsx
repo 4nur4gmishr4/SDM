@@ -2,7 +2,17 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
-import { formatPrice, STORE_NAME, STORE_ADDRESS, STORE_EMAIL, STORE_WHATSAPP_CLEAN, STORE_PHONE_NUMBER, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
+import { 
+  formatPrice, 
+  STORE_NAME, 
+  STORE_ADDRESS, 
+  STORE_EMAIL, 
+  STORE_WHATSAPP_CLEAN, 
+  STORE_PHONE_NUMBER, 
+  STORE_WHATSAPP_NUMBER,
+  STORE_TIMINGS,
+  STORE_DAYS
+} from '../../lib/orderUtils';
 import { WatermarkBanner, BeatingHeart, WhatsAppIcon } from '../../components/common';
 import { useStoreMedia } from '../../hooks/useStoreMedia';
 import { StoreMediaLightbox } from '../../components/customer/StoreMediaLightbox';
@@ -14,7 +24,7 @@ export function AboutPage() {
   const { activeItems: storeVisuals } = useStoreMedia();
 
   useEffect(() => {
-    document.title = 'About Store | Sai Darshan Mart Jabalpur';
+    document.title = `About Store | ${STORE_NAME} Jabalpur`;
   }, []);
 
   // Lightbox State
@@ -38,16 +48,16 @@ export function AboutPage() {
   return (
     <div className="layout-container about-page">
       <Helmet>
-        <title>About Store | Sai Darshan Mart Jabalpur</title>
+        <title>{`About Store | ${STORE_NAME} Jabalpur`}</title>
         <meta
           name="description"
-          content="Visit Sai Darshan Mart at 1117 Sanjeevni Nagar, Jabalpur. View high-resolution supermarket aisles, daily groceries, dry fruits, personal care, and direct WhatsApp delivery."
+          content={`Visit ${STORE_NAME} at ${STORE_ADDRESS}. View high-resolution supermarket aisles, daily groceries, dry fruits, personal care, and direct WhatsApp delivery.`}
         />
       </Helmet>
 
       {/* Hero Header */}
       <header className="about-hero">
-        <h1 className="about-hero__title">Sai Darshan Mart</h1>
+        <h1 className="about-hero__title">{STORE_NAME}</h1>
 
         <p className="about-hero__motto">
           &ldquo;There is only one Boss: The Customer&rdquo;
@@ -116,15 +126,23 @@ export function AboutPage() {
             <div className="about-details-group">
               <span className="about-details-label">Store Khulne Ka Samay</span>
               <p className="about-details-text">
-                <strong>Somwar se Ravivar:</strong> 8:00 AM se 10:00 PM
+                <strong>Somwar se Ravivar:</strong> {STORE_TIMINGS}
               </p>
-              <span className="about-status-chip">Saaton Din Khula</span>
+              <span className="about-status-chip">{STORE_DAYS}</span>
             </div>
 
             <div className="about-details-group">
               <span className="about-details-label">Customer Email</span>
               <a href={`mailto:${STORE_EMAIL}`} className="about-details-link">
                 {STORE_EMAIL}
+              </a>
+            </div>
+
+            <div className="about-details-group">
+              <span className="about-details-label">Mobile Number (Call & WhatsApp)</span>
+              <a href={`tel:${STORE_PHONE_NUMBER}`} className="about-details-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none', marginTop: '6px' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--md-sys-color-primary)' }}>phone_iphone</span>
+                <span><strong>{STORE_WHATSAPP_NUMBER}</strong></span>
               </a>
             </div>
           </div>

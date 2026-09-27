@@ -21,7 +21,7 @@ export function CartPage() {
   const isFreeDelivery = freeThreshold > 0 && subtotal >= freeThreshold;
   const deliveryFee = isFreeDelivery ? 0 : flatFee;
 
-  const pageTitle = 'Shopping Cart | Sai Darshan Mart';
+  const pageTitle = 'Shopping Cart | Sai Darshan Shopping Mart';
 
   useEffect(() => {
     document.title = pageTitle;
@@ -32,7 +32,7 @@ export function CartPage() {
       <div className="layout-container cart-page">
         <Helmet>
           <title>{pageTitle}</title>
-          <meta name="description" content="View items in your shopping cart at Sai Darshan Mart Jabalpur." />
+          <meta name="description" content="View items in your shopping cart at Sai Darshan Shopping Mart Jabalpur." />
         </Helmet>
         <header className="cart-page__header">
           <h1 className="cart-page__title">Your Cart</h1>
@@ -59,7 +59,7 @@ export function CartPage() {
     <div className="layout-container cart-page">
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content="View items in your shopping cart at Sai Darshan Mart Jabalpur." />
+        <meta name="description" content="View items in your shopping cart at Sai Darshan Shopping Mart Jabalpur." />
       </Helmet>
       <header className="cart-page__header">
         <h1 className="cart-page__title">Your Cart ({itemCount} {itemCount === 1 ? 'item' : 'items'})</h1>

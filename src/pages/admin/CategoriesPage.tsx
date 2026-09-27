@@ -10,7 +10,7 @@ export function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  const pageTitle = 'Categories Management | Sai Darshan Mart Admin';
+  const pageTitle = 'Categories Management | Sai Darshan Shopping Mart Admin';
 
   useEffect(() => {
     document.title = pageTitle;

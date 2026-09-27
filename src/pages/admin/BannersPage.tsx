@@ -90,7 +90,7 @@ export function BannersPage() {
   const [editingVisual, setEditingVisual] = useState<Partial<StoreMediaItem> | null>(null);
   const [isSavingVisual, setIsSavingVisual] = useState(false);
 
-  const pageTitle = 'Banners & Store Visuals | Sai Darshan Mart Admin';
+  const pageTitle = 'Banners & Store Visuals | Sai Darshan Shopping Mart Admin';
 
   useEffect(() => {
     document.title = pageTitle;

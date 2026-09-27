@@ -17,7 +17,7 @@ export function SettingsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const pageTitle = 'Store Settings | Sai Darshan Mart Admin';
+  const pageTitle = 'Store Settings | Sai Darshan Shopping Mart Admin';
 
   useEffect(() => {
     document.title = pageTitle;

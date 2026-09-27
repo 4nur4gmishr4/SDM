@@ -437,7 +437,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
           is_featured: false,
           is_archived: false,
           variants: item.variants || [],
-          description: `${item.name} available at Sai Darshan Mart Jabalpur.`,
+          description: `${item.name} available at Sai Darshan Shopping Mart Jabalpur.`,
           updated_at: new Date().toISOString()
         }));
 

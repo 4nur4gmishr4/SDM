@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Skeleton, AdminTableSkeleton } from '../common';
+import { STORE_NAME } from '../../lib/orderUtils';
 import './AdminShell.css';
 
 export function AdminShell() {
@@ -73,7 +74,7 @@ export function AdminShell() {
               storefront
             </span>
             <div className="admin-shell__brand-info">
-              <span className="admin-shell__brand-title">Sai Darshan Mart</span>
+              <span className="admin-shell__brand-title">{STORE_NAME}</span>
               <span className="admin-shell__brand-subtitle">Admin Panel</span>
             </div>
           </div>

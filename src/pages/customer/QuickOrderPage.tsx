@@ -19,7 +19,7 @@ export function QuickOrderPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const pageTitle = 'Quick Order via Shopping List | Sai Darshan Mart';
+  const pageTitle = 'Quick Order via Shopping List | Sai Darshan Shopping Mart';
 
   useEffect(() => {
     document.title = pageTitle;
@@ -147,7 +147,7 @@ export function QuickOrderPage() {
     <div className="layout-container checkout-page">
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content="Type or paste your grocery shopping list for fast delivery from Sai Darshan Mart Jabalpur." />
+        <meta name="description" content="Type or paste your grocery shopping list for fast delivery from Sai Darshan Shopping Mart Jabalpur." />
       </Helmet>
       <header className="checkout-page__header">
         <h1 className="checkout-page__title">Quick Order</h1>

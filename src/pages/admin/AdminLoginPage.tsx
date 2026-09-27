@@ -36,7 +36,7 @@ export function AdminLoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const pageTitle = 'Admin Portal | Sai Darshan Mart';
+  const pageTitle = 'Admin Portal | Sai Darshan Shopping Mart';
 
   useEffect(() => {
     document.title = pageTitle;

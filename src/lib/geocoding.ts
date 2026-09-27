@@ -3,11 +3,11 @@ import type { DeliveryLocation, GeocodingSearchResult } from '../types/location'
 export const DEFAULT_JABALPUR_LOCATION: DeliveryLocation = {
   lat: Number(import.meta.env.VITE_STORE_DEFAULT_LAT) || 23.1685,
   lng: Number(import.meta.env.VITE_STORE_DEFAULT_LNG) || 79.9550,
-  address: (import.meta.env.VITE_STORE_DEFAULT_ADDRESS as string) || 'Sai Darshan Mart, Napier Town, Jabalpur',
-  area: (import.meta.env.VITE_STORE_DEFAULT_AREA as string) || 'Napier Town',
+  address: (import.meta.env.VITE_STORE_DEFAULT_ADDRESS as string) || 'Sai Darshan Shopping Mart, 1117 Sanjeevni Nagar Main Road, Jabalpur',
+  area: (import.meta.env.VITE_STORE_DEFAULT_AREA as string) || 'Sanjeevni Nagar',
   city: (import.meta.env.VITE_STORE_DEFAULT_CITY as string) || 'Jabalpur',
-  pincode: (import.meta.env.VITE_STORE_DEFAULT_PINCODE as string) || '482001',
-  formattedAddress: (import.meta.env.VITE_STORE_DEFAULT_FORMATTED_ADDRESS as string) || 'Napier Town, Jabalpur, Madhya Pradesh 482001',
+  pincode: (import.meta.env.VITE_STORE_DEFAULT_PINCODE as string) || '482003',
+  formattedAddress: (import.meta.env.VITE_STORE_DEFAULT_FORMATTED_ADDRESS as string) || '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh 482003',
   isCustom: false,
 };
 
@@ -126,7 +126,7 @@ export async function reverseGeocode(lat: number, lng: number): Promise<Delivery
 
 // Curated Jabalpur Localities & Landmarks for instant 0ms offline suggestions
 const JABALPUR_LOCAL_PLACES: Array<{ name: string; area: string; lat: number; lng: number }> = [
-  { name: 'Sai Darshan Mart, Napier Town', area: 'Napier Town', lat: 23.1685, lng: 79.9550 },
+  { name: 'Sai Darshan Shopping Mart, Sanjeevni Nagar', area: 'Sanjeevni Nagar', lat: 23.1685, lng: 79.9550 },
   { name: 'Civil Lines', area: 'Civil Lines', lat: 23.1646, lng: 79.9554 },
   { name: 'Wright Town', area: 'Wright Town', lat: 23.1669, lng: 79.9255 },
   { name: 'Napier Town', area: 'Napier Town', lat: 23.1685, lng: 79.9550 },

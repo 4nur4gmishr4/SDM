@@ -355,7 +355,7 @@
     flex: 1;
     min-width: 0;
   }
-  /* Remove Sai Darshan Mart text/link from top-left on mobile to let location setter own the top-left */
+  /* Remove Sai Darshan Shopping Mart text/link from top-left on mobile to let location setter own the top-left */
   .app-shell__brand {
     display: none !important;
   }

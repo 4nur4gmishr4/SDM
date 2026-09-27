@@ -53,7 +53,7 @@ interface StrokeTextBox {
   height: number;
 }
 
-const DEFAULT_TEXT = 'SAI DARSHAN MART';
+const DEFAULT_TEXT = 'SAI DARSHAN SHOPPING MART';
 
 export const StrokeText = ({
   text = DEFAULT_TEXT,

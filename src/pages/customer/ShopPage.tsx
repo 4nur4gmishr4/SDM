@@ -89,14 +89,14 @@ export function ShopPage() {
     return filtered;
   }, [products, localQuery, sortBy, inStockOnly]);
 
-  const pageTitle = currentCategory ? `${currentCategory.name} - Sai Darshan Mart` : 'All Products - Sai Darshan Mart';
+  const pageTitle = currentCategory ? `${currentCategory.name} - Sai Darshan Shopping Mart` : 'All Products - Sai Darshan Shopping Mart';
   const isInitialLoading = isLoading && products.length === 0;
 
   return (
     <div className="layout-container shop-page">
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content={`Shop ${currentCategory ? currentCategory.name.toLowerCase() : 'all groceries'} at Sai Darshan Mart. Fast delivery in Jabalpur.`} />
+        <meta name="description" content={`Shop ${currentCategory ? currentCategory.name.toLowerCase() : 'all groceries'} at Sai Darshan Shopping Mart. Fast delivery in Jabalpur.`} />
       </Helmet>
 
       <header className="shop-page__header">

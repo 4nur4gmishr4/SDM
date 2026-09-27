@@ -1,8 +1,8 @@
-# Sai Darshan Mart — Web Storefront & Management System
+# Sai Darshan Shopping Mart — Web Storefront & Management System
 
 > **Store Address:** 1117 Sanjeevni Nagar Main Road, Jabalpur, MP 482003  
-> **Contact / WhatsApp:** +91 79991 57430  
-> **UPI ID:** 7999157430@upi  
+> **Contact / WhatsApp:** +91 73541 55669  
+> **UPI ID:** 7354155669@upi  
 > **Store Motto:** *"There is only one Boss: The Customer."*
 
 ---
@@ -23,7 +23,7 @@
 
 ## Phase 1: Project Overview
 
-Sai Darshan Mart is an end-to-end e-commerce web application tailored for a local supermarket in Jabalpur, Madhya Pradesh. The system provides:
+Sai Darshan Shopping Mart is an end-to-end e-commerce web application tailored for a local supermarket in Jabalpur, Madhya Pradesh. The system provides:
 
 - A consumer storefront optimized for fast product discovery, variant selection, and local doorstep delivery across a 5–10 km radius.
 - Dual order workflows: a standard cart-based checkout and a "Quick Order" paste-list interface.
@@ -85,7 +85,7 @@ SDMWEB/
 
 ### 1. Home Page (`/`)
 - **iOS-Style Banner Carousel**: Touch-draggable and mouse-draggable carousel supporting autoplay, slide pause on hover, slide indicators, and a dedicated 1:1 skeleton loader.
-- **Desktop Hero Landing Brief**: Desktop-only showcase featuring animated SVG `StrokeText` displaying *"Sai Darshan Mart"*, store badges, and quick-access customer guarantees.
+- **Desktop Hero Landing Brief**: Desktop-only showcase featuring animated SVG `StrokeText` displaying *"Sai Darshan Shopping Mart"*, store badges, and quick-access customer guarantees.
 - **Curated Category Rail**: Horizontal scroll rail displaying product categories with thumbnail badges and direct navigation to filtered catalog views.
 - **Featured Products Grid**: Displays items marked with `is_featured = true` directly on the homepage.
 - **Watermark Banner**: Branded marquee ticker displaying store guarantees, location details, and direct contact numbers.
@@ -158,8 +158,8 @@ UPI Deep Link               WhatsApp Order Dispatch
 - **Validation**: Enforces clean 10-digit mobile number normalization (stripping leading zeros, `+91`, or spaces) and minimum address length.
 - **Order ID Generation**: Generates unique reference code in the format `SDM-YYMMDD-XXXX`.
 - **UPI Deep Link Generation**: Creates standard `upi://pay` URI pre-populated with:
-  - Payee VPA: `7999157430@upi`
-  - Payee Name: `Sai Darshan Mart`
+  - Payee VPA: `7354155669@upi`
+  - Payee Name: `Sai Darshan Shopping Mart`
   - Amount: Exact order total in INR
   - Transaction Note: Order reference code
 - **WhatsApp Message Formulation**: Formats markdown message detailing:

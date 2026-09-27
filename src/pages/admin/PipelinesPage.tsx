@@ -34,7 +34,7 @@ export function PipelinesPage() {
   const [dbPingMs, setDbPingMs] = useState<number | null>(null);
   const [isPinging, setIsPinging] = useState<boolean>(false);
 
-  const pageTitle = 'Pipelines & Automation | Sai Darshan Mart Admin';
+  const pageTitle = 'Pipelines & Automation | Sai Darshan Shopping Mart Admin';
 
   useEffect(() => {
     document.title = pageTitle;
@@ -449,7 +449,7 @@ export function PipelinesPage() {
 
           <div className="admin-pipelines__card-body">
             <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--md-sys-color-on-surface-variant)' }}>
-              Sai Darshan Mart admin can dispatch pre-formatted WhatsApp status messages with 1 tap directly from the Orders section:
+              Sai Darshan Shopping Mart admin can dispatch pre-formatted WhatsApp status messages with 1 tap directly from the Orders section:
             </p>
 
             <div className="admin-pipelines__template-list">

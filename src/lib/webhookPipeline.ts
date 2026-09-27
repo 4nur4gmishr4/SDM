@@ -110,7 +110,7 @@ export async function dispatchOrderWebhook(order: {
     const payload = {
       event: 'order.created',
       timestamp: new Date().toISOString(),
-      store: 'Sai Darshan Mart, Jabalpur',
+      store: 'Sai Darshan Shopping Mart, Jabalpur',
       order: {
         id: order.id,
         type: order.is_quick_order ? 'quick_order' : 'standard_cart',
@@ -162,8 +162,8 @@ export async function testWebhookEndpoint(targetUrl: string): Promise<{ success:
     const testPayload = {
       event: 'pipeline.health_check',
       timestamp: new Date().toISOString(),
-      store: 'Sai Darshan Mart (Test Ping)',
-      message: 'Automated test ping from Sai Darshan Mart Admin Pipeline Suite.',
+      store: 'Sai Darshan Shopping Mart (Test Ping)',
+      message: 'Automated test ping from Sai Darshan Shopping Mart Admin Pipeline Suite.',
       sample_order: {
         id: 'TEST-' + Math.floor(1000 + Math.random() * 9000),
         customer_name: 'Test Customer',

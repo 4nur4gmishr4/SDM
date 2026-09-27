@@ -162,7 +162,7 @@ export async function exportFullDatabaseSnapshotJSON(): Promise<{ success: boole
 
   const snapshot = {
     metadata: {
-      store: 'Sai Darshan Mart',
+      store: 'Sai Darshan Shopping Mart',
       generated_at: new Date().toISOString(),
       version: '1.0.0'
     },

@@ -1,5 +1,5 @@
 /**
- * Input sanitization and validation utilities for Sai Darshan Mart
+ * Input sanitization and validation utilities for Sai Darshan Shopping Mart
  * Enforces production-grade constraints on customer and order data.
  */
 

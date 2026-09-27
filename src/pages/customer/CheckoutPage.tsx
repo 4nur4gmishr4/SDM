@@ -25,7 +25,7 @@ export function CheckoutPage() {
     return hasLocationBeenSet;
   });
 
-  const pageTitle = 'Checkout & WhatsApp Order | Sai Darshan Mart';
+  const pageTitle = 'Checkout & WhatsApp Order | Sai Darshan Shopping Mart';
 
   useEffect(() => {
     document.title = pageTitle;
@@ -211,7 +211,7 @@ export function CheckoutPage() {
     <div className="layout-container checkout-page">
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content="Complete your grocery order via WhatsApp from Sai Darshan Mart Jabalpur." />
+        <meta name="description" content="Complete your grocery order via WhatsApp from Sai Darshan Shopping Mart Jabalpur." />
       </Helmet>
       <header className="checkout-page__header">
         <h1 className="checkout-page__title">Checkout</h1>

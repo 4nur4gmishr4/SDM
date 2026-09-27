@@ -100,7 +100,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'Sai Darshan Mart',
+        name: 'Sai Darshan Shopping Mart',
         short_name: 'SDM',
         description: 'Your local supermarket in Jabalpur',
         theme_color: '#1E8E3E',

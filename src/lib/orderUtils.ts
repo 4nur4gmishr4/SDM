@@ -1,13 +1,15 @@
 import type { CartItem } from '../types/order';
 
-export const STORE_NAME = (import.meta.env.VITE_STORE_NAME as string) || 'Sai Darshan Mart';
-export const STORE_WHATSAPP_NUMBER = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string) || '+91 79991 57430';
-export const STORE_WHATSAPP_CLEAN = STORE_WHATSAPP_NUMBER.replace(/\D/g, '') || '917999157430';
+export const STORE_NAME = (import.meta.env.VITE_STORE_NAME as string) || 'Sai Darshan Shopping Mart';
+export const STORE_WHATSAPP_NUMBER = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string) || '+91 73541 55669';
+export const STORE_WHATSAPP_CLEAN = STORE_WHATSAPP_NUMBER.replace(/\D/g, '') || '917354155669';
 export const STORE_PHONE_NUMBER = (import.meta.env.VITE_STORE_PHONE as string) || STORE_WHATSAPP_CLEAN.slice(-10);
 export const STORE_EMAIL = (import.meta.env.VITE_STORE_EMAIL as string) || 'saidarshanmart@gmail.com';
 export const STORE_UPI_ID = (import.meta.env.VITE_STORE_UPI_ID as string) || `${STORE_PHONE_NUMBER}@upi`;
-export const STORE_ADDRESS = (import.meta.env.VITE_STORE_ADDRESS as string) || '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh 482003';
+export const STORE_ADDRESS = (import.meta.env.VITE_STORE_ADDRESS as string) || '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh, Pin: 482003';
 export const STORE_DELIVERY_RADIUS = (import.meta.env.VITE_STORE_DELIVERY_RADIUS as string) || '5–10 km across Jabalpur';
+export const STORE_TIMINGS = (import.meta.env.VITE_STORE_TIMINGS as string) || '8:00 AM to 10:30 PM';
+export const STORE_DAYS = (import.meta.env.VITE_STORE_DAYS as string) || 'Open All Days of the week (Saaton Din Khula)';
 
 /**
  * Generate standard UPI deep link for 1-tap payment in Google Pay / PhonePe / Paytm / BHIM.
@@ -60,7 +62,7 @@ export function buildCartWhatsAppMessage(params: {
 }): string {
   const { orderId, items, subtotal, deliveryFee, total, customerName, customerPhone, deliveryAddress, mapLink } = params;
 
-  let msg = `🛒 *New Order | Sai Darshan Mart*\n`;
+  let msg = `🛒 *New Order | ${STORE_NAME}*\n`;
   msg += `Order ID: ${orderId}\n`;
   msg += `──────────────\n\n`;
 
@@ -102,7 +104,7 @@ export function buildQuickOrderWhatsAppMessage(params: {
 }): string {
   const { orderId, shoppingList, customerName, customerPhone, deliveryAddress, mapLink } = params;
 
-  let msg = `📝 *Quick Order | Sai Darshan Mart*\n`;
+  let msg = `📝 *Quick Order | ${STORE_NAME}*\n`;
   msg += `Order ID: ${orderId}\n`;
   msg += `──────────────\n\n`;
 

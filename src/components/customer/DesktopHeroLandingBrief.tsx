@@ -12,12 +12,12 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
   const isDark = resolvedTheme === 'dark';
 
   return (
-    <aside className={`desktop-hero-stroke-card ${className}`} aria-label="Sai Darshan Mart">
+    <aside className={`desktop-hero-stroke-card ${className}`} aria-label="Sai Darshan Shopping Mart">
       <div className="desktop-hero-stroke__lines-container">
         <StrokeText
-          lines={["SAI", "DARSHAN", "MART"]}
+          lines={["SAI", "DARSHAN", "SHOPPING", "MART"]}
           lineHeight={1.08}
-          mobileFontSize={42}
+          mobileFontSize={38}
           highlightWord="MART"
           highlightColor={isDark ? '#81C995' : '#1E8E3E'}
           highlightStrokeColor={isDark ? '#81C995' : '#1E8E3E'}

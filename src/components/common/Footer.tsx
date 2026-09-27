@@ -68,7 +68,7 @@ export function Footer() {
         {/* Minimal Copyright */}
         <div className="sdm-footer__bottom">
           <span className="sdm-footer__copyright">
-            &copy; {currentYear} Sai Darshan Mart &bull; Sanjeevni Nagar, Jabalpur
+            &copy; {currentYear} {STORE_NAME} &bull; Sanjeevni Nagar, Jabalpur
           </span>
         </div>
       </div>

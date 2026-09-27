@@ -19,7 +19,7 @@ export function AdminDashboardPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const pageTitle = 'Dashboard | Sai Darshan Mart Admin';
+  const pageTitle = 'Dashboard | Sai Darshan Shopping Mart Admin';
 
   useEffect(() => {
     document.title = pageTitle;

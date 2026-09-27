@@ -38,7 +38,7 @@ export function OrderConfirmationPage() {
     <div className="layout-container">
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content="Your grocery order with Sai Darshan Mart Jabalpur is placed." />
+        <meta name="description" content="Your grocery order with Sai Darshan Shopping Mart Jabalpur is placed." />
       </Helmet>
 
       <div className="order-confirmation">
@@ -49,7 +49,7 @@ export function OrderConfirmationPage() {
         <h1 className="order-confirmation__title">Order Prepared &amp; Registered</h1>
         
         <p className="order-confirmation__text">
-          Thank you for choosing Sai Darshan Mart. If your WhatsApp chat didn&apos;t open automatically, use the button below to confirm with the store team.
+          Thank you for choosing Sai Darshan Shopping Mart. If your WhatsApp chat didn&apos;t open automatically, use the button below to confirm with the store team.
         </p>
 
         <div className="order-confirmation__order-id" title="Your unique order reference">

@@ -24,7 +24,7 @@ export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [
     title: 'Fast Computerized Billing Counter',
     department: 'Billing Counter',
     badge: 'Zero Wait Time',
-    notes: "Sai Darshan Mart ka modern computerized billing counter, jahan lambi line me khade hone ka koi jhanjhat nahi. Hamara staff har customer ka smile ke sath swagat karta hai.",
+    notes: "Sai Darshan Shopping Mart ka modern computerized billing counter, jahan lambi line me khade hone ka koi jhanjhat nahi. Hamara staff har customer ka smile ke sath swagat karta hai.",
     is_active: true,
   },
   {
@@ -79,10 +79,10 @@ export const STORE_MEDIA_ITEMS: StoreMediaItem[] = [
     id: 'store-video-tour',
     type: 'video',
     url: `${SUPABASE_STORE_MEDIA_BASE}img_0525.mp4`,
-    title: 'Sai Darshan Mart Ka Supermarket Video Tour',
+    title: 'Sai Darshan Shopping Mart Ka Supermarket Video Tour',
     department: 'Store Video Tour',
     badge: 'Live Store Tour',
-    notes: 'Ghar baithe Sai Darshan Mart ka video tour dekhiye. Store ki safai, wide aisles aur aasaani se shopping karne ka mahoul khud dekhein.',
+    notes: 'Ghar baithe Sai Darshan Shopping Mart ka video tour dekhiye. Store ki safai, wide aisles aur aasaani se shopping karne ka mahoul khud dekhein.',
     is_active: true,
   },
 ];

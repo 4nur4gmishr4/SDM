@@ -21,8 +21,8 @@ export function HomePage() {
   return (
     <div className="layout-container home-page">
       <Helmet>
-        <title>Sai Darshan Mart - Online Grocery Shopping in Jabalpur</title>
-        <meta name="description" content="Shop fresh groceries, vegetables, and daily essentials online at Sai Darshan Mart. Fast delivery in Jabalpur." />
+        <title>Sai Darshan Shopping Mart - Online Grocery Shopping in Jabalpur</title>
+        <meta name="description" content="Shop fresh groceries, vegetables, and daily essentials online at Sai Darshan Shopping Mart. Fast delivery in Jabalpur." />
       </Helmet>
 
       {/* Search Section */}

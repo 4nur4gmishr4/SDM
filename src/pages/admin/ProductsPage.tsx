@@ -22,7 +22,7 @@ export function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 25;
   
-  const pageTitle = 'Products Catalog | Sai Darshan Mart Admin';
+  const pageTitle = 'Products Catalog | Sai Darshan Shopping Mart Admin';
 
   useEffect(() => {
     document.title = pageTitle;

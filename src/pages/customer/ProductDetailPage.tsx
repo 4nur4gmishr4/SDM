@@ -40,7 +40,7 @@ export function ProductDetailPage() {
     return (
       <>
         <Helmet>
-          <title>Loading Product - Sai Darshan Mart</title>
+          <title>Loading Product - Sai Darshan Shopping Mart</title>
         </Helmet>
         <ProductDetailSkeleton />
       </>
@@ -51,7 +51,7 @@ export function ProductDetailPage() {
     return (
       <div className="layout-container" style={{ padding: '64px 24px', textAlign: 'center' }}>
         <Helmet>
-          <title>Product Not Found - Sai Darshan Mart</title>
+          <title>Product Not Found - Sai Darshan Shopping Mart</title>
         </Helmet>
         <h2 className="typescale-title-large">Product not found</h2>
         <p style={{ marginTop: '16px' }}>
@@ -93,13 +93,13 @@ export function ProductDetailPage() {
     setQuantity(1);
   };
 
-  const pageTitle = `${product.name} | Sai Darshan Mart`;
+  const pageTitle = `${product.name} | Sai Darshan Shopping Mart`;
 
   return (
     <div className="layout-container product-detail">
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content={product.description || `Buy ${product.name} at Sai Darshan Mart.`} />
+        <meta name="description" content={product.description || `Buy ${product.name} at Sai Darshan Shopping Mart.`} />
       </Helmet>
 
       {/* Breadcrumb / Back Navigation */}
@@ -234,7 +234,7 @@ export function ProductDetailPage() {
       {/* Shadowy Big Watermark Display */}
       <WatermarkBanner 
         headline={<>Shuddhata aur vishwas, seedhe aapke ghar <BeatingHeart /></>} 
-        subline="Handpicked fresh from Sai Darshan Mart store shelves"
+        subline="Handpicked fresh from Sai Darshan Shopping Mart store shelves"
       />
     </div>
   );
