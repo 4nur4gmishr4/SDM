@@ -13,11 +13,6 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
 
   return (
     <aside className={`desktop-hero-stroke-card ${className}`} aria-label="Sai Darshan Mart">
-      <div className="desktop-hero-stroke__top-tag">
-        <span className="material-symbols-outlined desktop-hero-stroke__tag-icon">storefront</span>
-        <span className="desktop-hero-stroke__tag-text">AAPKI APNI SUPERMARKET • JABALPUR</span>
-      </div>
-
       <div className="desktop-hero-stroke__lines-container">
         <StrokeText
           lines={["SAI", "DARSHAN", "MART"]}

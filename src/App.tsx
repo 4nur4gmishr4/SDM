@@ -30,7 +30,7 @@ const SettingsPage = lazy(() => import('./pages/admin/SettingsPage').then(m => (
 import { useTrafficTracker } from './hooks/useTrafficTracker';
 
 // Layouts
-import { AppShell, ScrollToTop, Skeleton, ErrorBoundary, ProductTileSkeleton, AdminTableSkeleton } from './components/common';
+import { AppShell, ScrollToTop, Skeleton, ErrorBoundary, ProductTileSkeleton, AdminTableSkeleton, SmoothPreloader } from './components/common';
 import { AdminShell } from './components/admin/AdminShell';
 
 import './styles/global.css';
@@ -166,6 +166,7 @@ export default function App() {
               <LocationProvider>
                 <CartProvider>
                   <ErrorBoundary>
+                    <SmoothPreloader />
                     <AppRoutes />
                   </ErrorBoundary>
                 </CartProvider>

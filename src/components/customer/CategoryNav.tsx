@@ -76,11 +76,6 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
               <span className="material-symbols-outlined category-nav__icon">
                 {iconName}
               </span>
-              {category.is_offer_category && (
-                <span className="category-nav__offer-badge" title="Special Promotional Offer">
-                  Offer
-                </span>
-              )}
             </div>
             <span className="category-nav__label">{category.name}</span>
           </Link>
