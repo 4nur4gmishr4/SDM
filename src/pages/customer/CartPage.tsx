@@ -10,7 +10,7 @@ import { WatermarkBanner, BeatingHeart } from '../../components/common';
 import './CartPage.css';
 
 export function CartPage() {
-  const { items, itemCount, subtotal, originalTotal, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, itemCount, subtotal, updateQuantity, removeItem, clearCart } = useCart();
   const navigate = useNavigate();
 
   const { settings } = useDeliverySettings();
@@ -86,7 +86,6 @@ export function CartPage() {
           <OrderSummary
             subtotal={subtotal}
             deliveryFee={deliveryFee}
-            originalTotal={originalTotal}
             freeDeliveryThreshold={freeThreshold}
           />
           

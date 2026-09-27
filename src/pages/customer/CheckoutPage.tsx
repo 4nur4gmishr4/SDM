@@ -15,7 +15,7 @@ import type { CheckoutFormData } from '../../types/order';
 import './CheckoutPage.css';
 
 export function CheckoutPage() {
-  const { items, itemCount, subtotal, originalTotal, clearCart } = useCart();
+  const { items, itemCount, subtotal, clearCart } = useCart();
   const { location, openModal, detectCurrentLocation, hasLocationBeenSet, isLocating } = useLocationContext();
   const { showSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -412,7 +412,6 @@ export function CheckoutPage() {
           <OrderSummary
             subtotal={subtotal}
             deliveryFee={deliveryFee}
-            originalTotal={originalTotal}
             freeDeliveryThreshold={freeThreshold}
           />
           

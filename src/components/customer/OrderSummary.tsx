@@ -4,7 +4,6 @@ import './OrderSummary.css';
 interface OrderSummaryProps {
   subtotal: number;
   deliveryFee?: number;
-  originalTotal?: number;
   freeDeliveryThreshold?: number;
   total?: number;
 }
@@ -12,14 +11,10 @@ interface OrderSummaryProps {
 export function OrderSummary({
   subtotal,
   deliveryFee = 0,
-  originalTotal,
   freeDeliveryThreshold,
   total,
 }: OrderSummaryProps) {
   const finalTotal = total ?? (subtotal + deliveryFee);
-  const hasSavings = Boolean(originalTotal && originalTotal > subtotal);
-  const savingsAmount = hasSavings ? (originalTotal! - subtotal) : 0;
-  const savingsPercent = hasSavings ? Math.round((savingsAmount / originalTotal!) * 100) : 0;
 
   // Free delivery threshold calculations
   const threshold = freeDeliveryThreshold ?? 0;
@@ -55,29 +50,11 @@ export function OrderSummary({
         </div>
       )}
       
-      {/* Original Price / MRP if higher than selling price */}
-      {hasSavings && (
-        <div className="order-summary__row order-summary__row--mrp">
-          <span>Total MRP</span>
-          <span className="order-summary__mrp-cut">{formatPrice(originalTotal!)}</span>
-        </div>
-      )}
-
       {/* Selling Price / Subtotal */}
       <div className="order-summary__row">
         <span>Selling Price</span>
         <span className="order-summary__selling-price">{formatPrice(subtotal)}</span>
       </div>
-
-      {/* Total Savings */}
-      {hasSavings && (
-        <div className="order-summary__row order-summary__row--savings">
-          <span>You Save</span>
-          <span className="order-summary__savings-val">
-            -{formatPrice(savingsAmount)} ({savingsPercent}% OFF)
-          </span>
-        </div>
-      )}
       
       {/* Delivery Fee */}
       <div className="order-summary__row">
@@ -93,20 +70,8 @@ export function OrderSummary({
       
       {/* Final Total */}
       <div className="order-summary__row order-summary__row--total">
-        <div>
-          <span>Total Amount</span>
-          {hasSavings && (
-            <div className="order-summary__total-subtext">Inclusive of all taxes</div>
-          )}
-        </div>
-        <div className="order-summary__total-val-wrap">
-          {hasSavings && (
-            <span className="order-summary__total-mrp-cut">
-              {formatPrice(originalTotal! + deliveryFee)}
-            </span>
-          )}
-          <span>{formatPrice(finalTotal)}</span>
-        </div>
+        <span>Total Amount</span>
+        <span>{formatPrice(finalTotal)}</span>
       </div>
     </div>
   );
