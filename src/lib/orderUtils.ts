@@ -50,7 +50,7 @@ export function generateOrderId(): string {
  * Build the WhatsApp pre-filled order message for a cart order.
  */
 export function buildCartWhatsAppMessage(params: {
-  orderId: string;
+  orderId?: string;
   items: CartItem[];
   subtotal: number;
   deliveryFee: number;
@@ -60,32 +60,38 @@ export function buildCartWhatsAppMessage(params: {
   deliveryAddress: string;
   mapLink: string | null;
 }): string {
-  const { orderId, items, subtotal, deliveryFee, total, customerName, customerPhone, deliveryAddress, mapLink } = params;
+  const { items, subtotal, deliveryFee, total, customerName, customerPhone, deliveryAddress, mapLink } = params;
 
-  let msg = `🛒 *New Order | ${STORE_NAME}*\n`;
-  msg += `Order ID: ${orderId}\n`;
-  msg += `──────────────\n\n`;
+  let msg = `${STORE_NAME} - Order Details\n\n`;
 
-  msg += `*Items:*\n`;
-  for (const item of items) {
-    msg += `• ${item.product_name} (${item.unit_size})\n`;
-    msg += `  ${item.quantity} × ₹${item.product_price.toFixed(2)} = ₹${(item.quantity * item.product_price).toFixed(2)}\n`;
-  }
+  msg += `Items:\n`;
+  items.forEach((item, index) => {
+    const itemTotal = (item.quantity * item.product_price).toFixed(2);
+    const unitText = item.unit_size ? ` (${item.unit_size})` : '';
+    msg += `${index + 1}. ${item.product_name}${unitText}\n`;
+    msg += `   Qty: ${item.quantity} x Rs. ${item.product_price.toFixed(2)} = Rs. ${itemTotal}\n\n`;
+  });
 
-  msg += `\n──────────────\n`;
-  msg += `Subtotal: ₹${subtotal.toFixed(2)}\n`;
+  msg += `--------------------------------\n`;
+  msg += `Items Subtotal: Rs. ${subtotal.toFixed(2)}\n`;
   if (deliveryFee > 0) {
-    msg += `Delivery Fee: ₹${deliveryFee.toFixed(2)}\n`;
+    msg += `Delivery Fee: Rs. ${deliveryFee.toFixed(2)}\n`;
+  } else {
+    msg += `Delivery Fee: Free (Rs. 0)\n`;
   }
-  msg += `*Total: ₹${total.toFixed(2)}*\n`;
-  msg += `──────────────\n\n`;
+  msg += `Total Amount: Rs. ${total.toFixed(2)}\n`;
+  msg += `--------------------------------\n\n`;
 
-  msg += `*Customer Details:*\n`;
+  msg += `Customer Details:\n`;
   msg += `Name: ${customerName}\n`;
-  msg += `Phone: ${customerPhone}\n`;
-  msg += `Address: ${deliveryAddress}\n`;
+  msg += `Phone: ${customerPhone}\n\n`;
+
+  msg += `Delivery Address:\n`;
+  msg += `${deliveryAddress}\n\n`;
+
   if (mapLink) {
-    msg += `🗺️ Live GPS Navigation: ${mapLink}\n`;
+    msg += `Delivery Location Map:\n`;
+    msg += `${mapLink}\n`;
   }
 
   return msg;
@@ -95,38 +101,44 @@ export function buildCartWhatsAppMessage(params: {
  * Build the WhatsApp pre-filled message for a Quick Order.
  */
 export function buildQuickOrderWhatsAppMessage(params: {
-  orderId: string;
-  shoppingList: string;
+  orderId?: string;
+  shoppingList?: string;
   customerName: string;
   customerPhone: string;
   deliveryAddress: string;
   mapLink: string | null;
   hasAttachedImage?: boolean;
+  isPhotoOrder?: boolean;
 }): string {
-  const { orderId, shoppingList, customerName, customerPhone, deliveryAddress, mapLink, hasAttachedImage } = params;
+  const { shoppingList, customerName, customerPhone, deliveryAddress, mapLink, hasAttachedImage, isPhotoOrder } = params;
 
-  let msg = `📝 *Quick Order | ${STORE_NAME}*\n`;
-  msg += `Order ID: ${orderId}\n`;
-  msg += `──────────────\n\n`;
+  let msg = `${STORE_NAME} - Quick Order\n\n`;
 
-  if (hasAttachedImage) {
-    msg += `📸 *Attached: Manual / Handwritten Shopping List Photo*\n`;
-    msg += `_(Photo captured and being shared in this WhatsApp chat)_\n\n`;
+  if (isPhotoOrder || hasAttachedImage) {
+    msg += `Order Type: Handwritten List Photo\n`;
+    msg += `Note: I am sending the photo of my grocery shopping list in this chat. Please check the items, pack them, and confirm the order.\n\n`;
   }
 
-  const isPlaceholderOnly = shoppingList.startsWith('(Handwritten grocery list photo attached)');
-  if (shoppingList && !isPlaceholderOnly) {
-    msg += `*Shopping List (Typed/Pasted):*\n`;
-    msg += `${shoppingList.trim()}\n\n`;
+  const cleanedText = shoppingList
+    ? shoppingList.replace('(Handwritten grocery list photo attached)', '').trim()
+    : '';
+
+  if (cleanedText) {
+    msg += `Shopping List:\n`;
+    msg += `${cleanedText}\n\n`;
   }
 
-  msg += `──────────────\n`;
-  msg += `*Customer Details:*\n`;
+  msg += `--------------------------------\n`;
+  msg += `Customer Details:\n`;
   msg += `Name: ${customerName}\n`;
-  msg += `Phone: ${customerPhone}\n`;
-  msg += `Address: ${deliveryAddress}\n`;
+  msg += `Phone: ${customerPhone}\n\n`;
+
+  msg += `Delivery Address:\n`;
+  msg += `${deliveryAddress}\n\n`;
+
   if (mapLink) {
-    msg += `🗺️ Live GPS Navigation: ${mapLink}\n`;
+    msg += `Delivery Location Map:\n`;
+    msg += `${mapLink}\n`;
   }
 
   return msg;

@@ -33,6 +33,9 @@ export function QuickOrderPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Mode: 'photo' (Send Photo to Order) or 'text' (Type/Paste List)
+  const [orderMode, setOrderMode] = useState<'photo' | 'text'>('photo');
+
   // Handwritten / manual list photo states
   const [listImageFile, setListImageFile] = useState<File | null>(null);
   const [listImagePreview, setListImagePreview] = useState<string | null>(null);
@@ -117,12 +120,10 @@ export function QuickOrderPage() {
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validate file type
       if (!file.type.startsWith('image/')) {
         showSnackbar('Please select a valid image file.');
         return;
       }
-      // Check file size (limit 15MB)
       if (file.size > 15 * 1024 * 1024) {
         showSnackbar('Image size is too large (max 15MB).');
         return;
@@ -133,7 +134,6 @@ export function QuickOrderPage() {
       setListImagePreview(previewUrl);
       showSnackbar('Handwritten list photo attached successfully!');
     }
-    // Reset file inputs so same file can be re-selected if needed
     e.target.value = '';
   };
 
@@ -164,13 +164,14 @@ export function QuickOrderPage() {
       return;
     }
 
-    const hasAttachedImage = Boolean(listImageFile || listImagePreview);
+    const isPhoto = orderMode === 'photo';
+    const hasAttachedImage = isPhoto || Boolean(listImageFile || listImagePreview);
 
     const validation = validateOrderInput({
       customerName: formData.customer_name,
       customerPhone: formData.customer_phone,
       deliveryAddress: formData.delivery_address,
-      shoppingList: formData.shopping_list,
+      shoppingList: isPhoto ? undefined : formData.shopping_list,
       hasImage: hasAttachedImage,
     });
 
@@ -186,7 +187,9 @@ export function QuickOrderPage() {
       const finalCustomerName = validation.cleanedName!;
       const finalCustomerPhone = validation.cleanedPhone!;
       const finalDeliveryAddress = validation.cleanedAddress!;
-      let finalShoppingList = validation.cleanedList || '';
+      let finalShoppingList = isPhoto 
+        ? (formData.shopping_list ? `[Handwritten List Photo] Notes: ${formData.shopping_list}` : '[Handwritten List Photo]')
+        : (validation.cleanedList || '');
 
       // Upload image to storage if a file was provided (non-blocking fallback)
       let uploadedImageUrl: string | null = null;
@@ -240,15 +243,16 @@ export function QuickOrderPage() {
         quick_order_text: finalShoppingList,
       }).catch(() => {});
 
-      // 2. Build WhatsApp pre-filled message with attached photo notice
+      // 2. Build WhatsApp message (NO EMOJIS, NO ORDER NUMBER, LINE-BY-LINE FORMAT)
       const message = buildQuickOrderWhatsAppMessage({
         orderId,
-        shoppingList: finalShoppingList,
+        shoppingList: isPhoto ? formData.shopping_list : finalShoppingList,
         customerName: finalCustomerName,
         customerPhone: finalCustomerPhone,
         deliveryAddress: finalDeliveryAddress,
         mapLink: formData.map_link || null,
-        hasAttachedImage,
+        isPhotoOrder: isPhoto,
+        hasAttachedImage: Boolean(listImageFile || listImagePreview),
       });
 
       // 3. Open WhatsApp
@@ -271,7 +275,7 @@ export function QuickOrderPage() {
         <title>{pageTitle}</title>
         <meta 
           name="description" 
-          content="Type, paste, or snap a photo of your handwritten grocery shopping list for fast home delivery from Sai Darshan Shopping Mart Jabalpur." 
+          content="Type, paste, or send a photo of your handwritten grocery shopping list for fast home delivery from Sai Darshan Shopping Mart Jabalpur." 
         />
       </Helmet>
 
@@ -281,203 +285,250 @@ export function QuickOrderPage() {
           <span>Quick Order</span>
         </h1>
         <p className="quick-order-page__subtitle">
-          Don&apos;t want to browse? Just type, paste, or snap a photo of your handwritten grocery list, and we&apos;ll pack and deliver it to your doorstep.
+          Don&apos;t want to browse? Send a photo of your handwritten list or type your items, and we&apos;ll pack and deliver directly to your doorstep.
         </p>
       </header>
 
       <div className="quick-order-page__content">
         <div className="quick-order-page__form-section">
+          {/* Top Mode Selector Tabs: Send Photo vs Type List */}
+          <div className="quick-order-mode-tabs" role="tablist" aria-label="Select Quick Order Mode">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={orderMode === 'photo'}
+              className={`quick-order-mode-tab ${orderMode === 'photo' ? 'quick-order-mode-tab--active' : ''}`}
+              onClick={() => setOrderMode('photo')}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>photo_camera</span>
+              <span>Send Photo to Order</span>
+            </button>
+
+            <button
+              type="button"
+              role="tab"
+              aria-selected={orderMode === 'text'}
+              className={`quick-order-mode-tab ${orderMode === 'text' ? 'quick-order-mode-tab--active' : ''}`}
+              onClick={() => setOrderMode('text')}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>format_list_bulleted</span>
+              <span>Type or Paste List</span>
+            </button>
+          </div>
+
           <form className="checkout-form" id="quick-order-form" onSubmit={handleSubmit}>
             
-            {/* 1. Camera & Manual List Photo Upload Card */}
-            <div className="manual-list-card">
-              <div className="manual-list-card__title-row">
-                <div className="manual-list-card__icon-badge">
-                  <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>photo_camera</span>
-                </div>
-                <div>
-                  <h2 className="manual-list-card__heading">Upload or Snap Handwritten List</h2>
-                  <p className="manual-list-card__subtext">
-                    Have a paper slip or notebook list? Capture a clear photo or upload it directly.
-                  </p>
-                </div>
-              </div>
-
-              {/* Hidden File Inputs */}
-              <input 
-                ref={cameraInputRef}
-                type="file" 
-                accept="image/*" 
-                capture="environment" 
-                style={{ display: 'none' }} 
-                onChange={handleImageChange}
-                aria-label="Capture handwritten list with camera"
-              />
-              <input 
-                ref={galleryInputRef}
-                type="file" 
-                accept="image/*" 
-                style={{ display: 'none' }} 
-                onChange={handleImageChange}
-                aria-label="Upload handwritten list from gallery"
-              />
-
-              {/* Action Buttons to capture/upload */}
-              {!listImagePreview ? (
-                <div className="manual-list-buttons">
-                  <button
-                    type="button"
-                    className="manual-capture-btn manual-capture-btn--camera"
-                    onClick={() => cameraInputRef.current?.click()}
-                  >
-                    <span className="material-symbols-outlined">photo_camera</span>
-                    <span>Take Photo (Camera)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="manual-capture-btn manual-capture-btn--gallery"
-                    onClick={() => galleryInputRef.current?.click()}
-                  >
-                    <span className="material-symbols-outlined">add_photo_alternate</span>
-                    <span>Upload from Gallery</span>
-                  </button>
-                </div>
-              ) : (
-                /* Preview State when Image is attached */
-                <div className="manual-preview-container">
-                  <div className="manual-preview-main">
-                    <div 
-                      className="manual-preview-thumb-wrapper" 
-                      onClick={() => setIsModalOpen(true)}
-                      role="button"
-                      tabIndex={0}
-                      title="Click to view full photo"
-                    >
-                      <img 
-                        src={listImagePreview} 
-                        alt="Handwritten shopping list preview" 
-                        className="manual-preview-thumb" 
-                      />
-                    </div>
-                    <div className="manual-preview-meta">
-                      <span className="manual-preview-badge">
-                        <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>check_circle</span>
-                        Handwritten List Attached
-                      </span>
-                      <span className="manual-preview-filename">
-                        {listImageFile?.name || 'Handwritten_list_photo.jpg'}
-                      </span>
-                      <span className="manual-preview-filesize">
-                        {listImageFile ? `${(listImageFile.size / (1024 * 1024)).toFixed(2)} MB` : 'Ready to send'}
-                      </span>
-                    </div>
+            {/* OPTION 1: Send Photo to Order Card */}
+            {orderMode === 'photo' && (
+              <div className="manual-list-card">
+                <div className="manual-list-card__title-row">
+                  <div className="manual-list-card__icon-badge">
+                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>photo_camera</span>
                   </div>
+                  <div>
+                    <h2 className="manual-list-card__heading">Send Photo of Handwritten List</h2>
+                    <p className="manual-list-card__subtext">
+                      Wrote your list on a paper slip or notepad? Snap a photo below, or send it directly after WhatsApp opens.
+                    </p>
+                  </div>
+                </div>
 
-                  <div className="manual-preview-actions">
+                {/* Hidden File Inputs */}
+                <input 
+                  ref={cameraInputRef}
+                  type="file" 
+                  accept="image/*" 
+                  capture="environment" 
+                  style={{ display: 'none' }} 
+                  onChange={handleImageChange}
+                  aria-label="Capture handwritten list with camera"
+                />
+                <input 
+                  ref={galleryInputRef}
+                  type="file" 
+                  accept="image/*" 
+                  style={{ display: 'none' }} 
+                  onChange={handleImageChange}
+                  aria-label="Upload handwritten list from gallery"
+                />
+
+                {/* Buttons to capture/upload */}
+                {!listImagePreview ? (
+                  <div className="manual-list-buttons">
                     <button
                       type="button"
-                      className="manual-preview-action-btn"
-                      onClick={() => setIsModalOpen(true)}
-                    >
-                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>visibility</span>
-                      <span>View Full Image</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="manual-capture-btn--camera manual-preview-action-btn"
+                      className="manual-capture-btn manual-capture-btn--camera"
                       onClick={() => cameraInputRef.current?.click()}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>sync</span>
-                      <span>Retake</span>
+                      <span className="material-symbols-outlined">photo_camera</span>
+                      <span>Take Photo (Camera)</span>
                     </button>
 
                     <button
                       type="button"
-                      className="manual-preview-action-btn manual-preview-action-btn--delete"
-                      onClick={handleRemovePhoto}
+                      className="manual-capture-btn manual-capture-btn--gallery"
+                      onClick={() => galleryInputRef.current?.click()}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
-                      <span>Remove</span>
+                      <span className="material-symbols-outlined">add_photo_alternate</span>
+                      <span>Upload from Gallery</span>
                     </button>
                   </div>
+                ) : (
+                  /* Preview State when Image is attached */
+                  <div className="manual-preview-container">
+                    <div className="manual-preview-main">
+                      <div 
+                        className="manual-preview-thumb-wrapper" 
+                        onClick={() => setIsModalOpen(true)}
+                        role="button"
+                        tabIndex={0}
+                        title="Click to view full photo"
+                      >
+                        <img 
+                          src={listImagePreview} 
+                          alt="Handwritten shopping list preview" 
+                          className="manual-preview-thumb" 
+                        />
+                      </div>
+                      <div className="manual-preview-meta">
+                        <span className="manual-preview-badge">
+                          <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>check_circle</span>
+                          Handwritten List Attached
+                        </span>
+                        <span className="manual-preview-filename">
+                          {listImageFile?.name || 'Handwritten_list_photo.jpg'}
+                        </span>
+                        <span className="manual-preview-filesize">
+                          {listImageFile ? `${(listImageFile.size / (1024 * 1024)).toFixed(2)} MB` : 'Ready to send'}
+                        </span>
+                      </div>
+                    </div>
 
-                  <p className="manual-preview-tip">
-                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>verified</span>
-                    Photo attached! When WhatsApp opens, send this photo in chat and our team will pack it immediately.
-                  </p>
-                </div>
-              )}
-            </div>
+                    <div className="manual-preview-actions">
+                      <button
+                        type="button"
+                        className="manual-preview-action-btn"
+                        onClick={() => setIsModalOpen(true)}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>visibility</span>
+                        <span>View Full Image</span>
+                      </button>
 
-            {/* 2. Text / Paste Shopping List Box */}
-            <div className="quick-order-card">
-              <div className="quick-order-card__header">
-                <div className="quick-order-card__title-group">
-                  <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary, #1E8E3E)', fontSize: '20px' }}>format_list_bulleted</span>
-                  <h2 className="quick-order-card__title">Type or Paste Your List {listImagePreview ? '(Optional)' : ''}</h2>
-                </div>
+                      <button
+                        type="button"
+                        className="manual-capture-btn--camera manual-preview-action-btn"
+                        onClick={() => cameraInputRef.current?.click()}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>sync</span>
+                        <span>Retake</span>
+                      </button>
 
-                <div className="quick-order-actions-bar">
-                  <button
-                    type="button"
-                    className="quick-paste-btn"
-                    onClick={handleQuickPaste}
-                    title="Paste text from clipboard"
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>content_paste</span>
-                    <span>Quick Paste</span>
-                  </button>
+                      <button
+                        type="button"
+                        className="manual-preview-action-btn manual-preview-action-btn--delete"
+                        onClick={handleRemovePhoto}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
+                        <span>Remove</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
 
-                  {formData.shopping_list && (
-                    <button
-                      type="button"
-                      className="quick-clear-btn"
-                      onClick={handleClearList}
-                      title="Clear text"
-                    >
-                      <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>clear</span>
-                      <span>Clear</span>
-                    </button>
-                  )}
+                <div style={{ marginTop: '4px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--md-sys-color-on-surface-variant)', display: 'block', marginBottom: '4px' }}>
+                    Extra Note / Brand Preferences (Optional):
+                  </label>
+                  <input
+                    type="text"
+                    name="shopping_list"
+                    value={formData.shopping_list}
+                    onChange={handleChange}
+                    placeholder="E.g., Please send fresh packet milk and Fortune brand oil..."
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '10px',
+                      border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.15))',
+                      background: 'var(--md-sys-color-surface, #fff)',
+                      color: 'var(--md-sys-color-on-surface)',
+                      fontSize: '13px',
+                      boxSizing: 'border-box'
+                    }}
+                  />
                 </div>
               </div>
+            )}
 
-              <textarea
-                ref={textareaRef}
-                className="quick-order-textarea"
-                placeholder="E.g.,&#10;2kg Sugar&#10;1 packet Amul Butter&#10;500g Toor Dal&#10;5kg Aashirvaad Atta..."
-                name="shopping_list"
-                value={formData.shopping_list}
-                onChange={handleChange}
-                required={!listImagePreview}
-                aria-label="Shopping list items"
-              />
+            {/* OPTION 2: Type or Paste List Card */}
+            {orderMode === 'text' && (
+              <div className="quick-order-card">
+                <div className="quick-order-card__header">
+                  <div className="quick-order-card__title-group">
+                    <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary, #1E8E3E)', fontSize: '20px' }}>format_list_bulleted</span>
+                    <h2 className="quick-order-card__title">Type or Paste Your List</h2>
+                  </div>
 
-              {/* 1-Tap Quick Suggestions */}
-              <div className="quick-chips-wrapper">
-                <span className="quick-chips-label">1-Tap Fast Essentials:</span>
-                <div className="quick-chips-container">
-                  {QUICK_SUGGESTIONS.map((item) => (
+                  <div className="quick-order-actions-bar">
                     <button
-                      key={item}
                       type="button"
-                      className="quick-chip"
-                      onClick={() => handleAddChip(item)}
+                      className="quick-paste-btn"
+                      onClick={handleQuickPaste}
+                      title="Paste text from clipboard"
                     >
-                      + {item}
+                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>content_paste</span>
+                      <span>Quick Paste</span>
                     </button>
-                  ))}
+
+                    {formData.shopping_list && (
+                      <button
+                        type="button"
+                        className="quick-clear-btn"
+                        onClick={handleClearList}
+                        title="Clear text"
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>clear</span>
+                        <span>Clear</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <textarea
+                  ref={textareaRef}
+                  className="quick-order-textarea"
+                  placeholder="E.g.,&#10;2kg Sugar&#10;1 packet Amul Butter&#10;500g Toor Dal&#10;5kg Aashirvaad Atta..."
+                  name="shopping_list"
+                  value={formData.shopping_list}
+                  onChange={handleChange}
+                  required={orderMode === 'text'}
+                  aria-label="Shopping list items"
+                />
+
+                {/* 1-Tap Quick Suggestions */}
+                <div className="quick-chips-wrapper">
+                  <span className="quick-chips-label">1-Tap Fast Essentials:</span>
+                  <div className="quick-chips-container">
+                    {QUICK_SUGGESTIONS.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        className="quick-chip"
+                        onClick={() => handleAddChip(item)}
+                      >
+                        + {item}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* 3. Delivery Details */}
+            {/* Delivery Details Card (Shared for both Photo & Text modes) */}
             <div className="quick-order-card">
               <div className="quick-order-card__title-group">
                 <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary, #1E8E3E)', fontSize: '20px' }}>local_shipping</span>
-                <h2 className="quick-order-card__title">Delivery Address &amp; Contact</h2>
+                <h2 className="quick-order-card__title">Delivery Address &amp; Contact Details</h2>
               </div>
               
               <md-outlined-text-field
@@ -520,7 +571,7 @@ export function QuickOrderPage() {
                   <span className="material-symbols-outlined" style={{ fontSize: '24px', flexShrink: 0 }}>location_on</span>
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: '13px', fontWeight: 700 }}>
-                      GPS Pinned: {location.area || 'Jabalpur'}
+                      GPS Location: {location.area || 'Jabalpur'}
                     </div>
                     <div style={{ fontSize: '11px', opacity: 0.85, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {location.formattedAddress}
@@ -572,7 +623,7 @@ export function QuickOrderPage() {
                   <md-icon slot="leading-icon">location_on</md-icon>
                 </md-outlined-text-field>
                 <p className="checkout-form__helper-text">
-                  Pasting a Google Maps link helps our delivery rider reach you faster.
+                  Pasting a Google Maps link helps our delivery rider reach you directly.
                 </p>
               </div>
             </div>
@@ -588,10 +639,18 @@ export function QuickOrderPage() {
               How Quick Order Works
             </h3>
             <ol style={{ paddingLeft: '18px', color: 'var(--md-sys-color-on-surface-variant)', fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <li><strong>Type, Paste, or Snap</strong>: Enter your grocery list or snap a photo of your paper list.</li>
-              <li><strong>Send via WhatsApp</strong>: Click below to dispatch your order with live order tracking.</li>
-              <li><strong>Billing &amp; Delivery</strong>: We pack fresh items, share your bill on WhatsApp, and deliver quickly.</li>
-              <li><strong>Pay on Delivery</strong>: Pay via cash or UPI (Google Pay, PhonePe, Paytm).</li>
+              <li>
+                <strong>{orderMode === 'photo' ? 'Photo / List' : 'Typed List'}</strong>: {orderMode === 'photo' ? 'Snap your paper list and fill details.' : 'Type your grocery items and fill details.'}
+              </li>
+              <li>
+                <strong>Open WhatsApp</strong>: Click below to open WhatsApp with your address and location.
+              </li>
+              <li>
+                <strong>Send Photo / Chat</strong>: {orderMode === 'photo' ? 'Send the message and share your paper list photo in the chat.' : 'Send the pre-typed list directly in the chat.'}
+              </li>
+              <li>
+                <strong>Packing &amp; Delivery</strong>: We pack items, confirm your total, and deliver to your doorstep.
+              </li>
             </ol>
           </div>
 
@@ -603,10 +662,18 @@ export function QuickOrderPage() {
               disabled={isSubmitting}
             >
               <WhatsAppIcon size={20} />
-              <span>{isSubmitting ? 'Preparing Order...' : 'Send List via WhatsApp'}</span>
+              <span>
+                {isSubmitting 
+                  ? 'Opening WhatsApp...' 
+                  : orderMode === 'photo' 
+                    ? 'Send Photo to Order via WhatsApp' 
+                    : 'Send List via WhatsApp'}
+              </span>
             </button>
             <p className="checkout-page__whatsapp-notice">
-              You will be redirected to WhatsApp to confirm your list with our store team.
+              {orderMode === 'photo'
+                ? 'WhatsApp will open with your details. Send your handwritten list photo in the chat!'
+                : 'WhatsApp will open with your full list and delivery details.'}
             </p>
           </div>
         </div>
