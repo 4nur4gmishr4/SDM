@@ -15,9 +15,9 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
     <aside className={`desktop-hero-stroke-card ${className}`} aria-label="Sai Darshan Shopping Mart">
       <div className="desktop-hero-stroke__lines-container">
         <StrokeText
-          lines={["SAI DARSHAN", "SHOPPING MART"]}
-          lineHeight={1.12}
-          mobileFontSize={32}
+          lines={["SAI", "DARSHAN", "SHOPPING", "MART"]}
+          lineHeight={1.06}
+          mobileFontSize={36}
           highlightWord="MART"
           highlightColor={isDark ? '#81C995' : '#1E8E3E'}
           highlightStrokeColor={isDark ? '#81C995' : '#1E8E3E'}

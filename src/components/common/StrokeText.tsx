@@ -471,4 +471,3 @@ export const StrokeText = ({
   );
 };
 
-export default StrokeText;
