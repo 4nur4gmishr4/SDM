@@ -16,10 +16,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 20
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Install Dependencies
@@ -36,11 +36,38 @@ jobs:
 
       - name: Run Playwright Responsive Verification Test
         run: |
-          npx vite preview --port 4173 &
-          sleep 4
+          npx vite preview --host 0.0.0.0 --port 4173 &
           node -e "
+          const http = require('http');
           const { chromium } = require('playwright');
+
+          function wait(ms) {
+            return new Promise(r => setTimeout(r, ms));
+          }
+
+          async function waitForServer(url, timeoutMs = 30000) {
+            const start = Date.now();
+            while (Date.now() - start < timeoutMs) {
+              try {
+                await new Promise((resolve, reject) => {
+                  const req = http.get(url, (res) => {
+                    if (res.statusCode) resolve(true);
+                    else reject(new Error('No status'));
+                  });
+                  req.on('error', reject);
+                  req.setTimeout(1000, () => req.destroy());
+                });
+                console.log('Preview server ready at ' + url);
+                return;
+              } catch (e) {
+                await wait(500);
+              }
+            }
+            throw new Error('Server readiness timeout: ' + url);
+          }
+
           (async () => {
+            await waitForServer('http://127.0.0.1:4173');
             const browser = await chromium.launch({ headless: true });
             const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
             await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle' });
@@ -48,7 +75,7 @@ jobs:
             console.log('Homepage Title:', title);
             const categories = await page.locator('.category-nav__item').count();
             console.log('Categories count:', categories);
-            if (categories < 18) throw new Error('Category count below expected');
+            if (categories < 18) throw new Error('Category count below expected: ' + categories);
             await browser.close();
             console.log('CI Smoke test passed successfully!');
           })().catch(e => {

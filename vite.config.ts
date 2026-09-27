@@ -6,7 +6,8 @@ import path from 'path'
 import { createClient } from '@supabase/supabase-js'
 
 // Read env for storage upload
-const envPath = path.resolve(__dirname, '.env')
+const baseDir = (import.meta as any).dirname || process.cwd()
+const envPath = path.resolve(baseDir, '.env')
 let supabaseUrl = ''
 let serviceRoleKey = ''
 if (fs.existsSync(envPath)) {
@@ -49,7 +50,7 @@ function uploadApiPlugin(): Plugin {
             const cleanName = `${Date.now()}_${base}${ext}`
 
             // 1. Save local copy in public/uploads/
-            const uploadsDir = path.resolve(__dirname, 'public/uploads')
+            const uploadsDir = path.resolve(baseDir, 'public/uploads')
             if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true })
             fs.writeFileSync(path.join(uploadsDir, cleanName), buffer)
             const localUrl = `/uploads/${cleanName}`
