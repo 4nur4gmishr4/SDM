@@ -17,6 +17,7 @@ export function AdminShell() {
     { label: 'Products', path: '/admin/products', icon: 'inventory_2' },
     { label: 'Categories', path: '/admin/categories', icon: 'category' },
     { label: 'Banners', path: '/admin/banners', icon: 'view_carousel' },
+    { label: 'Analytics', path: '/admin/analytics', icon: 'monitoring' },
     { label: 'Settings', path: '/admin/settings', icon: 'settings' },
   ];
 

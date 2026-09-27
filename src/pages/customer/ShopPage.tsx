@@ -100,7 +100,18 @@ export function ShopPage() {
       </Helmet>
 
       <header className="shop-page__header">
-        <h1 className="shop-page__title">{currentCategory ? currentCategory.name : 'All Products'}</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <h1 className="shop-page__title">{currentCategory ? currentCategory.name : 'All Products'}</h1>
+          {currentCategory?.is_offer_category && (
+            <span className="shop-page__offer-pill">
+              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>local_offer</span>
+              Special Promotional Offer
+            </span>
+          )}
+        </div>
+        {currentCategory?.description && (
+          <p className="shop-page__category-desc">{currentCategory.description}</p>
+        )}
       </header>
 
       <div className="shop-page__search-container">
@@ -133,8 +144,11 @@ export function ShopPage() {
             <Link 
               key={category.id} 
               to={`/shop/${category.slug}`} 
-              className={`shop-category-chip ${category.slug === categorySlug ? 'shop-category-chip--active' : ''}`}
+              className={`shop-category-chip ${category.slug === categorySlug ? 'shop-category-chip--active' : ''} ${category.is_offer_category ? 'shop-category-chip--offer' : ''}`}
             >
+              {category.is_offer_category && (
+                <span className="material-symbols-outlined" style={{ fontSize: '14px', marginRight: '4px', verticalAlign: 'middle' }}>local_offer</span>
+              )}
               {category.name}
             </Link>
           ))
@@ -169,8 +183,12 @@ export function ShopPage() {
                     key={category.id} 
                     to={`/shop/${category.slug}`} 
                     className={`shop-page__category-link ${category.slug === categorySlug ? 'shop-page__category-link--active' : ''}`}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                   >
-                    {category.name}
+                    <span>{category.name}</span>
+                    {category.is_offer_category && (
+                      <span className="shop-category-badge--offer">Offer</span>
+                    )}
                   </Link>
                 ))
               )}

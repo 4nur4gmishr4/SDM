@@ -36,6 +36,9 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
     if (nameLower.includes('electrical')) return 'bolt';
     if (nameLower.includes('chair') || nameLower.includes('furniture')) return 'chair';
     if (nameLower.includes('pet')) return 'pets';
+    if (nameLower.includes('mid month') || nameLower.includes('month offer')) return 'calendar_month';
+    if (nameLower.includes('buy 1') || nameLower.includes('bogo')) return 'redeem';
+    if (nameLower.includes('buy more') || nameLower.includes('save more')) return 'savings';
     return 'category';
   };
 
@@ -84,6 +87,11 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
               >
                 {getCategoryIcon(category.name)}
               </span>
+              {category.is_offer_category && (
+                <span className="category-nav__offer-badge" title="Special Promotional Offer">
+                  Offer
+                </span>
+              )}
             </div>
             <span className="category-nav__label">{category.name}</span>
           </Link>

@@ -23,7 +23,10 @@ const OrdersPage = lazy(() => import('./pages/admin/OrdersPage').then(m => ({ de
 const ProductsPage = lazy(() => import('./pages/admin/ProductsPage').then(m => ({ default: m.ProductsPage })));
 const CategoriesPage = lazy(() => import('./pages/admin/CategoriesPage').then(m => ({ default: m.CategoriesPage })));
 const BannersPage = lazy(() => import('./pages/admin/BannersPage').then(m => ({ default: m.BannersPage })));
+const AnalyticsPage = lazy(() => import('./pages/admin/AnalyticsPage').then(m => ({ default: m.AnalyticsPage })));
 const SettingsPage = lazy(() => import('./pages/admin/SettingsPage').then(m => ({ default: m.SettingsPage })));
+
+import { useTrafficTracker } from './hooks/useTrafficTracker';
 
 // Layouts
 import { AppShell, ScrollToTop, Skeleton, ErrorBoundary, ProductTileSkeleton, AdminTableSkeleton } from './components/common';
@@ -103,6 +106,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function AppRoutes() {
+  useTrafficTracker();
+
   return (
     <Suspense fallback={<PageLoadingFallback />}>
       <Routes>
@@ -140,6 +145,7 @@ function AppRoutes() {
           <Route path="products" element={<ProductsPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="banners" element={<BannersPage />} />
+          <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>

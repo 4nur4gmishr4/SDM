@@ -91,25 +91,28 @@ SDMWEB/
 - **Watermark Banner**: Branded marquee ticker displaying store guarantees, location details, and direct contact numbers.
 
 ### 2. Catalog & Shopping Page (`/shop`)
-- **Category Navigation**: 18 curated supermarket departments arranged in prioritized sequence:
-  1. Bakery products
-  2. Dairy products
-  3. Food grains (Atta & Dals)
-  4. Grocery staples
-  5. Spices & Seasonings
-  6. Chocolates & Confectionery
-  7. Cooking oils & Ghee
-  8. Home cleaners
-  9. Personal care & Hygiene
-  10. Appliances
-  11. SaiDarshan specials
-  12. Stationeries & School supplies
-  13. Plastic items & Storage
-  14. Baby care
-  15. Dining chairs & Furniture
-  16. Pet supplies
-  17. Beverages & Drinks
-  18. Electricals & Electronics
+- **Category Navigation**: 21 product departments and promotional offer tabs matching PRD Section 3:
+  1. SaiDarshan specials (`sai-darshan-specials`)
+  2. Grocery staples (`grocery-staples`)
+  3. Food grains (Atta & Dals) (`food-grains-atta-dals`)
+  4. Dairy products (`dairy-products`)
+  5. Bakery products (`bakery-products`)
+  6. Cooking oils & Ghee (`cooking-oils-ghee`)
+  7. Spices & Seasonings (`spices-seasonings`)
+  8. Beverages & Cold Drinks (`beverages-drinks`)
+  9. Chocolates & Confectionery (`chocolates-confectionery`)
+  10. Personal care & Hygiene (`personal-care`)
+  11. Baby care (`baby-care`)
+  12. Home cleaners (`home-cleaners`)
+  13. Plastic items & Storage (`plastic-items-storage`)
+  14. Stationeries & School supplies (`stationery-supplies`)
+  15. Appliances (`appliances`)
+  16. Electricals & Electronics (`electricals-electronics`)
+  17. Dining chairs & Furniture (`dining-chairs-furniture`)
+  18. Pet supplies (`pet-supplies`)
+  19. Mid Month Offer (`mid-month-offer` — promotional offer tab)
+  20. Buy 1 Get 1 Offers (`buy-1-get-1` — promotional offer tab)
+  21. Buy More Get More (`buy-more-get-more` — promotional offer tab)
 - **Live Search**: Instant keyword filtering across item names, brands, descriptions, and SKUs.
 - **Product Card (`ProductTile`)**:
   - Displays product image, brand, title, pack size, selling price, and maximum retail price (MRP) with calculated savings badges.
@@ -207,42 +210,53 @@ The admin interface (`/admin`) is protected by Supabase authentication and clien
 - Brute-force lockout mechanism: Locks the login form for 60 seconds after 5 consecutive failed attempts, storing lockout state in `sessionStorage`.
 
 ### 2. Dashboard (`/admin`)
-- High-level metric cards:
-  - Total revenue generated across completed orders.
-  - Total order count and pending orders count.
-  - Active catalog product count.
-- Quick navigation shortcuts to core administrative modules.
+- Real-time operational metric cards:
+  - Total website orders and pending orders count.
+  - Today's unique visitors and all-time page impressions.
+  - Active catalog product count and live promotional banner count.
+- Direct quick-action link to the comprehensive Analytics Suite.
 
-### 3. Order Management (`/admin/orders`)
+### 3. Analytics & Traffic Suite (`/admin/analytics`) — PRD 4.2 #33 Compliant
+- **Website Traffic & Activity Metrics**:
+  - Live total page views with today's real-time count.
+  - Daily unique visitors count with 7-day bar chart visualization.
+  - Per-route page impressions breakdown (Storefront Home, Catalog, Quick Order, Cart, Checkout, About).
+  - Visitor device distribution (Mobile phones vs Desktop laptops vs Tablets).
+- **Order Counts & Status Distribution**:
+  - Orders categorized by lifecycle status: `New / Pending`, `Processing`, `Delivered`, and `Cancelled`.
+  - Channel distribution: Standard Cart checkout orders vs Quick Order list submissions.
+- **Strict PRD #33 Scope Adherence**: Explicitly excludes revenue totals, rupee calculations, or commercial sums.
+
+### 4. Order Management (`/admin/orders`)
 - Real-time orders table displaying Order ID, customer contact, delivery address, total amount, and timestamp.
 - Status management transitions: `pending` → `processing` → `shipped` → `delivered` → `cancelled`.
 - Modal view expanding itemized product lines, quantities, and GPS coordinates.
 - Direct 1-tap WhatsApp chat button to message the customer directly from the table.
 
-### 4. Product Catalog & Variant Manager (`/admin/products`)
-- Full CRUD capabilities: create, view, edit, archive, and delete products.
+### 5. Product Catalog & Variant Manager (`/admin/products`)
+- Full CRUD capabilities: create, view, edit, archive, and delete products across all 21 departments.
 - Multi-variant configuration: assign multiple unit sizes (e.g. 500g, 1kg) with individual prices, MRPs, and stock quantities per product.
 - Filter by department/category and instant search by product name or SKU.
 - Toggle flags: `is_available` (in stock) and `is_featured` (pinned to homepage).
 - Image uploads: direct drag-and-drop file upload to Supabase Storage with CDN URL generation.
 
-### 5. Excel Batch Catalog Importer (`ExcelImportWidget`)
+### 6. Excel Batch Catalog Importer (`ExcelImportWidget`)
 - Upload `.xlsx` or `.xls` spreadsheets containing hundreds of products at once.
 - Automated column header mapping (detects SKU, Name, Category, Price, MRP, Pack Size).
 - Smart category classification rules matching item keywords against existing store categories.
 - Pre-import validation screen: shows row errors, missing fields, and duplicates before committing writes to Supabase.
 
-### 6. Category Management (`/admin/categories`)
-- Add new categories, update descriptions, and upload thumbnail images.
+### 7. Category Management (`/admin/categories`)
+- Add new categories, update descriptions, and upload thumbnail images across all 21 departments and promotional offer tabs.
 - Drag or re-order display sequence numbers.
 - Visibility toggles to hide out-of-season departments without deleting data.
 
-### 7. Banner & Promotion Manager (`/admin/banners`)
-- Create and schedule homepage carousel slides with custom headline text, banner images, and target links.
+### 8. Banner & Promotion Manager (`/admin/banners`)
+- Create and schedule homepage carousel slides with custom headline text, banner images, and target links (e.g. `/shop/mid-month-offer`, `/shop/buy-1-get-1`).
 - Re-order slides and toggle active states.
 - Default Logo Banner manager: customize the permanent fallback brand banner with instant preview.
 
-### 8. Store & Delivery Settings (`/admin/settings`)
+### 9. Store & Delivery Settings (`/admin/settings`)
 - Update flat delivery fee (₹) and free delivery qualifying order threshold.
 - Modify delivery policy terms and store operating hours.
 

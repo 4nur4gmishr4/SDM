@@ -18,6 +18,43 @@
   margin-bottom: var(--md-sys-spacing-1);
 }
 
+.shop-page__offer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--md-sys-color-error-container, #ffdad6);
+  color: var(--md-sys-color-on-error-container, #410002);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.shop-page__category-desc {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
+  margin-top: 4px;
+  max-width: 600px;
+}
+
+.shop-category-badge--offer {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  background-color: var(--md-sys-color-error, #ba1a1a);
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.shop-category-chip--offer {
+  border-color: var(--md-sys-color-error, #ba1a1a);
+  color: var(--md-sys-color-error, #ba1a1a);
+}
+
 .shop-page__search-container {
   margin-bottom: var(--md-sys-spacing-3);
   width: 100%;
