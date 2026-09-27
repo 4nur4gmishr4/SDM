@@ -30,10 +30,6 @@ jobs:
 
       - name: Build Vite Production Bundle
         run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://otyojqnnwbrteknyqcpi.supabase.co' }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90eW9qcW5ud2JydGVrbnlxY3BpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0MzAzNzAsImV4cCI6MjEwNjAwNjM3MH0.HWougnaFjqXZqeLr15wdGIzBWkDKsmP9JsGJTo8hsSo' }}
-          VITE_STORE_WHATSAPP_NUMBER: ${{ secrets.VITE_STORE_WHATSAPP_NUMBER || '+91 79991 57430' }}
 
       - name: Install Playwright Browsers (Chromium)
         run: npx playwright install --with-deps chromium
