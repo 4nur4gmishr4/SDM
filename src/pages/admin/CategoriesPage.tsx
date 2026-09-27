@@ -60,7 +60,6 @@ export function CategoriesPage() {
       is_visible: true,
       is_offer_category: false,
       description: '',
-      thumbnail_url: ''
     });
     setIsModalOpen(true);
   };
@@ -128,7 +127,6 @@ export function CategoriesPage() {
         <table className="admin-table">
           <thead>
             <tr>
-              <th>Image</th>
               <th>Name / Slug</th>
               <th>Display Order</th>
               <th>Status</th>
@@ -137,31 +135,16 @@ export function CategoriesPage() {
           </thead>
           <tbody>
             {isLoading && categories.length === 0 ? (
-              <AdminTableSkeleton rows={5} cols={5} />
+              <AdminTableSkeleton rows={5} cols={4} />
             ) : categories.length === 0 ? (
               <tr>
-                <td colSpan={5} style={{ textAlign: 'center', padding: '32px' }}>
+                <td colSpan={4} style={{ textAlign: 'center', padding: '32px' }}>
                   No categories found. Click "Add Category" to create one.
                 </td>
               </tr>
             ) : (
               categories.map((category) => (
                 <tr key={category.id} style={{ opacity: category.is_visible ? 1 : 0.5 }}>
-                  <td>
-                    {category.thumbnail_url ? (
-                      <img
-                        src={category.thumbnail_url}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                        style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
-                      />
-                    ) : (
-                      <div style={{ width: '40px', height: '40px', backgroundColor: 'var(--md-sys-color-surface-container-high)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--md-sys-color-outline)' }}>category</span>
-                      </div>
-                    )}
-                  </td>
                   <td>
                     <div style={{ fontWeight: 500 }}>{category.name}</div>
                     <div style={{ fontSize: '12px', color: 'var(--md-sys-color-outline)' }}>{category.slug}</div>
@@ -232,15 +215,6 @@ export function CategoriesPage() {
                   required
                   value={editingCategory.display_order?.toString() || ''}
                   onInput={(e: any) => setEditingCategory({ ...editingCategory, display_order: parseInt(e.target.value) || 0 })}
-                />
-              </div>
-
-              <div className="admin-form-group">
-                <md-outlined-text-field
-                  label="Thumbnail URL"
-                  className="admin-form-field"
-                  value={editingCategory.thumbnail_url || ''}
-                  onInput={(e: any) => setEditingCategory({ ...editingCategory, thumbnail_url: e.target.value })}
                 />
               </div>
 

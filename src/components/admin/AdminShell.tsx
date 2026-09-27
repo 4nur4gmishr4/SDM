@@ -19,7 +19,6 @@ export function AdminShell() {
     { label: 'Categories', path: '/admin/categories', icon: 'category' },
     { label: 'Banners', path: '/admin/banners', icon: 'view_carousel' },
     { label: 'Analytics', path: '/admin/analytics', icon: 'monitoring' },
-    { label: 'Pipelines', path: '/admin/pipelines', icon: 'precision_manufacturing' },
     { label: 'Settings', path: '/admin/settings', icon: 'settings' },
   ];
 
