@@ -96,11 +96,14 @@ export function ProductDetailPage() {
   const pageTitle = `${product.name} | Sai Darshan Shopping Mart`;
 
   return (
-    <div className="layout-container product-detail">
+    <div className="product-detail-page">
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={product.description || `Buy ${product.name} at Sai Darshan Shopping Mart.`} />
       </Helmet>
+
+      <div className="layout-container">
+        <div className="product-detail">
 
       {/* Breadcrumb / Back Navigation */}
       <div className="product-detail__image-section">
@@ -224,17 +227,18 @@ export function ProductDetailPage() {
         </div>
 
         {product.description && (
-          <div className="product-detail__description">
-            <h2 className="product-detail__desc-heading">About this item</h2>
-            <p className="product-detail__desc-text">{product.description}</p>
+          <div className="product-detail__description-section">
+            <h2 className="product-detail__section-title">About this item</h2>
+            <p className="product-detail__description">{product.description}</p>
           </div>
         )}
+        </div>
       </div>
+    </div>
 
       {/* Shadowy Big Watermark Display */}
       <WatermarkBanner 
         headline={<>Shuddhata aur vishwas, seedhe aapke ghar <BeatingHeart /></>} 
-        subline="Handpicked fresh from Sai Darshan Shopping Mart store shelves"
       />
     </div>
   );

@@ -114,7 +114,6 @@ export function CartPage() {
       {/* Shadowy Big Watermark Display */}
       <WatermarkBanner 
         headline={<>Aapki daily grocery, doorstep fast <BeatingHeart /></>} 
-        subline="Direct WhatsApp ordering & quick delivery across Jabalpur"
       />
     </div>
   );

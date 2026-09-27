@@ -64,7 +64,6 @@ export function HomePage() {
       {/* Shadowy Big Watermark Display */}
       <WatermarkBanner 
         headline={<>There is only one boss: The Customer <BeatingHeart /></>} 
-        subline="Serving every family in Jabalpur with honest pricing, fresh goods & care"
       />
     </div>
   );

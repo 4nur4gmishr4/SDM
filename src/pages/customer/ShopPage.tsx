@@ -251,7 +251,6 @@ export function ShopPage() {
       {/* Shadowy Big Watermark Display */}
       <WatermarkBanner 
         headline={<>Ghar ka rashan, apno ki dukaan <BeatingHeart /></>} 
-        subline="100% genuine groceries, grains & daily staples for your family"
       />
     </div>
   );

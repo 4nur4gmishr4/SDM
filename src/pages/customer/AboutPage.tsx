@@ -257,7 +257,6 @@ export function AboutPage() {
       {/* Shadowy Big Watermark Display */}
       <WatermarkBanner
         headline={<>Made with <BeatingHeart /> in Jabalpur</>}
-        subline="Born in Jabalpur, built for our community with trust & love"
       />
     </div>
   );
