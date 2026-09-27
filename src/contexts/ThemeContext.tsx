@@ -13,6 +13,23 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function applyThemeToDOM(resolved: 'light' | 'dark', mode: Theme) {
   if (typeof document !== 'undefined') {
+    // Inject temporary transition suppression style so theme switch is 100% instant (0ms delay)
+    let css = document.getElementById('sdm-instant-theme-switch');
+    if (!css) {
+      css = document.createElement('style');
+      css.id = 'sdm-instant-theme-switch';
+      css.textContent = `
+        *, *::before, *::after {
+          -webkit-transition: none !important;
+          -moz-transition: none !important;
+          -o-transition: none !important;
+          -ms-transition: none !important;
+          transition: none !important;
+        }
+      `;
+      document.head.appendChild(css);
+    }
+
     document.documentElement.setAttribute('data-theme', resolved);
     document.documentElement.setAttribute('data-theme-mode', mode);
 
@@ -23,6 +40,17 @@ function applyThemeToDOM(resolved: 'light' | 'dark', mode: Theme) {
       document.head.appendChild(metaTheme);
     }
     metaTheme.setAttribute('content', resolved === 'dark' ? '#137333' : '#1E8E3E');
+
+    // Force synchronous style reflow
+    void document.documentElement.offsetHeight;
+
+    // Remove suppression after the DOM updates synchronously
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.getElementById('sdm-instant-theme-switch');
+        if (el) el.remove();
+      });
+    });
   }
 }
 

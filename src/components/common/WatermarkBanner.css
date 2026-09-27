@@ -1,11 +1,13 @@
 /* ============================================================
-   Watermark Banner — Giant Shadowy Display & Flat Beating Heart
+   WatermarkBanner.css — Clean Developer Attribution
+   Symmetrical, zero vibe coding, 0ms theme switching
    ============================================================ */
 
 .watermark-banner {
   width: 100%;
   padding: 40px 16px 32px 16px;
   background-color: transparent;
+  box-sizing: border-box;
   -webkit-user-select: none;
   user-select: none;
   overflow: hidden;
@@ -14,6 +16,9 @@
 .watermark-banner__container {
   max-width: var(--sdm-layout-max-width, 1400px);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* Big text automatically arranges itself without hardcoded line breaks */
@@ -79,18 +84,15 @@
 
 .watermark-banner__developer {
   margin-top: 14px;
-  font-size: clamp(0.85rem, 1.8vw, 1.02rem);
+  font-size: 13.5px;
   font-weight: 500;
-  color: #8c93a0;
-  letter-spacing: -0.01em;
-  display: flex;
+  color: var(--md-sys-color-on-surface-variant, #8c93a0);
+  display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-[data-theme="dark"] .watermark-banner__developer {
-  color: rgba(255, 255, 255, 0.42);
+  justify-content: flex-start;
+  text-align: left;
 }
 
 .watermark-banner__developer-text {
@@ -100,7 +102,7 @@
 .watermark-banner__developer-name {
   color: var(--md-sys-color-primary, #1E8E3E);
   font-weight: 700;
-  transition: color 0.15s ease;
+  margin-left: 2px;
 }
 
 [data-theme="dark"] .watermark-banner__developer-name {
@@ -117,36 +119,44 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
-  color: #8c93a0; /* same greyish text color */
-  padding: 0;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
+  background-color: var(--md-sys-color-surface-container, #f1f3f4);
+  color: var(--md-sys-color-on-surface-variant, #5F6368);
+  border: 1px solid var(--md-sys-color-outline-variant, #e0e2dc);
   text-decoration: none;
-  transition: color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
-  line-height: 1;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
   flex-shrink: 0;
   box-sizing: border-box;
 }
 
-.watermark-banner__social-btn svg {
-  width: 17px;
-  height: 17px;
-  display: block;
-  flex-shrink: 0;
+[data-theme="dark"] .watermark-banner__social-btn {
+  background-color: var(--md-sys-color-surface-container-high, #303134);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #B0B5B0;
 }
 
 .watermark-banner__social-btn:hover {
-  color: var(--md-sys-color-primary, #1E8E3E);
+  background-color: var(--md-sys-color-primary, #1E8E3E);
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
-[data-theme="dark"] .watermark-banner__social-btn {
-  color: rgba(255, 255, 255, 0.42);
+[data-theme="dark"] .watermark-banner__social-btn:hover {
+  background-color: #81C995;
+  color: #003915;
 }
 
-[data-theme="dark"] .watermark-banner__social-btn:hover {
-  color: #81C995;
+@media (max-width: 640px) {
+  .watermark-banner {
+    padding: 32px 16px;
+  }
+
+  .watermark-banner__developer {
+    font-size: 12.5px;
+    gap: 8px;
+  }
 }
 
 @media (min-width: 905px) {
@@ -154,5 +164,3 @@
     padding: 56px 24px 40px 24px;
   }
 }
-
-

@@ -39,35 +39,21 @@
    ------------------------------------------------------------ */
 .sdm-footer__row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  text-align: center;
-  gap: 14px;
-}
-
-@media (min-width: 900px) {
-  .sdm-footer__row {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    text-align: left;
-    gap: 24px;
-  }
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
 }
 
 /* Brand Section (Left Side) */
 .sdm-footer__brand {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  max-width: 480px;
-}
-
-@media (min-width: 900px) {
-  .sdm-footer__brand {
-    align-items: flex-start;
-  }
+  align-items: flex-start;
+  gap: 4px;
+  flex: 1 1 300px;
 }
 
 .sdm-footer__brand-name {
@@ -88,18 +74,12 @@
 /* Actions Section: Address & Contact Icons (Right Side) */
 .sdm-footer__actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-}
-
-@media (min-width: 600px) {
-  .sdm-footer__actions {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-  }
+  justify-content: flex-start;
+  gap: 12px;
+  flex: 1 1 auto;
 }
 
 @media (min-width: 900px) {

@@ -93,6 +93,48 @@
   margin-bottom: var(--md-sys-spacing-2);
 }
 
+.product-tile__variants {
+  display: flex;
+  gap: 4px;
+  margin: 4px 0 8px 0;
+  flex-wrap: wrap;
+}
+
+.product-tile__variant-pill {
+  border: 1px solid var(--md-sys-color-outline-variant, #e0e2dc);
+  background-color: var(--md-sys-color-surface, #ffffff);
+  color: var(--md-sys-color-on-surface-variant, #5F6368);
+  padding: 3px 8px;
+  border-radius: var(--md-sys-shape-corner-extra-small, 4px);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.product-tile__variant-pill:hover {
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+}
+
+.product-tile__variant-pill--active {
+  border-color: var(--md-sys-color-primary, #1E8E3E) !important;
+  background-color: var(--md-sys-color-primary-container, #CEEAD6) !important;
+  color: var(--md-sys-color-on-primary-container, #0D652D) !important;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .product-tile__variant-pill {
+  border-color: rgba(255, 255, 255, 0.12);
+  background-color: var(--md-sys-color-surface-container, #202124);
+  color: #B0B5B0;
+}
+
+[data-theme="dark"] .product-tile__variant-pill--active {
+  background-color: rgba(129, 201, 149, 0.2) !important;
+  border-color: #81C995 !important;
+  color: #81C995 !important;
+}
+
 .product-tile__price-row {
   display: flex;
   align-items: center;

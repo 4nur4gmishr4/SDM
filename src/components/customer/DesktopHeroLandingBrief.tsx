@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useTheme } from '../../contexts';
 import { StrokeText, BeatingHeart, TypingText } from '../common';
 import './DesktopHeroLandingBrief.css';
 
@@ -8,9 +7,6 @@ interface DesktopHeroLandingBriefProps {
 }
 
 export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBriefProps) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark';
-
   return (
     <aside className={`desktop-hero-stroke-card ${className}`} aria-label="Sai Darshan Shopping Mart">
       <div className="desktop-hero-stroke__lines-container">
@@ -19,10 +15,10 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
           lineHeight={1.06}
           mobileFontSize={36}
           highlightWord="MART"
-          strokeColor={isDark ? '#FFFFFF' : '#1A1C19'}
-          fillColor={isDark ? '#FFFFFF' : '#1A1C19'}
-          highlightColor={isDark ? '#81C995' : '#1E8E3E'}
-          highlightStrokeColor={isDark ? '#81C995' : '#1E8E3E'}
+          strokeColor="var(--md-sys-color-on-surface)"
+          fillColor="var(--md-sys-color-on-surface)"
+          highlightColor="var(--md-sys-color-primary)"
+          highlightStrokeColor="var(--md-sys-color-primary)"
           strokeWidth={1.8}
           drawDuration={1.3}
           fillDelay={0.12}

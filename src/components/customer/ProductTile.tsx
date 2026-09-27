@@ -91,7 +91,7 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
 
         {/* Quantity Options / Variants Mini Pills */}
         {variants.length > 1 ? (
-          <div style={{ display: 'flex', gap: '4px', margin: '4px 0', flexWrap: 'wrap' }}>
+          <div className="product-tile__variants">
             {variants.map((v, i) => (
               <button
                 key={v.id || i}
@@ -101,16 +101,8 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
                   e.stopPropagation();
                   setSelectedVariantIdx(i);
                 }}
-                style={{
-                  border: i === selectedVariantIdx ? '1px solid var(--md-sys-color-primary)' : '1px solid var(--md-sys-color-outline-variant)',
-                  backgroundColor: i === selectedVariantIdx ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-surface)',
-                  color: i === selectedVariantIdx ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-surface-variant)',
-                  padding: '2px 6px',
-                  borderRadius: '4px',
-                  fontSize: '11px',
-                  fontWeight: i === selectedVariantIdx ? 600 : 400,
-                  cursor: 'pointer'
-                }}
+                className={`product-tile__variant-pill ${i === selectedVariantIdx ? 'product-tile__variant-pill--active' : ''}`}
+                aria-label={`Select ${v.unit_size}`}
               >
                 {v.unit_size}
               </button>

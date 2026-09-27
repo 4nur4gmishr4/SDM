@@ -8,7 +8,6 @@ import {
 } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useTheme } from '../../contexts';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -107,20 +106,10 @@ export const StrokeText = ({
   const effectiveFontSize = isMobile && mobileFontSize ? mobileFontSize : fontSize;
   const scaleXVal = isMobile && mobileScaleX ? mobileScaleX : 1;
 
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark';
-
-  // Theme-aware colors matching supermarket brand:
-  // Dark mode: Primary in crisp #FFFFFF, Highlight in vibrant brand green #81C995
-  // Light mode: Primary in rich #1A1C19, Highlight in fresh brand green #1E8E3E
-  const activeFillColor =
-    fillColor ?? (isDark ? '#FFFFFF' : '#1A1C19');
-  const activeStrokeColor =
-    strokeColor ?? (isDark ? '#FFFFFF' : '#1A1C19');
-  const activeHighlightColor =
-    highlightColor ?? (isDark ? '#81C995' : '#1E8E3E');
-  const activeHighlightStrokeColor =
-    highlightStrokeColor ?? activeHighlightColor;
+  const activeFillColor = fillColor ?? 'var(--md-sys-color-on-surface)';
+  const activeStrokeColor = strokeColor ?? 'var(--md-sys-color-on-surface)';
+  const activeHighlightColor = highlightColor ?? 'var(--md-sys-color-primary)';
+  const activeHighlightStrokeColor = highlightStrokeColor ?? activeHighlightColor;
 
   // Parse lines: supports lines prop, array of strings, or newline-delimited text
   const parsedLines = useMemo<string[]>(() => {
@@ -255,6 +244,7 @@ export const StrokeText = ({
     // If already animated on initial mount, keep the text rendered and do NOT restart
     if (hasMountedAnimRef.current && trigger !== 'hover' && trigger !== 'loop') {
       setEnd();
+      setIsAnimComplete(true);
       return undefined;
     }
 
@@ -365,21 +355,7 @@ export const StrokeText = ({
     reverse,
   ]);
 
-  // Ensure that when theme toggles, stroke & fill stay visible with full width
-  useEffect(() => {
-    if (hasMountedAnimRef.current) {
-      if (wipeRectRef.current && box) {
-        gsap.set(wipeRectRef.current, { attr: { width: box.width } });
-      }
-      const root = rootRef.current;
-      if (root) {
-        const strokes = root.querySelectorAll('[data-stroke-char]');
-        const fills = root.querySelectorAll('[data-fill-char]');
-        gsap.set(strokes, { strokeDashoffset: 0 });
-        gsap.set(fills, { opacity: 1 });
-      }
-    }
-  }, [resolvedTheme, box]);
+
 
   const viewBox = box
     ? `${box.x} ${box.y} ${box.width} ${box.height}`
@@ -442,9 +418,7 @@ export const StrokeText = ({
                   <tspan
                     data-stroke-char
                     key={`s-${lineIdx}-${charIdx}`}
-                    stroke={
-                      isHighlight ? activeHighlightStrokeColor : activeStrokeColor
-                    }
+                    style={{ stroke: isHighlight ? activeHighlightStrokeColor : activeStrokeColor }}
                   >
                     {char}
                   </tspan>
@@ -462,7 +436,7 @@ export const StrokeText = ({
           transform={scaleXVal !== 1 ? `scale(${scaleXVal}, 1)` : undefined}
           stroke="none"
           style={fontStyle}
-          clipPath={fillMode === 'wipe' && box ? `url(#${wipeId})` : undefined}
+          clipPath={(!isAnimComplete && fillMode === 'wipe' && box) ? `url(#${wipeId})` : undefined}
         >
           {parsedLines.map((lineText, lineIdx) => (
             <tspan
@@ -476,7 +450,7 @@ export const StrokeText = ({
                   <tspan
                     data-fill-char
                     key={`f-${lineIdx}-${charIdx}`}
-                    fill={isHighlight ? activeHighlightColor : activeFillColor}
+                    style={{ fill: isHighlight ? activeHighlightColor : activeFillColor }}
                   >
                     {char}
                   </tspan>
