@@ -37,24 +37,19 @@ export function StoreMediaLightbox({
     };
   }, [isOpen, initialIndex]);
 
-  if (!isOpen || !items || items.length === 0) return null;
-
-  const currentItem = items[currentIndex] || items[0];
-  if (!currentItem) return null;
-
   const handleNext = useCallback(() => {
-    if (items.length <= 1) return;
+    if (!items || items.length <= 1) return;
     setCurrentIndex((prev) => (prev + 1) % items.length);
     setZoomLevel(1);
     setIsLoaded(false);
-  }, [items.length]);
+  }, [items]);
 
   const handlePrev = useCallback(() => {
-    if (items.length <= 1) return;
+    if (!items || items.length <= 1) return;
     setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
     setZoomLevel(1);
     setIsLoaded(false);
-  }, [items.length]);
+  }, [items]);
 
   const toggleZoom = () => {
     setZoomLevel((prev) => {
@@ -101,7 +96,10 @@ export function StoreMediaLightbox({
     touchStartXRef.current = null;
   };
 
-  if (!isOpen || !currentItem) return null;
+  if (!isOpen || !items || items.length === 0) return null;
+
+  const currentItem = items[currentIndex] || items[0];
+  if (!currentItem) return null;
 
   return createPortal(
     <div

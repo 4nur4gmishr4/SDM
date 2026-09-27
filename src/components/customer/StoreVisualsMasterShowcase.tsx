@@ -112,19 +112,6 @@ export function StoreVisualsMasterShowcase({
           </div>
         ))}
 
-        {/* Floating Top Controls */}
-        <div className="store-showcase-top-bar" onClick={(e) => e.stopPropagation()}>
-          <button
-            type="button"
-            className="store-showcase-hd-pill"
-            onClick={() => onOpenLightbox(activeIndex)}
-            title="View Photo in Lightbox"
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>zoom_in</span>
-            <span>View Full Photo</span>
-          </button>
-        </div>
-
         {/* Prev / Next Navigation Arrows */}
         <button
           type="button"
