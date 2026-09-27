@@ -3,8 +3,8 @@ import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import type { DefaultLogoBannerConfig } from '../types/banner';
 
 const INITIAL_DEFAULT_LOGO_BANNER: DefaultLogoBannerConfig = {
-  image_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/SaiDarshanLogoBanner.png',
-  local_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/SaiDarshanLogoBanner.png',
+  image_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png',
+  local_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png',
   title: 'Sai Darshan Shopping Mart',
   subtitle: 'Aapki Apni Supermarket • Sanjeevni Nagar Main Road, Jabalpur',
   link_url: '/shop',

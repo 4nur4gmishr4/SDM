@@ -42,6 +42,19 @@ main_data/
 main_data
 *.xlsx
 *.xls
+*.csv
+
+# Media and asset binaries — strictly hosted on Supabase Storage, never in Git
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.mp4
+*.mov
+!favicon.svg
+public/uploads/
+public/images/
 
 # Test results and artifacts
 test-results/
