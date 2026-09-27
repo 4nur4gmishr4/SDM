@@ -34,7 +34,18 @@ export function useProducts(options: UseProductsOptions = {}) {
         }
 
         if (options.categoryId) {
-          query = query.eq('category_id', options.categoryId);
+          if (options.categoryId === 'ca000000-0000-0000-0000-000000000019') {
+            // Mid Month Offer — Real promotional deal items from official Excel catalog
+            query = query.or('name.ilike.%offer%,name.ilike.%special%,name.ilike.%deal%');
+          } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000020') {
+            // Buy 1 Get 1 Offers — Real 1+1/free items from official Excel catalog
+            query = query.or('name.ilike.%1+1%,name.ilike.%free%,name.ilike.%buy 1%');
+          } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000021') {
+            // Buy More Get More — Real combo/saver bundle items from official Excel catalog
+            query = query.or('name.ilike.%combo%,name.ilike.%saver%,name.ilike.%pack%');
+          } else {
+            query = query.eq('category_id', options.categoryId);
+          }
         }
 
         if (options.isFeatured) {

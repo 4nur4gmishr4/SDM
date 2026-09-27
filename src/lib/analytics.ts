@@ -173,13 +173,12 @@ async function syncTrafficToServer(pathname: string, isNewToday: boolean, device
 }
 
 function createDefaultTrafficData(): TrafficAnalyticsData {
-  const today = getTodayString();
   return {
-    total_page_views: 1,
-    daily_visitors: { [today]: 1 },
-    daily_views: { [today]: 1 },
-    page_breakdown: { '/': 1 },
-    devices: { mobile: 1, desktop: 0, tablet: 0 },
+    total_page_views: 0,
+    daily_visitors: {},
+    daily_views: {},
+    page_breakdown: {},
+    devices: { mobile: 0, desktop: 0, tablet: 0 },
     last_updated: new Date().toISOString()
   };
 }
