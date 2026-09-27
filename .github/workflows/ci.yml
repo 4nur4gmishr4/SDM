@@ -14,7 +14,11 @@ jobs:
     env:
       VITE_SUPABASE_URL: https://otyojqnnwbrteknyqcpi.supabase.co
       VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90eW9qcW5ud2JydGVrbnlxY3BpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0MzAzNzAsImV4cCI6MjEwNjAwNjM3MH0.HWougnaFjqXZqeLr15wdGIzBWkDKsmP9JsGJTo8hsSo
-      VITE_STORE_WHATSAPP_NUMBER: '+91 79991 57430'
+      VITE_STORE_NAME: 'Sai Darshan Shopping Mart'
+      VITE_STORE_WHATSAPP_NUMBER: '+91 73541 55669'
+      VITE_STORE_PHONE: '+91 73541 55669'
+      VITE_STORE_UPI_ID: '7354155669@upi'
+      VITE_STORE_EMAIL: 'saidarshanmart@gmail.com'
 
     steps:
       - name: Checkout Repository
@@ -77,7 +81,7 @@ jobs:
             await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle' });
             const title = await page.title();
             console.log('Homepage Title:', title);
-            if (!title.includes('Sai Darshan Mart')) {
+            if (!title.includes('Sai Darshan')) {
               throw new Error('Unexpected title: ' + title);
             }
 
