@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured, withTimeout } from './supabase';
+import { STORE_NAME, STORE_WHATSAPP_NUMBER } from './orderUtils';
 import type { Order } from '../types/order';
 
 export interface PipelineAutomationConfig {
@@ -15,7 +16,7 @@ export const DEFAULT_PIPELINE_CONFIG: PipelineAutomationConfig = {
   webhook_url: '',
   auto_backup_enabled: true,
   last_backup_at: null,
-  github_repo: '4nur4gmishr4/SDM',
+  github_repo: (import.meta.env.VITE_GITHUB_REPO as string) || '4nur4gmishr4/SDM',
   updated_at: new Date().toISOString()
 };
 
@@ -200,16 +201,17 @@ export async function testWebhookEndpoint(targetUrl: string): Promise<{ success:
 export function generateWhatsAppStatusUrl(order: Order, newStatus: string): string {
   const cleanPhone = order.customer_phone.replace(/[^0-9]/g, '');
   const targetPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+  const storeOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://saidarshanmart.com';
 
   let message = '';
   if (newStatus === 'processing') {
-    message = `🙏 *Namaste ${order.customer_name || 'Customer'} ji!*\n\nAapka Sai Darshan Mart Order *#${order.id}* confirm ho gaya hai aur pack kiya ja raha hai.\n\n🛒 *Order Total:* ₹${order.total_amount}\n📍 *Delivery Address:* ${order.delivery_address}\n\nJald hi hamara delivery partner aapke doorstep par hoga! Dhanyawad.`;
+    message = `🙏 *Namaste ${order.customer_name || 'Customer'} ji!*\n\nAapka ${STORE_NAME} Order *#${order.id}* confirm ho gaya hai aur pack kiya ja raha hai.\n\n🛒 *Order Total:* ₹${order.total_amount}\n📍 *Delivery Address:* ${order.delivery_address}\n\nJald hi hamara delivery partner aapke doorstep par hoga! Dhanyawad.`;
   } else if (newStatus === 'shipped') {
-    message = `🚚 *Namaste ${order.customer_name || 'Customer'} ji!*\n\nAapka Sai Darshan Mart Order *#${order.id}* nikal chuka hai (Out for Delivery).\n\n🛵 Hamara delivery partner 15-30 minute me aapke address par deliver kar dega.\nKripya cash ya UPI ready rakhein: ₹${order.total_amount}\n\nContact: +91 79991 57430`;
+    message = `🚚 *Namaste ${order.customer_name || 'Customer'} ji!*\n\nAapka ${STORE_NAME} Order *#${order.id}* nikal chuka hai (Out for Delivery).\n\n🛵 Hamara delivery partner 15-30 minute me aapke address par deliver kar dega.\nKripya cash ya UPI ready rakhein: ₹${order.total_amount}\n\nContact: ${STORE_WHATSAPP_NUMBER}`;
   } else if (newStatus === 'delivered') {
-    message = `✅ *Namaste ${order.customer_name || 'Customer'} ji!*\n\nAapka Sai Darshan Mart Order *#${order.id}* safaltapoorvak deliver ho gaya hai.\n\nSai Darshan Mart se shopping karne ke liye dhanyawad! Agle order ke liye hamari website visit karein: https://sdm.example.com\n\n_"There is only one Boss: The Customer."_`;
+    message = `✅ *Namaste ${order.customer_name || 'Customer'} ji!*\n\nAapka ${STORE_NAME} Order *#${order.id}* safaltapoorvak deliver ho gaya hai.\n\n${STORE_NAME} se shopping karne ke liye dhanyawad! Agle order ke liye hamari website visit karein: ${storeOrigin}\n\n_"There is only one Boss: The Customer."_`;
   } else if (newStatus === 'cancelled') {
-    message = `⚠️ *Namaste ${order.customer_name || 'Customer'} ji!*\n\nAapka Sai Darshan Mart Order *#${order.id}* cancel kar diya gaya hai. Kisi bhi query ya re-order ke liye kripya hume isi WhatsApp number par sampark karein.\n\nDhanyawad,\nSai Darshan Mart Team`;
+    message = `⚠️ *Namaste ${order.customer_name || 'Customer'} ji!*\n\nAapka ${STORE_NAME} Order *#${order.id}* cancel kar diya gaya hai. Kisi bhi query ya re-order ke liye kripya hume isi WhatsApp number par sampark karein.\n\nDhanyawad,\n${STORE_NAME} Team`;
   } else {
     message = `Namaste ${order.customer_name} ji! Aapke order #${order.id} ka status update: ${newStatus.toUpperCase()}.`;
   }

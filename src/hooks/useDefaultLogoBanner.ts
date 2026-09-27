@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout, SUPABASE_BANNERS_MEDIA_BASE } from '../lib/supabase';
+import { STORE_NAME } from '../lib/orderUtils';
 import type { DefaultLogoBannerConfig } from '../types/banner';
 
 const INITIAL_DEFAULT_LOGO_BANNER: DefaultLogoBannerConfig = {
-  image_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png',
-  local_url: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png',
-  title: 'Sai Darshan Shopping Mart',
+  image_url: `${SUPABASE_BANNERS_MEDIA_BASE}Logo.png`,
+  local_url: `${SUPABASE_BANNERS_MEDIA_BASE}Logo.png`,
+  title: STORE_NAME,
   subtitle: 'Aapki Apni Supermarket • Sanjeevni Nagar Main Road, Jabalpur',
   link_url: '/shop',
   is_enabled: true,

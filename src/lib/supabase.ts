@@ -21,6 +21,11 @@ export const supabase = createClient(
   isSupabaseConfigured ? supabaseAnonKey : 'placeholder-key'
 );
 
+export const SUPABASE_BASE_URL = (import.meta.env.VITE_SUPABASE_URL as string) || 'https://otyojqnnwbrteknyqcpi.supabase.co';
+export const SUPABASE_STORAGE_URL = `${SUPABASE_BASE_URL}/storage/v1/object/public`;
+export const SUPABASE_STORE_MEDIA_BASE = `${SUPABASE_STORAGE_URL}/store-media/store/`;
+export const SUPABASE_BANNERS_MEDIA_BASE = `${SUPABASE_STORAGE_URL}/store-media/banners/`;
+
 /**
  * Executes a promise with an automatic timeout fallback
  * Prevents requests from hanging on cold starts or unstable networks.

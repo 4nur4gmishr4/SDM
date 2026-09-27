@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { STORE_WHATSAPP_CLEAN } from '../../lib/orderUtils';
+import { STORE_NAME, STORE_WHATSAPP_CLEAN } from '../../lib/orderUtils';
 import { WhatsAppIcon } from '../../components/common';
 
 export function NotFoundPage() {
@@ -14,8 +14,8 @@ export function NotFoundPage() {
       fontFamily: 'var(--md-sys-typescale-font-family, sans-serif)',
     }}>
       <Helmet>
-        <title>404 | Page Not Found | Sai Darshan Mart Jabalpur</title>
-        <meta name="description" content="The requested page could not be found on Sai Darshan Mart." />
+        <title>{`404 | Page Not Found | ${STORE_NAME}`}</title>
+        <meta name="description" content={`The requested page could not be found on ${STORE_NAME}.`} />
       </Helmet>
 
       <div style={{
@@ -102,7 +102,7 @@ export function NotFoundPage() {
           color: 'var(--md-sys-color-on-surface-variant, #6b7280)'
         }}>
           Need help? <a
-            href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent('Hello Sai Darshan Mart, I encountered a missing page on the website')}`}
+            href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent(`Hello ${STORE_NAME}, I encountered a missing page on the website`)}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: '#25D366', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}

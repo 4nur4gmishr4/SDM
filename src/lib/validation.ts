@@ -76,7 +76,7 @@ export function validateOrderInput(params: {
   if (!isValidIndianPhone(cleanedPhone)) {
     return {
       isValid: false,
-      error: 'Please enter a valid 10-digit Indian mobile number (e.g. 7999157430).'
+      error: 'Please enter a valid 10-digit Indian mobile number (e.g. 9876543210).'
     };
   }
 

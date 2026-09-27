@@ -13,43 +13,12 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const DEMO_ADMIN_SESSION: any = {
-  access_token: 'demo-admin-access-token',
-  token_type: 'bearer',
-  expires_in: 86400,
-  refresh_token: 'demo-admin-refresh-token',
-  user: {
-    id: 'admin-sdm-001',
-    email: 'saidarshanmart@gmail.com',
-    role: 'authenticated',
-    aud: 'authenticated',
-    app_metadata: { role: 'admin' },
-    user_metadata: { name: 'Sai Darshan Mart Admin', role: 'admin' },
-    created_at: new Date().toISOString()
-  }
-};
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Check local storage for persistent demo admin session (strictly in dev only)
-    if (import.meta.env.PROD) {
-      localStorage.removeItem('sdm_admin_session');
-    } else {
-      const storedDemo = localStorage.getItem('sdm_admin_session');
-      if (storedDemo) {
-        try {
-          setSession(JSON.parse(storedDemo));
-          setIsLoading(false);
-        } catch {
-          localStorage.removeItem('sdm_admin_session');
-        }
-      }
-    }
-
-    // 2. Check live Supabase session
+    // Check live Supabase session
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       if (s) {
         setSession(s);
@@ -61,9 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
-      if (s) {
-        setSession(s);
-      }
+      setSession(s);
     });
 
     return () => subscription.unsubscribe();
@@ -73,41 +40,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPass = password.trim();
 
-    // Live Supabase authentication (Primary & Authoritative)
+    // Authenticate strictly with Supabase Auth
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email: cleanEmail, password: cleanPass });
-      if (data?.session) {
-        setSession(data.session);
-        localStorage.removeItem('sdm_admin_session');
-        return { error: null };
-      }
       if (error) {
-        // Only allow fallback in local development if explicitly enabled
-        if (
-          import.meta.env.DEV &&
-          (cleanEmail === 'saidarshanmart@gmail.com' || cleanEmail === 'admin@saidarshanmart.com' || cleanEmail === 'admin') &&
-          (cleanPass === 'admin123' || cleanPass === 'admin')
-        ) {
-          console.warn('[SECURITY WARNING] Using local development fallback session. This is strictly disabled in production builds.');
-          setSession(DEMO_ADMIN_SESSION);
-          localStorage.setItem('sdm_admin_session', JSON.stringify(DEMO_ADMIN_SESSION));
-          return { error: null };
-        }
         return { error: error.message };
       }
-      return { error: 'Authentication failed.' };
-    } catch (err: any) {
-      // In local dev, allow fallback if network is offline or Supabase unconfigured
-      if (
-        import.meta.env.DEV &&
-        (cleanEmail === 'saidarshanmart@gmail.com' || cleanEmail === 'admin@saidarshanmart.com' || cleanEmail === 'admin') &&
-        (cleanPass === 'admin123' || cleanPass === 'admin')
-      ) {
-        console.warn('[SECURITY WARNING] Using offline development fallback session.');
-        setSession(DEMO_ADMIN_SESSION);
-        localStorage.setItem('sdm_admin_session', JSON.stringify(DEMO_ADMIN_SESSION));
+      if (data?.session) {
+        setSession(data.session);
         return { error: null };
       }
+      return { error: 'Authentication failed. Please verify your credentials.' };
+    } catch (err: any) {
       return { error: err.message || 'Invalid email or password' };
     }
   };

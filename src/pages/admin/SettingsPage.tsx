@@ -6,9 +6,9 @@ import type { DeliverySettings } from '../../types/delivery';
 
 const DEFAULT_SETTINGS: DeliverySettings = {
   id: 'default',
-  rules_text: 'Doorstep grocery delivery across Jabalpur. Free delivery on orders above ₹500.',
-  flat_fee: 30,
-  free_delivery_threshold: 500,
+  rules_text: (import.meta.env.VITE_DELIVERY_RULES_TEXT as string) || 'Doorstep grocery delivery across Jabalpur. Free delivery on orders above ₹500.',
+  flat_fee: Number(import.meta.env.VITE_DEFAULT_FLAT_FEE) || 30,
+  free_delivery_threshold: Number(import.meta.env.VITE_DEFAULT_FREE_THRESHOLD) || 500,
   is_active: true
 };
 

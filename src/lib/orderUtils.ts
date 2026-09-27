@@ -1,19 +1,20 @@
 import type { CartItem } from '../types/order';
 
-export const STORE_WHATSAPP_NUMBER = '+91 79991 57430';
-export const STORE_WHATSAPP_CLEAN = '917999157430';
-export const STORE_PHONE_NUMBER = '7999157430';
-export const STORE_EMAIL = 'saidarshanmart@gmail.com';
-export const STORE_UPI_ID = '7999157430@upi';
-export const STORE_ADDRESS = '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh 482003';
-export const STORE_DELIVERY_RADIUS = '5–10 km across Jabalpur';
+export const STORE_NAME = (import.meta.env.VITE_STORE_NAME as string) || 'Sai Darshan Mart';
+export const STORE_WHATSAPP_NUMBER = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string) || '+91 79991 57430';
+export const STORE_WHATSAPP_CLEAN = STORE_WHATSAPP_NUMBER.replace(/\D/g, '') || '917999157430';
+export const STORE_PHONE_NUMBER = (import.meta.env.VITE_STORE_PHONE as string) || STORE_WHATSAPP_CLEAN.slice(-10);
+export const STORE_EMAIL = (import.meta.env.VITE_STORE_EMAIL as string) || 'saidarshanmart@gmail.com';
+export const STORE_UPI_ID = (import.meta.env.VITE_STORE_UPI_ID as string) || `${STORE_PHONE_NUMBER}@upi`;
+export const STORE_ADDRESS = (import.meta.env.VITE_STORE_ADDRESS as string) || '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh 482003';
+export const STORE_DELIVERY_RADIUS = (import.meta.env.VITE_STORE_DELIVERY_RADIUS as string) || '5–10 km across Jabalpur';
 
 /**
  * Generate standard UPI deep link for 1-tap payment in Google Pay / PhonePe / Paytm / BHIM.
  */
 export function getUpiPaymentUrl(params?: { amount?: number; orderId?: string; note?: string }): string {
   const upiId = STORE_UPI_ID;
-  const payeeName = 'Sai Darshan Mart';
+  const payeeName = STORE_NAME;
   let url = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&cu=INR`;
   if (params?.amount && params.amount > 0) {
     url += `&am=${params.amount.toFixed(2)}`;

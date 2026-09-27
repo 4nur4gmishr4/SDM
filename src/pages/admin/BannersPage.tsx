@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured, withTimeout, SUPABASE_STORE_MEDIA_BASE } from '../../lib/supabase';
 import { AdminTableSkeleton } from '../../components/common';
 import type { Banner, DefaultLogoBannerConfig } from '../../types/banner';
 import { useStoreMedia } from '../../hooks/useStoreMedia';
@@ -10,8 +10,6 @@ import { ImageUploadField } from '../../components/admin/ImageUploadField';
 import './OrdersPage.css';
 import './ProductsPage.css';
 import './BannersPage.css';
-
-const SUPABASE_STORE_MEDIA_BASE = 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/store/';
 
 // Preset Authentic Store Photography to pick with 1 click
 const PRESET_STORE_PHOTOS = [

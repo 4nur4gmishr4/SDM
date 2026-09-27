@@ -178,7 +178,7 @@ export function ImageUploadField({
             className="admin-form-field"
             value={value || ''}
             onInput={(e: any) => onChange(e.target.value)}
-            placeholder="https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/..."
+            placeholder="https://your-project.supabase.co/storage/v1/object/public/store-media/..."
           />
         </div>
       )}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import type { Banner } from '../../types/banner';
 import { useDefaultLogoBanner } from '../../hooks/useDefaultLogoBanner';
+import { SUPABASE_BANNERS_MEDIA_BASE } from '../../lib/supabase';
 import { Skeleton } from '../common';
 import './IOSBannerCarousel.css';
 
@@ -198,7 +199,7 @@ export function IOSBannerCarousel({
                     onError={(e) => {
                       const img = e.target as HTMLImageElement;
                       if (!img.src.includes('SaiDarshanLogoBanner.png')) {
-                        img.src = 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/SaiDarshanLogoBanner.png';
+                        img.src = `${SUPABASE_BANNERS_MEDIA_BASE}SaiDarshanLogoBanner.png`;
                       }
                     }}
                   />

@@ -1,13 +1,13 @@
 import type { DeliveryLocation, GeocodingSearchResult } from '../types/location';
 
 export const DEFAULT_JABALPUR_LOCATION: DeliveryLocation = {
-  lat: 23.1685,
-  lng: 79.9550,
-  address: 'Sai Darshan Mart, Napier Town, Jabalpur',
-  area: 'Napier Town',
-  city: 'Jabalpur',
-  pincode: '482001',
-  formattedAddress: 'Napier Town, Jabalpur, Madhya Pradesh 482001',
+  lat: Number(import.meta.env.VITE_STORE_DEFAULT_LAT) || 23.1685,
+  lng: Number(import.meta.env.VITE_STORE_DEFAULT_LNG) || 79.9550,
+  address: (import.meta.env.VITE_STORE_DEFAULT_ADDRESS as string) || 'Sai Darshan Mart, Napier Town, Jabalpur',
+  area: (import.meta.env.VITE_STORE_DEFAULT_AREA as string) || 'Napier Town',
+  city: (import.meta.env.VITE_STORE_DEFAULT_CITY as string) || 'Jabalpur',
+  pincode: (import.meta.env.VITE_STORE_DEFAULT_PINCODE as string) || '482001',
+  formattedAddress: (import.meta.env.VITE_STORE_DEFAULT_FORMATTED_ADDRESS as string) || 'Napier Town, Jabalpur, Madhya Pradesh 482001',
   isCustom: false,
 };
 

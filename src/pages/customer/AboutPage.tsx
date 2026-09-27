@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
-import { formatPrice } from '../../lib/orderUtils';
+import { formatPrice, STORE_NAME, STORE_ADDRESS, STORE_EMAIL, STORE_WHATSAPP_CLEAN, STORE_PHONE_NUMBER, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
 import { WatermarkBanner, BeatingHeart, WhatsAppIcon } from '../../components/common';
 import { useStoreMedia } from '../../hooks/useStoreMedia';
 import { StoreMediaLightbox } from '../../components/customer/StoreMediaLightbox';
@@ -99,15 +99,14 @@ export function AboutPage() {
             <div className="about-details-group">
               <span className="about-details-label">Address</span>
               <p className="about-details-text">
-                <strong>1117 Sanjeevni Nagar Main Road,</strong>
-                <br />
-                Jabalpur, Madhya Pradesh 482003
+                <strong>{STORE_ADDRESS}</strong>
               </p>
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Sai+Darshan+Mart+1117+Sanjeevni+Nagar+Main+Road+Jabalpur+Madhya+Pradesh+482003"
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${STORE_NAME} ${STORE_ADDRESS}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="about-details-action-btn"
+                title={`Open ${STORE_NAME} location in Google Maps`}
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>directions</span>
                 <span>Google Maps Par Rasta Dekhein</span>
@@ -124,8 +123,8 @@ export function AboutPage() {
 
             <div className="about-details-group">
               <span className="about-details-label">Customer Email</span>
-              <a href="mailto:saidarshanmart@gmail.com" className="about-details-link">
-                saidarshanmart@gmail.com
+              <a href={`mailto:${STORE_EMAIL}`} className="about-details-link">
+                {STORE_EMAIL}
               </a>
             </div>
           </div>
@@ -148,7 +147,7 @@ export function AboutPage() {
 
             <div className="about-details-cta-col">
               <a
-                href="https://wa.me/917999157430?text=Hello%20Sai%20Darshan%20Mart,%20I%20would%20like%20to%20place%20an%20order"
+                href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent(`Hello ${STORE_NAME}, I would like to place an order`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="about-contact-btn about-contact-btn--whatsapp"
@@ -160,11 +159,11 @@ export function AboutPage() {
                 </div>
               </a>
 
-              <a href="tel:7999157430" className="about-contact-btn about-contact-btn--call">
+              <a href={`tel:${STORE_PHONE_NUMBER}`} className="about-contact-btn about-contact-btn--call">
                 <span className="material-symbols-outlined">call</span>
                 <div className="about-contact-btn__text">
                   <strong>Dukan Par Phone Karein</strong>
-                  <span>+91 79991 57430</span>
+                  <span>{STORE_WHATSAPP_NUMBER}</span>
                 </div>
               </a>
 

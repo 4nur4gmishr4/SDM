@@ -220,7 +220,7 @@ export function PipelinesPage() {
             <div className="admin-pipelines__info-box">
               <div className="admin-pipelines__info-row">
                 <span className="admin-pipelines__info-key">Repository:</span>
-                <strong className="admin-pipelines__info-val">github.com/{config.github_repo || '4nur4gmishr4/SDM'}</strong>
+                <strong className="admin-pipelines__info-val">github.com/{config.github_repo || DEFAULT_PIPELINE_CONFIG.github_repo}</strong>
               </div>
               <div className="admin-pipelines__info-row">
                 <span className="admin-pipelines__info-key">Active Branch:</span>
@@ -243,7 +243,7 @@ export function PipelinesPage() {
                 Live Workflow Status:
               </span>
               <img
-                src="https://github.com/4nur4gmishr4/SDM/actions/workflows/ci.yml/badge.svg"
+                src={`https://github.com/${config.github_repo || DEFAULT_PIPELINE_CONFIG.github_repo}/actions/workflows/ci.yml/badge.svg`}
                 alt="CI/CD Build Status"
                 className="admin-pipelines__status-badge"
                 onError={(e) => {
@@ -260,7 +260,7 @@ export function PipelinesPage() {
 
             <div className="admin-pipelines__card-actions">
               <a
-                href={`https://github.com/${config.github_repo || '4nur4gmishr4/SDM'}/actions`}
+                href={`https://github.com/${config.github_repo || DEFAULT_PIPELINE_CONFIG.github_repo}/actions`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="admin-pipelines__action-btn admin-pipelines__action-btn--primary"

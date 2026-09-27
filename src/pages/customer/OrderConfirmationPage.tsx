@@ -3,7 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { 
   formatOrderId, 
+  STORE_NAME,
   STORE_PHONE_NUMBER, 
+  STORE_WHATSAPP_NUMBER,
   STORE_WHATSAPP_CLEAN, 
   STORE_UPI_ID,
   STORE_ADDRESS,
@@ -17,7 +19,7 @@ export function OrderConfirmationPage() {
   const { orderId } = useParams<{ orderId: string }>();
   const [copiedUpi, setCopiedUpi] = useState(false);
 
-  const pageTitle = 'Order Confirmed | Sai Darshan Mart Jabalpur';
+  const pageTitle = `Order Confirmed | ${STORE_NAME}`;
 
   useEffect(() => {
     document.title = pageTitle;
@@ -57,7 +59,7 @@ export function OrderConfirmationPage() {
         {/* WhatsApp & Call Direct Action Buttons */}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '24px' }}>
           <a
-            href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent(`Hello Sai Darshan Mart, following up on my Order ID: ${orderId || ''}`)}`}
+            href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent(`Hello ${STORE_NAME}, following up on my Order ID: ${orderId || ''}`)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="sdm-btn sdm-btn--whatsapp"
@@ -73,7 +75,7 @@ export function OrderConfirmationPage() {
             style={{ textDecoration: 'none', padding: '10px 18px' }}
           >
             <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>call</span>
-            <span>Call +91 79991 57430</span>
+            <span>Call {STORE_WHATSAPP_NUMBER}</span>
           </a>
         </div>
 

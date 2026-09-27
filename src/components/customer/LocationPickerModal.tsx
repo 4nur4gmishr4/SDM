@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useLocationContext } from '../../contexts/LocationContext';
-import { reverseGeocode, searchPlaces } from '../../lib/geocoding';
+import { reverseGeocode, searchPlaces, DEFAULT_JABALPUR_LOCATION } from '../../lib/geocoding';
 import type { DeliveryLocation, GeocodingSearchResult } from '../../types/location';
 import './LocationPickerModal.css';
 
@@ -27,8 +27,8 @@ export function LocationPickerModal() {
 
   // Selected Pin coordinates & geocoded address
   const [currentCoords, setCurrentCoords] = useState<{ lat: number; lng: number }>({
-    lat: location.lat || 23.1685,
-    lng: location.lng || 79.9550,
+    lat: location.lat || DEFAULT_JABALPUR_LOCATION.lat,
+    lng: location.lng || DEFAULT_JABALPUR_LOCATION.lng,
   });
   const [geocodedLocation, setGeocodedLocation] = useState<DeliveryLocation>(location);
   const [isGeocoding, setIsGeocoding] = useState(false);
