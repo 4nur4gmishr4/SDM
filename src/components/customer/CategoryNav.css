@@ -119,6 +119,7 @@
   font-size: 32px;
   color: var(--md-sys-color-primary, #1e8e3e);
   transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), color 0.2s ease;
+  -webkit-user-select: none;
   user-select: none;
 }
 
