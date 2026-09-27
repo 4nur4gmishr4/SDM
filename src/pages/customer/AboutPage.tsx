@@ -15,7 +15,7 @@ import {
   STORE_TIMINGS,
   STORE_DAYS
 } from '../../lib/orderUtils';
-import { WatermarkBanner, BeatingHeart, WhatsAppIcon } from '../../components/common';
+import { WatermarkBanner, WhatsAppIcon } from '../../components/common';
 import { SUPABASE_BANNERS_MEDIA_BASE } from '../../lib/supabase';
 import './AboutPage.css';
 
@@ -67,7 +67,6 @@ export function AboutPage() {
 
           <p className="about-permanent-banner__motto">
             <span>“There is only one Boss: The Customer”</span>
-            <BeatingHeart size={16} />
           </p>
 
           <p className="about-permanent-banner__lead">
@@ -193,10 +192,8 @@ export function AboutPage() {
         </div>
       </section>
 
-      {/* Shadowy Big Watermark Display */}
-      <WatermarkBanner
-        headline={<>Made with <BeatingHeart /> in Jabalpur</>}
-      />
+      {/* Developer Attribution */}
+      <WatermarkBanner />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice, STORE_NAME, STORE_WHATSAPP_CLEAN } from '../../lib/orderUtils';
 import type { ProductVariant } from '../../types/product';
-import { ProductDetailSkeleton, WatermarkBanner, BeatingHeart, WhatsAppIcon } from '../../components/common';
+import { ProductDetailSkeleton, WatermarkBanner, WhatsAppIcon } from '../../components/common';
 import { useProduct } from '../../hooks/useProducts';
 import { useCategories } from '../../hooks/useCategories';
 import './ProductDetailPage.css';
@@ -338,10 +338,8 @@ export function ProductDetailPage() {
         </div>
       </div>
 
-      {/* Shadowy Big Watermark Display */}
-      <WatermarkBanner 
-        headline={<>Shuddhata aur vishwas, seedhe aapke ghar <BeatingHeart /></>} 
-      />
+      {/* Supermarket Value & Trust Guarantees */}
+      <WatermarkBanner />
     </div>
   );
 }

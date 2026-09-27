@@ -90,13 +90,21 @@
   text-decoration: underline;
 }
 
+/* Search Bar Section */
+.home-page__search-section {
+  margin-top: var(--md-sys-spacing-4, 16px);
+  margin-bottom: var(--md-sys-spacing-4, 16px);
+}
+
 /* --------------------------------------------------------
-   Hero Split Section (Left Store Landing Brief + Right Banner Carousel)
+   Hero Split Section (Left Store Landing Hero + Right Banner Carousel)
    -------------------------------------------------------- */
 
 .home-page__hero-split-section {
   width: 100%;
   position: relative;
+  margin-top: var(--md-sys-spacing-3, 12px);
+  margin-bottom: var(--md-sys-spacing-8, 32px);
 }
 
 @media (max-width: 1023px) {

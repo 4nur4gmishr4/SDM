@@ -6,7 +6,7 @@ import { useDeliverySettings } from '../../hooks/useDeliverySettings';
 import { CartLineItem } from '../../components/customer/CartLineItem';
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
-import { WatermarkBanner, BeatingHeart } from '../../components/common';
+import { WatermarkBanner } from '../../components/common';
 import './CartPage.css';
 
 export function CartPage() {
@@ -111,10 +111,8 @@ export function CartPage() {
         </div>
       </div>
 
-      {/* Shadowy Big Watermark Display */}
-      <WatermarkBanner 
-        headline={<>Aapki daily grocery, doorstep fast <BeatingHeart /></>} 
-      />
+      {/* Supermarket Value & Trust Guarantees */}
+      <WatermarkBanner />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { SearchBar } from '../../components/customer/SearchBar';
 import { ProductGrid } from '../../components/customer/ProductGrid';
-import { WatermarkBanner, BeatingHeart, Skeleton } from '../../components/common';
+import { WatermarkBanner, Skeleton } from '../../components/common';
 import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
 import './ShopPage.css';
@@ -248,10 +248,8 @@ export function ShopPage() {
         </div>
       </div>
 
-      {/* Shadowy Big Watermark Display */}
-      <WatermarkBanner 
-        headline={<>Ghar ka rashan, apno ki dukaan <BeatingHeart /></>} 
-      />
+      {/* Supermarket Value & Trust Guarantees */}
+      <WatermarkBanner />
     </div>
   );
 }
