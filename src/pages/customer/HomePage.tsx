@@ -30,8 +30,9 @@ export function HomePage() {
         <SearchBar />
       </section>
 
-      {/* Hero Split Showcase: Left iOS Banner Carousel + Right 0-Vibe Coded Desktop Landing Brief */}
+      {/* Hero Split Showcase: Left Store Landing Presentation + Right iOS Banner Carousel */}
       <section className="home-page__hero-split-section" style={{ marginTop: '14px', marginBottom: '28px' }}>
+        <DesktopHeroLandingBrief />
         <div className="home-page__hero-banner-wrap">
           <IOSBannerCarousel 
             banners={banners} 
@@ -39,7 +40,6 @@ export function HomePage() {
             slideDuration={4800} 
           />
         </div>
-        <DesktopHeroLandingBrief />
       </section>
 
       {/* Category Navigation */}

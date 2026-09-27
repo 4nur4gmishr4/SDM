@@ -15,36 +15,42 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
     return <CategoryNavSkeleton count={8} />;
   }
 
-  // Helper to map category names to Material Symbols if no thumbnail is available
-  const getCategoryIcon = (name: string) => {
-    const nameLower = name.toLowerCase();
-    if (nameLower.includes('special')) return 'star';
-    if (nameLower.includes('grocery') || nameLower.includes('staple')) return 'shopping_basket';
-    if (nameLower.includes('grain') || nameLower.includes('atta') || nameLower.includes('dal')) return 'grain';
-    if (nameLower.includes('dairy')) return 'egg';
-    if (nameLower.includes('bakery')) return 'bakery_dining';
-    if (nameLower.includes('oil') || nameLower.includes('ghee')) return 'oil_barrel';
-    if (nameLower.includes('spice') || nameLower.includes('seasoning')) return 'soup_kitchen';
-    if (nameLower.includes('beverage') || nameLower.includes('drink')) return 'local_cafe';
-    if (nameLower.includes('chocolate') || nameLower.includes('confectionery')) return 'cookie';
-    if (nameLower.includes('personal')) return 'face';
-    if (nameLower.includes('baby')) return 'child_care';
-    if (nameLower.includes('cleaner') || nameLower.includes('cleaning')) return 'cleaning_services';
-    if (nameLower.includes('plastic')) return 'kitchen';
-    if (nameLower.includes('stationery') || nameLower.includes('supplies')) return 'edit_document';
-    if (nameLower.includes('appliance')) return 'blender';
-    if (nameLower.includes('electrical')) return 'bolt';
-    if (nameLower.includes('chair') || nameLower.includes('furniture')) return 'chair';
-    if (nameLower.includes('pet')) return 'pets';
-    if (nameLower.includes('mid month') || nameLower.includes('month offer')) return 'calendar_month';
-    if (nameLower.includes('buy 1') || nameLower.includes('bogo')) return 'redeem';
-    if (nameLower.includes('buy more') || nameLower.includes('save more')) return 'savings';
+  // Curated Material Symbols icons for all store categories
+  const getCategoryIcon = (category: Category): string => {
+    const slug = (category.slug || '').toLowerCase();
+    const name = (category.name || '').toLowerCase();
+
+    // 1. Promotional & Special Categories
+    if (slug === 'sai-darshan-specials' || name.includes('special')) return 'stars';
+    if (slug === 'mid-month-offer' || name.includes('mid month') || name.includes('month offer')) return 'calendar_month';
+    if (slug === 'buy-1-get-1' || name.includes('buy 1') || name.includes('bogo')) return 'redeem';
+    if (slug === 'buy-more-get-more' || name.includes('buy more') || name.includes('save more')) return 'savings';
+
+    // 2. Departmental & Everyday Grocery Categories
+    if (slug === 'grocery-staples' || name.includes('grocery') || name.includes('staple')) return 'shopping_basket';
+    if (slug === 'food-grains-atta-dals' || name.includes('grain') || name.includes('atta') || name.includes('dal')) return 'grain';
+    if (slug === 'dairy-products' || name.includes('dairy')) return 'egg';
+    if (slug === 'bakery-products' || name.includes('bakery')) return 'bakery_dining';
+    if (slug === 'cooking-oils-ghee' || name.includes('oil') || name.includes('ghee')) return 'water_drop';
+    if (slug === 'spices-seasonings' || name.includes('spice') || name.includes('seasoning')) return 'soup_kitchen';
+    if (slug === 'beverages-drinks' || name.includes('beverage') || name.includes('drink')) return 'local_cafe';
+    if (slug === 'chocolates-confectionery' || name.includes('chocolate') || name.includes('confectionery')) return 'cookie';
+    if (slug === 'personal-care' || name.includes('personal')) return 'face';
+    if (slug === 'baby-care' || name.includes('baby')) return 'child_care';
+    if (slug === 'home-cleaners' || name.includes('cleaner') || name.includes('cleaning')) return 'cleaning_services';
+    if (slug === 'plastic-items-storage' || name.includes('plastic') || name.includes('storage')) return 'inventory_2';
+    if (slug === 'stationery-supplies' || name.includes('stationery') || name.includes('supplies')) return 'edit_document';
+    if (slug === 'appliances' || name.includes('appliance')) return 'blender';
+    if (slug === 'electricals-electronics' || name.includes('electrical')) return 'bolt';
+    if (slug === 'dining-chairs-furniture' || name.includes('chair') || name.includes('furniture')) return 'chair';
+    if (slug === 'pet-supplies' || name.includes('pet')) return 'pets';
+
     return 'category';
   };
 
   return (
     <nav className="category-nav" aria-label="Product categories">
-      {/* "All" option */}
+      {/* "All Items" option */}
       <Link 
         to={basePath} 
         className={`category-nav__item ${!activeSlug ? 'category-nav__item--active' : ''}`}
@@ -55,9 +61,11 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
         <span className="category-nav__label">All Items</span>
       </Link>
 
-      {/* Categories */}
+      {/* Categories with icons only */}
       {categories.map((category) => {
         const isActive = activeSlug === category.slug;
+        const iconName = getCategoryIcon(category);
+
         return (
           <Link 
             key={category.id}
@@ -65,27 +73,8 @@ export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoad
             className={`category-nav__item ${isActive ? 'category-nav__item--active' : ''}`}
           >
             <div className="category-nav__icon-wrapper">
-              {category.thumbnail_url && (
-                <img 
-                  src={category.thumbnail_url} 
-                  alt={category.name} 
-                  className="category-nav__image" 
-                  loading="lazy"
-                  decoding="async"
-                  width="72"
-                  height="72"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const icon = e.currentTarget.parentElement?.querySelector('.category-nav__fallback-icon') as HTMLElement;
-                    if (icon) icon.style.display = 'inline-block';
-                  }} 
-                />
-              )}
-              <span 
-                className="material-symbols-outlined category-nav__icon category-nav__fallback-icon"
-                style={{ display: category.thumbnail_url ? 'none' : 'inline-block' }}
-              >
-                {getCategoryIcon(category.name)}
+              <span className="material-symbols-outlined category-nav__icon">
+                {iconName}
               </span>
               {category.is_offer_category && (
                 <span className="category-nav__offer-badge" title="Special Promotional Offer">

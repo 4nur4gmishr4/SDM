@@ -91,7 +91,7 @@
 }
 
 /* --------------------------------------------------------
-   Hero Split Section (Left Banner Carousel + Right Desktop Landing Brief)
+   Hero Split Section (Left Store Landing Brief + Right Banner Carousel)
    -------------------------------------------------------- */
 
 .home-page__hero-split-section {
@@ -101,7 +101,9 @@
 
 @media (max-width: 1023px) {
   .home-page__hero-split-section {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
 
   .home-page__hero-banner-wrap {
@@ -117,7 +119,7 @@
 @media (min-width: 1024px) {
   .home-page__hero-split-section {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
     gap: 24px;
     align-items: stretch;
   }
@@ -141,3 +143,4 @@
     justify-content: space-between;
   }
 }
+

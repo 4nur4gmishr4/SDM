@@ -114,24 +114,24 @@
   box-shadow: 0 4px 12px rgba(30, 142, 62, 0.25);
 }
 
-/* Square Category Image */
-.category-nav__image {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.25s ease;
-}
-
-.category-nav__item:hover .category-nav__image {
-  transform: scale(1.06);
-}
-
-/* Fallback Material icon */
+/* Material Symbol Icon inside Category Box */
 .category-nav__icon {
   font-size: 32px;
   color: var(--md-sys-color-primary, #1e8e3e);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), color 0.2s ease;
+  user-select: none;
+}
+
+[data-theme="dark"] .category-nav__icon {
+  color: #81c995;
+}
+
+.category-nav__item:hover .category-nav__icon {
+  transform: scale(1.12);
+}
+
+.category-nav__item--active .category-nav__icon {
+  transform: scale(1.08);
 }
 
 /* Category Label: Fixed uniform height (32px) so 1-line or 2-line labels never shift boxes */

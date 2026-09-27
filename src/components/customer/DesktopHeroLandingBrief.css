@@ -1,149 +1,198 @@
 /* ==========================================================================
    DesktopHeroLandingBrief.css — StrokeText Hero Presentation
-   Active ONLY on viewports >= 1024px (hidden on mobile & tablet)
+   Responsive: Beautiful, compact card on phones, full split card on desktop
    ========================================================================== */
 
 .desktop-hero-stroke-card {
-  display: none; /* Hidden on mobile and tablet screens */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  border-radius: 20px;
+  position: relative;
+  padding: 18px 16px;
+  box-sizing: border-box;
+  background: var(--md-sys-color-surface-container-lowest, #ffffff);
+  border: 1px solid var(--md-sys-color-outline-variant, #e0e2dc);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
 }
 
+[data-theme="dark"] .desktop-hero-stroke-card {
+  background: var(--md-sys-color-surface-container, #1f2320);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.desktop-hero-stroke__top-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-primary-container, #CEEAD6);
+  color: var(--md-sys-color-on-primary-container, #0D652D);
+  width: fit-content;
+}
+
+[data-theme="dark"] .desktop-hero-stroke__top-tag {
+  background-color: rgba(30, 142, 62, 0.25);
+  color: #81C995;
+  border: 1px solid rgba(129, 201, 149, 0.25);
+}
+
+.desktop-hero-stroke__tag-icon {
+  font-size: 15px;
+  color: inherit;
+}
+
+.desktop-hero-stroke__tag-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Lines container moved directly below top pill */
+.desktop-hero-stroke__lines-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  width: 100%;
+}
+
+/* Subline: "There is only one boss: The Customer" */
+.desktop-hero-stroke__motto-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--md-sys-color-primary, #1E8E3E);
+}
+
+[data-theme="dark"] .desktop-hero-stroke__motto-line {
+  color: #81C995;
+}
+
+.desktop-hero-stroke__motto-text {
+  color: inherit;
+}
+
+/* Store narrative paragraph in typing effect */
+.desktop-hero-stroke__narrative {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--md-sys-color-on-surface-variant, #5F6368);
+  font-weight: 450;
+  margin-bottom: 12px;
+}
+
+[data-theme="dark"] .desktop-hero-stroke__narrative {
+  color: #B0B5B0;
+}
+
+/* Bottom Row with Shop Now CTA */
+.desktop-hero-stroke__bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
+  margin-top: auto;
+}
+
+[data-theme="dark"] .desktop-hero-stroke__bottom-row {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.desktop-hero-stroke__desc {
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--md-sys-color-on-surface-variant, #5F6368);
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.desktop-hero-stroke__shop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-primary, #1E8E3E);
+  color: #ffffff !important;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.desktop-hero-stroke__shop-btn:hover {
+  background-color: var(--md-sys-color-tertiary, #137333);
+  transform: translateY(-1px);
+}
+
+/* Desktop Scale Up */
 @media (min-width: 1024px) {
   .desktop-hero-stroke-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     height: 100%;
     min-height: 440px;
     border-radius: 24px;
-    position: relative;
     padding: 24px 28px;
-    box-sizing: border-box;
-    background: var(--md-sys-color-surface-container-lowest, #ffffff);
-    border: 1px solid var(--md-sys-color-outline-variant, #e0e2dc);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-    overflow: hidden;
-  }
-
-  [data-theme="dark"] .desktop-hero-stroke-card {
-    background: var(--md-sys-color-surface-container, #1f2320);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
   .desktop-hero-stroke__top-tag {
-    display: inline-flex;
-    align-items: center;
     gap: 8px;
     padding: 6px 14px;
-    border-radius: 9999px;
-    background-color: var(--md-sys-color-primary-container, #CEEAD6);
-    color: var(--md-sys-color-on-primary-container, #0D652D);
-    width: fit-content;
-  }
-
-  [data-theme="dark"] .desktop-hero-stroke__top-tag {
-    background-color: rgba(30, 142, 62, 0.25);
-    color: #81C995;
-    border: 1px solid rgba(129, 201, 149, 0.25);
   }
 
   .desktop-hero-stroke__tag-icon {
     font-size: 16px;
-    color: inherit;
   }
 
   .desktop-hero-stroke__tag-text {
     font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
   }
 
-  /* Lines container moved directly below top pill */
   .desktop-hero-stroke__lines-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
     margin-top: 12px;
     margin-bottom: 4px;
-    width: 100%;
   }
 
-  /* Subline: "There is only one boss: The Customer" */
   .desktop-hero-stroke__motto-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 4px;
-    margin-bottom: 8px;
     font-size: 14.5px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--md-sys-color-primary, #1E8E3E);
   }
 
-  [data-theme="dark"] .desktop-hero-stroke__motto-line {
-    color: #81C995;
-  }
-
-  .desktop-hero-stroke__motto-text {
-    color: inherit;
-  }
-
-  /* Store narrative paragraph in typing effect */
   .desktop-hero-stroke__narrative {
     font-size: 13.5px;
     line-height: 1.62;
-    color: var(--md-sys-color-on-surface-variant, #5F6368);
-    font-weight: 450;
     min-height: 90px;
     margin-bottom: auto;
   }
 
-  [data-theme="dark"] .desktop-hero-stroke__narrative {
-    color: #B0B5B0;
-  }
-
-  /* Bottom Row with Shop Now CTA */
   .desktop-hero-stroke__bottom-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 16px;
     padding-top: 14px;
-    border-top: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
     margin-top: 12px;
   }
 
-  [data-theme="dark"] .desktop-hero-stroke__bottom-row {
-    border-top-color: rgba(255, 255, 255, 0.08);
-  }
-
   .desktop-hero-stroke__desc {
-    margin: 0;
     font-size: 13px;
-    color: var(--md-sys-color-on-surface-variant, #5F6368);
     line-height: 1.4;
-    font-weight: 500;
   }
 
   .desktop-hero-stroke__shop-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     padding: 10px 18px;
-    border-radius: 9999px;
-    background-color: var(--md-sys-color-primary, #1E8E3E);
-    color: #ffffff !important;
     font-size: 13.5px;
-    font-weight: 600;
-    text-decoration: none;
-    flex-shrink: 0;
-    transition: transform 0.15s ease, background-color 0.15s ease;
-  }
-
-  .desktop-hero-stroke__shop-btn:hover {
-    background-color: var(--md-sys-color-tertiary, #137333);
-    transform: translateY(-1px);
+    gap: 8px;
   }
 }

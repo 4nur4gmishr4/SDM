@@ -22,7 +22,7 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
         <StrokeText
           lines={["SAI", "DARSHAN", "MART"]}
           lineHeight={1.08}
-          mobileFontSize={68}
+          mobileFontSize={42}
           highlightWord="MART"
           highlightColor={isDark ? '#81C995' : '#1E8E3E'}
           highlightStrokeColor={isDark ? '#81C995' : '#1E8E3E'}

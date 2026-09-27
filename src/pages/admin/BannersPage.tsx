@@ -154,6 +154,22 @@ export function BannersPage() {
     setEditingBanner(null);
   };
 
+  // Helper to map promotional banners to their linked store category
+  const getLinkedCategoryInfo = (banner: Partial<Banner>): { slug: string; name: string } | null => {
+    const url = (banner.link_url || '').toLowerCase();
+    const title = (banner.title || '').toLowerCase();
+    if (url.includes('mid-month-offer') || title.includes('mid-month') || title.includes('mid month')) {
+      return { slug: 'mid-month-offer', name: 'Mid Month Offer' };
+    }
+    if (url.includes('buy-1-get-1') || title.includes('buy 1 get 1') || title.includes('bogo')) {
+      return { slug: 'buy-1-get-1', name: 'Buy 1 Get 1 Offers' };
+    }
+    if (url.includes('buy-more-get-more') || title.includes('buy more') || title.includes('bmgm')) {
+      return { slug: 'buy-more-get-more', name: 'Buy More Get More' };
+    }
+    return null;
+  };
+
   const handleSaveBanner = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingBanner) return;
@@ -174,6 +190,15 @@ export function BannersPage() {
           .from('banners')
           .insert([editingBanner]);
         if (error) throw error;
+      }
+
+      // Synchronize category visibility: banner on -> category on, banner off -> category off
+      const linked = getLinkedCategoryInfo(editingBanner);
+      if (linked && editingBanner.is_active !== undefined) {
+        await supabase
+          .from('categories')
+          .update({ is_visible: editingBanner.is_active, updated_at: new Date().toISOString() })
+          .eq('slug', linked.slug);
       }
 
       await fetchBanners();
@@ -201,6 +226,16 @@ export function BannersPage() {
       if (error) {
         console.error('Error toggling banner status:', error);
         await fetchBanners();
+        return;
+      }
+
+      // Synchronize linked category in Supabase categories table
+      const linked = getLinkedCategoryInfo(banner);
+      if (linked) {
+        await supabase
+          .from('categories')
+          .update({ is_visible: nextActive, updated_at: new Date().toISOString() })
+          .eq('slug', linked.slug);
       }
     } catch (err) {
       console.error('Error toggling banner status:', err);
@@ -622,6 +657,28 @@ export function BannersPage() {
                           <span style={{ fontWeight: 500, color: 'var(--md-sys-color-primary)' }}>Text below:</span>{' '}
                           {banner.text || 'None (title only)'}
                         </div>
+                        {(() => {
+                          const linked = getLinkedCategoryInfo(banner);
+                          if (!linked) return null;
+                          return (
+                            <div style={{ marginTop: '5px' }}>
+                              <span style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                fontSize: '11px',
+                                fontWeight: 600,
+                                padding: '2px 8px',
+                                borderRadius: '999px',
+                                backgroundColor: banner.is_active ? 'rgba(30, 142, 62, 0.12)' : 'rgba(186, 26, 26, 0.12)',
+                                color: banner.is_active ? 'var(--md-sys-color-primary, #1e8e3e)' : 'var(--md-sys-color-error, #ba1a1a)',
+                              }}>
+                                <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>sync_alt</span>
+                                Category: {linked.name} ({banner.is_active ? 'Visible in store' : 'Hidden in store'})
+                              </span>
+                            </div>
+                          );
+                        })()}
                       </td>
                       <td>
                         <span style={{ fontSize: '12.5px', fontFamily: 'monospace' }}>
@@ -928,7 +985,7 @@ export function BannersPage() {
                 />
               </div>
 
-              <div className="admin-form-row" style={{ marginTop: '16px' }}>
+              <div className="admin-form-row" style={{ marginTop: '16px', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
                   <md-checkbox
                     checked={editingBanner.is_active}
@@ -940,6 +997,29 @@ export function BannersPage() {
                     Enable Banner (Visible on Home Page)
                   </span>
                 </label>
+                {(() => {
+                  const linked = getLinkedCategoryInfo(editingBanner);
+                  if (!linked) return null;
+                  return (
+                    <div style={{
+                      marginTop: '4px',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(30, 142, 62, 0.08)',
+                      border: '1px solid rgba(30, 142, 62, 0.2)',
+                      fontSize: '12px',
+                      color: 'var(--md-sys-color-primary, #1e8e3e)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>sync_alt</span>
+                      <span>
+                        <strong>Live Category Sync:</strong> This banner controls the <strong>{linked.name}</strong> category. When this banner is enabled, the category appears right after Specials; when disabled, the category is hidden.
+                      </span>
+                    </div>
+                  );
+                })()}
               </div>
             </form>
 
