@@ -117,7 +117,7 @@ export function AdminLoginPage() {
       sessionStorage.removeItem('sdm_admin_lockout_until');
       setFailedAttempts(0);
     } catch (err: any) {
-      console.error('Admin authentication failure');
+      console.error('Admin authentication failure', err);
       const newFails = failedAttempts + 1;
       setFailedAttempts(newFails);
       sessionStorage.setItem('sdm_admin_fails', String(newFails));
