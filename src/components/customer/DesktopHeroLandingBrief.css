@@ -92,11 +92,11 @@
 
   /* Store narrative paragraph in typing effect */
   .desktop-hero-stroke__narrative {
-    font-size: 13px;
-    line-height: 1.55;
+    font-size: 13.5px;
+    line-height: 1.62;
     color: var(--md-sys-color-on-surface-variant, #5F6368);
     font-weight: 450;
-    min-height: 60px;
+    min-height: 90px;
     margin-bottom: auto;
   }
 

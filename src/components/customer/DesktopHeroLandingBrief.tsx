@@ -20,9 +20,9 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
 
       <div className="desktop-hero-stroke__lines-container">
         <StrokeText
-          lines={["SAI DARSHAN", "MART"]}
-          lineHeight={1.16}
-          mobileFontSize={100}
+          lines={["SAI", "DARSHAN", "MART"]}
+          lineHeight={1.08}
+          mobileFontSize={68}
           highlightWord="MART"
           highlightColor={isDark ? '#81C995' : '#1E8E3E'}
           highlightStrokeColor={isDark ? '#81C995' : '#1E8E3E'}
@@ -33,7 +33,7 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
           ease="power2.out"
           trigger="mount"
           fillMode="wipe"
-          fontSize={88}
+          fontSize={68}
           fontWeight={800}
           fontFamily="var(--font-syne), 'Syne', sans-serif"
           letterSpacing={0}
@@ -49,9 +49,9 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
 
       <div className="desktop-hero-stroke__narrative">
         <TypingText
-          text="Jabalpur's trusted neighborhood supermarket delivering authentic quality, farm-fresh grocery essentials, pure unadulterated spices, and household provisions directly to your doorstep with honest pricing and genuine care."
-          speed={22}
-          startDelay={500}
+          text="Jabalpur's trusted neighborhood supermarket delivering authentic quality, farm-fresh grocery essentials, pure unadulterated spices, daily dairy, and household provisions directly to your doorstep. Backed by honest wholesale pricing, spotless hygienic packaging, and dedicated care — from your morning chai and breakfast staples to monthly rashan packages, we take pride in serving every home with genuine trust and prompt local delivery."
+          speed={16}
+          startDelay={350}
         />
       </div>
 
