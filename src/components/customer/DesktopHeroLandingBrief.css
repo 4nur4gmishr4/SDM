@@ -91,7 +91,7 @@
   gap: 12px;
   padding-top: 12px;
   border-top: 1px solid var(--md-sys-color-outline-variant, #E1E3DF);
-  margin-top: auto;
+  margin-top: 0;
 }
 
 [data-theme="dark"] .desktop-hero-stroke__bottom-row {
@@ -130,10 +130,12 @@
 @media (min-width: 1024px) {
   .desktop-hero-stroke-card {
     height: 100%;
-    min-height: 440px;
     border-radius: 24px;
     padding: 24px 28px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .desktop-hero-stroke__lines-container {
@@ -142,20 +144,21 @@
   }
 
   .desktop-hero-stroke__motto-line {
-    font-size: 14.5px;
+    font-size: 14px;
+    margin-top: 2px;
+    margin-bottom: 10px;
   }
 
   .desktop-hero-stroke__narrative {
     font-size: 13.5px;
-    line-height: 1.62;
-    min-height: 90px;
-    margin-bottom: auto;
+    line-height: 1.55;
+    margin-bottom: 14px;
   }
 
   .desktop-hero-stroke__bottom-row {
     gap: 16px;
     padding-top: 14px;
-    margin-top: 12px;
+    margin-top: 0;
   }
 
   .desktop-hero-stroke__desc {

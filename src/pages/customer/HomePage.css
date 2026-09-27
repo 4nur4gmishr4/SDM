@@ -119,7 +119,7 @@
 @media (min-width: 1024px) {
   .home-page__hero-split-section {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 24px;
     align-items: stretch;
   }
@@ -129,13 +129,16 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .home-page__hero-banner-wrap .ios-banner-container {
     max-width: 100% !important;
     margin: 0 !important;
     width: 100% !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .home-page__hero-banner-wrap .ios-banner-card {
