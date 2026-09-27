@@ -16,6 +16,5 @@ export { WatermarkBanner, BeatingHeart } from './WatermarkBanner';
 export { WhatsAppIcon } from './WhatsAppIcon';
 export { StrokeText } from './StrokeText';
 export { TypingText } from './TypingText';
-export { SmoothPreloader } from './SmoothPreloader';
 
 
