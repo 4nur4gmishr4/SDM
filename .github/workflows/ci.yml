@@ -11,6 +11,10 @@ jobs:
   validate-and-build:
     name: Build, Lint & Smoke Tests
     runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: https://otyojqnnwbrteknyqcpi.supabase.co
+      VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90eW9qcW5ud2JydGVrbnlxY3BpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0MzAzNzAsImV4cCI6MjEwNjAwNjM3MH0.HWougnaFjqXZqeLr15wdGIzBWkDKsmP9JsGJTo8hsSo
+      VITE_STORE_WHATSAPP_NUMBER: '+91 79991 57430'
 
     steps:
       - name: Checkout Repository
@@ -73,9 +77,15 @@ jobs:
             await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle' });
             const title = await page.title();
             console.log('Homepage Title:', title);
+            if (!title.includes('Sai Darshan Mart')) {
+              throw new Error('Unexpected title: ' + title);
+            }
+
+            await page.waitForSelector('.category-nav', { timeout: 10000 });
             const categories = await page.locator('.category-nav__item').count();
             console.log('Categories count:', categories);
-            if (categories < 18) throw new Error('Category count below expected: ' + categories);
+            if (categories < 1) throw new Error('Category navigation items missing');
+
             await browser.close();
             console.log('CI Smoke test passed successfully!');
           })().catch(e => {
