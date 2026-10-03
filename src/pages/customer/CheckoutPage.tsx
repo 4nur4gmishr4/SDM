@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import { Helmet } from 'react-helmet-async';
 import { useCart, useLocationContext, useSnackbar } from '../../contexts';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
@@ -24,6 +25,9 @@ export function CheckoutPage() {
     // If the user already set their location previously, consider it primed but confirmable
     return hasLocationBeenSet;
   });
+  
+  // Idempotency Key: Guarantees exact-once processing even if user clicks twice on spotty connection
+  const [idempotencyKey] = useState(() => uuidv4());
 
   const pageTitle = 'Checkout & WhatsApp Order | Sai Darshan Shopping Mart';
 
@@ -142,7 +146,8 @@ export function CheckoutPage() {
               subtotal_amount: subtotal,
               delivery_fee: deliveryFee,
               total_amount: total,
-              status: 'pending'
+              status: 'pending',
+              idempotency_key: idempotencyKey // Prevents duplicate orders at database level
             }),
             3000
           );
