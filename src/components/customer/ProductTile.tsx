@@ -5,6 +5,17 @@ import { formatPrice } from '../../lib/orderUtils';
 import type { Product } from '../../types/product';
 import './ProductTile.css';
 
+function optimizeImageUrl(url: string | null | undefined): string | undefined {
+  if (!url) return undefined;
+  if (url.includes('/storage/v1/object/public/store-media/')) {
+    return url.replace(
+      '/storage/v1/object/public/store-media/', 
+      '/storage/v1/render/image/public/store-media/'
+    ) + '?width=400&resize=contain&quality=80&format=webp';
+  }
+  return url;
+}
+
 interface ProductTileProps {
   product: Product;
 }
@@ -62,7 +73,7 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
       >
         {product.image_url && (
           <img 
-            src={product.image_url} 
+            src={optimizeImageUrl(product.image_url)} 
             alt={product.name} 
             className="product-tile__image" 
             loading="lazy" 
