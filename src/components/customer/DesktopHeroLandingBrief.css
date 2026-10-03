@@ -35,29 +35,69 @@
   width: 100%;
 }
 
-/* Subline: "There is only one boss: The Customer" */
+/* Subline: "There is only one Boss: The Customer" with Continuous Radiant Shine */
 .desktop-hero-stroke__motto-line {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 4px;
-  margin-bottom: 8px;
-  font-size: 13.5px;
+  gap: 8px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  font-size: 15.5px;
   line-height: 1.25;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--md-sys-color-primary, #1E8E3E);
-}
-
-[data-theme="dark"] .desktop-hero-stroke__motto-line {
-  color: #81C995;
+  font-weight: 800;
+  letter-spacing: -0.015em;
 }
 
 .desktop-hero-stroke__motto-text {
-  color: inherit;
   display: inline-block;
   vertical-align: middle;
-  line-height: 1;
+  line-height: 1.2;
+  font-weight: 800;
+  /* Radiant continuous metallic green-to-pearl-white sheen */
+  background: linear-gradient(
+    110deg,
+    #137333 0%,
+    #1E8E3E 22%,
+    #34D399 44%,
+    #FFFFFF 50%,
+    #34D399 56%,
+    #1E8E3E 78%,
+    #137333 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: sdm-tagline-shine 3.5s ease-in-out infinite;
+}
+
+[data-theme="dark"] .desktop-hero-stroke__motto-text {
+  background: linear-gradient(
+    110deg,
+    #48BB78 0%,
+    #81C995 22%,
+    #A7F3D0 44%,
+    #FFFFFF 50%,
+    #A7F3D0 56%,
+    #81C995 78%,
+    #48BB78 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: sdm-tagline-shine 3.5s ease-in-out infinite;
+}
+
+@keyframes sdm-tagline-shine {
+  0% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: -140% center;
+  }
 }
 
 .desktop-hero-stroke__motto-line .flat-beating-heart {
@@ -69,6 +109,8 @@
   line-height: 1;
   position: relative;
   top: -1px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(255, 90, 121, 0.4));
 }
 
 /* Store narrative paragraph in typing effect */
@@ -146,9 +188,10 @@
   }
 
   .desktop-hero-stroke__motto-line {
-    font-size: 13.5px;
-    margin-top: 2px;
-    margin-bottom: 8px;
+    font-size: 17.5px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+    gap: 9px;
   }
 
   .desktop-hero-stroke__narrative {
