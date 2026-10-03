@@ -16,7 +16,7 @@ export function CartLineItem({ item, itemKey, onUpdateQuantity, onRemove }: Cart
     <div className="cart-item">
       <Link to={`/product/${item.product_id}`} className="cart-item__image-container" tabIndex={-1}>
         {item.product_image_url ? (
-          <img src={item.product_image_url} alt={item.product_name} className="cart-item__image" />
+          <img src={item.product_image_url} alt={item.product_name} className="cart-item__image" referrerPolicy="no-referrer" />
         ) : (
           <div className="cart-item__placeholder">
             <span className="material-symbols-outlined">image</span>

@@ -78,6 +78,7 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
             className="product-tile__image" 
             loading="lazy" 
             decoding="async"
+            referrerPolicy="no-referrer"
             width="180"
             height="180"
             onError={(e) => {

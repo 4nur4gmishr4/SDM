@@ -447,6 +447,7 @@ export function ProductsPage() {
                           alt=""
                           loading="lazy"
                           decoding="async"
+                          referrerPolicy="no-referrer"
                           className="admin-product-image"
                         />
                       ) : (

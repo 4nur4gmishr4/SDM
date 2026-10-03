@@ -161,6 +161,7 @@ export function ProductDetailPage() {
                   alt={product.name} 
                   className="product-detail__image" 
                   loading="eager"
+                  referrerPolicy="no-referrer"
                 />
               ) : (
                 <div className="product-detail__placeholder">
