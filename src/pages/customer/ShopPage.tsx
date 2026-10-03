@@ -58,16 +58,24 @@ export function ShopPage() {
 
     // Apply sorting
     filtered.sort((a, b) => {
-      if (sortBy === 'relevance' && localQuery.trim()) {
-        const q = localQuery.toLowerCase().trim();
-        const aExact = a.name.toLowerCase() === q ? 1 : 0;
-        const bExact = b.name.toLowerCase() === q ? 1 : 0;
-        if (aExact !== bExact) return bExact - aExact;
-        
-        const aStarts = a.name.toLowerCase().startsWith(q) ? 1 : 0;
-        const bStarts = b.name.toLowerCase().startsWith(q) ? 1 : 0;
-        if (aStarts !== bStarts) return bStarts - aStarts;
-        
+      if (sortBy === 'relevance') {
+        if (localQuery.trim()) {
+          const q = localQuery.toLowerCase().trim();
+          const aExact = a.name.toLowerCase() === q ? 1 : 0;
+          const bExact = b.name.toLowerCase() === q ? 1 : 0;
+          if (aExact !== bExact) return bExact - aExact;
+          
+          const aStarts = a.name.toLowerCase().startsWith(q) ? 1 : 0;
+          const bStarts = b.name.toLowerCase().startsWith(q) ? 1 : 0;
+          if (aStarts !== bStarts) return bStarts - aStarts;
+
+          // Featured/curated products prioritized among search matches
+          if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
+          return 0;
+        }
+
+        // When browsing without text search, curated featured products are recommended at the very top
+        if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
         return 0;
       }
       

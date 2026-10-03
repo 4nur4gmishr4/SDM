@@ -54,11 +54,11 @@ export function HomePage() {
         <div className="home-page__section-header">
           <h2 className="home-page__section-title">Featured Products</h2>
           <Link to="/shop" className="home-page__section-link">
-            <span>View All</span>
+            <span>View All {featuredProducts.length > 0 ? `(${featuredProducts.length})` : ''}</span>
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
           </Link>
         </div>
-        <ProductGrid products={featuredProducts} isLoading={productsLoading} skeletonCount={8} />
+        <ProductGrid products={featuredProducts.slice(0, 16)} isLoading={productsLoading} skeletonCount={8} />
       </section>
 
       {/* Supermarket Value & Trust Guarantees */}
