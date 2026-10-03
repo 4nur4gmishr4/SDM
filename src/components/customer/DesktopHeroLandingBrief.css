@@ -53,50 +53,65 @@
   vertical-align: middle;
   line-height: 1.2;
   font-weight: 800;
-  /* Radiant continuous metallic green-to-pearl-white sheen */
+  /* Dual-cycle harmonic gradient: 0-50% and 50-100% are identical clones for 100% seamless looping */
   background: linear-gradient(
-    110deg,
+    115deg,
     #137333 0%,
-    #1E8E3E 22%,
-    #34D399 44%,
-    #FFFFFF 50%,
-    #34D399 56%,
-    #1E8E3E 78%,
+    #1E8E3E 12%,
+    #34D399 22%,
+    #FFFFFF 25%,
+    #34D399 28%,
+    #1E8E3E 38%,
+    #137333 50%,
+    #1E8E3E 62%,
+    #34D399 72%,
+    #FFFFFF 75%,
+    #34D399 78%,
+    #1E8E3E 88%,
     #137333 100%
   );
-  background-size: 240% 100%;
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
-  animation: sdm-tagline-shine 3.5s ease-in-out infinite;
+  will-change: background-position;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  animation: sdm-tagline-shine 3.8s linear infinite;
 }
 
 [data-theme="dark"] .desktop-hero-stroke__motto-text {
   background: linear-gradient(
-    110deg,
-    #48BB78 0%,
-    #81C995 22%,
-    #A7F3D0 44%,
-    #FFFFFF 50%,
-    #A7F3D0 56%,
-    #81C995 78%,
-    #48BB78 100%
+    115deg,
+    #1e7e43 0%,
+    #34D399 12%,
+    #A7F3D0 22%,
+    #FFFFFF 25%,
+    #A7F3D0 28%,
+    #34D399 38%,
+    #1e7e43 50%,
+    #34D399 62%,
+    #A7F3D0 72%,
+    #FFFFFF 75%,
+    #A7F3D0 78%,
+    #34D399 88%,
+    #1e7e43 100%
   );
-  background-size: 240% 100%;
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
-  animation: sdm-tagline-shine 3.5s ease-in-out infinite;
 }
 
 @keyframes sdm-tagline-shine {
   0% {
-    background-position: 100% center;
+    background-position: 0% center;
   }
   100% {
-    background-position: -140% center;
+    background-position: 100% center;
   }
 }
 
