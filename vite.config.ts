@@ -102,10 +102,12 @@ export default defineConfig({
       manifest: {
         name: 'Sai Darshan Shopping Mart',
         short_name: 'SDM',
-        description: 'Your local supermarket in Jabalpur',
+        description: 'Your local supermarket in Jabalpur. Fresh groceries, vegetables, and daily essentials.',
         theme_color: '#1E8E3E',
-        background_color: '#F7FAF5',
+        background_color: '#121411',
         display: 'standalone',
+        orientation: 'portrait-primary',
+        categories: ['shopping', 'grocery', 'lifestyle'],
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -118,6 +120,28 @@ export default defineConfig({
             type: 'image/png',
             purpose: 'any maskable'
           }
+        ],
+        shortcuts: [
+          {
+            name: "New Quick Order",
+            short_name: "Order",
+            description: "Upload a list and order instantly",
+            url: "/quick-order",
+            icons: [{ src: "pwa-192x192.png", sizes: "192x192" }]
+          },
+          {
+            name: "Shop Groceries",
+            short_name: "Shop",
+            description: "Browse all supermarket categories",
+            url: "/shop",
+            icons: [{ src: "pwa-192x192.png", sizes: "192x192" }]
+          }
+        ],
+        related_applications: [
+          {
+            platform: "webapp",
+            url: "https://saidarshanmart.com/manifest.webmanifest"
+          }
         ]
       }
     })
@@ -128,12 +152,19 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id: string) {
+          // Exclude absolute largest enterprise dependencies first
           if (id.includes('node_modules/xlsx')) return 'vendor-xlsx';
           if (id.includes('node_modules/leaflet')) return 'vendor-leaflet';
           if (id.includes('node_modules/@supabase')) return 'vendor-supabase';
+          if (id.includes('node_modules/@material/web') || id.includes('node_modules/lit')) return 'vendor-material';
+          if (id.includes('node_modules/gsap')) return 'vendor-gsap';
+          if (id.includes('node_modules/@tanstack')) return 'vendor-react-query';
+          if (id.includes('node_modules/react-virtuoso')) return 'vendor-virtuoso';
+          if (id.includes('node_modules/zod')) return 'vendor-zod';
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router')) {
             return 'vendor-react';
           }
+          if (id.includes('node_modules')) return 'vendor-core';
         }
       }
     }
