@@ -245,13 +245,26 @@
   color: #1E8E3E;
 }
 
-/* Sort Select Pill */
+/* Sort & Category Select Pills */
+.shop-select-wrap,
 .shop-sort-wrap {
   position: relative;
   display: inline-flex;
   align-items: center;
 }
 
+.shop-category-select-wrap {
+  display: inline-flex;
+}
+
+@media (min-width: 905px) {
+  /* On desktop, categories are already featured in the dedicated left sidebar */
+  .shop-category-select-wrap {
+    display: none;
+  }
+}
+
+.shop-select-icon,
 .shop-sort-icon {
   position: absolute;
   left: 12px;
@@ -260,6 +273,7 @@
   pointer-events: none;
 }
 
+.shop-select-input,
 .shop-sort-select {
   height: 38px;
   padding: 0 32px 0 36px;
@@ -277,14 +291,31 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
   transition: all 180ms ease;
+  max-width: 175px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+.shop-select-input:hover,
 .shop-sort-select:hover {
   background-color: var(--md-sys-color-surface-container-high, #e8eaed);
   border-color: #c4c7c5;
 }
 
+.shop-select-input:focus,
 .shop-sort-select:focus {
   border-color: #1E8E3E;
   box-shadow: 0 0 0 1px #1E8E3E;
+}
+
+/* Active Highlight when a specific category is chosen */
+.shop-select-input--active {
+  background-color: rgba(30, 142, 62, 0.12);
+  border-color: #1E8E3E;
+  color: #137333;
+  font-weight: 600;
+}
+
+.shop-category-select-wrap:has(.shop-select-input--active) .shop-select-icon {
+  color: #1E8E3E;
 }

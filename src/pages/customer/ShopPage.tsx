@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { SearchBar } from '../../components/customer/SearchBar';
 import { ProductGrid } from '../../components/customer/ProductGrid';
 import { WatermarkBanner, Skeleton, SeoHead } from '../../components/common';
@@ -8,6 +8,7 @@ import { useProducts } from '../../hooks/useProducts';
 import './ShopPage.css';
 
 export function ShopPage() {
+  const navigate = useNavigate();
   const { categorySlug } = useParams<{ categorySlug: string }>();
   const [searchParams] = useSearchParams();
   
@@ -121,40 +122,6 @@ export function ShopPage() {
         />
       </div>
 
-      {/* Horizontal Category Carousel for Mobile & Tablet */}
-      <div className="shop-page__mobile-categories">
-        <Link 
-          to="/shop" 
-          className={`shop-category-chip ${!categorySlug ? 'shop-category-chip--active' : ''}`}
-        >
-          All Items
-        </Link>
-        {categoriesLoading && categories.length === 0 ? (
-          Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton
-              key={i}
-              width={i % 2 === 0 ? '90px' : '120px'}
-              height="36px"
-              variant="rounded"
-              style={{ borderRadius: '9999px', flexShrink: 0 }}
-            />
-          ))
-        ) : (
-          categories.map(category => (
-            <Link 
-              key={category.id} 
-              to={`/shop/${category.slug}`} 
-              className={`shop-category-chip ${category.slug === categorySlug ? 'shop-category-chip--active' : ''} ${category.is_offer_category ? 'shop-category-chip--offer' : ''}`}
-            >
-              {category.is_offer_category && (
-                <span className="material-symbols-outlined" style={{ fontSize: '14px', marginRight: '4px', verticalAlign: 'middle' }}>local_offer</span>
-              )}
-              {category.name}
-            </Link>
-          ))
-        )}
-      </div>
-
       <div className="shop-page__layout">
         {/* Desktop Sidebar */}
         <aside className="shop-page__sidebar">
@@ -211,6 +178,27 @@ export function ShopPage() {
             </span>
             
             <div className="shop-page__filters">
+              {/* Category Dropdown for Mobile & Tablet (matches Relevance dropdown style) */}
+              <div className="shop-select-wrap shop-category-select-wrap">
+                <span className="material-symbols-outlined shop-select-icon">grid_view</span>
+                <select 
+                  className={`shop-select-input ${categorySlug ? 'shop-select-input--active' : ''}`}
+                  value={categorySlug || ''}
+                  onChange={(e) => {
+                    const slug = e.target.value;
+                    navigate(slug ? `/shop/${slug}` : '/shop');
+                  }}
+                  aria-label="Filter products by category"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.slug}>
+                      {category.name}{category.is_offer_category ? ' (Offer)' : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* In Stock Toggle Chip */}
               <button
                 type="button"
@@ -225,10 +213,10 @@ export function ShopPage() {
               </button>
 
               {/* Native Google Pill Sort Select */}
-              <div className="shop-sort-wrap">
-                <span className="material-symbols-outlined shop-sort-icon">sort</span>
+              <div className="shop-select-wrap shop-sort-wrap">
+                <span className="material-symbols-outlined shop-select-icon">sort</span>
                 <select 
-                  className="shop-sort-select"
+                  className="shop-select-input shop-sort-select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   aria-label="Sort products by"
