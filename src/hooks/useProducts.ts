@@ -46,7 +46,10 @@ export function useProducts(options: UseProductsOptions = {}) {
         query = query.limit(options.limit);
       }
 
-      const { data, error: fetchError } = await withTimeout(query, 5000);
+      // Always prioritize curated / featured items first from the database
+      query = query.order('is_featured', { ascending: false });
+
+      const { data, error: fetchError } = await withTimeout(query, 8000);
       if (fetchError) throw fetchError;
 
       return (data as Product[]) || [];

@@ -19,6 +19,7 @@ export function ShopPage() {
   const [localQuery, setLocalQuery] = useState(urlQuery);
   const [sortBy, setSortBy] = useState('relevance');
   const [inStockOnly, setInStockOnly] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(48);
 
   const { categories, isLoading: categoriesLoading } = useCategories();
   const currentCategory = categories.find(c => c.slug === categorySlug);
@@ -33,6 +34,11 @@ export function ShopPage() {
   useEffect(() => {
     setLocalQuery(urlQuery);
   }, [urlQuery]);
+
+  // Reset pagination window whenever filters change
+  useEffect(() => {
+    setVisibleCount(48);
+  }, [categorySlug, localQuery, sortBy, inStockOnly]);
 
   // Client-side filtering and sorting
   const displayedProducts = useMemo(() => {
@@ -240,7 +246,34 @@ export function ShopPage() {
             </div>
           </div>
 
-          <ProductGrid products={displayedProducts} isLoading={isInitialLoading} skeletonCount={12} />
+          <ProductGrid products={displayedProducts.slice(0, visibleCount)} isLoading={isInitialLoading} skeletonCount={12} />
+
+          {/* Progressive Load More for Large Catalog */}
+          {visibleCount < displayedProducts.length && (
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '36px 0 20px' }}>
+              <button
+                type="button"
+                className="btn btn--outline btn--lg"
+                style={{
+                  borderRadius: '30px',
+                  padding: '12px 32px',
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+                onClick={() => setVisibleCount(prev => prev + 48)}
+              >
+                <span>Load More Products</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>expand_more</span>
+                <span style={{ opacity: 0.7, fontSize: '13px', marginLeft: '4px' }}>
+                  ({displayedProducts.length - visibleCount} more)
+                </span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
