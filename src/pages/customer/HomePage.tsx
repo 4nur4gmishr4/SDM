@@ -19,8 +19,8 @@ export function HomePage() {
   return (
     <div className="layout-container home-page">
       <SeoHead 
-        title="Sai Darshan Shopping Mart - Online Grocery Shopping in Jabalpur"
-        description="Shop fresh groceries, vegetables, and daily essentials online at Sai Darshan Shopping Mart. Fast delivery in Jabalpur."
+        title="Supermarket Near Me | Sai Darshan Shopping Mart Jabalpur"
+        description="Looking for a supermarket near me in Jabalpur? Order fresh groceries, vegetables, and daily essentials online at Sai Darshan Shopping Mart with fast doorstep delivery."
         canonicalUrl="/"
       />
 

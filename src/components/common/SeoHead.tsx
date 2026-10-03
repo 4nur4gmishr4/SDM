@@ -28,6 +28,8 @@ export function SeoHead({
     '@context': 'https://schema.org',
     '@type': 'GroceryStore',
     name: STORE_NAME,
+    alternateName: 'Supermarket Near Me',
+    description: 'Best local grocery store and supermarket near me in Jabalpur for fresh daily essentials and fast home delivery.',
     image: `${BASE_URL}/pwa-512x512.png`,
     '@id': BASE_URL,
     url: BASE_URL,
@@ -56,7 +58,15 @@ export function SeoHead({
     priceRange: '₹₹'
   };
 
-  const finalSchema = jsonLdSchema || defaultSchema;
+  const finalSchema = jsonLdSchema 
+    ? {
+        '@context': 'https://schema.org',
+        '@graph': [
+          defaultSchema,
+          jsonLdSchema
+        ]
+      }
+    : defaultSchema;
 
   return (
     <Helmet>
