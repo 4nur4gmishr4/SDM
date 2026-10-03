@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import type { Product } from '../types/product';
 
@@ -11,137 +11,82 @@ interface UseProductsOptions {
 }
 
 export function useProducts(options: UseProductsOptions = {}) {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryResult = useQuery({
+    queryKey: ['products', options],
+    queryFn: async () => {
+      if (!isSupabaseConfigured) return [];
+      
+      let query = supabase.from('products').select('*, category:categories(id, name, slug)');
 
-  useEffect(() => {
-    let mounted = true;
-
-    if (!isSupabaseConfigured) {
-      setProducts([]);
-      setIsLoading(false);
-      return;
-    }
-
-    async function fetchProducts() {
-      try {
-        setIsLoading(true);
-        let query = supabase.from('products').select('*, category:categories(id, name, slug)');
-
-        if (!options.fetchAll) {
-          query = query.eq('is_archived', false);
-        }
-
-        if (options.categoryId) {
-          if (options.categoryId === 'ca000000-0000-0000-0000-000000000019') {
-            // Mid Month Offer — Real promotional deal items from official Excel catalog
-            query = query.or('name.ilike.%offer%,name.ilike.%special%,name.ilike.%deal%');
-          } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000020') {
-            // Buy 1 Get 1 Offers — Real 1+1/free items from official Excel catalog
-            query = query.or('name.ilike.%1+1%,name.ilike.%free%,name.ilike.%buy 1%');
-          } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000021') {
-            // Buy More Get More — Real combo/saver bundle items from official Excel catalog
-            query = query.or('name.ilike.%combo%,name.ilike.%saver%,name.ilike.%pack%');
-          } else {
-            query = query.eq('category_id', options.categoryId);
-          }
-        }
-
-        if (options.isFeatured) {
-          query = query.eq('is_featured', true);
-        }
-
-        if (options.searchQuery) {
-          query = query.or(`name.ilike.%${options.searchQuery}%,sku.ilike.%${options.searchQuery}%`);
-        }
-
-        if (options.limit) {
-          query = query.limit(options.limit);
-        }
-
-        const { data, error: fetchError } = await withTimeout(query, 5000);
-        if (fetchError) throw fetchError;
-
-        if (mounted) {
-          setProducts((data as Product[]) || []);
-          setError(null);
-        }
-      } catch (err: any) {
-        console.error('Error fetching products:', err.message);
-        if (mounted) {
-          setError(err.message || 'Failed to fetch products');
-          setProducts([]);
-        }
-      } finally {
-        if (mounted) setIsLoading(false);
+      if (!options.fetchAll) {
+        query = query.eq('is_archived', false);
       }
-    }
 
-    fetchProducts();
+      if (options.categoryId) {
+        if (options.categoryId === 'ca000000-0000-0000-0000-000000000019') {
+          query = query.or('name.ilike.%offer%,name.ilike.%special%,name.ilike.%deal%');
+        } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000020') {
+          query = query.or('name.ilike.%1+1%,name.ilike.%free%,name.ilike.%buy 1%');
+        } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000021') {
+          query = query.or('name.ilike.%combo%,name.ilike.%saver%,name.ilike.%pack%');
+        } else {
+          query = query.eq('category_id', options.categoryId);
+        }
+      }
 
-    return () => {
-      mounted = false;
-    };
-  }, [options.categoryId, options.isFeatured, options.searchQuery, options.limit, options.fetchAll]);
+      if (options.isFeatured) {
+        query = query.eq('is_featured', true);
+      }
 
-  return { products, isLoading, error };
+      if (options.searchQuery) {
+        query = query.or(`name.ilike.%${options.searchQuery}%,sku.ilike.%${options.searchQuery}%`);
+      }
+
+      if (options.limit) {
+        query = query.limit(options.limit);
+      }
+
+      const { data, error: fetchError } = await withTimeout(query, 5000);
+      if (fetchError) throw fetchError;
+
+      return (data as Product[]) || [];
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  return {
+    products: queryResult.data || [],
+    isLoading: queryResult.isLoading,
+    error: queryResult.error ? queryResult.error.message : null,
+  };
 }
 
 export function useProduct(id?: string) {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryResult = useQuery({
+    queryKey: ['product', id],
+    queryFn: async () => {
+      if (!id || !isSupabaseConfigured) return null;
 
-  useEffect(() => {
-    let mounted = true;
-    if (!id) {
-      setProduct(null);
-      setIsLoading(false);
-      return;
-    }
-
-    if (!isSupabaseConfigured) {
-      setProduct(null);
-      setIsLoading(false);
-      return;
-    }
-
-    async function fetchProduct() {
-      try {
-        setIsLoading(true);
-        const { data, error: fetchError } = await withTimeout(
-          supabase
-            .from('products')
-            .select('*, category:categories(id, name, slug)')
-            .eq('id', id)
-            .single(),
-          5000
-        );
-          
-        if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
+      const { data, error: fetchError } = await withTimeout(
+        supabase
+          .from('products')
+          .select('*, category:categories(id, name, slug)')
+          .eq('id', id)
+          .single(),
+        5000
+      );
         
-        if (mounted) {
-          setProduct((data as Product) || null);
-          setError(null);
-        }
-      } catch (err: any) {
-        console.error('Error fetching product details:', err.message);
-        if (mounted) {
-          setError(err.message || 'Failed to load product');
-          setProduct(null);
-        }
-      } finally {
-        if (mounted) setIsLoading(false);
-      }
-    }
+      if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
+      
+      return (data as Product) || null;
+    },
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 
-    fetchProduct();
-
-    return () => {
-      mounted = false;
-    };
-  }, [id]);
-
-  return { product, isLoading, error };
+  return {
+    product: queryResult.data || null,
+    isLoading: queryResult.isLoading,
+    error: queryResult.error ? queryResult.error.message : null,
+  };
 }
