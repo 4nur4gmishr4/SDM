@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { SeoHead } from '../../components/common';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice, STORE_NAME, STORE_WHATSAPP_CLEAN } from '../../lib/orderUtils';
 import type { ProductVariant } from '../../types/product';
@@ -40,9 +40,10 @@ export function ProductDetailPage() {
   if (isLoading && !product) {
     return (
       <>
-        <Helmet>
-          <title>Loading Product - Sai Darshan Shopping Mart</title>
-        </Helmet>
+        <SeoHead
+          title="Loading Product - Sai Darshan Shopping Mart"
+          description="Loading product details..."
+        />
         <ProductDetailSkeleton />
       </>
     );
@@ -51,9 +52,10 @@ export function ProductDetailPage() {
   if (!product) {
     return (
       <div className="layout-container" style={{ padding: '64px 24px', textAlign: 'center' }}>
-        <Helmet>
-          <title>Product Not Found - Sai Darshan Shopping Mart</title>
-        </Helmet>
+        <SeoHead
+          title="Product Not Found - Sai Darshan Shopping Mart"
+          description="The product you are looking for does not exist."
+        />
         <h2 className="typescale-title-large">Product not found</h2>
         <p style={{ marginTop: '16px' }}>
           <Link to="/shop">Return to Shop</Link>
@@ -108,10 +110,29 @@ export function ProductDetailPage() {
 
   return (
     <div className="product-detail-page">
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={product.description || `Buy ${product.name} at Sai Darshan Shopping Mart Jabalpur.`} />
-      </Helmet>
+      <SeoHead
+        title={pageTitle}
+        description={product.description || `Buy ${product.name} at Sai Darshan Shopping Mart Jabalpur.`}
+        type="product"
+        canonicalUrl={`/product/${product.id}`}
+        imageUrl={product.image_url || undefined}
+        jsonLdSchema={{
+          '@context': 'https://schema.org/',
+          '@type': 'Product',
+          name: product.name,
+          image: product.image_url ? [product.image_url] : [],
+          description: product.description || `Buy ${product.name} at Sai Darshan Shopping Mart Jabalpur.`,
+          sku: product.sku,
+          offers: {
+            '@type': 'Offer',
+            url: `https://saidarshanmart.com/product/${product.id}`,
+            priceCurrency: 'INR',
+            price: activePrice,
+            itemCondition: 'https://schema.org/NewCondition',
+            availability: isAvailable ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          },
+        }}
+      />
 
       <div className="layout-container">
         {/* Flipkart-Style Clean Breadcrumbs */}

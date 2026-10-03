@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { SeoHead } from '../../components/common';
 import { SearchBar } from '../../components/customer/SearchBar';
 import { CategoryNav } from '../../components/customer/CategoryNav';
 import { ProductGrid } from '../../components/customer/ProductGrid';
@@ -18,10 +18,11 @@ export function HomePage() {
 
   return (
     <div className="layout-container home-page">
-      <Helmet>
-        <title>Sai Darshan Shopping Mart - Online Grocery Shopping in Jabalpur</title>
-        <meta name="description" content="Shop fresh groceries, vegetables, and daily essentials online at Sai Darshan Shopping Mart. Fast delivery in Jabalpur." />
-      </Helmet>
+      <SeoHead 
+        title="Sai Darshan Shopping Mart - Online Grocery Shopping in Jabalpur"
+        description="Shop fresh groceries, vegetables, and daily essentials online at Sai Darshan Shopping Mart. Fast delivery in Jabalpur."
+        canonicalUrl="/"
+      />
 
       {/* Instant Search Bar */}
       <section className="home-page__search-section">

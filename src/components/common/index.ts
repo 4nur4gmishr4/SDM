@@ -16,5 +16,5 @@ export { WatermarkBanner, BeatingHeart } from './WatermarkBanner';
 export { WhatsAppIcon } from './WhatsAppIcon';
 export { StrokeText } from './StrokeText';
 export { TypingText } from './TypingText';
-
+export { SeoHead } from './SeoHead';
 

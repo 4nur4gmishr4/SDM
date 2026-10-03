@@ -1,9 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { SearchBar } from '../../components/customer/SearchBar';
 import { ProductGrid } from '../../components/customer/ProductGrid';
-import { WatermarkBanner, Skeleton } from '../../components/common';
+import { WatermarkBanner, Skeleton, SeoHead } from '../../components/common';
 import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
 import './ShopPage.css';
@@ -94,10 +93,11 @@ export function ShopPage() {
 
   return (
     <div className="layout-container shop-page">
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={`Shop ${currentCategory ? currentCategory.name.toLowerCase() : 'all groceries'} at Sai Darshan Shopping Mart. Fast delivery in Jabalpur.`} />
-      </Helmet>
+      <SeoHead
+        title={pageTitle}
+        description={`Shop ${currentCategory ? currentCategory.name.toLowerCase() : 'all groceries'} at Sai Darshan Shopping Mart. Fast delivery in Jabalpur.`}
+        canonicalUrl={categorySlug ? `/shop/${categorySlug}` : '/shop'}
+      />
 
       <header className="shop-page__header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
