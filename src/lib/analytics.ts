@@ -1,5 +1,36 @@
 import { supabase, isSupabaseConfigured, withTimeout } from './supabase';
 
+let gaInitialized = false;
+
+/**
+ * Injects Google Analytics 4 Script into the DOM
+ */
+export function initGA4(): void {
+  if (typeof window === 'undefined') return;
+  const gaId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string) || '';
+  if (!gaId || gaInitialized) return;
+
+  // Prevent multiple script tags
+  if (document.getElementById('ga4-script')) return;
+
+  const script = document.createElement('script');
+  script.id = 'ga4-script';
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+  document.head.appendChild(script);
+
+  const initScript = document.createElement('script');
+  initScript.innerHTML = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '${gaId}');
+  `;
+  document.head.appendChild(initScript);
+
+  gaInitialized = true;
+}
+
 export interface TrafficAnalyticsData {
   total_page_views: number;
   daily_visitors: Record<string, number>;
@@ -70,6 +101,13 @@ export function trackPageView(pathname: string): void {
 
   // Ignore admin routes from customer traffic metrics
   if (pathname.startsWith('/admin')) return;
+
+  // Push to Google Analytics if active
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'page_view', {
+      page_path: pathname
+    });
+  }
 
   const device = getDeviceType();
   const { isNewToday } = getOrCreateVisitorId();
