@@ -1,6 +1,12 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { registerSW } from 'virtual:pwa-register';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+registerSW({ immediate: true });
 import App from './App';
+
+const queryClient = new QueryClient();
 
 // Material Web component imports — registers custom elements globally
 import '@material/web/button/filled-button.js';
@@ -37,7 +43,9 @@ const root = document.getElementById('root');
 if (root) {
   createRoot(root).render(
     <StrictMode>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </StrictMode>
   );
 }
