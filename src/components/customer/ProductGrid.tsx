@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { VirtuosoGrid } from 'react-virtuoso';
 import { ProductTile } from './ProductTile';
 import { ProductGridSkeleton } from '../common';
 import type { Product } from '../../types/product';
@@ -17,12 +17,10 @@ export function ProductGrid({
   isLoading = false,
   skeletonCount = 8,
 }: ProductGridProps) {
-  const [visibleCount, setVisibleCount] = useState(20);
 
   if (isLoading && products.length === 0) {
     return <ProductGridSkeleton count={skeletonCount} />;
   }
-
 
   if (products.length === 0) {
     return (
@@ -34,29 +32,16 @@ export function ProductGrid({
     );
   }
 
-  const visibleProducts = products.slice(0, visibleCount);
-  const hasMore = visibleCount < products.length;
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div className="product-grid">
-        {visibleProducts.map((product) => (
-          <ProductTile key={product.id} product={product} />
-        ))}
-      </div>
-      
-      {hasMore && (
-        <div className="product-grid__load-more-wrapper">
-          <button 
-            type="button"
-            className="sdm-btn sdm-btn--tonal product-grid__load-more-btn" 
-            onClick={() => setVisibleCount(c => c + 20)}
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>expand_more</span>
-            <span>Load More Products</span>
-          </button>
-        </div>
-      )}
+      <VirtuosoGrid
+        useWindowScroll
+        data={products}
+        listClassName="product-grid"
+        itemContent={(_index: number, product: Product) => (
+          <ProductTile product={product} />
+        )}
+      />
     </div>
   );
 }
