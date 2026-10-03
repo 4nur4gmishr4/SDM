@@ -1,8 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { z } from 'zod';
 import { useAuth } from '../../contexts/AuthContext';
 import './AdminLoginPage.css';
+
+const AdminLoginSchema = z.object({
+  email: z.string().email("Please enter a valid admin email address."),
+  password: z.string().min(8, "Invalid credentials.")
+});
 
 // Maximum failed login attempts allowed before lockout
 const MAX_FAILED_ATTEMPTS = 5;
@@ -85,8 +91,10 @@ export function AdminLoginPage() {
     const cleanEmail = email.trim();
     const cleanPassword = password.trim();
 
-    if (!cleanEmail || !cleanPassword) {
-      setError('Please provide both administrative email and password.');
+    // Zod schema validation
+    const validationResult = AdminLoginSchema.safeParse({ email: cleanEmail, password: cleanPassword });
+    if (!validationResult.success) {
+      setError(validationResult.error.issues[0].message);
       return;
     }
 

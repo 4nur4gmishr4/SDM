@@ -250,7 +250,7 @@ export function ProductDetailPage() {
               <div className="product-detail__variants-section">
                 <span className="product-detail__variants-label">Available Pack / Quantity Options:</span>
                 <div className="product-detail__variants-grid">
-                  {product.variants.map((v) => {
+                  {product.variants.map((v: any) => {
                     const isSelected = selectedVariant?.id === v.id || selectedVariant?.unit_size === v.unit_size;
                     return (
                       <button
