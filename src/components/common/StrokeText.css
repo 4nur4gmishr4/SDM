@@ -1,0 +1,11 @@
+/* ============================================================
+   StrokeText Component Styling
+   ============================================================ */
+
+.stroke-text {
+  display: block;
+  width: 100%;
+  line-height: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
