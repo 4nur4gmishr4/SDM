@@ -1,4 +1,4 @@
-import { VirtuosoGrid } from 'react-virtuoso';
+
 import { ProductTile } from './ProductTile';
 import { ProductGridSkeleton } from '../common';
 import type { Product } from '../../types/product';
@@ -33,15 +33,10 @@ export function ProductGrid({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <VirtuosoGrid
-        useWindowScroll
-        data={products}
-        listClassName="product-grid"
-        itemContent={(_index: number, product: Product) => (
-          <ProductTile product={product} />
-        )}
-      />
+    <div className="product-grid">
+      {products.map((product) => (
+        <ProductTile key={product.id} product={product} />
+      ))}
     </div>
   );
 }

@@ -159,7 +159,7 @@ export default defineConfig({
           if (id.includes('node_modules/@material/web') || id.includes('node_modules/lit')) return 'vendor-material';
           if (id.includes('node_modules/gsap')) return 'vendor-gsap';
           if (id.includes('node_modules/@tanstack')) return 'vendor-react-query';
-          if (id.includes('node_modules/react-virtuoso')) return 'vendor-virtuoso';
+
           if (id.includes('node_modules/zod')) return 'vendor-zod';
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router')) {
             return 'vendor-react';
