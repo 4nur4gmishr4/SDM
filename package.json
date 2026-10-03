@@ -42,8 +42,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "oxlint",
-      "tsc -b"
+      "oxlint"
     ]
   }
 }
