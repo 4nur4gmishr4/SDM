@@ -35,7 +35,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: #E6F4EA;
+  background-color: var(--md-sys-color-primary-container, #E6F4EA);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,7 +44,7 @@
 
 .admin-login-shield-icon {
   font-size: 32px;
-  color: #1E8E3E;
+  color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .admin-login-title {
@@ -64,9 +64,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #FCE8E6;
-  color: #C5221F;
-  border: 1px solid #FAD2CF;
+  background-color: var(--md-sys-color-error-container, #FCE8E6);
+  color: var(--md-sys-color-on-error-container, #C5221F);
+  border: 1px solid var(--md-sys-color-error, #FAD2CF);
   padding: 10px 14px;
   border-radius: 12px;
   font-size: 13px;
@@ -77,9 +77,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: #FEF7E0;
-  color: #B06000;
-  border: 1px solid #FEEFC3;
+  background-color: var(--md-sys-color-secondary-container, #FEF7E0);
+  color: var(--md-sys-color-on-secondary-container, #B06000);
+  border: 1px solid var(--md-sys-color-secondary, #FEEFC3);
   padding: 12px 14px;
   border-radius: 12px;
   font-size: 13px;
@@ -114,7 +114,7 @@
   position: absolute;
   left: 14px;
   font-size: 20px;
-  color: #5f6368;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
   pointer-events: none;
 }
 
@@ -133,14 +133,14 @@
 }
 
 .admin-input-field:focus {
-  border-color: #1E8E3E;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 1px #1E8E3E;
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  background-color: var(--md-sys-color-surface, #ffffff);
+  box-shadow: 0 0 0 1px var(--md-sys-color-primary, #1E8E3E);
 }
 
 .admin-input-field:disabled {
   opacity: 0.6;
-  background-color: #f1f3f4;
+  background-color: var(--md-sys-color-surface-container, #f1f3f4);
   cursor: not-allowed;
 }
 
@@ -149,7 +149,7 @@
   right: 12px;
   background: none;
   border: none;
-  color: #5f6368;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
   cursor: pointer;
   padding: 6px;
   display: flex;
@@ -160,15 +160,15 @@
 }
 
 .admin-pw-toggle:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.05));
 }
 
 .admin-login-btn {
   width: 100%;
   height: 48px;
   border-radius: 9999px !important;
-  background-color: #1E8E3E !important;
-  color: #ffffff !important;
+  background-color: var(--md-sys-color-primary, #1E8E3E) !important;
+  color: var(--md-sys-color-on-primary, #ffffff) !important;
   border: none;
   font-size: 14px;
   font-weight: 600;
@@ -183,7 +183,7 @@
 }
 
 .admin-login-btn:hover:not(:disabled) {
-  background-color: #178036 !important;
+  filter: brightness(0.92);
   box-shadow: 0 2px 6px rgba(30, 142, 62, 0.4);
 }
 

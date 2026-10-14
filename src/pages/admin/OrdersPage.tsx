@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { formatPrice } from '../../lib/orderUtils';
+import { exportOrdersToExcel } from '../../lib/backupPipeline';
 import { AdminTableSkeleton } from '../../components/common';
 import type { Order } from '../../types/order';
 import './OrdersPage.css';
@@ -9,6 +10,7 @@ import './OrdersPage.css';
 export function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Filters & Pagination
   const [searchQuery, setSearchQuery] = useState('');
@@ -114,15 +116,38 @@ export function OrdersPage() {
       </Helmet>
       <div className="admin-orders-header">
         <h1 className="admin-orders-title">Orders ({orders.length})</h1>
-        <button
-          type="button"
-          onClick={fetchOrders}
-          className="sdm-btn sdm-btn--outlined admin-refresh-btn"
-          title="Refresh orders list"
-        >
-          <span className="material-symbols-outlined admin-orders__refresh-icon">refresh</span>
-          <span>Refresh</span>
-        </button>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            disabled={isExporting || orders.length === 0}
+            onClick={async () => {
+              setIsExporting(true);
+              try {
+                await exportOrdersToExcel();
+              } catch (err) {
+                console.error('Export orders error:', err);
+              } finally {
+                setIsExporting(false);
+              }
+            }}
+            className="sdm-btn sdm-btn--outlined admin-refresh-btn"
+            title="Download full orders and line items spreadsheet"
+          >
+            <span className="material-symbols-outlined admin-orders__refresh-icon">
+              {isExporting ? 'hourglass_top' : 'download'}
+            </span>
+            <span>{isExporting ? 'Exporting...' : 'Export Orders (.xlsx)'}</span>
+          </button>
+          <button
+            type="button"
+            onClick={fetchOrders}
+            className="sdm-btn sdm-btn--outlined admin-refresh-btn"
+            title="Refresh orders list"
+          >
+            <span className="material-symbols-outlined admin-orders__refresh-icon">refresh</span>
+            <span>Refresh</span>
+          </button>
+        </div>
       </div>
 
       <div className="admin-toolbar-row">

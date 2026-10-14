@@ -109,15 +109,15 @@
 }
 
 .admin-toggle-switch-btn--active {
-  background: rgba(30, 142, 62, 0.12);
-  color: #1e8e3e;
-  border-color: rgba(30, 142, 62, 0.3);
+  background: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  color: var(--md-sys-color-on-primary-container, #1e8e3e);
+  border-color: var(--md-sys-color-primary, rgba(30, 142, 62, 0.3));
 }
 
 .admin-toggle-switch-btn--inactive {
-  background: rgba(142, 142, 147, 0.12);
-  color: #8e8e93;
-  border-color: rgba(142, 142, 147, 0.3);
+  background: var(--md-sys-color-surface-container-high, rgba(142, 142, 147, 0.12));
+  color: var(--md-sys-color-on-surface-variant, #8e8e93);
+  border-color: var(--md-sys-color-outline-variant, rgba(142, 142, 147, 0.3));
 }
 
 .admin-toggle-switch-btn:hover {

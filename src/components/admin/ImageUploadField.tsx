@@ -1,5 +1,6 @@
 import { useState, useRef, type ChangeEvent, type DragEvent } from 'react';
 import { uploadImageFile } from '../../lib/uploadImage';
+import { formatBytes, type CompressionResult } from '../../lib/imageCompression';
 import './ImageUploadField.css';
 
 interface PresetImage {
@@ -29,22 +30,35 @@ export function ImageUploadField({
   isVideo = false,
 }: ImageUploadFieldProps) {
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string>('');
+  const [compressionInfo, setCompressionInfo] = useState<CompressionResult | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (file: File) => {
     setIsUploading(true);
+    setUploadStatus(isVideo ? 'Preparing video...' : 'Compressing image to WebP...');
     try {
-      const uploadedUrl = await uploadImageFile(file);
+      const uploadedUrl = await uploadImageFile(file, {
+        maxWidth: 1000,
+        maxHeight: 1000,
+        quality: 0.82,
+        onCompressed: (info) => {
+          setCompressionInfo(info);
+          setUploadStatus(`Saving ${formatBytes(info.compressedSize)} file to storage...`);
+        },
+      });
       onChange(uploadedUrl);
     } catch (err) {
       console.error('File upload error:', err);
       alert('Failed to upload image. Please try again.');
     } finally {
       setIsUploading(false);
+      setUploadStatus('');
     }
   };
+
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -104,7 +118,7 @@ export function ImageUploadField({
       {isUploading ? (
         <div className="image-upload-field__uploading">
           <div className="image-upload-field__spinner" />
-          <span>Uploading {isVideo ? 'video' : 'image'} to store storage...</span>
+          <span>{uploadStatus || `Uploading ${isVideo ? 'video' : 'image'} to store storage...`}</span>
         </div>
       ) : value ? (
         /* Preview Card */
@@ -121,8 +135,14 @@ export function ImageUploadField({
             <div className="image-upload-field__preview-title">
               {isVideo ? 'Selected Video' : 'Selected Image'}
             </div>
+            {compressionInfo && (
+              <div className="image-upload-field__compression-badge">
+                <span className="material-symbols-outlined" style={{ fontSize: '13px', color: '#16a34a' }}>bolt</span>
+                <span>Optimized WebP: {formatBytes(compressionInfo.originalSize)} → {formatBytes(compressionInfo.compressedSize)} ({compressionInfo.savingsPercent}% saved)</span>
+              </div>
+            )}
             <div className="image-upload-field__preview-url" title={value}>
-              {value.startsWith('data:') ? 'Custom Uploaded File (Ready)' : value}
+              {value.startsWith('data:') ? 'Custom Compressed File (Ready)' : value}
             </div>
           </div>
 

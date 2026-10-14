@@ -6,11 +6,13 @@ import {
   withTimeout,
 } from "../../lib/supabase";
 import { formatPrice } from "../../lib/orderUtils";
+import { exportCatalogToExcel } from "../../lib/backupPipeline";
 import { AdminTableSkeleton } from "../../components/common";
 import { ExcelImportWidget } from "../../components/admin/ExcelImportWidget";
 import { ImageUploadField } from "../../components/admin/ImageUploadField";
 import type { Product, ProductVariant } from "../../types/product";
 import type { Category } from "../../types/category";
+import { matchesSearchQuery } from "../../lib/searchUtils";
 import "./OrdersPage.css"; // Reusing table styles
 import "./ProductsPage.css";
 
@@ -18,6 +20,7 @@ export function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Filters & Pagination
   const [searchQuery, setSearchQuery] = useState("");
@@ -245,7 +248,7 @@ export function ProductsPage() {
     return products.filter((p) => {
       const matchesSearch =
         !query ||
-        p.name.toLowerCase().includes(query) ||
+        matchesSearchQuery(p.name, p.brand, query) ||
         (p.sku && p.sku.toLowerCase().includes(query));
 
       const matchesCategory =
@@ -279,6 +282,27 @@ export function ProductsPage() {
       <div className="admin-products-header">
         <h1 className="admin-products-title">Products ({products.length})</h1>
         <div className="admin-products-header__actions">
+          <button
+            type="button"
+            disabled={isExporting || products.length === 0}
+            onClick={async () => {
+              setIsExporting(true);
+              try {
+                await exportCatalogToExcel();
+              } catch (err) {
+                console.error("Export catalog error:", err);
+              } finally {
+                setIsExporting(false);
+              }
+            }}
+            className="sdm-btn sdm-btn--outlined"
+            title="Download full catalog Excel sheet"
+          >
+            <span className="material-symbols-outlined admin-btn-icon">
+              {isExporting ? "hourglass_top" : "download"}
+            </span>
+            <span>{isExporting ? "Exporting..." : "Export Catalog (.xlsx)"}</span>
+          </button>
           <button
             type="button"
             onClick={() => setIsImportModalOpen(true)}
