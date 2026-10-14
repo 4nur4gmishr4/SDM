@@ -8,12 +8,17 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "sync:inventory": "node scripts/sync_excel_to_supabase.js",
+    "catalog:audit": "node scripts/audit_catalog.js",
+    "catalog:reconcile": "node scripts/reconcile_database_consistency.js",
+    "test:store": "node scripts/test_store.js"
   },
   "dependencies": {
     "@material/web": "^2.5.0",
     "@supabase/supabase-js": "^2.117.0",
     "@tanstack/react-query": "^5.104.1",
+    "@tanstack/react-virtual": "^3.14.19",
     "@types/leaflet": "^1.9.22",
     "gsap": "^3.15.0",
     "leaflet": "^1.9.4",
