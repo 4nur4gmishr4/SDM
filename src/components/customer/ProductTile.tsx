@@ -29,6 +29,8 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
   const currentPrice = activeVariant ? activeVariant.price : product.price;
   const currentMrp = activeVariant?.mrp || product.mrp;
   const currentUnit = activeVariant ? activeVariant.unit_size : product.unit_size;
+  const currentImage = activeVariant?.image_url || product.image_url;
+  const targetId = activeVariant?.id || product.id;
   const isAvailable = activeVariant ? activeVariant.is_available : product.is_available;
   const discountPercent = (currentMrp && currentMrp > currentPrice)
     ? Math.round(((currentMrp - currentPrice) / currentMrp) * 100)
@@ -37,17 +39,17 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
   const handleAdd = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     addItem({
-      product_id: product.id,
+      product_id: targetId,
       variant_id: activeVariant?.id,
-      product_name: product.name,
+      product_name: `${product.name} (${currentUnit})`,
       product_sku: activeVariant?.sku || product.sku,
       product_price: currentPrice,
       original_price: currentMrp,
-      product_image_url: product.image_url,
+      product_image_url: currentImage,
       unit_size: currentUnit,
       quantity: 1,
     });
-  }, [addItem, product.id, product.name, product.sku, product.image_url, activeVariant?.id, activeVariant?.sku, currentPrice, currentMrp, currentUnit]);
+  }, [addItem, targetId, product.name, product.sku, currentImage, activeVariant?.id, activeVariant?.sku, currentPrice, currentMrp, currentUnit]);
 
   return (
     <article className="product-tile">
@@ -66,14 +68,14 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
       </div>
 
       <Link 
-        to={`/product/${product.id}`} 
+        to={`/product/${targetId}`} 
         className="product-tile__image-link"
         aria-label={`View details for ${product.name}`}
         tabIndex={-1}
       >
-        {product.image_url && (
+        {currentImage && (
           <img 
-            src={optimizeImageUrl(product.image_url)} 
+            src={optimizeImageUrl(currentImage)} 
             alt={product.name} 
             className="product-tile__image" 
             loading="lazy" 
@@ -90,36 +92,56 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
         )}
         <span 
           className="material-symbols-outlined product-tile__placeholder-icon"
-          style={{ display: product.image_url ? 'none' : 'block' }}
+          style={{ display: currentImage ? 'none' : 'block' }}
         >
           image
         </span>
       </Link>
 
       <div className="product-tile__content">
-        <Link to={`/product/${product.id}`} className="product-tile__name">
+        <Link to={`/product/${targetId}`} className="product-tile__name">
           {product.name}
         </Link>
 
-        {/* Quantity Options / Variants Mini Pills */}
+        {/* Quantity Options / Variants Selector */}
         {variants.length > 1 ? (
-          <div className="product-tile__variants">
-            {variants.map((v, i) => (
-              <button
-                key={v.id || i}
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setSelectedVariantIdx(i);
-                }}
-                className={`product-tile__variant-pill ${i === selectedVariantIdx ? 'product-tile__variant-pill--active' : ''}`}
-                aria-label={`Select ${v.unit_size}`}
+          variants.length <= 4 ? (
+            <div className="product-tile__variants">
+              {variants.map((v, i) => (
+                <button
+                  key={v.id || i}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSelectedVariantIdx(i);
+                  }}
+                  className={`product-tile__variant-pill ${i === selectedVariantIdx ? 'product-tile__variant-pill--active' : ''}`}
+                  aria-label={`Select ${v.unit_size}`}
+                  title={`${v.unit_size} - ${formatPrice(v.price)}`}
+                >
+                  {v.unit_size}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="product-tile__variant-select-wrap">
+              <select
+                className="product-tile__variant-select"
+                value={selectedVariantIdx}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => setSelectedVariantIdx(Number(e.target.value))}
+                aria-label="Select pack size"
               >
-                {v.unit_size}
-              </button>
-            ))}
-          </div>
+                {variants.map((v, i) => (
+                  <option key={v.id || i} value={i}>
+                    {v.unit_size} - {formatPrice(v.price)}
+                  </option>
+                ))}
+              </select>
+              <span className="material-symbols-outlined product-tile__select-arrow">expand_more</span>
+            </div>
+          )
         ) : (
           <div className="product-tile__unit">{currentUnit}</div>
         )}

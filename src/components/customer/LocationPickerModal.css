@@ -572,7 +572,7 @@
   gap: 4px;
   font-size: 11px;
   font-weight: 600;
-  color: #137333;
+  color: var(--md-sys-color-primary, #1E8E3E);
 }
 
 .location-confirm-btn {
@@ -585,8 +585,8 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #1E8E3E !important;
-  color: #ffffff !important;
+  background-color: var(--md-sys-color-primary, #1E8E3E) !important;
+  color: var(--md-sys-color-on-primary, #ffffff) !important;
   border: none;
   cursor: pointer;
   transition: all 180ms ease;
@@ -594,7 +594,7 @@
 }
 
 .location-confirm-btn:hover:not(:disabled) {
-  background-color: #178036 !important;
+  filter: brightness(0.92);
   box-shadow: 0 2px 6px rgba(30, 142, 62, 0.4);
 }
 
