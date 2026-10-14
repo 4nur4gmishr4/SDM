@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
+import { exportFullDatabaseSnapshotJSON } from '../../lib/backupPipeline';
 import { AdminFormSkeleton } from '../../components/common';
 import type { DeliverySettings } from '../../types/delivery';
 import './SettingsPage.css';
@@ -17,6 +18,7 @@ export function SettingsPage() {
   const [settings, setSettings] = useState<DeliverySettings>(DEFAULT_SETTINGS);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const pageTitle = 'Store Settings | Sai Darshan Shopping Mart Admin';
 
@@ -167,7 +169,7 @@ export function SettingsPage() {
           <hr className="admin-settings-divider" />
 
           <div className="admin-form-group">
-            <h2 className="typescale-title-large">Database Connection</h2>
+            <h2 className="typescale-title-large">Database Connection &amp; Backups</h2>
             <div className={`admin-db-status ${isSupabaseConfigured ? 'admin-db-status--connected' : 'admin-db-status--disconnected'}`}>
               <span className="material-symbols-outlined admin-db-status__icon">
                 {isSupabaseConfigured ? 'check_circle' : 'warning'}
@@ -181,6 +183,33 @@ export function SettingsPage() {
                 </p>
               </div>
             </div>
+
+            {isSupabaseConfigured && (
+              <div style={{ marginTop: '16px' }}>
+                <button
+                  type="button"
+                  disabled={isExporting}
+                  onClick={async () => {
+                    setIsExporting(true);
+                    try {
+                      await exportFullDatabaseSnapshotJSON();
+                    } catch (err) {
+                      console.error('Backup snapshot error:', err);
+                      alert('Failed to generate snapshot');
+                    } finally {
+                      setIsExporting(false);
+                    }
+                  }}
+                  className="sdm-btn sdm-btn--outlined"
+                  title="Generate a full offline JSON disaster recovery snapshot of all store tables"
+                >
+                  <span className="material-symbols-outlined">
+                    {isExporting ? 'hourglass_top' : 'cloud_download'}
+                  </span>
+                  <span>{isExporting ? 'Generating Snapshot...' : 'Backup Full Database Snapshot (.json)'}</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

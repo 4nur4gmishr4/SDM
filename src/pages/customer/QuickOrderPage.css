@@ -204,8 +204,8 @@
 }
 
 .quick-clear-btn:hover {
-  color: #d93025;
-  border-color: #d93025;
+  color: var(--md-sys-color-error, #d93025);
+  border-color: var(--md-sys-color-error, #d93025);
 }
 
 /* Quick Suggestion Chips */
@@ -497,12 +497,13 @@
 }
 
 .manual-preview-action-btn--delete {
-  color: #d93025;
+  color: var(--md-sys-color-error, #d93025);
 }
 
 .manual-preview-action-btn--delete:hover {
-  background-color: #fde8e8;
-  border-color: #d93025;
+  background-color: var(--md-sys-color-error-container, #fde8e8);
+  border-color: var(--md-sys-color-error, #d93025);
+  color: var(--md-sys-color-on-error-container, #410002);
 }
 
 .manual-preview-tip {

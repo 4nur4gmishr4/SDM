@@ -83,23 +83,23 @@ export function OrderConfirmationPage() {
         <div style={{
           width: '100%',
           maxWidth: '500px',
-          background: 'var(--md-sys-color-surface-container, #f9fafb)',
-          border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.1))',
+          background: 'var(--md-sys-color-surface-container)',
+          border: '1px solid var(--md-sys-color-outline-variant)',
           borderRadius: '16px',
           padding: '20px',
           textAlign: 'left',
           marginBottom: '28px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary, #1E8E3E)', fontSize: '24px' }}>
+            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)', fontSize: '24px' }}>
               account_balance_wallet
             </span>
-            <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--md-sys-color-on-surface, #1f2937)' }}>
+            <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>
               Direct UPI / Online Payment Option
             </div>
           </div>
 
-          <p style={{ fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant, #6b7280)', margin: '0 0 14px', lineHeight: 1.5 }}>
+          <p style={{ fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)', margin: '0 0 14px', lineHeight: 1.5 }}>
             You can pay via Cash on Delivery or prepay directly to the store via any UPI app (GPay, PhonePe, Paytm, BHIM):
           </p>
 
@@ -107,15 +107,15 @@ export function OrderConfirmationPage() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            background: 'var(--md-sys-color-surface, #ffffff)',
-            border: '1px solid var(--md-sys-color-outline-variant, #e5e7eb)',
+            background: 'var(--md-sys-color-surface)',
+            border: '1px solid var(--md-sys-color-outline-variant)',
             borderRadius: '10px',
             padding: '10px 14px',
             marginBottom: '14px'
           }}>
             <div>
-              <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant, #6b7280)', display: 'block' }}>Store UPI ID</span>
-              <strong style={{ fontSize: '14px', color: 'var(--md-sys-color-primary, #1E8E3E)' }}>{STORE_UPI_ID}</strong>
+              <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', display: 'block' }}>Store UPI ID</span>
+              <strong style={{ fontSize: '14px', color: 'var(--md-sys-color-primary)' }}>{STORE_UPI_ID}</strong>
             </div>
             <button
               type="button"
@@ -141,17 +141,17 @@ export function OrderConfirmationPage() {
         <div style={{
           width: '100%',
           maxWidth: '500px',
-          background: 'var(--md-sys-color-surface-container-low, #f3f4f6)',
+          background: 'var(--md-sys-color-surface-container-low)',
           borderRadius: '12px',
           padding: '14px 18px',
           textAlign: 'left',
           fontSize: '12.5px',
-          color: 'var(--md-sys-color-on-surface-variant, #4b5563)',
+          color: 'var(--md-sys-color-on-surface-variant)',
           lineHeight: 1.5,
           marginBottom: '28px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, color: 'var(--md-sys-color-on-surface, #111827)', marginBottom: '4px' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--md-sys-color-primary, #1E8E3E)' }}>local_shipping</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, color: 'var(--md-sys-color-on-surface)', marginBottom: '4px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--md-sys-color-primary)' }}>local_shipping</span>
             <span>Delivery Coverage: {STORE_DELIVERY_RADIUS}</span>
           </div>
           <div>Store Address: {STORE_ADDRESS}</div>

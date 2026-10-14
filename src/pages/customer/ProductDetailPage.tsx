@@ -25,14 +25,17 @@ export function ProductDetailPage() {
     // Reset quantity when product changes
     setQuantity(1);
     if (product?.variants && product.variants.length > 0) {
-      setSelectedVariant(product.variants[0]);
+      const matchingVariant = product.variants.find(v => v.id === id);
+      setSelectedVariant(matchingVariant || product.variants.find(v => v.is_available) || product.variants[0]);
     } else if (product) {
       setSelectedVariant({
-        id: 'default',
+        id: product.id,
         unit_size: product.unit_size || '1 unit',
         price: product.price,
         mrp: product.mrp,
-        is_available: product.is_available
+        is_available: product.is_available,
+        sku: product.sku,
+        image_url: product.image_url,
       });
     }
   }, [id, product]);
@@ -68,6 +71,7 @@ export function ProductDetailPage() {
   const activeMrp = selectedVariant?.mrp ?? product.mrp;
   const activeUnitSize = selectedVariant?.unit_size ?? product.unit_size;
   const isAvailable = selectedVariant ? selectedVariant.is_available : product.is_available;
+  const activeImage = selectedVariant?.image_url || product.image_url;
   const discountPercent = activeMrp && activeMrp > activePrice 
     ? Math.round(((activeMrp - activePrice) / activeMrp) * 100) 
     : 0;
@@ -89,7 +93,7 @@ export function ProductDetailPage() {
     addItem({
       product_id: product.id,
       variant_id: selectedVariant?.id,
-      product_name: product.name,
+      product_name: `${product.name} (${activeUnitSize})`,
       product_sku: selectedVariant?.sku || product.sku,
       product_price: activePrice,
       original_price: activeMrp,
@@ -155,10 +159,10 @@ export function ProductDetailPage() {
           {/* Left Column: Sticky Image Viewport & Action Buttons */}
           <div className="product-detail__left-col">
             <div className="product-detail__image-box">
-              {product.image_url ? (
+              {activeImage ? (
                 <img 
-                  src={product.image_url} 
-                  alt={product.name} 
+                  src={activeImage} 
+                  alt={`${product.name} - ${activeUnitSize}`} 
                   className="product-detail__image" 
                   loading="eager"
                   referrerPolicy="no-referrer"
