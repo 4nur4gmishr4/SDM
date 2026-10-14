@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import type { Product } from '../types/product';
+import { expandSearchQuery } from '../lib/searchUtils';
+import { groupProductsIntoVariants, extractBaseNameAndUnit } from '../lib/productGrouping';
 
 interface UseProductsOptions {
   categoryId?: string;
@@ -38,8 +40,15 @@ export function useProducts(options: UseProductsOptions = {}) {
         query = query.eq('is_featured', true);
       }
 
-      if (options.searchQuery) {
-        query = query.or(`name.ilike.%${options.searchQuery}%,sku.ilike.%${options.searchQuery}%`);
+      if (options.searchQuery && options.searchQuery.trim()) {
+        const clean = options.searchQuery.trim();
+        const terms = expandSearchQuery(clean).slice(0, 6);
+        const orConditions = terms.flatMap(t => [
+          `name.ilike.%${t}%`,
+          `brand.ilike.%${t}%`,
+          `sku.ilike.%${t}%`
+        ]).join(',');
+        query = query.or(orConditions);
       }
 
       if (options.limit) {
@@ -52,7 +61,8 @@ export function useProducts(options: UseProductsOptions = {}) {
       const { data, error: fetchError } = await withTimeout(query, 8000);
       if (fetchError) throw fetchError;
 
-      return (data as Product[]) || [];
+      const rawProducts = (data as Product[]) || [];
+      return groupProductsIntoVariants(rawProducts);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -80,8 +90,30 @@ export function useProduct(id?: string) {
       );
         
       if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
-      
-      return (data as Product) || null;
+      if (!data) return null;
+
+      const baseProduct = data as Product;
+      const { baseName } = extractBaseNameAndUnit(baseProduct);
+
+      // Fetch sibling pack size variants for this product
+      try {
+        const { data: siblings } = await supabase
+          .from('products')
+          .select('*, category:categories(id, name, slug)')
+          .ilike('name', `${baseName}%`)
+          .eq('is_archived', false)
+          .limit(20);
+
+        if (siblings && siblings.length > 1) {
+          const grouped = groupProductsIntoVariants(siblings as Product[], id);
+          const matchedGroup = grouped.find(g => g.name.toLowerCase() === baseName.toLowerCase());
+          if (matchedGroup) return matchedGroup;
+        }
+      } catch {
+        // Fallback to standalone product
+      }
+
+      return baseProduct;
     },
     enabled: !!id,
     staleTime: 1000 * 60 * 5, // 5 minutes

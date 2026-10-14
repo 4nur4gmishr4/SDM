@@ -4,6 +4,7 @@ import { registerSW } from 'virtual:pwa-register';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 registerSW({ immediate: true });
+
 import App from './App';
 
 const queryClient = new QueryClient();
