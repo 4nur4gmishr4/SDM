@@ -1,0 +1,99 @@
+name: Sai Darshan Mart CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  validate-and-build:
+    name: Build, Lint & Smoke Tests
+    runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: https://otyojqnnwbrteknyqcpi.supabase.co
+      VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90eW9qcW5ud2JydGVrbnlxY3BpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0MzAzNzAsImV4cCI6MjEwNjAwNjM3MH0.HWougnaFjqXZqeLr15wdGIzBWkDKsmP9JsGJTo8hsSo
+      VITE_STORE_NAME: 'Sai Darshan Shopping Mart'
+      VITE_STORE_WHATSAPP_NUMBER: '+91 73541 55669'
+      VITE_STORE_PHONE: '+91 73541 55669'
+      VITE_STORE_UPI_ID: '7354155669@upi'
+      VITE_STORE_EMAIL: 'saidarshanmart@gmail.com'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Verify TypeScript Types (Strict Mode)
+        run: npx tsc -b
+
+      - name: Build Vite Production Bundle
+        run: npm run build
+
+      - name: Install Playwright Browsers (Chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright Responsive Verification Test
+        run: |
+          npx vite preview --host 0.0.0.0 --port 4173 &
+          node -e "
+          const http = require('http');
+          const { chromium } = require('playwright');
+
+          function wait(ms) {
+            return new Promise(r => setTimeout(r, ms));
+          }
+
+          async function waitForServer(url, timeoutMs = 30000) {
+            const start = Date.now();
+            while (Date.now() - start < timeoutMs) {
+              try {
+                await new Promise((resolve, reject) => {
+                  const req = http.get(url, (res) => {
+                    if (res.statusCode) resolve(true);
+                    else reject(new Error('No status'));
+                  });
+                  req.on('error', reject);
+                  req.setTimeout(1000, () => req.destroy());
+                });
+                console.log('Preview server ready at ' + url);
+                return;
+              } catch (e) {
+                await wait(500);
+              }
+            }
+            throw new Error('Server readiness timeout: ' + url);
+          }
+
+          (async () => {
+            await waitForServer('http://127.0.0.1:4173');
+            const browser = await chromium.launch({ headless: true });
+            const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+            await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle' });
+            const title = await page.title();
+            console.log('Homepage Title:', title);
+            if (!title.includes('Sai Darshan')) {
+              throw new Error('Unexpected title: ' + title);
+            }
+
+            await page.waitForSelector('.category-nav', { timeout: 10000 });
+            const categories = await page.locator('.category-nav__item').count();
+            console.log('Categories count:', categories);
+            if (categories < 1) throw new Error('Category navigation items missing');
+
+            await browser.close();
+            console.log('CI Smoke test passed successfully!');
+          })().catch(e => {
+            console.error(e);
+            process.exit(1);
+          });
+          "
