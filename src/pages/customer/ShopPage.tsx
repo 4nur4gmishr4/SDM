@@ -1,11 +1,13 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { SearchBar } from '../../components/customer/SearchBar';
-import { ProductGrid } from '../../components/customer/ProductGrid';
+import { VirtualizedProductGrid } from '../../components/customer/VirtualizedProductGrid';
 import { WatermarkBanner, Skeleton, SeoHead } from '../../components/common';
 import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
 import './ShopPage.css';
+
+import { matchesSearchQuery, scoreProductMatch } from '../../lib/searchUtils';
 
 export function ShopPage() {
   const navigate = useNavigate();
@@ -24,9 +26,10 @@ export function ShopPage() {
   const { categories, isLoading: categoriesLoading } = useCategories();
   const currentCategory = categories.find(c => c.slug === categorySlug);
 
-  // Fetch all products for the category
+  // Fetch all products for the category with server-side search capability
   const { products, isLoading } = useProducts({
     categoryId: currentCategory?.id,
+    searchQuery: localQuery.trim() || undefined,
     fetchAll: true
   });
 
@@ -47,14 +50,9 @@ export function ShopPage() {
     // Exclude archived
     filtered = filtered.filter(p => !p.is_archived);
 
-    // Apply immediate search filter
+    // Apply immediate search filter with multi-token & bilingual synonym matching
     if (localQuery.trim()) {
-      const q = localQuery.toLowerCase().trim();
-      filtered = filtered.filter(p => 
-        p.name.toLowerCase().includes(q) || 
-        p.description?.toLowerCase().includes(q) ||
-        p.sku.toLowerCase().includes(q)
-      );
+      filtered = filtered.filter(p => matchesSearchQuery(p.name, p.brand, localQuery));
     }
 
     // Apply In Stock filter
@@ -66,18 +64,10 @@ export function ShopPage() {
     filtered.sort((a, b) => {
       if (sortBy === 'relevance') {
         if (localQuery.trim()) {
-          const q = localQuery.toLowerCase().trim();
-          const aExact = a.name.toLowerCase() === q ? 1 : 0;
-          const bExact = b.name.toLowerCase() === q ? 1 : 0;
-          if (aExact !== bExact) return bExact - aExact;
-          
-          const aStarts = a.name.toLowerCase().startsWith(q) ? 1 : 0;
-          const bStarts = b.name.toLowerCase().startsWith(q) ? 1 : 0;
-          if (aStarts !== bStarts) return bStarts - aStarts;
-
-          // Featured/curated products prioritized among search matches
-          if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
-          return 0;
+          const scoreA = scoreProductMatch(a.name, a.brand, localQuery, a.is_featured);
+          const scoreB = scoreProductMatch(b.name, b.brand, localQuery, b.is_featured);
+          if (scoreA !== scoreB) return scoreB - scoreA;
+          return a.name.localeCompare(b.name);
         }
 
         // When browsing without text search, curated featured products are recommended at the very top
@@ -246,7 +236,12 @@ export function ShopPage() {
             </div>
           </div>
 
-          <ProductGrid products={displayedProducts.slice(0, visibleCount)} isLoading={isInitialLoading} skeletonCount={12} />
+          <VirtualizedProductGrid
+            products={displayedProducts.slice(0, visibleCount)}
+            isLoading={isInitialLoading}
+            skeletonCount={12}
+            virtualizeThreshold={24}
+          />
 
           {/* Progressive Load More for Large Catalog */}
           {visibleCount < displayedProducts.length && (
@@ -264,7 +259,7 @@ export function ShopPage() {
                   alignItems: 'center',
                   gap: '8px'
                 }}
-                onClick={() => setVisibleCount(prev => prev + 48)}
+                onClick={() => setVisibleCount(prev => prev + 96)}
               >
                 <span>Load More Products</span>
                 <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>expand_more</span>

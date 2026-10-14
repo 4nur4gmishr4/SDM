@@ -171,13 +171,13 @@
 }
 
 .shop-page__category-link:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.04));
   color: var(--md-sys-color-on-surface, #1f1f1f);
 }
 
 .shop-page__category-link--active {
-  background-color: rgba(30, 142, 62, 0.12);
-  color: #137333;
+  background-color: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  color: var(--md-sys-color-on-primary-container, #137333);
   font-weight: 600;
 }
 
@@ -235,14 +235,14 @@
 }
 
 .shop-pill-chip--active {
-  background-color: rgba(30, 142, 62, 0.12);
-  border-color: #1E8E3E;
-  color: #137333;
+  background-color: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  color: var(--md-sys-color-on-primary-container, #137333);
   font-weight: 600;
 }
 
 .shop-pill-chip--active .material-symbols-outlined {
-  color: #1E8E3E;
+  color: var(--md-sys-color-on-primary-container, #1E8E3E);
 }
 
 /* Sort & Category Select Pills */
@@ -310,12 +310,12 @@
 
 /* Active Highlight when a specific category is chosen */
 .shop-select-input--active {
-  background-color: rgba(30, 142, 62, 0.12);
-  border-color: #1E8E3E;
-  color: #137333;
+  background-color: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  color: var(--md-sys-color-on-primary-container, #137333);
   font-weight: 600;
 }
 
 .shop-category-select-wrap:has(.shop-select-input--active) .shop-select-icon {
-  color: #1E8E3E;
+  color: var(--md-sys-color-primary, #1E8E3E);
 }
