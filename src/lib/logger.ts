@@ -35,7 +35,7 @@ function safeStringify(obj: any): string {
       }
       return value;
     }, 2);
-  } catch (e) {
+  } catch {
     return '[Unserializable Object]';
   }
 }

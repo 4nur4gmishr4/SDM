@@ -6,6 +6,7 @@ export interface ProductVariant {
   stock_quantity?: number; // stock count
   is_available: boolean;
   sku?: string;
+  image_url?: string | null;
 }
 
 export interface Product {
