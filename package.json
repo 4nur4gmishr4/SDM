@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@material/web": "^2.5.0",
-    "@supabase/supabase-js": "^2.117.0",
+    "@supabase/supabase-js": "^2.118.0",
     "@tanstack/react-query": "^5.104.1",
     "@tanstack/react-virtual": "^3.14.19",
     "@types/leaflet": "^1.9.22",
