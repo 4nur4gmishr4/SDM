@@ -52,6 +52,10 @@ main_data
 *.mp4
 *.mov
 !favicon.svg
+!public/favicon.ico
+!public/apple-touch-icon.png
+!public/pwa-*.png
+!public/masked-icon.svg
 public/uploads/
 public/images/
 

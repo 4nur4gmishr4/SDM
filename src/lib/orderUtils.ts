@@ -60,9 +60,13 @@ export function buildCartWhatsAppMessage(params: {
   deliveryAddress: string;
   mapLink: string | null;
 }): string {
-  const { items, subtotal, deliveryFee, total, customerName, customerPhone, deliveryAddress, mapLink } = params;
+  const { orderId, items, subtotal, deliveryFee, total, customerName, customerPhone, deliveryAddress, mapLink } = params;
 
-  let msg = `${STORE_NAME} - Order Details\n\n`;
+  let msg = `${STORE_NAME} - Order Details\n`;
+  if (orderId) {
+    msg += `Order ID: ${orderId}\n`;
+  }
+  msg += `\n`;
 
   msg += `Items:\n`;
   items.forEach((item, index) => {
@@ -110,9 +114,13 @@ export function buildQuickOrderWhatsAppMessage(params: {
   hasAttachedImage?: boolean;
   isPhotoOrder?: boolean;
 }): string {
-  const { shoppingList, customerName, customerPhone, deliveryAddress, mapLink, hasAttachedImage, isPhotoOrder } = params;
+  const { orderId, shoppingList, customerName, customerPhone, deliveryAddress, mapLink, hasAttachedImage, isPhotoOrder } = params;
 
-  let msg = `${STORE_NAME} - Quick Order\n\n`;
+  let msg = `${STORE_NAME} - Quick Order\n`;
+  if (orderId) {
+    msg += `Order ID: ${orderId}\n`;
+  }
+  msg += `\n`;
 
   if (isPhotoOrder || hasAttachedImage) {
     msg += `Order Type: Handwritten List Photo\n`;

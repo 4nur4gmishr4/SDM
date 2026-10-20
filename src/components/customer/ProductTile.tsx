@@ -84,8 +84,13 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
             width="180"
             height="180"
             onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              const icon = e.currentTarget.parentElement?.querySelector('.product-tile__placeholder-icon') as HTMLElement;
+              const target = e.currentTarget;
+              if (currentImage && target.src !== currentImage) {
+                target.src = currentImage;
+                return;
+              }
+              target.style.display = 'none';
+              const icon = target.parentElement?.querySelector('.product-tile__placeholder-icon') as HTMLElement;
               if (icon) icon.style.display = 'block';
             }}
           />
