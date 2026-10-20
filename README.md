@@ -55,7 +55,7 @@ SDMWEB/
 ├── public/                     # Static assets (favicons, redirects, headers)
 │   ├── _headers               # Cache-Control and security headers
 │   ├── _redirects             # SPA fallback (/* -> /index.html 200)
-│   └── favicon.svg            # Store brand SVG favicon
+│   └── favicon.ico            # Store brand favicon
 ├── src/
 │   ├── components/
 │   │   ├── admin/             # AdminShell, ExcelImportWidget, ImageUploadField

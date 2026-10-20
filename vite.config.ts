@@ -98,7 +98,7 @@ export default defineConfig({
     uploadApiPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
         name: 'Sai Darshan Shopping Mart',
         short_name: 'SDM',
