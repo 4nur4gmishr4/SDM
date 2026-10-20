@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sai Darshan Mart — 8,817 Products Image Reviewer & Quality Auditor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0e0c;
+      --surface: #141914;
+      --surface-elevated: #1d231d;
+      --surface-hover: #263025;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f3f4f1;
+      --text-muted: #9ca3af;
+      --primary: #10b981;
+      --primary-hover: #059669;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --danger-bg: rgba(239, 68, 68, 0.15);
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      --amber: #f59e0b;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding-bottom: 90px;
+    }
+
+    /* Top Sticky Header */
+    .header {
+      background: linear-gradient(180deg, rgba(20, 25, 20, 0.98) 0%, rgba(11, 14, 12, 0.95) 100%);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 1rem 2rem;
+    }
+    .header-inner {
+      max-width: 1540px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #10b981, #047857);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Progress Tracker */
+    .progress-box {
+      flex: 1;
+      max-width: 460px;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 9px;
+      background: var(--surface-elevated);
+      border-radius: 100px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+    }
+    .progress-bar-approved {
+      height: 100%;
+      background: var(--success);
+      transition: width 0.3s;
+    }
+    .progress-bar-rejected {
+      height: 100%;
+      background: var(--danger);
+      transition: width 0.3s;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-export {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #042f20;
+      border: none;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 0.55rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      box-shadow: 0 4px 14px var(--primary-glow);
+      transition: all 0.2s;
+    }
+    .btn-export:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 18px var(--primary-glow);
+    }
+    .btn-outline {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 0.55rem 0.95rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover {
+      background: var(--surface-hover);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    /* Filter & Controls Toolbar */
+    .toolbar {
+      max-width: 1540px;
+      margin: 1.25rem auto 0.75rem;
+      padding: 0 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 0.4rem;
+      background: var(--surface);
+      padding: 0.35rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .filter-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .filter-tab:hover {
+      color: var(--text);
+    }
+    .filter-tab.active {
+      background: var(--surface-elevated);
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .filter-tab.tab-approved.active { color: #34d399; }
+    .filter-tab.tab-rejected.active { color: #f87171; }
+
+    .search-inputs {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .search-box {
+      position: relative;
+      min-width: 280px;
+    }
+    .search-box input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.55rem 1rem 0.55rem 2.2rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .brand-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.55rem 0.9rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+      max-width: 240px;
+    }
+    .brand-select:focus {
+      border-color: var(--primary);
+    }
+
+    /* Sub Toolbar: Pagination & Bulk */
+    .sub-toolbar {
+      max-width: 1540px;
+      margin: 0 auto 1.25rem;
+      padding: 0 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .page-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .page-btn:hover:not(:disabled) {
+      background: var(--surface-hover);
+      border-color: rgba(255,255,255,0.25);
+    }
+    .page-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .page-indicator {
+      font-weight: 700;
+      color: var(--text);
+      padding: 0 0.5rem;
+    }
+
+    /* Product Grid */
+    .container {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* Product Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border-color: rgba(255,255,255,0.18);
+    }
+    .card.status-approved {
+      border-color: rgba(16, 185, 129, 0.6);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0%, var(--surface) 100%);
+    }
+    .card.status-rejected {
+      border-color: rgba(239, 68, 68, 0.6);
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.05) 0%, var(--surface) 100%);
+    }
+
+    .card-top {
+      padding: 0.6rem 0.9rem;
+      background: var(--surface-elevated);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+    }
+    .sku-badge {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .status-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .status-badge.pending {
+      background: rgba(255,255,255,0.08);
+      color: var(--text-muted);
+    }
+    .status-badge.approved {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .status-badge.rejected {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    /* Image Viewport */
+    .card-media {
+      width: 100%;
+      height: 220px;
+      background: #080908;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: zoom-in;
+    }
+    .card-media img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      transition: transform 0.25s;
+    }
+    .card:hover .card-media img {
+      transform: scale(1.05);
+    }
+
+    /* Body */
+    .card-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 0.5rem;
+    }
+    .card-brand {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #34d399;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .card-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 2.5rem;
+    }
+    .card-pills {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: auto;
+      padding-top: 0.4rem;
+    }
+    .pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--surface-elevated);
+      color: var(--text-muted);
+    }
+    .pill.price {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      font-weight: 700;
+    }
+
+    /* Decision Buttons */
+    .decision-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      padding: 0.85rem 1rem;
+      background: var(--surface-elevated);
+      border-top: 1px solid var(--border);
+    }
+    .btn-decision {
+      border: none;
+      padding: 0.65rem 0.5rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .btn-approve {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+    .btn-approve:hover {
+      background: var(--success);
+      color: #042f20;
+    }
+    .card.status-approved .btn-approve {
+      background: var(--success);
+      color: #042f20;
+      box-shadow: 0 2px 10px var(--primary-glow);
+    }
+
+    .btn-reject {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+    .btn-reject:hover {
+      background: var(--danger);
+      color: white;
+    }
+    .card.status-rejected .btn-reject {
+      background: var(--danger);
+      color: white;
+      box-shadow: 0 2px 10px rgba(239, 68, 68, 0.35);
+    }
+
+    /* Modal for Image Preview */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .modal-img {
+      max-width: 80vw;
+      max-height: 70vh;
+      object-fit: contain;
+    }
+    .modal-title {
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: #10b981;
+      color: #052e16;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+      z-index: 300;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 768px) {
+      .header-inner { flex-direction: column; align-items: stretch; }
+      .progress-box { max-width: 100%; }
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .search-box { width: 100%; min-width: 0; }
+      .brand-select { max-width: 100%; width: 100%; }
+      .sub-toolbar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">
+    <span id="toastMsg">Action saved!</span>
+  </div>
+
+  <!-- Image Modal -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <img id="modalImg" class="modal-img" src="" alt="Full view" />
+      <div id="modalTitle" class="modal-title"></div>
+      <button class="btn-outline" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">SDM</div>
+        <div class="brand-text">
+          <h1>8,817 Catalog Items Image Auditor</h1>
+          <p>Manual Verification & Deletion Console</p>
+        </div>
+      </div>
+
+      <div class="progress-box">
+        <div class="progress-stats">
+          <span>Reviewed: <span id="statReviewed">0</span> / 8,817 (<span id="statPercent">0%</span>)</span>
+          <span>
+            <span style="color: #34d399">✔ <span id="statApproved">0</span></span> &bull; 
+            <span style="color: #f87171">✖ <span id="statRejected">0</span></span>
+          </span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="barApproved" class="progress-bar-approved" style="width: 0%"></div>
+          <div id="barRejected" class="progress-bar-rejected" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-export" onclick="exportDecisions()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Export Decisions (JSON)
+        </button>
+        <button class="btn-outline" onclick="exportFlaggedCSV()">
+          Export Wrong Images (CSV)
+        </button>
+        <button class="btn-outline" onclick="resetAllDecisions()">
+          Reset
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter & Controls Toolbar -->
+  <div class="toolbar">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setFilter('all', this)">All (8,817)</button>
+      <button class="filter-tab" onclick="setFilter('pending', this)">Pending (<span id="tabCountPending">8817</span>)</button>
+      <button class="filter-tab tab-approved" onclick="setFilter('approved', this)">Sahi Hai (<span id="tabCountApproved">0</span>)</button>
+      <button class="filter-tab tab-rejected" onclick="setFilter('rejected', this)">Galat Hai (<span id="tabCountRejected">0</span>)</button>
+    </div>
+
+    <div class="search-inputs">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search" placeholder="Search product name, brand, SKU..." oninput="onFilterChange()">
+      </div>
+
+      <select id="brandSelect" class="brand-select" onchange="onFilterChange()">
+        <option value="">All Brands (All)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Sub-Toolbar (Page Controls) -->
+  <div class="sub-toolbar">
+    <div>
+      Showing <span id="showingCount">0</span> products &bull; 
+      <button class="btn-outline" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="approveAllOnPage()">Approve All On This Page</button>
+    </div>
+
+    <div class="pagination-bar">
+      <button id="btnPrev" class="page-btn" onclick="prevPage()">◀ Prev</button>
+      <span class="page-indicator">Page <span id="curPage">1</span> of <span id="totalPages">1</span></span>
+      <button id="btnNext" class="page-btn" onclick="nextPage()">Next ▶</button>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <main class="container">
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <!-- Load Extracted Data -->
+  <script src="catalog_review_data.js"></script>
+
+  <script>
+    // Storage Key
+    const STORAGE_KEY = 'sdm_catalog_review_decisions_v1';
+    
+    // Decisions Map: id -> 'APPROVED' | 'REJECTED'
+    let decisions = {};
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) decisions = JSON.parse(saved);
+    } catch (e) {
+      console.warn('Failed to load decisions from localStorage:', e);
+    }
+
+    const ITEMS = window.CATALOG_ITEMS || [];
+    let currentFilter = 'all';
+    let currentPage = 1;
+    const PAGE_SIZE = 48;
+
+    // Initialize Brand Select
+    function initBrandSelect() {
+      const brandCounts = {};
+      ITEMS.forEach(it => {
+        const b = it.brand || 'Other';
+        brandCounts[b] = (brandCounts[b] || 0) + 1;
+      });
+
+      const sortedBrands = Object.entries(brandCounts).sort((a, b) => b[1] - a[1]);
+      const select = document.getElementById('brandSelect');
+      sortedBrands.forEach(([brand, count]) => {
+        const opt = document.createElement('option');
+        opt.value = brand;
+        opt.textContent = `${brand} (${count})`;
+        select.appendChild(opt);
+      });
+    }
+
+    function saveDecisions() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(decisions));
+      } catch (e) {
+        console.error('Save error:', e);
+      }
+      updateStats();
+    }
+
+    function setDecision(id, status) {
+      if (decisions[id] === status) {
+        // Toggle off if clicked same
+        delete decisions[id];
+      } else {
+        decisions[id] = status;
+      }
+      saveDecisions();
+      updateCard(id);
+    }
+
+    function approveAllOnPage() {
+      const currentList = getFilteredItems().slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+      currentList.forEach(it => {
+        decisions[it.id] = 'APPROVED';
+      });
+      saveDecisions();
+      render();
+      showToast(`Approved all ${currentList.length} items on page ${currentPage}!`);
+    }
+
+    function setFilter(filterType, el) {
+      currentFilter = filterType;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      currentPage = 1;
+      render();
+    }
+
+    function onFilterChange() {
+      currentPage = 1;
+      render();
+    }
+
+    function getFilteredItems() {
+      const q = (document.getElementById('search')?.value || '').toLowerCase().trim();
+      const selectedBrand = document.getElementById('brandSelect')?.value || '';
+
+      return ITEMS.filter(it => {
+        // Brand filter
+        if (selectedBrand && it.brand !== selectedBrand) return false;
+
+        // Status filter
+        const st = decisions[it.id];
+        if (currentFilter === 'pending' && st) return false;
+        if (currentFilter === 'approved' && st !== 'APPROVED') return false;
+        if (currentFilter === 'rejected' && st !== 'REJECTED') return false;
+
+        // Search query
+        if (q) {
+          const matchName = it.name.toLowerCase().includes(q);
+          const matchBrand = (it.brand || '').toLowerCase().includes(q);
+          const matchId = (it.id || '').toLowerCase().includes(q);
+          if (!matchName && !matchBrand && !matchId) return false;
+        }
+
+        return true;
+      });
+    }
+
+    function updateStats() {
+      const total = ITEMS.length;
+      let approved = 0;
+      let rejected = 0;
+
+      Object.values(decisions).forEach(s => {
+        if (s === 'APPROVED') approved++;
+        if (s === 'REJECTED') rejected++;
+      });
+
+      const reviewed = approved + rejected;
+      const pending = total - reviewed;
+      const percent = total > 0 ? ((reviewed / total) * 100).toFixed(1) : 0;
+
+      document.getElementById('statReviewed').innerText = reviewed.toLocaleString();
+      document.getElementById('statPercent').innerText = percent + '%';
+      document.getElementById('statApproved').innerText = approved.toLocaleString();
+      document.getElementById('statRejected').innerText = rejected.toLocaleString();
+
+      document.getElementById('tabCountPending').innerText = pending.toLocaleString();
+      document.getElementById('tabCountApproved').innerText = approved.toLocaleString();
+      document.getElementById('tabCountRejected').innerText = rejected.toLocaleString();
+
+      const appPct = total > 0 ? (approved / total) * 100 : 0;
+      const rejPct = total > 0 ? (rejected / total) * 100 : 0;
+      document.getElementById('barApproved').style.width = appPct + '%';
+      document.getElementById('barRejected').style.width = rejPct + '%';
+    }
+
+    function updateCard(id) {
+      const card = document.getElementById(`card-${id}`);
+      if (!card) return;
+
+      const st = decisions[id];
+      card.className = `card ${st === 'APPROVED' ? 'status-approved' : st === 'REJECTED' ? 'status-rejected' : ''}`;
+      
+      const badge = card.querySelector('.status-badge');
+      if (badge) {
+        if (st === 'APPROVED') {
+          badge.className = 'status-badge approved';
+          badge.innerText = '✔ SAHI HAI';
+        } else if (st === 'REJECTED') {
+          badge.className = 'status-badge rejected';
+          badge.innerText = '✖ GALAT HAI';
+        } else {
+          badge.className = 'status-badge pending';
+          badge.innerText = 'PENDING';
+        }
+      }
+    }
+
+    function render() {
+      const grid = document.getElementById('grid');
+      const filtered = getFilteredItems();
+      const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+      
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      document.getElementById('showingCount').innerText = filtered.length.toLocaleString();
+      document.getElementById('curPage').innerText = currentPage;
+      document.getElementById('totalPages').innerText = totalPages;
+      document.getElementById('btnPrev').disabled = currentPage <= 1;
+      document.getElementById('btnNext').disabled = currentPage >= totalPages;
+
+      const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+      if (pageItems.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted); font-size: 1rem;">No items match this filter.</div>';
+        return;
+      }
+
+      grid.innerHTML = pageItems.map(it => {
+        const st = decisions[it.id];
+        return `
+          <div id="card-${it.id}" class="card ${st === 'APPROVED' ? 'status-approved' : st === 'REJECTED' ? 'status-rejected' : ''}">
+            <div class="card-top">
+              <span class="sku-badge">Row ${it.row} &bull; ${it.id}</span>
+              <span class="status-badge ${st ? st.toLowerCase() : 'pending'}">
+                ${st === 'APPROVED' ? '✔ SAHI HAI' : st === 'REJECTED' ? '✖ GALAT HAI' : 'PENDING'}
+              </span>
+            </div>
+
+            <div class="card-media" onclick="openModal('${it.image}', '${it.name.replace(/'/g, "\\'")}')">
+              <img src="${it.image}" alt="${it.name}" loading="lazy" onerror="this.src='https://placehold.co/400x400/181c16/9ca3af?text=Image+Load+Error'" />
+            </div>
+
+            <div class="card-body">
+              <div class="card-brand">${it.brand}</div>
+              <div class="card-name" title="${it.name}">${it.name}</div>
+              <div class="card-pills">
+                <span class="pill">${it.unit}</span>
+                <span class="pill price">Rs. ${it.price}</span>
+                ${it.mrp && it.mrp > it.price ? `<span class="pill" style="text-decoration: line-through;">MRP: Rs. ${it.mrp}</span>` : ''}
+              </div>
+            </div>
+
+            <div class="decision-row">
+              <button class="btn-decision btn-approve" onclick="setDecision('${it.id}', 'APPROVED')">
+                ✔ Sahi Hai
+              </button>
+              <button class="btn-decision btn-reject" onclick="setDecision('${it.id}', 'REJECTED')">
+                ✖ Galat Hai
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function nextPage() {
+      const filtered = getFilteredItems();
+      const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+      if (currentPage < totalPages) {
+        currentPage++;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function openModal(url, title) {
+      document.getElementById('modalImg').src = url;
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // Export Functionality
+    function exportDecisions() {
+      const exportData = {
+        exportedAt: new Date().toISOString(),
+        totalCatalogItems: ITEMS.length,
+        totalDecisionsCount: Object.keys(decisions).length,
+        decisions: decisions,
+        summary: {
+          approvedCount: Object.values(decisions).filter(s => s === 'APPROVED').length,
+          rejectedCount: Object.values(decisions).filter(s => s === 'REJECTED').length
+        }
+      };
+
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sdm_catalog_review_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Downloaded decisions JSON file!');
+    }
+
+    function exportFlaggedCSV() {
+      const rejectedList = ITEMS.filter(it => decisions[it.id] === 'REJECTED');
+      if (rejectedList.length === 0) {
+        showToast('No wrong items flagged yet!');
+        return;
+      }
+
+      let csv = 'Row,SKU,Product Name,Brand,Unit,Price,Wrong Image URL\n';
+      rejectedList.forEach(it => {
+        csv += `"${it.row}","${it.id}","${it.name.replace(/"/g, '""')}","${it.brand}","${it.unit}","${it.price}","${it.image}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sdm_wrong_images_to_remove_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`Exported ${rejectedList.length} wrong items to CSV!`);
+    }
+
+    function resetAllDecisions() {
+      if (confirm('Are you sure you want to reset all your review decisions? This will clear all ticks.')) {
+        decisions = {};
+        localStorage.removeItem(STORAGE_KEY);
+        updateStats();
+        render();
+        showToast('All review decisions reset.');
+      }
+    }
+
+    // Keyboard Shortcuts (Arrow keys for page navigation, Escape for modal)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowRight' && !['INPUT', 'SELECT'].includes(document.activeElement.tagName)) nextPage();
+      if (e.key === 'ArrowLeft' && !['INPUT', 'SELECT'].includes(document.activeElement.tagName)) prevPage();
+    });
+
+    // Initial Startup
+    initBrandSelect();
+    updateStats();
+    render();
+  </script>
+</body>
+</html>
