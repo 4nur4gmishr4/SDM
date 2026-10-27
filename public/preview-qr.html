@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sai Darshan Shopping Mart - Themed UPI QR Preview</title>
+  <style>
+    :root {
+      --primary: #1E8E3E;
+      --surface-dark: #0E1310;
+    }
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background: radial-gradient(circle at 50% 20%, #153e22 0%, #081a0e 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .header {
+      text-align: center;
+      max-width: 600px;
+      margin-bottom: 28px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      font-weight: 700;
+      color: #81C995;
+    }
+    p {
+      margin: 0;
+      font-size: 15px;
+      color: #CEEAD6;
+      line-height: 1.5;
+    }
+    .card-wrapper {
+      position: relative;
+      max-width: 480px;
+      width: 100%;
+      border-radius: 36px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      background: #0E3D1E;
+      transition: transform 0.2s ease;
+    }
+    .card-wrapper:hover {
+      transform: translateY(-4px);
+    }
+    .card-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .meta-box {
+      margin-top: 32px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 20px 24px;
+      max-width: 480px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 14px;
+    }
+    .meta-row:last-child {
+      border-bottom: none;
+    }
+    .meta-label {
+      color: #A8DAB5;
+    }
+    .meta-val {
+      font-weight: 600;
+      font-family: monospace;
+      color: #ffffff;
+      word-break: break-all;
+    }
+    .download-btns {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      padding: 12px 20px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #1E8E3E;
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: #177834;
+    }
+    .btn-outlined {
+      background: transparent;
+      color: #81C995;
+      border: 1.5px solid #81C995;
+    }
+    .btn-outlined:hover {
+      background: rgba(129, 201, 149, 0.12);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Themed UPI QR Standee</h1>
+    <p>Calibrated specifically for Sai Darshan Shopping Mart with Material 3 supermarket styling. Ready to be scanned by any UPI app (GPay, PhonePe, Paytm, BHIM, CRED).</p>
+  </div>
+
+  <div class="card-wrapper">
+    <img src="/sai-darshan-upi-qr-card.svg" alt="Sai Darshan Themed UPI QR Card" class="card-img" />
+  </div>
+
+  <div class="download-btns">
+    <a href="/sai-darshan-upi-qr-card.svg" download="sai-darshan-upi-qr-card.svg" class="btn btn-primary">
+      Download SVG Standee Card
+    </a>
+    <a href="/sai-darshan-upi-qr.png" download="sai-darshan-upi-qr.png" class="btn btn-outlined">
+      Download High-Res QR (PNG)
+    </a>
+    <a href="/sai-darshan-upi-qr-raw.svg" download="sai-darshan-upi-qr-raw.svg" class="btn btn-outlined">
+      Download Raw Vector QR
+    </a>
+  </div>
+
+  <div class="meta-box">
+    <div class="meta-row">
+      <span class="meta-label">Merchant Name</span>
+      <span class="meta-val">M/S. SAI DARSHAN SHOPPING MART</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-label">UPI ID</span>
+      <span class="meta-val">ibkPOS.EP116181@icici</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-label">Tracking Reference</span>
+      <span class="meta-val">EPYSSQREP116181</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-label">Decoded Payload</span>
+      <span class="meta-val">upi://pay?pa=ibkPOS.EP116181@icici&pn=M/S.SAI DARSHAN SHOPPING MART&tr=EPYSSQREP116181</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-label">Verification Status</span>
+      <span class="meta-val" style="color: #4ade80;">100% Match with Physical Standee</span>
+    </div>
+  </div>
+</body>
+</html>

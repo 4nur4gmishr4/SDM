@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="920" viewBox="0 0 600 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="300" y1="0" x2="300" y2="920" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0E3D1E" />
+      <stop offset="28%" stop-color="#145A2C" />
+      <stop offset="100%" stop-color="#092813" />
+    </linearGradient>
+
+    <!-- Header Shimmer -->
+    <linearGradient id="headerGold" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F9AB00" />
+      <stop offset="50%" stop-color="#FDD663" />
+      <stop offset="100%" stop-color="#F9AB00" />
+    </linearGradient>
+
+    <!-- Glass Overlay -->
+    <linearGradient id="glassCard" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1" />
+      <stop offset="100%" stop-color="#F9FBF9" stop-opacity="1" />
+    </linearGradient>
+
+    <!-- Card Shadow -->
+    <filter id="cardShadow" x="-20" y="-10" width="640" height="940" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.35" />
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.2" />
+    </filter>
+
+    <!-- Soft QR Plate Shadow -->
+    <filter id="qrShadow" x="50" y="240" width="500" height="520" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" flood-opacity="0.12" />
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.08" />
+    </filter>
+
+    <clipPath id="qrClip">
+      <rect x="100" y="295" width="400" height="400" rx="20" />
+    </clipPath>
+  </defs>
+
+  <style>
+    .font-brand { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-weight: 800; }
+    .font-sub { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-weight: 500; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-weight: 700; }
+  </style>
+
+  <!-- Base Background -->
+  <rect width="600" height="920" rx="36" fill="url(#bgGrad)" />
+
+  <!-- Subtle Supermarket Organic Pattern / Rings in Background -->
+  <circle cx="530" cy="120" r="180" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="40" />
+  <circle cx="70" cy="800" r="140" stroke="#F9AB00" stroke-opacity="0.04" stroke-width="30" />
+
+  <!-- Top Accent Bar -->
+  <rect x="0" y="0" width="600" height="8" rx="4" fill="url(#headerGold)" />
+
+  <!-- Store Header Block -->
+  <g transform="translate(0, 48)">
+    <!-- Store Badge Icon -->
+    <rect x="268" y="0" width="64" height="64" rx="18" fill="#1E8E3E" stroke="#81C995" stroke-width="2" />
+    <path d="M288 32 L300 20 L312 32 M300 24 L300 44 M290 44 L310 44" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Brand Name -->
+    <text x="300" y="94" text-anchor="middle" fill="#FFFFFF" class="font-brand" font-size="26" letter-spacing="0.5">SAI DARSHAN SHOPPING MART</text>
+    
+    <!-- Legal Registration -->
+    <text x="300" y="118" text-anchor="middle" fill="#81C995" class="font-sub" font-size="13" letter-spacing="1.2">M/S. SAI DARSHAN SHOPPING MART</text>
+    
+    <!-- Location Pill -->
+    <rect x="150" y="132" width="300" height="26" rx="13" fill="#FFFFFF" fill-opacity="0.1" />
+    <text x="300" y="149" text-anchor="middle" fill="#CEEAD6" class="font-sub" font-size="11.5">Fresh Groceries & Supermarket • Jabalpur</text>
+  </g>
+
+  <!-- Main White Card Container -->
+  <rect x="44" y="235" width="512" height="520" rx="28" fill="url(#glassCard)" filter="url(#cardShadow)" />
+
+  <!-- Scan & Pay Banner on Card -->
+  <g transform="translate(44, 235)">
+    <path d="M 0 28 Q 0 0 28 0 L 484 0 Q 512 0 512 28 L 512 56 L 0 56 Z" fill="#E6F4EA" />
+    <text x="256" y="36" text-anchor="middle" fill="#0D652D" class="font-brand" font-size="15" letter-spacing="2">SCAN TO PAY WITH ANY UPI APP</text>
+  </g>
+
+  <!-- QR Code Container Inner Border -->
+  <rect x="90" y="305" width="420" height="420" rx="24" fill="#FFFFFF" stroke="#E0E6E1" stroke-width="1.5" />
+
+  <!-- The Actual QR Code Image (Embedded High-Res Scannable) -->
+  <image x="100" y="315" width="400" height="400" href="data:image/png;base64,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" preserveAspectRatio="xMidYMid meet" />
+
+  <!-- Center Store Branding Badge inside QR (Safe with Level H Error Correction) -->
+  <g transform="translate(262, 477)">
+    <rect x="-4" y="-4" width="84" height="84" rx="20" fill="#FFFFFF" stroke="#1E8E3E" stroke-width="3" filter="url(#qrShadow)" />
+    <rect x="4" y="4" width="68" height="68" rx="14" fill="#1E8E3E" />
+    <!-- Stylized Shopping Cart / Mart Icon -->
+    <path d="M22 28 H26 L30 46 H50 L54 34 H28" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <circle cx="34" cy="52" r="3.2" fill="#F9AB00" />
+    <circle cx="47" cy="52" r="3.2" fill="#F9AB00" />
+  </g>
+
+  <!-- UPI ID Highlight Box -->
+  <g transform="translate(0, 774)">
+    <rect x="90" y="0" width="420" height="48" rx="24" fill="#FFFFFF" fill-opacity="0.12" stroke="#81C995" stroke-opacity="0.4" stroke-width="1.2" />
+    <text x="115" y="30" fill="#A8DAB5" class="font-sub" font-size="13">UPI ID:</text>
+    <text x="310" y="30" text-anchor="middle" fill="#FFFFFF" class="font-mono" font-size="15" letter-spacing="0.5">ibkPOS.EP116181@icici</text>
+  </g>
+
+  <!-- Payment Apps Logos Strip (Clean SVG Badges) -->
+  <g transform="translate(80, 846)">
+    <!-- GPay -->
+    <g transform="translate(10, 0)">
+      <rect width="66" height="30" rx="8" fill="#FFFFFF" fill-opacity="0.12" />
+      <text x="33" y="19" text-anchor="middle" fill="#FFFFFF" class="font-brand" font-size="11">G Pay</text>
+    </g>
+
+    <!-- PhonePe -->
+    <g transform="translate(88, 0)">
+      <rect width="78" height="30" rx="8" fill="#FFFFFF" fill-opacity="0.12" />
+      <text x="39" y="19" text-anchor="middle" fill="#FFFFFF" class="font-brand" font-size="11">PhonePe</text>
+    </g>
+
+    <!-- Paytm -->
+    <g transform="translate(178, 0)">
+      <rect width="68" height="30" rx="8" fill="#FFFFFF" fill-opacity="0.12" />
+      <text x="34" y="19" text-anchor="middle" fill="#FFFFFF" class="font-brand" font-size="11">Paytm</text>
+    </g>
+
+    <!-- BHIM -->
+    <g transform="translate(258, 0)">
+      <rect width="62" height="30" rx="8" fill="#FFFFFF" fill-opacity="0.12" />
+      <text x="31" y="19" text-anchor="middle" fill="#FFFFFF" class="font-brand" font-size="11">BHIM</text>
+    </g>
+
+    <!-- CRED -->
+    <g transform="translate(332, 0)">
+      <rect width="68" height="30" rx="8" fill="#FFFFFF" fill-opacity="0.12" />
+      <text x="34" y="19" text-anchor="middle" fill="#FFFFFF" class="font-brand" font-size="11">CRED</text>
+    </g>
+  </g>
+
+  <!-- Bottom Direct Bank Settlement Note -->
+  <text x="300" y="898" text-anchor="middle" fill="#81C995" class="font-sub" font-size="11.5" letter-spacing="0.4">
+    Zero Convenience Fee • Direct Bank Settlement • Instant Confirmation
+  </text>
+</svg>
