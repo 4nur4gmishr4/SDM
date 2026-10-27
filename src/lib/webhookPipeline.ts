@@ -16,7 +16,7 @@ export const DEFAULT_PIPELINE_CONFIG: PipelineAutomationConfig = {
   webhook_url: '',
   auto_backup_enabled: true,
   last_backup_at: null,
-  github_repo: (import.meta.env.VITE_GITHUB_REPO as string) || '4nur4gmishr4/SDM',
+  github_repo: (import.meta.env.VITE_GITHUB_REPO as string) || 'amit-saidarshan/SaiDarshanMart',
   updated_at: new Date().toISOString()
 };
 
