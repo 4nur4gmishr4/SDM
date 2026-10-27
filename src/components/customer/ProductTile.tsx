@@ -21,7 +21,7 @@ interface ProductTileProps {
 }
 
 export const ProductTile = memo(function ProductTile({ product }: ProductTileProps) {
-  const { addItem } = useCart();
+  const { addItem, items, updateQuantity } = useCart();
   const variants = product.variants || [];
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
 
@@ -35,6 +35,12 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
   const discountPercent = (currentMrp && currentMrp > currentPrice)
     ? Math.round(((currentMrp - currentPrice) / currentMrp) * 100)
     : 0;
+
+  const currentItemKey = `${targetId}_${activeVariant?.id || currentUnit || 'default'}`;
+  const existingCartItem = items.find(
+    i => `${i.product_id}_${i.variant_id || i.unit_size || 'default'}` === currentItemKey
+  );
+  const currentQty = existingCartItem ? existingCartItem.quantity : 0;
 
   const handleAdd = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -169,15 +175,53 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
             )}
           </div>
           
-          <button 
-            className="product-tile__add-button" 
-            onClick={handleAdd}
-            disabled={!isAvailable}
-            aria-label={`Add ${product.name} (${currentUnit}) to cart`}
-            title={`Add ${currentUnit} to cart`}
-          >
-            <span className="material-symbols-outlined">add</span>
-          </button>
+          {currentQty > 0 ? (
+            <div
+              className="product-tile__stepper"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              <button
+                type="button"
+                className="product-tile__stepper-btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  updateQuantity(targetId, currentQty - 1, currentItemKey);
+                }}
+                aria-label="Decrease quantity"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>remove</span>
+              </button>
+              <span className="product-tile__stepper-count">{currentQty}</span>
+              <button
+                type="button"
+                className="product-tile__stepper-btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  updateQuantity(targetId, currentQty + 1, currentItemKey);
+                }}
+                aria-label="Increase quantity"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>add</span>
+              </button>
+            </div>
+          ) : (
+            <button 
+              type="button"
+              className="product-tile__add-button" 
+              onClick={handleAdd}
+              disabled={!isAvailable}
+              aria-label={`Add ${product.name} (${currentUnit}) to cart`}
+              title={`Add ${currentUnit} to cart`}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>add</span>
+              <span className="product-tile__add-text">ADD</span>
+            </button>
+          )}
         </div>
       </div>
     </article>

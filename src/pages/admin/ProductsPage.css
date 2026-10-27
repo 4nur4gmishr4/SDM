@@ -386,3 +386,41 @@
   align-items: center;
   gap: var(--md-sys-spacing-2);
 }
+
+/* Quick 1-Click Stock Toggle Button in Table */
+.admin-stock-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.admin-stock-toggle-btn--in-stock {
+  background-color: #E6F4EA;
+  color: #137333;
+  border-color: rgba(19, 115, 51, 0.2);
+}
+
+.admin-stock-toggle-btn--in-stock:hover {
+  background-color: #CEEAD6;
+  box-shadow: 0 2px 6px rgba(19, 115, 51, 0.15);
+}
+
+.admin-stock-toggle-btn--out-stock {
+  background-color: #FCE8E6;
+  color: #C5221F;
+  border-color: rgba(197, 34, 31, 0.2);
+}
+
+.admin-stock-toggle-btn--out-stock:hover {
+  background-color: #FAD2CF;
+  box-shadow: 0 2px 6px rgba(197, 34, 31, 0.15);
+}
+

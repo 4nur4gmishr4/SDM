@@ -250,22 +250,29 @@
 .product-tile__add-button {
   background-color: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
-  border-radius: 10px;
-  width: 38px;
-  height: 38px;
-  display: flex;
+  border-radius: 8px;
+  min-width: 68px;
+  height: 34px;
+  padding: 0 10px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
   position: relative;
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   -webkit-tap-highlight-color: transparent !important;
   -webkit-user-select: none;
   user-select: none;
+  cursor: pointer;
+}
+
+.product-tile__add-text {
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .product-tile__add-button:hover:not(:disabled) {
@@ -276,18 +283,66 @@
 }
 
 .product-tile__add-button:active:not(:disabled) {
-  transform: scale(0.92);
+  transform: scale(0.94);
   background-color: var(--md-sys-color-primary);
 }
 
 .product-tile__add-button:focus-visible {
-  outline: none; /* Focus handled globally */
+  outline: none;
 }
 
 .product-tile__add-button:disabled {
   background-color: var(--md-sys-color-surface-container);
   color: var(--md-sys-color-outline);
   cursor: not-allowed;
+}
+
+/* Inline Quantity Stepper */
+.product-tile__stepper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--md-sys-color-primary, #1E8E3E);
+  color: #FFFFFF;
+  border-radius: 8px;
+  height: 34px;
+  min-width: 82px;
+  padding: 2px 4px;
+  box-shadow: 0 2px 8px rgba(30, 142, 62, 0.35);
+  user-select: none;
+}
+
+.product-tile__stepper-btn {
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  padding: 0;
+}
+
+.product-tile__stepper-btn:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.product-tile__stepper-btn:active {
+  transform: scale(0.85);
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.product-tile__stepper-count {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 0 6px;
+  text-align: center;
+  min-width: 18px;
+  color: #FFFFFF;
 }
 
 /* Badges (Always prominent, never hidden on hover, proper contrast) */

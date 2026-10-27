@@ -394,4 +394,109 @@
     padding: var(--md-sys-spacing-3) var(--md-sys-spacing-6);
     min-height: 64px;
   }
+
+  .app-shell__floating-cart-bar {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------
+   Mobile Sticky Floating Cart Bar
+   -------------------------------------------------------- */
+
+.app-shell__floating-cart-bar {
+  position: fixed;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 10px);
+  left: 14px;
+  right: 14px;
+  z-index: 95;
+  background: linear-gradient(135deg, #1E8E3E 0%, #137333 100%);
+  color: #FFFFFF;
+  border-radius: 14px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(30, 142, 62, 0.45);
+  animation: slideUpFloat 0.25s cubic-bezier(0.2, 0, 0, 1);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+@keyframes slideUpFloat {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.app-shell__floating-cart-bar:active {
+  transform: scale(0.98);
+}
+
+.app-shell__floating-cart-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-shell__floating-cart-icon-wrap {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+}
+
+.app-shell__floating-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #F9AB00;
+  color: #202124;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.app-shell__floating-cart-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell__floating-cart-count {
+  font-size: 11px;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.app-shell__floating-cart-total {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.app-shell__floating-cart-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 6px 14px;
+  border-radius: 8px;
+  color: #FFFFFF;
 }

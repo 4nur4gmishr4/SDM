@@ -19,14 +19,10 @@ import './CheckoutPage.css';
 
 export function CheckoutPage() {
   const { items, itemCount, subtotal, clearCart } = useCart();
-  const { location, openModal, detectCurrentLocation, hasLocationBeenSet, isLocating } = useLocationContext();
+  const { location, openModal, detectCurrentLocation, hasLocationBeenSet } = useLocationContext();
   const { showSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLocationConfirmed, setIsLocationConfirmed] = useState<boolean>(() => {
-    // If the user already set their location previously, consider it primed but confirmable
-    return hasLocationBeenSet;
-  });
 
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'upi'>('cod');
   const [showDesktopQrModal, setShowDesktopQrModal] = useState(false);
@@ -66,7 +62,7 @@ export function CheckoutPage() {
     if (!hasLocationBeenSet && navigator.geolocation) {
       detectCurrentLocation().then((success) => {
         if (success) {
-          showSnackbar('Delivery location detected! Please click "OK, Confirm Location".');
+          showSnackbar('Delivery location detected automatically!');
         }
       });
     }
@@ -144,20 +140,6 @@ export function CheckoutPage() {
     showSnackbar('Profile autofill not available on this browser. You can type directly.');
   };
 
-  const handleLocateMe = async () => {
-    const success = await detectCurrentLocation();
-    if (success) {
-      setIsLocationConfirmed(true);
-      showSnackbar('Location detected and confirmed!');
-    } else {
-      openModal();
-    }
-  };
-
-  const handleConfirmLocationOk = () => {
-    setIsLocationConfirmed(true);
-    showSnackbar('Delivery location confirmed!');
-  };
 
   const handleConfirmDesktopQrOrder = (utr?: string) => {
     if (!pendingOrderDetails) return;
@@ -174,11 +156,6 @@ export function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!isLocationConfirmed) {
-      showSnackbar('Please verify and click "OK, Confirm Location" before proceeding.');
-      return;
-    }
 
     if (!navigator.onLine) {
       showSnackbar('You are currently offline. Please reconnect to the internet to place your order.');
@@ -407,90 +384,54 @@ export function CheckoutPage() {
             <div style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px',
-              padding: '16px',
-              borderRadius: '14px',
-              backgroundColor: isLocationConfirmed
-                ? 'var(--md-sys-color-primary-container, #CEEAD6)'
-                : 'var(--md-sys-color-surface-container, #f2f5f2)',
-              color: isLocationConfirmed
-                ? 'var(--md-sys-color-on-primary-container, #0D652D)'
-                : 'var(--md-sys-color-on-surface, #1b1c1b)',
-              border: isLocationConfirmed
-                ? '1.5px solid rgba(30, 142, 62, 0.4)'
-                : '1.5px solid var(--md-sys-color-primary, #1E8E3E)',
+              gap: '10px',
+              padding: '14px 16px',
+              borderRadius: '12px',
+              backgroundColor: 'var(--md-sys-color-primary-container, #CEEAD6)',
+              color: 'var(--md-sys-color-on-primary-container, #0D652D)',
+              border: '1.5px solid rgba(30, 142, 62, 0.3)',
               width: '100%',
               boxSizing: 'border-box'
             }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', minWidth: 0 }}>
                   <span className="material-symbols-outlined" style={{
-                    fontSize: '26px',
-                    color: isLocationConfirmed ? '#1E8E3E' : 'var(--md-sys-color-primary)',
-                    flexShrink: 0
+                    fontSize: '24px',
+                    color: '#1E8E3E',
+                    flexShrink: 0,
+                    marginTop: '2px'
                   }}>
-                    {isLocationConfirmed ? 'verified' : 'location_on'}
+                    verified
                   </span>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: '14px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span>GPS Delivery Location</span>
-                      {isLocationConfirmed ? (
-                        <span style={{ fontSize: '11px', background: '#1E8E3E', color: '#fff', padding: '1px 6px', borderRadius: '4px' }}>
-                          CONFIRMED ✓
-                        </span>
-                      ) : (
-                        <span style={{ fontSize: '11px', background: '#D93025', color: '#fff', padding: '1px 6px', borderRadius: '4px' }}>
-                          CLICK OK TO CONFIRM
-                        </span>
-                      )}
+                    <div style={{ fontSize: '13.5px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span>GPS Delivery Pin</span>
+                      <span style={{ fontSize: '11px', background: '#1E8E3E', color: '#fff', padding: '1px 6px', borderRadius: '4px' }}>
+                        CONFIRMED
+                      </span>
                     </div>
                     <div style={{ fontSize: '12.5px', marginTop: '2px', fontWeight: 600 }}>
                       {location.area || 'Jabalpur'}
                     </div>
-                    <div style={{ fontSize: '11.5px', opacity: 0.85, marginTop: '2px', lineHeight: 1.35 }}>
+                    <div style={{ fontSize: '11.5px', opacity: 0.9, marginTop: '2px', lineHeight: 1.35 }}>
                       {location.formattedAddress}
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
-                {!isLocationConfirmed ? (
-                  <button
-                    type="button"
-                    className="sdm-btn sdm-btn--primary"
-                    style={{ padding: '8px 18px', fontSize: '13px' }}
-                    onClick={handleConfirmLocationOk}
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>check_circle</span>
-                    <span>OK, Confirm Location</span>
-                  </button>
-                ) : (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 600, color: '#1E8E3E' }}>
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>done_all</span>
-                    <span>Location Verified for Delivery</span>
-                  </div>
-                )}
 
                 <button
                   type="button"
                   className="sdm-btn sdm-btn--outlined"
-                  style={{ padding: '6px 14px', fontSize: '12px', background: 'var(--md-sys-color-surface, #fff)' }}
+                  style={{
+                    padding: '4px 12px',
+                    fontSize: '11.5px',
+                    background: 'var(--md-sys-color-surface, #fff)',
+                    flexShrink: 0,
+                    height: '30px'
+                  }}
                   onClick={openModal}
                 >
-                  Change on Map
-                </button>
-
-                <button
-                  type="button"
-                  className="sdm-btn sdm-btn--outlined"
-                  style={{ padding: '6px 14px', fontSize: '12px', background: 'var(--md-sys-color-surface, #fff)' }}
-                  onClick={handleLocateMe}
-                  disabled={isLocating}
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>my_location</span>
-                  <span>{isLocating ? 'Locating...' : 'Locate Me'}</span>
+                  Change Pin
                 </button>
               </div>
             </div>

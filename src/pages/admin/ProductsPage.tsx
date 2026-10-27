@@ -523,15 +523,35 @@ export function ProductsPage() {
                     </td>
                     <td>
                       <div className="admin-product-status-list">
-                        {product.is_available ? (
-                          <span className="admin-badge admin-badge--delivered">
-                            In Stock
+                        <button
+                          type="button"
+                          className={`admin-stock-toggle-btn ${product.is_available ? 'admin-stock-toggle-btn--in-stock' : 'admin-stock-toggle-btn--out-stock'}`}
+                          onClick={async () => {
+                            const nextStock = !product.is_available;
+                            setProducts((prev) =>
+                              prev.map((p) =>
+                                p.id === product.id
+                                  ? { ...p, is_available: nextStock }
+                                  : p,
+                              ),
+                            );
+                            if (isSupabaseConfigured) {
+                              await supabase
+                                .from("products")
+                                .update({ is_available: nextStock })
+                                .eq("id", product.id);
+                            }
+                          }}
+                          title={`Click to mark as ${product.is_available ? "Out of Stock" : "In Stock"}`}
+                        >
+                          <span
+                            className="material-symbols-outlined"
+                            style={{ fontSize: "15px" }}
+                          >
+                            {product.is_available ? "check_circle" : "cancel"}
                           </span>
-                        ) : (
-                          <span className="admin-badge admin-badge--pending">
-                            Out of Stock
-                          </span>
-                        )}
+                          <span>{product.is_available ? "In Stock" : "Out of Stock"}</span>
+                        </button>
                         {product.is_featured && (
                           <span className="admin-badge admin-badge--processing">
                             Featured

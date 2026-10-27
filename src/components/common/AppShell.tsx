@@ -10,7 +10,7 @@ import { LocationPickerModal } from '../customer/LocationPickerModal';
 import './AppShell.css';
 
 export function AppShell() {
-  const { itemCount } = useCart();
+  const { itemCount, subtotal } = useCart();
   const { resolvedTheme, toggleTheme } = useTheme();
   const { showSnackbar } = useSnackbar();
   const location = useLocation();
@@ -168,6 +168,41 @@ export function AppShell() {
         {/* Customer Footer */}
         <Footer />
       </div>
+
+      {/* Mobile Sticky Floating Cart Bar */}
+      {itemCount > 0 &&
+        !location.pathname.startsWith('/cart') &&
+        !location.pathname.startsWith('/checkout') &&
+        !location.pathname.startsWith('/order') && (
+          <Link
+            to="/cart"
+            className="app-shell__floating-cart-bar"
+            aria-label={`View Cart with ${itemCount} items totaling ₹${subtotal}`}
+          >
+            <div className="app-shell__floating-cart-left">
+              <div className="app-shell__floating-cart-icon-wrap">
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                  shopping_cart
+                </span>
+                <span className="app-shell__floating-cart-badge">{itemCount}</span>
+              </div>
+              <div className="app-shell__floating-cart-details">
+                <span className="app-shell__floating-cart-count">
+                  {itemCount} {itemCount === 1 ? 'item' : 'items'}
+                </span>
+                <span className="app-shell__floating-cart-total">
+                  ₹{subtotal.toLocaleString('en-IN')}
+                </span>
+              </div>
+            </div>
+            <div className="app-shell__floating-cart-right">
+              <span>View Cart</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                arrow_forward
+              </span>
+            </div>
+          </Link>
+        )}
 
       {/* Mobile Bottom Navigation */}
       <nav className="app-shell__bottom-nav" aria-label="Mobile Navigation">
