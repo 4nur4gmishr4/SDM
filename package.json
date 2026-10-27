@@ -9,10 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "prepare": "husky",
-    "sync:inventory": "node scripts/sync_excel_to_supabase.js",
-    "catalog:audit": "node scripts/audit_catalog.js",
-    "catalog:reconcile": "node scripts/reconcile_database_consistency.js",
-    "test:store": "node scripts/test_store.js"
+    "sync:inventory": "node scripts/sync_excel_to_supabase.js"
   },
   "dependencies": {
     "@material/web": "^2.5.0",
@@ -30,12 +27,14 @@
     "react-dom": "^19.2.8",
     "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.18.4",
+    "sharp": "^0.35.5",
     "uuid": "^14.0.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
     "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@types/uuid": "^10.0.0",

@@ -7,32 +7,48 @@ import {
   STORE_PHONE_NUMBER, 
   STORE_WHATSAPP_NUMBER,
   STORE_WHATSAPP_CLEAN, 
-  STORE_UPI_ID,
   STORE_ADDRESS,
-  STORE_DELIVERY_RADIUS,
-  getUpiPaymentUrl 
+  STORE_DELIVERY_RADIUS 
 } from '../../lib/orderUtils';
 import { WhatsAppIcon } from '../../components/common';
+import { DynamicUpiPayment } from '../../components/payment/DynamicUpiPayment';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import './OrderConfirmationPage.css';
 
 export function OrderConfirmationPage() {
   const { orderId } = useParams<{ orderId: string }>();
-  const [copiedUpi, setCopiedUpi] = useState(false);
-
   const pageTitle = `Order Confirmed | ${STORE_NAME}`;
+  const [orderTotal, setOrderTotal] = useState<number>(0);
 
   useEffect(() => {
     document.title = pageTitle;
-  }, [pageTitle]);
+    if (orderId && isSupabaseConfigured) {
+      void supabase
+        .from('orders')
+        .select('total_amount')
+        .eq('id', orderId)
+        .maybeSingle()
+        .then(
+          ({ data }) => {
+            if (data?.total_amount) {
+              setOrderTotal(Number(data.total_amount));
+            }
+          },
+          () => {}
+        );
+    }
+  }, [pageTitle, orderId]);
 
-  const handleCopyUpi = () => {
-    navigator.clipboard.writeText(STORE_UPI_ID).then(() => {
-      setCopiedUpi(true);
-      setTimeout(() => setCopiedUpi(false), 2000);
-    });
+  const handleUpiWhatsAppConfirm = (utr?: string) => {
+    let msg = `Hello ${STORE_NAME}, I have completed my UPI payment for Order *#${orderId || ''}*`;
+    if (orderTotal > 0) {
+      msg += ` (Amount: ₹${orderTotal.toFixed(2)})`;
+    }
+    if (utr && utr.trim()) {
+      msg += `\n*UPI Ref / UTR:* ${utr.trim()}`;
+    }
+    window.open(`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
   };
-
-  const upiLink = getUpiPaymentUrl({ orderId: orderId || 'UNKNOWN' });
 
   return (
     <div className="layout-container">
@@ -79,62 +95,13 @@ export function OrderConfirmationPage() {
           </a>
         </div>
 
-        {/* Digital Payment / UPI Section */}
-        <div style={{
-          width: '100%',
-          maxWidth: '500px',
-          background: 'var(--md-sys-color-surface-container)',
-          border: '1px solid var(--md-sys-color-outline-variant)',
-          borderRadius: '16px',
-          padding: '20px',
-          textAlign: 'left',
-          marginBottom: '28px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)', fontSize: '24px' }}>
-              account_balance_wallet
-            </span>
-            <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>
-              Direct UPI / Online Payment Option
-            </div>
-          </div>
-
-          <p style={{ fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)', margin: '0 0 14px', lineHeight: 1.5 }}>
-            You can pay via Cash on Delivery or prepay directly to the store via any UPI app (GPay, PhonePe, Paytm, BHIM):
-          </p>
-
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            background: 'var(--md-sys-color-surface)',
-            border: '1px solid var(--md-sys-color-outline-variant)',
-            borderRadius: '10px',
-            padding: '10px 14px',
-            marginBottom: '14px'
-          }}>
-            <div>
-              <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', display: 'block' }}>Store UPI ID</span>
-              <strong style={{ fontSize: '14px', color: 'var(--md-sys-color-primary)' }}>{STORE_UPI_ID}</strong>
-            </div>
-            <button
-              type="button"
-              onClick={handleCopyUpi}
-              className="sdm-btn sdm-btn--tonal"
-              style={{ padding: '6px 12px', fontSize: '12px' }}
-            >
-              {copiedUpi ? 'Copied!' : 'Copy UPI'}
-            </button>
-          </div>
-
-          <a
-            href={upiLink}
-            className="sdm-btn sdm-btn--primary"
-            style={{ width: '100%', justifyContent: 'center', textDecoration: 'none', padding: '10px 16px', display: 'flex' }}
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>payments</span>
-            <span>1-Tap Pay via UPI App</span>
-          </a>
+        {/* Digital Payment / Dynamic UPI Section */}
+        <div style={{ width: '100%', maxWidth: '440px', marginBottom: '28px' }}>
+          <DynamicUpiPayment
+            orderId={orderId || 'UNKNOWN'}
+            amount={orderTotal}
+            onPaymentConfirmed={handleUpiWhatsAppConfirm}
+          />
         </div>
 
         {/* Store Location & Delivery Info Badge */}

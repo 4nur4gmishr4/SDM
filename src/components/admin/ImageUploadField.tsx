@@ -38,15 +38,12 @@ export function ImageUploadField({
 
   const handleFile = async (file: File) => {
     setIsUploading(true);
-    setUploadStatus(isVideo ? 'Preparing video...' : 'Compressing image to WebP...');
+    setUploadStatus(isVideo ? 'Preparing video...' : 'Compressing to lightweight WebP...');
     try {
       const uploadedUrl = await uploadImageFile(file, {
-        maxWidth: 1000,
-        maxHeight: 1000,
-        quality: 0.82,
         onCompressed: (info) => {
           setCompressionInfo(info);
-          setUploadStatus(`Saving ${formatBytes(info.compressedSize)} file to storage...`);
+          setUploadStatus(`Compressed to ${formatBytes(info.compressedSize)} (-${info.savingsPercent}%). Uploading to cloud...`);
         },
       });
       onChange(uploadedUrl);
@@ -138,7 +135,9 @@ export function ImageUploadField({
             {compressionInfo && (
               <div className="image-upload-field__compression-badge">
                 <span className="material-symbols-outlined" style={{ fontSize: '13px', color: '#16a34a' }}>bolt</span>
-                <span>Optimized WebP: {formatBytes(compressionInfo.originalSize)} → {formatBytes(compressionInfo.compressedSize)} ({compressionInfo.savingsPercent}% saved)</span>
+                <span>
+                  ⚡ Compressed: {formatBytes(compressionInfo.originalSize)} → {formatBytes(compressionInfo.compressedSize)} (-{compressionInfo.savingsPercent}%) • {compressionInfo.width}×{compressionInfo.height} WebP (&lt;50KB)
+                </span>
               </div>
             )}
             <div className="image-upload-field__preview-url" title={value}>

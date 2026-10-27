@@ -33,9 +33,9 @@ export async function uploadImageFile(
   if (file.type.startsWith('image/') && !file.type.includes('svg')) {
     try {
       compressionInfo = await compressImage(file, {
-        maxWidth: options?.maxWidth || 1000,
-        maxHeight: options?.maxHeight || 1000,
-        quality: options?.quality || 0.82,
+        maxWidth: options?.maxWidth,
+        maxHeight: options?.maxHeight,
+        quality: options?.quality,
         targetMimeType: 'image/webp',
       });
       processedFile = compressionInfo.file;

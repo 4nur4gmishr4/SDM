@@ -7,7 +7,8 @@ import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase'
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { WhatsAppIcon } from '../../components/common';
-import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER, STORE_UPI_ID } from '../../lib/orderUtils';
+import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER, getUpiPaymentUrl } from '../../lib/orderUtils';
+import { DynamicUpiPayment } from '../../components/payment/DynamicUpiPayment';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import { validateOrderInput } from '../../lib/validation';
 import { dispatchOrderWebhook } from '../../lib/webhookPipeline';
@@ -158,19 +159,17 @@ export function CheckoutPage() {
     showSnackbar('Delivery location confirmed!');
   };
 
-  const handleConfirmDesktopQrOrder = () => {
+  const handleConfirmDesktopQrOrder = (utr?: string) => {
     if (!pendingOrderDetails) return;
     haptics.success();
-    openWhatsApp(storeWhatsAppNumber, pendingOrderDetails.message);
+    let finalMsg = pendingOrderDetails.message;
+    if (utr && utr.trim()) {
+      finalMsg += `\n*UPI Ref / UTR:* ${utr.trim()}`;
+    }
+    openWhatsApp(storeWhatsAppNumber, finalMsg);
     clearCart();
     setShowDesktopQrModal(false);
     navigate(`/order/${pendingOrderDetails.orderId}`);
-  };
-
-  const handleCopyUpiId = () => {
-    haptics.tap();
-    navigator.clipboard.writeText(STORE_UPI_ID);
-    showSnackbar(`UPI ID ${STORE_UPI_ID} copied!`);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -318,7 +317,7 @@ export function CheckoutPage() {
 
       // 4. Smart UPI Routing vs COD
       if (paymentMethod === 'upi') {
-        const upiUri = `upi://pay?pa=${STORE_UPI_ID}&pn=M%2FS.SAI%20DARSHAN%20SHOPPING%20MART&tr=${encodeURIComponent(orderId)}&am=${total.toFixed(2)}&cu=INR`;
+        const upiUri = getUpiPaymentUrl({ amount: total, orderId, note: `Order ${orderId}` });
 
         if (isMobileDevice) {
           // Mobile: Native UPI Intent routing
@@ -649,7 +648,7 @@ export function CheckoutPage() {
         </div>
       </div>
 
-      {/* Desktop Themed Standee QR Modal */}
+      {/* Desktop Dynamic Themed UPI QR Modal */}
       {showDesktopQrModal && pendingOrderDetails && (
         <div className="checkout-qr-modal-backdrop" onClick={() => setShowDesktopQrModal(false)}>
           <div className="checkout-qr-modal-card" onClick={e => e.stopPropagation()}>
@@ -662,42 +661,12 @@ export function CheckoutPage() {
               <span className="material-symbols-outlined">close</span>
             </button>
 
-            <span className="material-symbols-outlined" style={{ fontSize: '36px', color: 'var(--md-sys-color-primary)' }}>
-              qr_code_scanner
-            </span>
-            <h3 className="checkout-qr-modal-title">Scan & Pay via any UPI App</h3>
-            <p className="checkout-qr-modal-amount">₹{pendingOrderDetails.total.toFixed(2)}</p>
-
-            <img
-              src="/sai-darshan-upi-qr-card.svg"
-              alt="Sai Darshan Mart Themed UPI QR"
-              className="checkout-qr-modal-image"
+            <DynamicUpiPayment
+              orderId={pendingOrderDetails.orderId}
+              amount={pendingOrderDetails.total}
+              showCardStyle={false}
+              onPaymentConfirmed={(utr) => handleConfirmDesktopQrOrder(utr)}
             />
-
-            <div className="checkout-qr-modal-upi-copy">
-              <span>UPI ID: <strong>{STORE_UPI_ID}</strong></span>
-              <button
-                type="button"
-                className="checkout-qr-modal-copy-btn"
-                onClick={handleCopyUpiId}
-              >
-                Copy
-              </button>
-            </div>
-
-            <p style={{ fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', margin: '12px 0 16px 0' }}>
-              Scan with Google Pay, PhonePe, Paytm or BHIM on your mobile phone to complete payment.
-            </p>
-
-            <button
-              type="button"
-              className="sdm-btn sdm-btn--whatsapp"
-              style={{ width: '100%', padding: '12px 20px', fontSize: '15px' }}
-              onClick={handleConfirmDesktopQrOrder}
-            >
-              <WhatsAppIcon size={20} />
-              <span>I Have Paid — Send Order to WhatsApp</span>
-            </button>
           </div>
         </div>
       )}

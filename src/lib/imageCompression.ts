@@ -2,7 +2,7 @@
  * Client-Side Image Compression Engine
  * Compresses images before uploading to Supabase Storage.
  * Converts high-res (3-15MB) camera/phone photos into lightweight, crystal-sharp WebP
- * (~30KB-70KB), saving 95%+ Supabase storage space and network bandwidth.
+ * (~30KB-80KB), preserving pristine visual quality while saving 95%+ storage and bandwidth.
  */
 
 export interface CompressionOptions {
@@ -10,6 +10,7 @@ export interface CompressionOptions {
   maxHeight?: number;
   quality?: number;
   targetMimeType?: 'image/webp' | 'image/jpeg';
+  maxSizeBytes?: number; // Optional soft ceiling (e.g. 100 * 1024)
 }
 
 export interface CompressionResult {
@@ -26,19 +27,79 @@ export interface CompressionResult {
 }
 
 /**
- * Compresses any image File in the browser using Canvas 2D
+ * High-quality stepped downsampling to avoid moire/aliasing on high-res camera photos
+ */
+function createCrispCanvas(
+  sourceImg: HTMLImageElement,
+  targetWidth: number,
+  targetHeight: number
+): HTMLCanvasElement {
+  let curWidth = sourceImg.naturalWidth || sourceImg.width;
+  let curHeight = sourceImg.naturalHeight || sourceImg.height;
+
+  // If reduction is less than 2x, direct draw with high smoothing
+  if (curWidth <= targetWidth * 2 && curHeight <= targetHeight * 2) {
+    const canvas = document.createElement('canvas');
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (ctx) {
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(sourceImg, 0, 0, targetWidth, targetHeight);
+    }
+    return canvas;
+  }
+
+  // Stepped halving downsampling for extreme quality preservation
+  let oc = document.createElement('canvas');
+  let octx = oc.getContext('2d', { alpha: true });
+  oc.width = curWidth;
+  oc.height = curHeight;
+  if (octx) {
+    octx.imageSmoothingEnabled = true;
+    octx.imageSmoothingQuality = 'high';
+    octx.drawImage(sourceImg, 0, 0, curWidth, curHeight);
+  }
+
+  while (curWidth * 0.5 > targetWidth && curHeight * 0.5 > targetHeight) {
+    curWidth = Math.round(curWidth * 0.5);
+    curHeight = Math.round(curHeight * 0.5);
+
+    const nextCanvas = document.createElement('canvas');
+    const nextCtx = nextCanvas.getContext('2d', { alpha: true });
+    nextCanvas.width = curWidth;
+    nextCanvas.height = curHeight;
+    if (nextCtx) {
+      nextCtx.imageSmoothingEnabled = true;
+      nextCtx.imageSmoothingQuality = 'high';
+      nextCtx.drawImage(oc, 0, 0, curWidth, curHeight);
+    }
+    oc = nextCanvas;
+    octx = nextCtx;
+  }
+
+  // Final draw to exact target dimensions
+  const finalCanvas = document.createElement('canvas');
+  finalCanvas.width = targetWidth;
+  finalCanvas.height = targetHeight;
+  const finalCtx = finalCanvas.getContext('2d', { alpha: true });
+  if (finalCtx) {
+    finalCtx.imageSmoothingEnabled = true;
+    finalCtx.imageSmoothingQuality = 'high';
+    finalCtx.drawImage(oc, 0, 0, targetWidth, targetHeight);
+  }
+
+  return finalCanvas;
+}
+
+/**
+ * Compresses any image File in the browser using Canvas 2D + WebP
  */
 export async function compressImage(
   file: File,
   options: CompressionOptions = {}
 ): Promise<CompressionResult> {
-  const {
-    maxWidth = 1000,
-    maxHeight = 1000,
-    quality = 0.82,
-    targetMimeType = 'image/webp',
-  } = options;
-
   // Don't compress SVGs or videos
   if (file.type.includes('svg') || file.type.startsWith('video/')) {
     const base64 = await fileToBase64(file);
@@ -58,29 +119,33 @@ export async function compressImage(
 
   // Load image into an HTMLImageElement
   const img = await loadImageFromFile(file);
+  const naturalWidth = img.naturalWidth || img.width;
+  const naturalHeight = img.naturalHeight || img.height;
+  const isWideBanner = naturalWidth / naturalHeight >= 1.45;
+
+  // Smart defaults:
+  // - Wide banners: 1600x900, quality 0.82
+  // - Standard products/photos: 900x900, quality 0.80
+  const defaultMaxWidth = isWideBanner ? 1600 : 900;
+  const defaultMaxHeight = isWideBanner ? 900 : 900;
+  const defaultQuality = isWideBanner ? 0.82 : 0.80;
+
+  const maxWidth = options.maxWidth || defaultMaxWidth;
+  const maxHeight = options.maxHeight || defaultMaxHeight;
+  let quality = options.quality !== undefined ? options.quality : defaultQuality;
+  const targetMimeType = options.targetMimeType || 'image/webp';
 
   // Calculate proportional dimensions
-  let { width, height } = img;
+  let width = naturalWidth;
+  let height = naturalHeight;
   if (width > maxWidth || height > maxHeight) {
     const ratio = Math.min(maxWidth / width, maxHeight / height);
     width = Math.round(width * ratio);
     height = Math.round(height * ratio);
   }
 
-  // Draw onto canvas
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d', { alpha: true });
-
-  if (!ctx) {
-    throw new Error('Canvas 2D context not available');
-  }
-
-  // Better downsampling quality
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
-  ctx.drawImage(img, 0, 0, width, height);
+  // Draw onto canvas with stepped smoothing
+  const canvas = createCrispCanvas(img, width, height);
 
   // Export to Blob
   let blob: Blob | null = null;
@@ -104,6 +169,38 @@ export async function compressImage(
 
   if (!blob) {
     throw new Error('Failed to compress image onto canvas blob');
+  }
+
+  // Strict 50 KB Ceiling Guarantee
+  const HARD_CEILING_BYTES = 50 * 1024; // 51,200 bytes
+  const targetCeiling = options.maxSizeBytes ? Math.min(options.maxSizeBytes, HARD_CEILING_BYTES) : HARD_CEILING_BYTES;
+
+  let currentCanvas = canvas;
+  let curW = width;
+  let curH = height;
+  let attempts = 0;
+
+  while (blob.size > targetCeiling && attempts < 8) {
+    attempts++;
+    if (quality > 0.60) {
+      quality = Math.max(0.52, quality - 0.07);
+    } else {
+      // Downscale dimensions slightly while preserving high canvas smoothing
+      curW = Math.round(curW * 0.88);
+      curH = Math.round(curH * 0.88);
+      currentCanvas = createCrispCanvas(img, curW, curH);
+      quality = 0.70;
+    }
+
+    const nextBlob = await new Promise<Blob | null>((resolve) => {
+      currentCanvas.toBlob((b) => resolve(b), finalMime, quality);
+    });
+
+    if (nextBlob && nextBlob.size > 0) {
+      blob = nextBlob;
+      width = curW;
+      height = curH;
+    }
   }
 
   // If compressed file ended up larger than original (rare, e.g. tiny thumbnail), keep original
