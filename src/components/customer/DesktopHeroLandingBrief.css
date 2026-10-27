@@ -79,7 +79,7 @@
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  animation: sdm-tagline-shine 3.8s linear infinite;
+  animation: sdsm-tagline-shine 3.8s linear infinite;
 }
 
 [data-theme="dark"] .desktop-hero-stroke__motto-text {
@@ -106,7 +106,7 @@
   color: transparent;
 }
 
-@keyframes sdm-tagline-shine {
+@keyframes sdsm-tagline-shine {
   0% {
     background-position: 100% center;
   }

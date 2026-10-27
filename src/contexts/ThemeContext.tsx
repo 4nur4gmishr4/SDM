@@ -14,10 +14,10 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 function applyThemeToDOM(resolved: 'light' | 'dark', mode: Theme) {
   if (typeof document !== 'undefined') {
     // Inject temporary transition suppression style so theme switch is 100% instant (0ms delay)
-    let css = document.getElementById('sdm-instant-theme-switch');
+    let css = document.getElementById('sdsm-instant-theme-switch');
     if (!css) {
       css = document.createElement('style');
-      css.id = 'sdm-instant-theme-switch';
+      css.id = 'sdsm-instant-theme-switch';
       css.textContent = `
         *, *::before, *::after {
           -webkit-transition: none !important;
@@ -47,7 +47,7 @@ function applyThemeToDOM(resolved: 'light' | 'dark', mode: Theme) {
     // Remove suppression after the DOM updates synchronously
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        const el = document.getElementById('sdm-instant-theme-switch');
+        const el = document.getElementById('sdsm-instant-theme-switch');
         if (el) el.remove();
       });
     });
@@ -58,7 +58,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window === 'undefined') return 'system';
     try {
-      const saved = localStorage.getItem('sdm-theme') as Theme | null;
+      const saved = localStorage.getItem('sdsm-theme') as Theme | null;
       return saved === 'light' || saved === 'dark' ? saved : 'system';
     } catch {
       return 'system';
@@ -99,9 +99,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setThemeState(t);
     try {
       if (t === 'system') {
-        localStorage.removeItem('sdm-theme');
+        localStorage.removeItem('sdsm-theme');
       } else {
-        localStorage.setItem('sdm-theme', t);
+        localStorage.setItem('sdsm-theme', t);
       }
     } catch {
       // Ignore

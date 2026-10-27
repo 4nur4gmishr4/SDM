@@ -61,7 +61,7 @@ Sai Darshan Shopping Mart is an enterprise-grade e-commerce storefront and store
 
 ### Repository Structure
 ```
-SDMWEB/
+SDSMWEB/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml             # GitHub Actions CI/CD (lint, strict tsc, build & smoke tests)
@@ -169,7 +169,7 @@ The live database contains a purified master catalog of **1,827 verified active 
 Customer Order (Cart or Quick Order)
             │
             ▼
-Google SRE-Grade IndexedDB Vault (`sdm_offline_vault`)
+Google SRE-Grade IndexedDB Vault (`sdsm_offline_vault`)
   ↳ Staged locally before network dispatch (zero lost orders)
             │
             ▼
@@ -178,7 +178,7 @@ Supabase PostgreSQL (`orders` & `order_items` tables)
        ┌────┴────────────────────────┐
        ▼                             ▼
 Dynamic UPI QR & App Intent    WhatsApp Pre-Formatted Dispatch
-• VPA: 7354155669@upi         • Order ID (SDM-YYMMDD-XXXX)
+• VPA: 7354155669@upi         • Order ID (SDSM-YYMMDD-XXXX)
 • Terminal: ibkPOS.EP116181   • Itemized list with unit sizes
 • Pre-filled exact amount      • Delivery address & live GPS pin
 • 1-tap GPay/PhonePe/Paytm     • Direct customer-to-merchant chat
@@ -189,7 +189,7 @@ Dynamic UPI QR & App Intent    WhatsApp Pre-Formatted Dispatch
 - **Quick Order Interface (`/quick-order`)**: Dedicated screen for customers submitting handwritten or pasted grocery lists with instant order creation and WhatsApp routing.
 
 ### 2. SRE-Grade Offline Outbox (`orderOutbox.ts`)
-- Utilizes browser `IndexedDB` (`sdm_offline_vault`) to stage orders locally before attempting network dispatch.
+- Utilizes browser `IndexedDB` (`sdsm_offline_vault`) to stage orders locally before attempting network dispatch.
 - Automatically retries syncing orders with Supabase when network connectivity resumes.
 - Eliminates transaction failure and cart abandonment caused by spotty 2G/3G mobile data.
 
@@ -411,7 +411,7 @@ All binary files are hosted under the public `store-media` Supabase Storage buck
 - Fully supports **Light Mode**, **Dark Mode**, and **System Preference**.
 - The `index.html` file includes an inline script executing before the first paint to prevent theme flashing (Flash of Unstyled Theme - FOUT):
 ```js
-var saved = localStorage.getItem('sdm-theme');
+var saved = localStorage.getItem('sdsm-theme');
 var isDark = saved === 'dark' || (saved !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
 ```
@@ -442,7 +442,7 @@ document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/amit-saidarshan/SaiDarshanMart.git
-   cd SDMWEB
+   cd SDSMWEB
    ```
 
 2. **Install project dependencies:**
@@ -505,7 +505,7 @@ This runs:
   </a>
   <p><b>Lead Architect, Full-Stack Engineer & Core Maintainer</b></p>
   <p>
-    Spearheaded the complete end-to-end architecture, responsive web storefront, interactive admin suite, database schemas, PWA implementation, offline transaction vault, dynamic UPI integration, and automated catalog purification engine for Sai Darshan Mart.
+    Spearheaded the complete end-to-end architecture, responsive web storefront, interactive admin suite, database schemas, PWA implementation, offline transaction vault, dynamic UPI integration, and automated catalog purification engine for Sai Darshan Shopping Mart.
   </p>
   <p>
     <a href="https://github.com/4nur4gmishr4">

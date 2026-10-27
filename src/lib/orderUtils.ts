@@ -40,7 +40,7 @@ export function getUpiPaymentUrl(params?: { amount?: number; orderId?: string; n
 }
 
 /**
- * Generate a unique order ID in format: SDM-YYMMDD-XXXX
+ * Generate a unique order ID in format: SDSM-YYMMDD-XXXX
  * XXXX is a random 4-digit alphanumeric string for uniqueness.
  */
 export function generateOrderId(): string {
@@ -53,7 +53,7 @@ export function generateOrderId(): string {
   for (let i = 0; i < 4; i++) {
     suffix += chars[Math.floor(Math.random() * chars.length)];
   }
-  return `SDM-${yy}${mm}${dd}-${suffix}`;
+  return `SDSM-${yy}${mm}${dd}-${suffix}`;
 }
 
 /**

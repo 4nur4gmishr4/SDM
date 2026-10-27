@@ -79,17 +79,17 @@ export function NotFoundPage() {
           flexWrap: 'wrap',
           marginBottom: '24px'
         }}>
-          <Link to="/" className="sdm-btn sdm-btn--primary" style={{ padding: '10px 20px', textDecoration: 'none' }}>
+          <Link to="/" className="sdsm-btn sdsm-btn--primary" style={{ padding: '10px 20px', textDecoration: 'none' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>home</span>
             <span>Back to Home</span>
           </Link>
 
-          <Link to="/shop" className="sdm-btn sdm-btn--tonal" style={{ padding: '10px 20px', textDecoration: 'none' }}>
+          <Link to="/shop" className="sdsm-btn sdsm-btn--tonal" style={{ padding: '10px 20px', textDecoration: 'none' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>storefront</span>
             <span>Shop Groceries</span>
           </Link>
 
-          <Link to="/quick-order" className="sdm-btn sdm-btn--outlined" style={{ padding: '10px 20px', textDecoration: 'none' }}>
+          <Link to="/quick-order" className="sdsm-btn sdsm-btn--outlined" style={{ padding: '10px 20px', textDecoration: 'none' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>list_alt</span>
             <span>Quick Order</span>
           </Link>

@@ -551,7 +551,7 @@ export function QuickOrderPage() {
                 </div>
                 <button
                   type="button"
-                  className="sdm-btn sdm-btn--outlined"
+                  className="sdsm-btn sdsm-btn--outlined"
                   style={{ padding: '6px 14px', fontSize: '12px', whiteSpace: 'nowrap', flexShrink: 0, background: 'var(--md-sys-color-surface, #fff)' }}
                   onClick={openModal}
                 >
@@ -627,7 +627,7 @@ export function QuickOrderPage() {
 
           <div style={{ marginTop: '8px' }}>
             <button 
-              className="sdm-btn sdm-btn--whatsapp checkout-page__submit-btn"
+              className="sdsm-btn sdsm-btn--whatsapp checkout-page__submit-btn"
               type="submit"
               form="quick-order-form"
               disabled={isSubmitting}

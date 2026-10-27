@@ -1,4 +1,4 @@
-name: Sai Darshan Mart CI/CD Pipeline
+name: Sai Darshan Shopping Mart CI/CD Pipeline
 
 on:
   push:

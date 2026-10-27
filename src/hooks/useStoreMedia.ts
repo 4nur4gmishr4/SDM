@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import { STORE_MEDIA_ITEMS, type StoreMediaItem } from '../data/storeMedia';
 
-const STORAGE_KEY = 'sdm_store_about_visuals';
+const STORAGE_KEY = 'sdsm_store_about_visuals';
 const SETTING_KEY = 'store_about_visuals';
 
 // Merge stored items with permanent items to ensure all permanent items are always preserved

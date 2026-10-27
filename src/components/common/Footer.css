@@ -2,34 +2,34 @@
    Sai Darshan Shopping Mart — Modern Compact Horizontal Footer
    ============================================================ */
 
-.sdm-footer {
+.sdsm-footer {
   background-color: var(--md-sys-color-surface-container, #f3f4f6);
   color: var(--md-sys-color-on-surface, #1f2937);
   border-top: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
   margin-top: auto;
   font-family: var(--md-sys-typescale-font-family);
   -webkit-tap-highlight-color: transparent;
-  padding: 18px 0 calc(var(--sdm-layout-bottom-nav-height, 64px) + 12px) 0;
+  padding: 18px 0 calc(var(--sdsm-layout-bottom-nav-height, 64px) + 12px) 0;
 }
 
 @media (min-width: 768px) {
-  .sdm-footer {
+  .sdsm-footer {
     padding: 18px 0 14px 0;
   }
 }
 
-.sdm-footer__container {
-  max-width: var(--sdm-layout-max-width, 1280px);
+.sdsm-footer__container {
+  max-width: var(--sdsm-layout-max-width, 1280px);
   margin-inline: auto;
-  padding: 0 var(--sdm-layout-content-padding-mobile, 16px);
+  padding: 0 var(--sdsm-layout-content-padding-mobile, 16px);
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 @media (min-width: 768px) {
-  .sdm-footer__container {
-    padding: 0 var(--sdm-layout-content-padding-tablet, 24px);
+  .sdsm-footer__container {
+    padding: 0 var(--sdsm-layout-content-padding-tablet, 24px);
     gap: 12px;
   }
 }
@@ -37,7 +37,7 @@
 /* ------------------------------------------------------------
    Horizontal Content Row (Side-by-Side on Desktop/Tablet)
    ------------------------------------------------------------ */
-.sdm-footer__row {
+.sdsm-footer__row {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -48,7 +48,7 @@
 }
 
 /* Brand Section (Left Side) */
-.sdm-footer__brand {
+.sdsm-footer__brand {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -56,7 +56,7 @@
   flex: 1 1 300px;
 }
 
-.sdm-footer__brand-name {
+.sdsm-footer__brand-name {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.2px;
@@ -64,7 +64,7 @@
   line-height: 1.25;
 }
 
-.sdm-footer__brand-tagline {
+.sdsm-footer__brand-tagline {
   font-size: 12.5px;
   color: var(--md-sys-color-on-surface-variant, #6b7280);
   margin: 0;
@@ -72,7 +72,7 @@
 }
 
 /* Actions Section: Address & Contact Icons (Right Side) */
-.sdm-footer__actions {
+.sdsm-footer__actions {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -83,7 +83,7 @@
 }
 
 @media (min-width: 900px) {
-  .sdm-footer__actions {
+  .sdsm-footer__actions {
     justify-content: flex-end;
   }
 }
@@ -91,7 +91,7 @@
 /* ------------------------------------------------------------
    Clickable Exact Store Address Pill
    ------------------------------------------------------------ */
-.sdm-footer__address {
+.sdsm-footer__address {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -112,13 +112,13 @@
   text-align: left;
 }
 
-[data-theme="dark"] .sdm-footer__address {
+[data-theme="dark"] .sdsm-footer__address {
   background-color: var(--md-sys-color-surface-container-high, #2a2a2a);
   border-color: rgba(255, 255, 255, 0.12);
   color: var(--md-sys-color-on-surface, #e5e7eb);
 }
 
-.sdm-footer__address:hover {
+.sdsm-footer__address:hover {
   background-color: var(--md-sys-color-surface-container-high, #f3f4f6);
   border-color: var(--md-sys-color-primary, #1E8E3E);
   color: var(--md-sys-color-primary, #1E8E3E);
@@ -126,26 +126,26 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
-.sdm-footer__address-icon {
+.sdsm-footer__address-icon {
   font-size: 16px;
   color: var(--md-sys-color-primary, #1E8E3E);
   flex-shrink: 0;
 }
 
-.sdm-footer__address-text {
+.sdsm-footer__address-text {
   max-width: 440px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.sdm-footer__address-arrow {
+.sdsm-footer__address-arrow {
   font-size: 14px;
   color: var(--md-sys-color-outline, #9ca3af);
   flex-shrink: 0;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.sdm-footer__address:hover .sdm-footer__address-arrow {
+.sdsm-footer__address:hover .sdsm-footer__address-arrow {
   color: var(--md-sys-color-primary, #1E8E3E);
   transform: translate(1px, -1px);
 }
@@ -153,7 +153,7 @@
 /* ------------------------------------------------------------
    3 Unified Contact Icon Buttons (Google Green)
    ------------------------------------------------------------ */
-.sdm-footer__contact-icons {
+.sdsm-footer__contact-icons {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -161,7 +161,7 @@
   flex-shrink: 0;
 }
 
-.sdm-footer__icon-btn {
+.sdsm-footer__icon-btn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -180,19 +180,19 @@
   flex-shrink: 0;
 }
 
-.sdm-footer__icon-btn:hover {
+.sdsm-footer__icon-btn:hover {
   background-color: #177332;
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 4px 10px rgba(30, 142, 62, 0.32);
   color: #ffffff;
 }
 
-.sdm-footer__icon-btn:active {
+.sdsm-footer__icon-btn:active {
   transform: translateY(0) scale(0.95);
   box-shadow: 0 1px 3px rgba(30, 142, 62, 0.2);
 }
 
-.sdm-footer__icon-btn .material-symbols-outlined {
+.sdsm-footer__icon-btn .material-symbols-outlined {
   font-size: 19px;
   color: #ffffff;
   display: flex;
@@ -200,14 +200,14 @@
   justify-content: center;
 }
 
-.sdm-footer__icon-btn svg {
+.sdsm-footer__icon-btn svg {
   display: block;
 }
 
 /* ------------------------------------------------------------
    Bottom Minimal Copyright (Compact Strip)
    ------------------------------------------------------------ */
-.sdm-footer__bottom {
+.sdsm-footer__bottom {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,12 +217,12 @@
 }
 
 @media (min-width: 900px) {
-  .sdm-footer__bottom {
+  .sdsm-footer__bottom {
     justify-content: space-between;
   }
 }
 
-.sdm-footer__copyright {
+.sdsm-footer__copyright {
   font-size: 11.5px;
   color: var(--md-sys-color-on-surface-variant, #6b7280);
   line-height: 1.4;

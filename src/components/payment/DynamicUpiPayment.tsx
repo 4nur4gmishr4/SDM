@@ -233,7 +233,7 @@ export const DynamicUpiPayment: React.FC<DynamicUpiPaymentProps> = ({
       {onPaymentConfirmed && (
         <button
           type="button"
-          className="sdm-btn sdm-btn--whatsapp dynamic-upi__confirm-btn"
+          className="sdsm-btn sdsm-btn--whatsapp dynamic-upi__confirm-btn"
           onClick={() => onPaymentConfirmed(utrNumber)}
         >
           <WhatsAppIcon size={20} />

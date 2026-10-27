@@ -1,9 +1,9 @@
 /* ============================================================
-   SAI DARSHAN MART — SKELETON LOADING SYSTEM
+   SAI DARSHAN SHOPPING MART — SKELETON LOADING SYSTEM
    Fluid shimmer animations matching M3 design tokens
    ============================================================ */
 
-@keyframes sdm-shimmer {
+@keyframes sdsm-shimmer {
   0% {
     background-position: -200% 0;
   }
@@ -12,7 +12,7 @@
   }
 }
 
-.sdm-skeleton {
+.sdsm-skeleton {
   display: block;
   background: linear-gradient(
     90deg,
@@ -21,26 +21,26 @@
     var(--md-sys-color-surface-container-high) 100%
   );
   background-size: 200% 100%;
-  animation: sdm-shimmer 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: sdsm-shimmer 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   border-radius: var(--md-sys-shape-corner-small, 8px);
 }
 
-.sdm-skeleton--text {
+.sdsm-skeleton--text {
   height: 14px;
   margin-bottom: 8px;
   border-radius: 4px;
 }
 
-.sdm-skeleton--circular {
+.sdsm-skeleton--circular {
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.sdm-skeleton--rounded {
+.sdsm-skeleton--rounded {
   border-radius: var(--md-sys-shape-corner-medium, 12px);
 }
 
-.sdm-skeleton--rectangular {
+.sdsm-skeleton--rectangular {
   border-radius: 0;
 }
 

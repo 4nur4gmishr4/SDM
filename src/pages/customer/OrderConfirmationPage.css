@@ -17,8 +17,8 @@
   width: 96px;
   height: 96px;
   border-radius: var(--md-sys-shape-corner-full);
-  background-color: var(--sdm-color-success-container);
-  color: var(--sdm-color-on-success-container);
+  background-color: var(--sdsm-color-success-container);
+  color: var(--sdsm-color-on-success-container);
   display: flex;
   align-items: center;
   justify-content: center;

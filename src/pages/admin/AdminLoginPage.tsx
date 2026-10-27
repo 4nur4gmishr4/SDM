@@ -26,11 +26,11 @@ export function AdminLoginPage() {
   
   // Rate-limiting / Brute-force protection
   const [failedAttempts, setFailedAttempts] = useState(() => {
-    const saved = sessionStorage.getItem('sdm_admin_fails');
+    const saved = sessionStorage.getItem('sdsm_admin_fails');
     return saved ? parseInt(saved, 10) : 0;
   });
   const [lockoutRemaining, setLockoutRemaining] = useState(() => {
-    const until = sessionStorage.getItem('sdm_admin_lockout_until');
+    const until = sessionStorage.getItem('sdsm_admin_lockout_until');
     if (!until) return 0;
     const diff = Math.ceil((parseInt(until, 10) - Date.now()) / 1000);
     return diff > 0 ? diff : 0;
@@ -55,8 +55,8 @@ export function AdminLoginPage() {
         setLockoutRemaining((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current);
-            sessionStorage.removeItem('sdm_admin_lockout_until');
-            sessionStorage.removeItem('sdm_admin_fails');
+            sessionStorage.removeItem('sdsm_admin_lockout_until');
+            sessionStorage.removeItem('sdsm_admin_fails');
             setFailedAttempts(0);
             return 0;
           }
@@ -121,18 +121,18 @@ export function AdminLoginPage() {
       }
 
       // Successful login: reset failed attempts
-      sessionStorage.removeItem('sdm_admin_fails');
-      sessionStorage.removeItem('sdm_admin_lockout_until');
+      sessionStorage.removeItem('sdsm_admin_fails');
+      sessionStorage.removeItem('sdsm_admin_lockout_until');
       setFailedAttempts(0);
     } catch (err: any) {
       console.error('Admin authentication failure', err);
       const newFails = failedAttempts + 1;
       setFailedAttempts(newFails);
-      sessionStorage.setItem('sdm_admin_fails', String(newFails));
+      sessionStorage.setItem('sdsm_admin_fails', String(newFails));
 
       if (newFails >= MAX_FAILED_ATTEMPTS) {
         const lockoutUntil = Date.now() + LOCKOUT_DURATION_SECONDS * 1000;
-        sessionStorage.setItem('sdm_admin_lockout_until', String(lockoutUntil));
+        sessionStorage.setItem('sdsm_admin_lockout_until', String(lockoutUntil));
         setLockoutRemaining(LOCKOUT_DURATION_SECONDS);
         setError(`Maximum failed attempts exceeded. Security lockout engaged for ${LOCKOUT_DURATION_SECONDS} seconds.`);
       } else {
@@ -231,7 +231,7 @@ export function AdminLoginPage() {
           </div>
 
           <button 
-            className="sdm-btn sdm-btn--primary admin-login-btn" 
+            className="sdsm-btn sdsm-btn--primary admin-login-btn" 
             type="submit"
             disabled={isSubmitting || lockoutRemaining > 0}
           >

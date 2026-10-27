@@ -160,7 +160,7 @@ export function SettingsPage() {
             </div>
 
             <div className="admin-settings-actions">
-              <button type="submit" className="sdm-btn sdm-btn--primary" disabled={isSaving}>
+              <button type="submit" className="sdsm-btn sdsm-btn--primary" disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Settings'}
               </button>
             </div>
@@ -200,7 +200,7 @@ export function SettingsPage() {
                       setIsExporting(false);
                     }
                   }}
-                  className="sdm-btn sdm-btn--outlined"
+                  className="sdsm-btn sdsm-btn--outlined"
                   title="Generate a full offline JSON disaster recovery snapshot of all store tables"
                 >
                   <span className="material-symbols-outlined">

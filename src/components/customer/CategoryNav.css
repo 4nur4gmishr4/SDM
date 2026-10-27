@@ -9,8 +9,8 @@
   gap: 12px;
   overflow-x: auto;
   padding: 8px 0 12px 0;
-  margin: 0 calc(-1 * var(--sdm-layout-content-padding-mobile));
-  padding-inline: var(--sdm-layout-content-padding-mobile);
+  margin: 0 calc(-1 * var(--sdsm-layout-content-padding-mobile));
+  padding-inline: var(--sdsm-layout-content-padding-mobile);
   
   /* Hide scrollbar for standard browsers */
   -ms-overflow-style: none; /* IE and Edge */
@@ -28,16 +28,16 @@
 
 @media (min-width: 600px) {
   .category-nav {
-    margin: 0 calc(-1 * var(--sdm-layout-content-padding-tablet));
-    padding-inline: var(--sdm-layout-content-padding-tablet);
+    margin: 0 calc(-1 * var(--sdsm-layout-content-padding-tablet));
+    padding-inline: var(--sdsm-layout-content-padding-tablet);
     gap: 16px;
   }
 }
 
 @media (min-width: 905px) {
   .category-nav {
-    margin: 0 calc(-1 * var(--sdm-layout-content-padding-desktop));
-    padding-inline: var(--sdm-layout-content-padding-desktop);
+    margin: 0 calc(-1 * var(--sdsm-layout-content-padding-desktop));
+    padding-inline: var(--sdsm-layout-content-padding-desktop);
     gap: 18px;
   }
 }

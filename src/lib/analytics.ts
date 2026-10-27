@@ -44,9 +44,9 @@ export interface TrafficAnalyticsData {
   last_updated: string;
 }
 
-const STORAGE_KEY_VISITOR = 'sdm_visitor_id';
-const STORAGE_KEY_LAST_VISIT = 'sdm_last_visit_date';
-const STORAGE_KEY_LOCAL_BUFFER = 'sdm_analytics_local_buffer';
+const STORAGE_KEY_VISITOR = 'sdsm_visitor_id';
+const STORAGE_KEY_LAST_VISIT = 'sdsm_last_visit_date';
+const STORAGE_KEY_LOCAL_BUFFER = 'sdsm_analytics_local_buffer';
 
 function getTodayString(): string {
   return new Date().toISOString().split('T')[0];

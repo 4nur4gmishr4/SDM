@@ -100,7 +100,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button
                 type="button"
-                className="sdm-btn sdm-btn--primary"
+                className="sdsm-btn sdsm-btn--primary"
                 onClick={this.handleReload}
                 style={{ padding: '10px 20px' }}
               >
@@ -110,7 +110,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
               <button
                 type="button"
-                className="sdm-btn sdm-btn--outlined"
+                className="sdsm-btn sdsm-btn--outlined"
                 onClick={this.handleGoHome}
                 style={{ padding: '10px 20px' }}
               >

@@ -94,8 +94,8 @@
 }
 
 .admin-badge--delivered {
-  background-color: var(--sdm-color-success-container);
-  color: var(--sdm-color-on-success-container);
+  background-color: var(--sdsm-color-success-container);
+  color: var(--sdsm-color-on-success-container);
 }
 
 .admin-badge--cancelled {

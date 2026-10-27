@@ -42,7 +42,7 @@ export function CartPage() {
           <h2 className="cart-page__empty-title">Your cart is empty</h2>
           <p style={{ marginBottom: '24px' }}>Looks like you haven't added anything to your cart yet.</p>
           <Link to="/shop" style={{ textDecoration: 'none' }}>
-            <button type="button" className="sdm-btn sdm-btn--primary">Start Shopping</button>
+            <button type="button" className="sdsm-btn sdsm-btn--primary">Start Shopping</button>
           </Link>
           <p style={{ marginTop: '16px', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)' }}>
             Have a grocery list?{' '}
@@ -63,7 +63,7 @@ export function CartPage() {
       </Helmet>
       <header className="cart-page__header">
         <h1 className="cart-page__title">Your Cart ({itemCount} {itemCount === 1 ? 'item' : 'items'})</h1>
-        <button type="button" className="sdm-btn sdm-btn--text" onClick={clearCart}>Clear Cart</button>
+        <button type="button" className="sdsm-btn sdsm-btn--text" onClick={clearCart}>Clear Cart</button>
       </header>
 
       <div className="cart-page__content">
@@ -91,7 +91,7 @@ export function CartPage() {
           
           <button 
             type="button"
-            className="sdm-btn sdm-btn--primary cart-page__checkout-btn"
+            className="sdsm-btn sdsm-btn--primary cart-page__checkout-btn"
             onClick={() => navigate('/checkout')}
           >
             <span>Proceed to Checkout</span>

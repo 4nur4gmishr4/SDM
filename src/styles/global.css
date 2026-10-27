@@ -200,7 +200,7 @@ img:not([class*="leaflet"]):not(.leaflet-tile):hover {
    UNIVERSAL BUTTON SYSTEM (Clean, Spacious, Generous Padding)
    ============================================================ */
 
-.sdm-btn {
+.sdsm-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -221,83 +221,83 @@ img:not([class*="leaflet"]):not(.leaflet-tile):hover {
   -webkit-tap-highlight-color: transparent;
 }
 
-.sdm-btn--primary {
+.sdsm-btn--primary {
   background-color: #1E8E3E !important;
   color: #FFFFFF !important;
   box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
 }
 
-.sdm-btn--primary:hover:not(:disabled) {
+.sdsm-btn--primary:hover:not(:disabled) {
   background-color: #178036 !important;
   box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.2), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
 }
 
-.sdm-btn--primary:active:not(:disabled) {
+.sdsm-btn--primary:active:not(:disabled) {
   transform: translateY(1px);
 }
 
-.sdm-btn--tonal {
+.sdsm-btn--tonal {
   background-color: var(--md-sys-color-primary-container, #CEEAD6) !important;
   color: var(--md-sys-color-on-primary-container, #0D652D) !important;
   border: 1px solid rgba(30, 142, 62, 0.2) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-.sdm-btn--tonal:hover:not(:disabled) {
+.sdsm-btn--tonal:hover:not(:disabled) {
   background-color: var(--md-sys-color-primary, #1E8E3E) !important;
   color: #FFFFFF !important;
   box-shadow: 0 4px 12px rgba(30, 142, 62, 0.25) !important;
   border-color: var(--md-sys-color-primary, #1E8E3E) !important;
 }
 
-.sdm-btn--tonal:active:not(:disabled) {
+.sdsm-btn--tonal:active:not(:disabled) {
   transform: translateY(1px);
 }
 
-.sdm-btn--outlined {
+.sdsm-btn--outlined {
   background-color: transparent !important;
   color: var(--md-sys-color-primary, #1E8E3E) !important;
   border: 1.5px solid var(--md-sys-color-primary, #1E8E3E) !important;
 }
 
-.sdm-btn--outlined:hover:not(:disabled) {
+.sdsm-btn--outlined:hover:not(:disabled) {
   background-color: var(--md-sys-color-primary-container, #CEEAD6) !important;
 }
 
-.sdm-btn--text {
+.sdsm-btn--text {
   background-color: transparent !important;
   color: var(--md-sys-color-primary, #1E8E3E) !important;
   padding: 0 24px !important;
 }
 
-.sdm-btn--text:hover:not(:disabled) {
+.sdsm-btn--text:hover:not(:disabled) {
   background-color: rgba(30, 142, 62, 0.08) !important;
 }
 
-.sdm-btn--whatsapp {
+.sdsm-btn--whatsapp {
   background-color: #25D366 !important;
   color: #FFFFFF !important;
   box-shadow: 0 3px 10px rgba(37, 211, 102, 0.28);
 }
 
-.sdm-btn--whatsapp:hover:not(:disabled) {
+.sdsm-btn--whatsapp:hover:not(:disabled) {
   background-color: #20BA59 !important;
   box-shadow: 0 5px 16px rgba(37, 211, 102, 0.38);
 }
 
-.sdm-btn:disabled {
+.sdsm-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
   box-shadow: none;
 }
 
-[data-theme="dark"] .sdm-btn--tonal {
+[data-theme="dark"] .sdsm-btn--tonal {
   background-color: #137333 !important;
   color: #CEEAD6 !important;
   border-color: #1E8E3E !important;
 }
 
-[data-theme="dark"] .sdm-btn--tonal:hover:not(:disabled) {
+[data-theme="dark"] .sdsm-btn--tonal:hover:not(:disabled) {
   background-color: #1E8E3E !important;
   color: #0D652D !important;
 }
@@ -629,20 +629,20 @@ md-select-option[aria-selected="true"] {
 
 .layout-container {
   width: 100%;
-  max-width: var(--sdm-layout-max-width);
+  max-width: var(--sdsm-layout-max-width);
   margin-inline: auto;
-  padding-inline: var(--sdm-layout-content-padding-mobile);
+  padding-inline: var(--sdsm-layout-content-padding-mobile);
 }
 
 @media (min-width: 600px) {
   .layout-container {
-    padding-inline: var(--sdm-layout-content-padding-tablet);
+    padding-inline: var(--sdsm-layout-content-padding-tablet);
   }
 }
 
 @media (min-width: 905px) {
   .layout-container {
-    padding-inline: var(--sdm-layout-content-padding-desktop);
+    padding-inline: var(--sdsm-layout-content-padding-desktop);
   }
 }
 
@@ -759,8 +759,8 @@ html.icons-loading .material-symbols-outlined {
 
   /* Native Mobile App Tactile Feedback */
   button:active,
-  a.sdm-btn:active,
-  .sdm-footer__icon-btn:active,
+  a.sdsm-btn:active,
+  .sdsm-footer__icon-btn:active,
   .app-shell__bottom-nav-item:active,
   .category-nav__item:active,
   .app-shell__action-btn:active {

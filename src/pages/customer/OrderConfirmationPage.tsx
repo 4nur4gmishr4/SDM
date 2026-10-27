@@ -78,7 +78,7 @@ export function OrderConfirmationPage() {
             href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent(`Hello ${STORE_NAME}, following up on my Order ID: ${orderId || ''}`)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="sdm-btn sdm-btn--whatsapp"
+            className="sdsm-btn sdsm-btn--whatsapp"
             style={{ textDecoration: 'none', padding: '10px 20px', gap: '8px' }}
           >
             <WhatsAppIcon size={20} />
@@ -87,7 +87,7 @@ export function OrderConfirmationPage() {
 
           <a
             href={`tel:${STORE_PHONE_NUMBER}`}
-            className="sdm-btn sdm-btn--outlined"
+            className="sdsm-btn sdsm-btn--outlined"
             style={{ textDecoration: 'none', padding: '10px 18px' }}
           >
             <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>call</span>
@@ -126,10 +126,10 @@ export function OrderConfirmationPage() {
 
         <div className="order-confirmation__actions">
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <button type="button" className="sdm-btn sdm-btn--primary">Return to Storefront</button>
+            <button type="button" className="sdsm-btn sdsm-btn--primary">Return to Storefront</button>
           </Link>
           <Link to="/shop" style={{ textDecoration: 'none' }}>
-            <button type="button" className="sdm-btn sdm-btn--outlined">Continue Shopping</button>
+            <button type="button" className="sdsm-btn sdsm-btn--outlined">Continue Shopping</button>
           </Link>
         </div>
       </div>

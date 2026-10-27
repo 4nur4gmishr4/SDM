@@ -1,6 +1,6 @@
 /**
  * Advanced Bilingual (Hinglish/Hindi/English) & Fuzzy Search Engine
- * for Sai Darshan Shopping Mart (SDM)
+ * for Sai Darshan Shopping Mart (SDSM)
  *
  * Capabilities:
  * 1. 200+ Indian Grocery Hinglish & Hindi transliterated synonyms

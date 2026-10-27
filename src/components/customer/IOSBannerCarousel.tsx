@@ -141,7 +141,7 @@ export function IOSBannerCarousel({
     return (
       <div className="ios-banner-container" aria-label="Loading banner...">
         <div className="ios-banner-card">
-          <div className="ios-banner__media-viewport sdm-skeleton" style={{ width: '100%', height: '100%', borderRadius: 0 }} />
+          <div className="ios-banner__media-viewport sdsm-skeleton" style={{ width: '100%', height: '100%', borderRadius: 0 }} />
           <div className="ios-banner__merged-section" style={{ pointerEvents: 'none' }}>
             <div className="ios-banner__merged-content">
               <div className="ios-banner__meta-row" style={{ marginBottom: '8px' }}>

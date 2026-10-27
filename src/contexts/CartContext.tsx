@@ -18,7 +18,7 @@ type CartAction =
   | { type: 'CLEAR' }
   | { type: 'LOAD'; payload: CartItem[] };
 
-const CART_STORAGE_KEY = 'sdm_cart';
+const CART_STORAGE_KEY = 'sdsm_cart';
 
 export function getCartItemKey(item: { product_id: string; variant_id?: string | null; unit_size?: string }): string {
   return `${item.product_id}_${item.variant_id || item.unit_size || 'default'}`;

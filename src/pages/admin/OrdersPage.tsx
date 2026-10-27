@@ -130,7 +130,7 @@ export function OrdersPage() {
                 setIsExporting(false);
               }
             }}
-            className="sdm-btn sdm-btn--outlined admin-refresh-btn"
+            className="sdsm-btn sdsm-btn--outlined admin-refresh-btn"
             title="Download full orders and line items spreadsheet"
           >
             <span className="material-symbols-outlined admin-orders__refresh-icon">
@@ -141,7 +141,7 @@ export function OrdersPage() {
           <button
             type="button"
             onClick={fetchOrders}
-            className="sdm-btn sdm-btn--outlined admin-refresh-btn"
+            className="sdsm-btn sdsm-btn--outlined admin-refresh-btn"
             title="Refresh orders list"
           >
             <span className="material-symbols-outlined admin-orders__refresh-icon">refresh</span>
@@ -219,7 +219,7 @@ export function OrdersPage() {
                     <p className="admin-empty-state__subtitle">Try clearing filters or changing search terms.</p>
                     <button
                       type="button"
-                      className="sdm-btn sdm-btn--tonal admin-empty-state__action"
+                      className="sdsm-btn sdsm-btn--tonal admin-empty-state__action"
                       onClick={() => {
                         setSearchQuery('');
                         setStatusFilter('all');

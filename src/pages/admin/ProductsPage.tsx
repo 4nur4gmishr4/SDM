@@ -90,7 +90,7 @@ export function ProductsPage() {
   const handleOpenAdd = () => {
     setEditingProduct({
       name: "",
-      sku: `SDM-${Date.now().toString().slice(-6)}`,
+      sku: `SDSM-${Date.now().toString().slice(-6)}`,
       price: 0,
       mrp: 0,
       unit_size: "1 unit",
@@ -295,7 +295,7 @@ export function ProductsPage() {
                 setIsExporting(false);
               }
             }}
-            className="sdm-btn sdm-btn--outlined"
+            className="sdsm-btn sdsm-btn--outlined"
             title="Download full catalog Excel sheet"
           >
             <span className="material-symbols-outlined admin-btn-icon">
@@ -306,7 +306,7 @@ export function ProductsPage() {
           <button
             type="button"
             onClick={() => setIsImportModalOpen(true)}
-            className="sdm-btn sdm-btn--outlined"
+            className="sdsm-btn sdsm-btn--outlined"
             title="Drag and drop your excel catalog"
           >
             <span className="material-symbols-outlined admin-btn-icon">
@@ -317,7 +317,7 @@ export function ProductsPage() {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="sdm-btn sdm-btn--primary"
+            className="sdsm-btn sdsm-btn--primary"
           >
             <span className="material-symbols-outlined admin-btn-icon">
               add
@@ -406,7 +406,7 @@ export function ProductsPage() {
                       <button
                         type="button"
                         onClick={() => setIsImportModalOpen(true)}
-                        className="sdm-btn sdm-btn--primary"
+                        className="sdsm-btn sdsm-btn--primary"
                       >
                         <span className="material-symbols-outlined admin-btn-icon">
                           upload_file
@@ -416,7 +416,7 @@ export function ProductsPage() {
                       <button
                         type="button"
                         onClick={handleOpenAdd}
-                        className="sdm-btn sdm-btn--outlined"
+                        className="sdsm-btn sdsm-btn--outlined"
                       >
                         <span className="material-symbols-outlined admin-btn-icon">
                           add
@@ -443,7 +443,7 @@ export function ProductsPage() {
                     </p>
                     <button
                       type="button"
-                      className="sdm-btn sdm-btn--tonal"
+                      className="sdsm-btn sdsm-btn--tonal"
                       onClick={() => {
                         setSearchQuery("");
                         setSelectedCategory("");
@@ -567,7 +567,7 @@ export function ProductsPage() {
                     <td>
                       <button
                         type="button"
-                        className="sdm-btn sdm-btn--outlined admin-icon-btn"
+                        className="sdsm-btn sdsm-btn--outlined admin-icon-btn"
                         onClick={() => handleOpenEdit(product)}
                       >
                         <span className="material-symbols-outlined admin-btn-icon--small">
@@ -670,7 +670,7 @@ export function ProductsPage() {
               </div>
               <button
                 type="button"
-                className="sdm-btn sdm-btn--text admin-icon-btn"
+                className="sdsm-btn sdsm-btn--text admin-icon-btn"
                 onClick={() => setIsImportModalOpen(false)}
                 aria-label="Close modal"
               >
@@ -704,7 +704,7 @@ export function ProductsPage() {
               </h2>
               <button
                 type="button"
-                className="sdm-btn sdm-btn--text admin-icon-btn"
+                className="sdsm-btn sdsm-btn--text admin-icon-btn"
                 onClick={handleCloseModal}
               >
                 <span className="material-symbols-outlined">close</span>
@@ -782,7 +782,7 @@ export function ProductsPage() {
                   <button
                     type="button"
                     onClick={handleAddVariant}
-                    className="sdm-btn sdm-btn--tonal admin-icon-btn"
+                    className="sdsm-btn sdsm-btn--tonal admin-icon-btn"
                   >
                     <span className="material-symbols-outlined admin-btn-icon--small">
                       add
@@ -903,7 +903,7 @@ export function ProductsPage() {
                         </label>
                         <button
                           type="button"
-                          className="sdm-btn sdm-btn--text admin-icon-btn admin-icon-btn--error"
+                          className="sdsm-btn sdsm-btn--text admin-icon-btn admin-icon-btn--error"
                           onClick={() => handleRemoveVariant(vIdx)}
                           title="Remove pack option"
                           disabled={(editingProduct.variants?.length || 0) <= 1}
@@ -997,14 +997,14 @@ export function ProductsPage() {
             <div className="admin-modal-footer">
               <button
                 type="button"
-                className="sdm-btn sdm-btn--text"
+                className="sdsm-btn sdsm-btn--text"
                 onClick={handleCloseModal}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="sdm-btn sdm-btn--primary"
+                className="sdsm-btn sdsm-btn--primary"
                 form="product-form"
                 disabled={isSaving}
               >

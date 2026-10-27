@@ -421,7 +421,7 @@ export function CheckoutPage() {
 
                 <button
                   type="button"
-                  className="sdm-btn sdm-btn--outlined"
+                  className="sdsm-btn sdsm-btn--outlined"
                   style={{
                     padding: '4px 12px',
                     fontSize: '11.5px',
@@ -566,7 +566,7 @@ export function CheckoutPage() {
 
           <div style={{ marginTop: '16px' }}>
             <button 
-              className="sdm-btn sdm-btn--whatsapp checkout-page__submit-btn"
+              className="sdsm-btn sdsm-btn--whatsapp checkout-page__submit-btn"
               type="submit"
               form="checkout-form"
               disabled={isSubmitting}

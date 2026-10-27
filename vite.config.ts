@@ -24,7 +24,7 @@ if (fs.existsSync(envPath)) {
 
 function uploadApiPlugin(): Plugin {
   return {
-    name: 'sdm-upload-api',
+    name: 'sdsm-upload-api',
     configureServer(server) {
       server.middlewares.use('/api/upload', (req, res) => {
         if (req.method !== 'POST') {
@@ -101,7 +101,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
         name: 'Sai Darshan Shopping Mart',
-        short_name: 'SDM',
+        short_name: 'SDSM',
         description: 'Your local supermarket in Jabalpur. Fresh groceries, vegetables, and daily essentials.',
         theme_color: '#1E8E3E',
         background_color: '#121411',

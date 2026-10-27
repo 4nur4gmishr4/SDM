@@ -64,11 +64,11 @@
   --md-sys-color-shadow: #000000;
 
   /* Custom status colors */
-  --sdm-color-success: #1E8E3E;
-  --sdm-color-success-container: #CEEAD6;
-  --sdm-color-on-success-container: #0D652D;
-  --sdm-color-warning: #F9AB00;
-  --sdm-color-warning-container: #FEF7E0;
+  --sdsm-color-success: #1E8E3E;
+  --sdsm-color-success-container: #CEEAD6;
+  --sdsm-color-on-success-container: #0D652D;
+  --sdsm-color-warning: #F9AB00;
+  --sdsm-color-warning-container: #FEF7E0;
 
   /* --------------------------------------------------------
      TYPOGRAPHY — M3 Type Scale
@@ -235,10 +235,10 @@
      LAYOUT — Responsive breakpoints and content widths
      -------------------------------------------------------- */
 
-  --sdm-layout-max-width: 1560px;
-  --sdm-layout-content-padding-mobile: 16px;
-  --sdm-layout-content-padding-tablet: 20px;
-  --sdm-layout-content-padding-desktop: 24px;
+  --sdsm-layout-max-width: 1560px;
+  --sdsm-layout-content-padding-mobile: 16px;
+  --sdsm-layout-content-padding-tablet: 20px;
+  --sdsm-layout-content-padding-desktop: 24px;
 
   /* --------------------------------------------------------
      COMPONENT STATE LAYERS — M3 State System
@@ -300,11 +300,11 @@
     --md-sys-color-outline: #5F6368;
     --md-sys-color-outline-variant: #3C4043;
 
-    --sdm-color-success: #81C995;
-    --sdm-color-success-container: #137333;
-    --sdm-color-on-success-container: #CEEAD6;
-    --sdm-color-warning: #FDD663;
-    --sdm-color-warning-container: #564500;
+    --sdsm-color-success: #81C995;
+    --sdsm-color-success-container: #137333;
+    --sdsm-color-on-success-container: #CEEAD6;
+    --sdsm-color-warning: #FDD663;
+    --sdsm-color-warning-container: #564500;
   }
 }
 
@@ -348,11 +348,11 @@
   --md-sys-color-outline: #5F6368;
   --md-sys-color-outline-variant: #3C4043;
 
-  --sdm-color-success: #81C995;
-  --sdm-color-success-container: #137333;
-  --sdm-color-on-success-container: #CEEAD6;
-  --sdm-color-warning: #FDD663;
-  --sdm-color-warning-container: #564500;
+  --sdsm-color-success: #81C995;
+  --sdsm-color-success-container: #137333;
+  --sdsm-color-on-success-container: #CEEAD6;
+  --sdsm-color-warning: #FDD663;
+  --sdsm-color-warning-container: #564500;
 }
 
 /* Reduced motion preference */

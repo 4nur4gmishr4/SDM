@@ -117,7 +117,7 @@ export function CategoriesPage() {
       </Helmet>
       <div className="admin-products-header">
         <h1 className="admin-products-title">Categories</h1>
-        <button type="button" onClick={handleOpenAdd} className="sdm-btn sdm-btn--primary">
+        <button type="button" onClick={handleOpenAdd} className="sdsm-btn sdsm-btn--primary">
           <span className="material-symbols-outlined admin-btn-icon">add</span>
           <span>Add Category</span>
         </button>
@@ -248,8 +248,8 @@ export function CategoriesPage() {
             </form>
 
             <div className="admin-modal-footer">
-              <button type="button" className="sdm-btn sdm-btn--text" onClick={handleCloseModal}>Cancel</button>
-              <button type="submit" className="sdm-btn sdm-btn--primary" form="category-form" disabled={isSaving}>
+              <button type="button" className="sdsm-btn sdsm-btn--text" onClick={handleCloseModal}>Cancel</button>
+              <button type="submit" className="sdsm-btn sdsm-btn--primary" form="category-form" disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Category'}
               </button>
             </div>

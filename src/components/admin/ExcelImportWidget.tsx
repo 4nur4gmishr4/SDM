@@ -263,7 +263,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
           mrp: item.mrp,
           stock_quantity: 50,
           is_available: true,
-          sku: item.sku || `SDM-${index + 1000}`
+          sku: item.sku || `SDSM-${index + 1000}`
         };
 
         if (existing) {
@@ -288,7 +288,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
           }
         } else {
           groupedMap.set(key, {
-            sku: item.sku || `SDM-${index + 1000}`,
+            sku: item.sku || `SDSM-${index + 1000}`,
             name: item.baseName,
             pack: item.unitSize,
             brand: item.brand,
@@ -308,7 +308,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
       return Array.from(groupedMap.values());
     } else {
       return rawList.map((item, index) => ({
-        sku: item.sku || `SDM-${index + 1000}`,
+        sku: item.sku || `SDSM-${index + 1000}`,
         name: item.fullName,
         pack: item.unitSize,
         brand: item.brand,
@@ -328,7 +328,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
             mrp: item.mrp,
             stock_quantity: 50,
             is_available: true,
-            sku: item.sku || `SDM-${index + 1000}`
+            sku: item.sku || `SDSM-${index + 1000}`
           }
         ]
       }));
@@ -500,7 +500,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
           const category = guessCategory(rawName, rawBrand, explicitCat);
 
           rawProductList.push({
-            sku: rawSku || `SDM-${r + 100}`,
+            sku: rawSku || `SDSM-${r + 100}`,
             baseName,
             fullName: rawName,
             unitSize,
@@ -588,7 +588,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
         const batch = parsedItems.slice(start, end);
 
         const payload = batch.map((item, i) => ({
-          sku: item.sku || `SDM-${start + i + 100}`,
+          sku: item.sku || `SDSM-${start + i + 100}`,
           name: item.name,
           brand: item.brand || null,
           category_id: item.category_id || categories[0]?.id || null,
@@ -744,7 +744,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
             </div>
             <button
               type="button"
-              className="sdm-btn sdm-btn--outlined excel-btn--small"
+              className="sdsm-btn sdsm-btn--outlined excel-btn--small"
               onClick={() => {
                 setParsedItems([]);
                 setRawProducts([]);
@@ -1060,7 +1060,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
             {onClose && (
               <button
                 type="button"
-                className="sdm-btn sdm-btn--outlined"
+                className="sdsm-btn sdsm-btn--outlined"
                 onClick={onClose}
                 disabled={isUploading}
               >
@@ -1069,7 +1069,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
             )}
             <button
               type="button"
-              className="sdm-btn sdm-btn--primary excel-sync-btn"
+              className="sdsm-btn sdsm-btn--primary excel-sync-btn"
               onClick={handleBulkUpload}
               disabled={isUploading || parsedItems.length === 0}
             >

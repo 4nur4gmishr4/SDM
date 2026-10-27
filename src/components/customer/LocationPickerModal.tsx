@@ -479,7 +479,7 @@ export function LocationPickerModal() {
           {/* Confirm Button */}
           <button
             type="button"
-            className="sdm-btn sdm-btn--primary location-confirm-btn"
+            className="sdsm-btn sdsm-btn--primary location-confirm-btn"
             onClick={handleConfirmLocation}
             disabled={isGeocoding}
           >

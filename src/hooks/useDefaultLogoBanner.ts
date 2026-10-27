@@ -12,7 +12,7 @@ const INITIAL_DEFAULT_LOGO_BANNER: DefaultLogoBannerConfig = {
   is_enabled: true,
 };
 
-const STORAGE_KEY = 'sdm_default_logo_banner';
+const STORAGE_KEY = 'sdsm_default_logo_banner';
 const SETTING_KEY = 'default_logo_banner';
 
 export function useDefaultLogoBanner() {

@@ -14,7 +14,7 @@
 }
 
 .watermark-banner__container {
-  max-width: var(--sdm-layout-max-width, 1400px);
+  max-width: var(--sdsm-layout-max-width, 1400px);
   margin: 0 auto;
   display: flex;
   flex-direction: column;

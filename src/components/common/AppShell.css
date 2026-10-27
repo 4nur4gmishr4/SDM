@@ -30,7 +30,7 @@
   align-items: center;
   gap: var(--md-sys-spacing-4);
   padding: var(--md-sys-spacing-2) var(--md-sys-spacing-4);
-  max-width: var(--sdm-layout-max-width);
+  max-width: var(--sdsm-layout-max-width);
   margin-inline: auto;
   min-height: 56px;
 }
@@ -336,7 +336,7 @@
 }
 
 /* Footer bottom padding on mobile so content isn't covered by bottom nav */
-.sdm-footer {
+.sdsm-footer {
   padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
 }
 
@@ -386,7 +386,7 @@
     display: none;
   }
 
-  .sdm-footer {
+  .sdsm-footer {
     padding-bottom: var(--md-sys-spacing-4);
   }
 

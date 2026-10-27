@@ -24,7 +24,7 @@ export function Skeleton({
 
   return (
     <div
-      className={`sdm-skeleton sdm-skeleton--${variant} ${className}`}
+      className={`sdsm-skeleton sdsm-skeleton--${variant} ${className}`}
       style={inlineStyles}
       aria-hidden="true"
     />

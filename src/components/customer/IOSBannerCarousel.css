@@ -356,7 +356,7 @@
    ------------------------------------------------------------ */
 .ios-banner__skeleton-wrapper {
   width: 100%;
-  max-width: var(--sdm-layout-max-width, 1280px);
+  max-width: var(--sdsm-layout-max-width, 1280px);
   margin: 0 auto;
 }
 
@@ -371,10 +371,10 @@
     var(--md-sys-color-surface-container, #F1F3F4) 75%
   );
   background-size: 200% 100%;
-  animation: sdmSkeletonShimmer 1.5s infinite;
+  animation: sdsmSkeletonShimmer 1.5s infinite;
 }
 
-@keyframes sdmSkeletonShimmer {
+@keyframes sdsmSkeletonShimmer {
   0% {
     background-position: 200% 0;
   }

@@ -23,7 +23,7 @@ export interface OutboxOrder {
   retry_count: number;
 }
 
-const DB_NAME = 'sdm_offline_vault';
+const DB_NAME = 'sdsm_offline_vault';
 const DB_VERSION = 1;
 const STORE_NAME = 'order_outbox';
 
@@ -63,7 +63,7 @@ export async function stageOrderInOutbox(order: Omit<OutboxOrder, 'status' | 're
     if ('serviceWorker' in navigator && 'SyncManager' in window) {
       navigator.serviceWorker.ready.then((reg: any) => {
         if (reg.sync) {
-          reg.sync.register('sdm-sync-orders').catch(() => {});
+          reg.sync.register('sdsm-sync-orders').catch(() => {});
         }
       }).catch(() => {});
     }

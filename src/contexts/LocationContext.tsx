@@ -2,8 +2,8 @@ import { createContext, useContext, useState, useEffect, useMemo, useCallback, t
 import type { DeliveryLocation } from '../types/location';
 import { DEFAULT_JABALPUR_LOCATION, reverseGeocode } from '../lib/geocoding';
 
-const STORAGE_KEY = 'sdm_delivery_location';
-const PROMPT_DISMISSED_KEY = 'sdm_location_prompt_seen';
+const STORAGE_KEY = 'sdsm_delivery_location';
+const PROMPT_DISMISSED_KEY = 'sdsm_location_prompt_seen';
 
 interface LocationContextValue {
   location: DeliveryLocation;

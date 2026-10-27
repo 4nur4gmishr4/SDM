@@ -340,17 +340,17 @@ export function BannersPage() {
         </div>
 
         {activeTab === 'banners' ? (
-          <button type="button" onClick={handleOpenAddBanner} className="sdm-btn sdm-btn--primary admin-icon-btn">
+          <button type="button" onClick={handleOpenAddBanner} className="sdsm-btn sdsm-btn--primary admin-icon-btn">
             <span className="material-symbols-outlined admin-btn-icon">add</span>
             <span>Add Banner</span>
           </button>
         ) : (
           <div className="admin-products-header__actions">
-            <button type="button" onClick={handleResetVisuals} className="sdm-btn sdm-btn--outlined admin-icon-btn" title="Restore the 6 permanent authentic store items">
+            <button type="button" onClick={handleResetVisuals} className="sdsm-btn sdsm-btn--outlined admin-icon-btn" title="Restore the 6 permanent authentic store items">
               <span className="material-symbols-outlined admin-btn-icon--small">restart_alt</span>
               <span>Restore 6 Permanent Items</span>
             </button>
-            <button type="button" onClick={handleOpenAddVisual} className="sdm-btn sdm-btn--primary admin-icon-btn">
+            <button type="button" onClick={handleOpenAddVisual} className="sdsm-btn sdsm-btn--primary admin-icon-btn">
               <span className="material-symbols-outlined admin-btn-icon">add_photo_alternate</span>
               <span>Add Store Visual</span>
             </button>
@@ -417,7 +417,7 @@ export function BannersPage() {
                 <button
                   type="button"
                   onClick={handleToggleLogoBanner}
-                  className={`sdm-btn admin-logo-banner-toggle-btn ${logoBanner.is_enabled ? 'admin-logo-banner-toggle-btn--active' : 'admin-logo-banner-toggle-btn--inactive'}`}
+                  className={`sdsm-btn admin-logo-banner-toggle-btn ${logoBanner.is_enabled ? 'admin-logo-banner-toggle-btn--active' : 'admin-logo-banner-toggle-btn--inactive'}`}
                   title="Toggle Fallback Logo Banner visibility on/off"
                 >
                   <span className="material-symbols-outlined admin-btn-icon--small">
@@ -432,7 +432,7 @@ export function BannersPage() {
                     setLogoBannerForm(logoBanner);
                     setIsEditingLogoBanner(!isEditingLogoBanner);
                   }}
-                  className="sdm-btn sdm-btn--outlined admin-icon-btn admin-logo-banner-toggle-btn"
+                  className="sdsm-btn sdsm-btn--outlined admin-icon-btn admin-logo-banner-toggle-btn"
                 >
                   <span className="material-symbols-outlined admin-btn-icon--small">
                     {isEditingLogoBanner ? 'close' : 'edit'}
@@ -528,14 +528,14 @@ export function BannersPage() {
                   <button
                     type="button"
                     onClick={() => setIsEditingLogoBanner(false)}
-                    className="sdm-btn sdm-btn--outlined"
+                    className="sdsm-btn sdsm-btn--outlined"
                     disabled={isSavingLogoBanner}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="sdm-btn sdm-btn--primary"
+                    className="sdsm-btn sdsm-btn--primary"
                     disabled={isSavingLogoBanner}
                   >
                     {isSavingLogoBanner ? 'Saving to Database...' : 'Save Logo Banner'}
@@ -553,7 +553,7 @@ export function BannersPage() {
                 Jab yaha 1 ya zyada promotional banners active honge, to home screen par unka auto-sliding carousel chalega.
               </p>
             </div>
-            <button type="button" onClick={handleOpenAddBanner} className="sdm-btn sdm-btn--tonal admin-btn-action">
+            <button type="button" onClick={handleOpenAddBanner} className="sdsm-btn sdsm-btn--tonal admin-btn-action">
               <span className="material-symbols-outlined admin-btn-icon--small">add</span>
               <span>Add Promotional Banner</span>
             </button>
@@ -583,7 +583,7 @@ export function BannersPage() {
                       <button
                         type="button"
                         onClick={handleOpenAddBanner}
-                        className="sdm-btn sdm-btn--primary admin-form-group--spaced"
+                        className="sdsm-btn sdsm-btn--primary admin-form-group--spaced"
                       >
                         <span className="material-symbols-outlined admin-btn-icon--small">add</span>
                         <span>Add Your First Banner</span>
@@ -708,7 +708,7 @@ export function BannersPage() {
                       <button
                         type="button"
                         onClick={handleResetVisuals}
-                        className="sdm-btn sdm-btn--primary admin-form-group--spaced"
+                        className="sdsm-btn sdsm-btn--primary admin-form-group--spaced"
                       >
                         <span className="material-symbols-outlined admin-btn-icon--small">restart_alt</span>
                         <span>Restore 6 Permanent Store Visuals</span>
@@ -904,12 +904,12 @@ export function BannersPage() {
             </form>
 
             <div className="admin-modal-footer">
-              <button type="button" className="sdm-btn sdm-btn--text" onClick={handleCloseBannerModal}>
+              <button type="button" className="sdsm-btn sdsm-btn--text" onClick={handleCloseBannerModal}>
                 Cancel
               </button>
               <button
                 type="submit"
-                className="sdm-btn sdm-btn--primary"
+                className="sdsm-btn sdsm-btn--primary"
                 form="banner-form"
                 disabled={isSavingBanner}
               >
@@ -1033,12 +1033,12 @@ export function BannersPage() {
             </form>
 
             <div className="admin-modal-footer">
-              <button type="button" className="sdm-btn sdm-btn--text" onClick={handleCloseVisualModal}>
+              <button type="button" className="sdsm-btn sdsm-btn--text" onClick={handleCloseVisualModal}>
                 Cancel
               </button>
               <button
                 type="submit"
-                className="sdm-btn sdm-btn--primary"
+                className="sdsm-btn sdsm-btn--primary"
                 form="visual-form"
                 disabled={isSavingVisual}
               >
