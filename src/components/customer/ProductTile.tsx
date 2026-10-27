@@ -44,10 +44,14 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
 
   const handleAdd = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
+    const finalCartName = currentUnit && product.name.includes(`(${currentUnit})`)
+      ? product.name
+      : (currentUnit ? `${product.name} (${currentUnit})` : product.name);
+
     addItem({
       product_id: targetId,
       variant_id: activeVariant?.id,
-      product_name: `${product.name} (${currentUnit})`,
+      product_name: finalCartName,
       product_sku: activeVariant?.sku || product.sku,
       product_price: currentPrice,
       original_price: currentMrp,

@@ -89,11 +89,15 @@ export function ProductDetailPage() {
     setQuantity(q => q + 1);
   };
 
+  const finalItemName = activeUnitSize && product.name.includes(`(${activeUnitSize})`)
+    ? product.name
+    : (activeUnitSize ? `${product.name} (${activeUnitSize})` : product.name);
+
   const handleAddToCart = () => {
     addItem({
       product_id: product.id,
       variant_id: selectedVariant?.id,
-      product_name: `${product.name} (${activeUnitSize})`,
+      product_name: finalItemName,
       product_sku: selectedVariant?.sku || product.sku,
       product_price: activePrice,
       original_price: activeMrp,
@@ -107,7 +111,7 @@ export function ProductDetailPage() {
   };
 
   const whatsAppOrderUrl = `https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent(
-    `Namaste ${STORE_NAME}! Mujhe yeh item order karna hai:\n\n• ${product.name} (${activeUnitSize || 'Standard'})\n• Quantity: ${quantity}\n• Price: ₹${activePrice * quantity}\n\nKripya confirm karein.`
+    `Namaste ${STORE_NAME}! Mujhe yeh item order karna hai:\n\n• ${finalItemName}\n• Quantity: ${quantity}\n• Price: ₹${activePrice * quantity}\n\nKripya confirm karein.`
   )}`;
 
   const pageTitle = `${product.name} | Sai Darshan Shopping Mart`;
