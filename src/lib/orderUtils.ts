@@ -5,7 +5,7 @@ export const STORE_WHATSAPP_NUMBER = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER
 export const STORE_WHATSAPP_CLEAN = STORE_WHATSAPP_NUMBER.replace(/\D/g, '') || '917354155669';
 export const STORE_PHONE_NUMBER = (import.meta.env.VITE_STORE_PHONE as string) || STORE_WHATSAPP_CLEAN.slice(-10);
 export const STORE_EMAIL = (import.meta.env.VITE_STORE_EMAIL as string) || 'saidarshanmart@gmail.com';
-export const STORE_UPI_ID = (import.meta.env.VITE_STORE_UPI_ID as string) || `${STORE_PHONE_NUMBER}@upi`;
+export const STORE_UPI_ID = (import.meta.env.VITE_STORE_UPI_ID as string) || 'ibkPOS.EP116181@icici';
 export const STORE_ADDRESS = (import.meta.env.VITE_STORE_ADDRESS as string) || '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh, Pin: 482003';
 export const STORE_DELIVERY_RADIUS = (import.meta.env.VITE_STORE_DELIVERY_RADIUS as string) || '5–10 km across Jabalpur';
 export const STORE_TIMINGS = (import.meta.env.VITE_STORE_TIMINGS as string) || '8:00 AM to 10:30 PM';
@@ -59,8 +59,9 @@ export function buildCartWhatsAppMessage(params: {
   customerPhone: string;
   deliveryAddress: string;
   mapLink: string | null;
+  paymentMethod?: string;
 }): string {
-  const { orderId, items, subtotal, deliveryFee, total, customerName, customerPhone, deliveryAddress, mapLink } = params;
+  const { orderId, items, subtotal, deliveryFee, total, customerName, customerPhone, deliveryAddress, mapLink, paymentMethod } = params;
 
   let msg = `${STORE_NAME} - Order Details\n`;
   if (orderId) {
@@ -84,6 +85,7 @@ export function buildCartWhatsAppMessage(params: {
     msg += `Delivery Fee: Free (Rs. 0)\n`;
   }
   msg += `Total Amount: Rs. ${total.toFixed(2)}\n`;
+  msg += `Payment: ${paymentMethod || 'Pay on Delivery (Cash / UPI)'}\n`;
   msg += `--------------------------------\n\n`;
 
   msg += `Customer Details:\n`;

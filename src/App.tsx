@@ -19,7 +19,6 @@ const NotFoundPage = lazy(() => import('./pages/customer/NotFoundPage').then(m =
 // Lazy-loaded admin pages (keeps XLSX and admin tables out of customer initial bundle)
 const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage').then(m => ({ default: m.AdminLoginPage })));
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage').then(m => ({ default: m.AdminDashboardPage })));
-const OrdersPage = lazy(() => import('./pages/admin/OrdersPage').then(m => ({ default: m.OrdersPage })));
 const ProductsPage = lazy(() => import('./pages/admin/ProductsPage').then(m => ({ default: m.ProductsPage })));
 const CategoriesPage = lazy(() => import('./pages/admin/CategoriesPage').then(m => ({ default: m.CategoriesPage })));
 const BannersPage = lazy(() => import('./pages/admin/BannersPage').then(m => ({ default: m.BannersPage })));
@@ -141,7 +140,7 @@ function AppRoutes() {
           }
         >
           <Route index element={<AdminDashboardPage />} />
-          <Route path="orders" element={<OrdersPage />} />
+          <Route path="orders" element={<Navigate to="/admin" replace />} />
           <Route path="products" element={<ProductsPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="banners" element={<BannersPage />} />

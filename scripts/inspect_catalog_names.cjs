@@ -1,4 +1,3 @@
-const { getSupabaseAdminConfig } = require('./env_loader.cjs' in require.cache ? './env_loader.cjs' : './env_loader.js');
 const { createClient } = require('@supabase/supabase-js');
 
 async function run() {

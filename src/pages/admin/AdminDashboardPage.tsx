@@ -10,9 +10,8 @@ import './AdminDashboardPage.css';
 export function AdminDashboardPage() {
   const { session } = useAuth();
   const [stats, setStats] = useState({
-    totalOrders: 0,
-    pendingOrders: 0,
     totalProducts: 0,
+    totalCategories: 0,
     activeOffers: 0,
     todayVisitors: 0,
     totalPageViews: 0
@@ -35,17 +34,15 @@ export function AdminDashboardPage() {
       
       setIsLoading(true);
       try {
-        const [ordersRes, pendingRes, productsRes, offersRes, trafficData] = await Promise.allSettled([
-          withTimeout(supabase.from('orders').select('*', { count: 'exact', head: true }), 5000),
-          withTimeout(supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'pending'), 5000),
+        const [productsRes, categoriesRes, offersRes, trafficData] = await Promise.allSettled([
           withTimeout(supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_archived', false), 5000),
+          withTimeout(supabase.from('categories').select('*', { count: 'exact', head: true }), 5000),
           withTimeout(supabase.from('banners').select('*', { count: 'exact', head: true }).eq('is_active', true), 5000),
           fetchTrafficAnalytics()
         ]);
 
-        const totalOrders = ordersRes.status === 'fulfilled' ? ordersRes.value.count : 0;
-        const pendingOrders = pendingRes.status === 'fulfilled' ? pendingRes.value.count : 0;
         const totalProducts = productsRes.status === 'fulfilled' ? productsRes.value.count : 0;
+        const totalCategories = categoriesRes.status === 'fulfilled' ? categoriesRes.value.count : 0;
         const activeOffers = offersRes.status === 'fulfilled' ? offersRes.value.count : 0;
 
         let todayVisitors = 0;
@@ -57,9 +54,8 @@ export function AdminDashboardPage() {
         }
           
         setStats({
-          totalOrders: totalOrders || 0,
-          pendingOrders: pendingOrders || 0,
           totalProducts: totalProducts || 0,
+          totalCategories: totalCategories || 0,
           activeOffers: activeOffers || 0,
           todayVisitors,
           totalPageViews: totalViews
@@ -93,48 +89,48 @@ export function AdminDashboardPage() {
       <div className="admin-dashboard-header">
         <h1 className="admin-dashboard-title">Dashboard Overview</h1>
         <p className="admin-dashboard-subtitle">
-          Real-time overview of store orders, product catalog, and promotions.
+          Real-time catalog management, promotional banners, and WhatsApp order routing.
         </p>
       </div>
 
       <div className="admin-dashboard-grid">
         <div className="admin-stat-card">
           <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--primary">
-            <span className="material-symbols-outlined admin-stat-card__icon">shopping_bag</span>
+            <span className="material-symbols-outlined admin-stat-card__icon">inventory_2</span>
           </div>
           <div className="admin-stat-card__content">
-            <span className="admin-stat-card__value">{stats.totalOrders}</span>
-            <span className="admin-stat-card__label">Total Orders</span>
-          </div>
-        </div>
-
-        <div className="admin-stat-card">
-          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--error">
-            <span className="material-symbols-outlined admin-stat-card__icon">pending_actions</span>
-          </div>
-          <div className="admin-stat-card__content">
-            <span className="admin-stat-card__value">{stats.pendingOrders}</span>
-            <span className="admin-stat-card__label">Pending Orders</span>
-          </div>
-        </div>
-
-        <div className="admin-stat-card">
-          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--secondary">
-            <span className="material-symbols-outlined admin-stat-card__icon">group</span>
-          </div>
-          <div className="admin-stat-card__content">
-            <span className="admin-stat-card__value">{stats.todayVisitors}</span>
-            <span className="admin-stat-card__label">Today's Visitors</span>
+            <span className="admin-stat-card__value">{stats.totalProducts.toLocaleString('en-IN')}</span>
+            <span className="admin-stat-card__label">Active Products</span>
           </div>
         </div>
 
         <div className="admin-stat-card">
           <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--tertiary">
-            <span className="material-symbols-outlined admin-stat-card__icon">inventory_2</span>
+            <span className="material-symbols-outlined admin-stat-card__icon">category</span>
           </div>
           <div className="admin-stat-card__content">
-            <span className="admin-stat-card__value">{stats.totalProducts}</span>
-            <span className="admin-stat-card__label">Total Products</span>
+            <span className="admin-stat-card__value">{stats.totalCategories}</span>
+            <span className="admin-stat-card__label">Categories</span>
+          </div>
+        </div>
+
+        <div className="admin-stat-card">
+          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--secondary">
+            <span className="material-symbols-outlined admin-stat-card__icon">view_carousel</span>
+          </div>
+          <div className="admin-stat-card__content">
+            <span className="admin-stat-card__value">{stats.activeOffers}</span>
+            <span className="admin-stat-card__label">Active Banners</span>
+          </div>
+        </div>
+
+        <div className="admin-stat-card">
+          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--error">
+            <span className="material-symbols-outlined admin-stat-card__icon">group</span>
+          </div>
+          <div className="admin-stat-card__content">
+            <span className="admin-stat-card__value">{stats.todayVisitors}</span>
+            <span className="admin-stat-card__label">Today's Visitors</span>
           </div>
         </div>
       </div>

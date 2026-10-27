@@ -7,10 +7,12 @@ import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase'
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { WhatsAppIcon } from '../../components/common';
-import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
+import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER, STORE_UPI_ID } from '../../lib/orderUtils';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import { validateOrderInput } from '../../lib/validation';
 import { dispatchOrderWebhook } from '../../lib/webhookPipeline';
+import { stageOrderInOutbox, markOrderSynced } from '../../lib/orderOutbox';
+import { haptics } from '../../lib/haptics';
 import type { CheckoutFormData } from '../../types/order';
 import './CheckoutPage.css';
 
@@ -24,6 +26,16 @@ export function CheckoutPage() {
     // If the user already set their location previously, consider it primed but confirmable
     return hasLocationBeenSet;
   });
+
+  const [paymentMethod, setPaymentMethod] = useState<'cod' | 'upi'>('cod');
+  const [showDesktopQrModal, setShowDesktopQrModal] = useState(false);
+  const [pendingOrderDetails, setPendingOrderDetails] = useState<{
+    orderId: string;
+    total: number;
+    message: string;
+  } | null>(null);
+
+  const isMobileDevice = typeof window !== 'undefined' && /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 
   const pageTitle = 'Checkout & WhatsApp Order | Sai Darshan Shopping Mart';
 
@@ -76,6 +88,61 @@ export function CheckoutPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleChromeAutofill = async () => {
+    haptics.tap();
+    try {
+      if ('PaymentRequest' in window) {
+        const supportedInstruments = [{
+          supportedMethods: 'basic-card'
+        }];
+        const details = {
+          total: {
+            label: 'Sai Darshan Order',
+            amount: { currency: 'INR', value: String((subtotal + deliveryFee).toFixed(2)) }
+          }
+        };
+        const options = {
+          requestPayerName: true,
+          requestPayerPhone: true,
+        };
+        const request = new (window as any).PaymentRequest(supportedInstruments, details, options);
+        const response = await request.show();
+        if (response.payerName) {
+          setFormData(prev => ({ ...prev, customer_name: response.payerName }));
+        }
+        if (response.payerPhone) {
+          setFormData(prev => ({ ...prev, customer_phone: response.payerPhone }));
+        }
+        await response.complete('success');
+        showSnackbar('Details autofilled from Chrome profile!');
+        return;
+      }
+    } catch {
+      // User cancelled or autofill closed
+    }
+
+    // Fallback to Contacts API if supported
+    if ('contacts' in navigator && 'ContactsManager' in window) {
+      try {
+        const contacts = await (navigator as any).contacts.select(['name', 'tel'], { multiple: false });
+        if (contacts && contacts[0]) {
+          const c = contacts[0];
+          setFormData(prev => ({
+            ...prev,
+            customer_name: c.name?.[0] || prev.customer_name,
+            customer_phone: c.tel?.[0]?.replace(/\s+/g, '') || prev.customer_phone,
+          }));
+          showSnackbar('Contact autofilled!');
+          return;
+        }
+      } catch {
+        // Cancelled
+      }
+    }
+
+    showSnackbar('Profile autofill not available on this browser. You can type directly.');
+  };
+
   const handleLocateMe = async () => {
     const success = await detectCurrentLocation();
     if (success) {
@@ -89,6 +156,21 @@ export function CheckoutPage() {
   const handleConfirmLocationOk = () => {
     setIsLocationConfirmed(true);
     showSnackbar('Delivery location confirmed!');
+  };
+
+  const handleConfirmDesktopQrOrder = () => {
+    if (!pendingOrderDetails) return;
+    haptics.success();
+    openWhatsApp(storeWhatsAppNumber, pendingOrderDetails.message);
+    clearCart();
+    setShowDesktopQrModal(false);
+    navigate(`/order/${pendingOrderDetails.orderId}`);
+  };
+
+  const handleCopyUpiId = () => {
+    haptics.tap();
+    navigator.clipboard.writeText(STORE_UPI_ID);
+    showSnackbar(`UPI ID ${STORE_UPI_ID} copied!`);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -129,7 +211,29 @@ export function CheckoutPage() {
       const finalCustomerPhone = validation.cleanedPhone!;
       const finalDeliveryAddress = validation.cleanedAddress!;
 
-      // 1. Persist the order to Supabase if configured (non-blocking)
+      // 1. Google SRE Outbox: Stage order in local IndexedDB offline vault immediately
+      await stageOrderInOutbox({
+        id: orderId,
+        type: 'cart',
+        customer_name: finalCustomerName,
+        customer_phone: finalCustomerPhone,
+        delivery_address: finalDeliveryAddress,
+        map_link: formData.map_link || null,
+        subtotal,
+        delivery_fee: deliveryFee,
+        total,
+        items: items.map(item => ({
+          product_id: item.product_id,
+          name: item.product_name,
+          sku: item.product_sku,
+          quantity: item.quantity,
+          price: item.product_price,
+          unit: item.unit_size,
+        })),
+        created_at: new Date().toISOString(),
+      });
+
+      // 2. Persist order to Supabase if configured (non-blocking)
       if (isSupabaseConfigured) {
         try {
           await withTimeout(
@@ -169,8 +273,11 @@ export function CheckoutPage() {
           if (orderItems.length > 0) {
             await withTimeout(supabase.from('order_items').insert(orderItems), 3000);
           }
+
+          // Mark order synced in outbox
+          await markOrderSynced(orderId);
         } catch (dbErr) {
-          console.warn('Database save skipped or timed out, proceeding to WhatsApp:', dbErr);
+          console.warn('Database save skipped or timed out, order preserved in Outbox vault:', dbErr);
         }
       }
 
@@ -193,7 +300,7 @@ export function CheckoutPage() {
         is_quick_order: false
       }).catch(() => {});
 
-      // 2. Build WhatsApp message
+      // 3. Build WhatsApp message with paymentMethod
       const message = buildCartWhatsAppMessage({
         orderId,
         items,
@@ -204,15 +311,41 @@ export function CheckoutPage() {
         customerPhone: finalCustomerPhone,
         deliveryAddress: finalDeliveryAddress,
         mapLink: formData.map_link || null,
+        paymentMethod: paymentMethod === 'upi'
+          ? 'Instant UPI Payment (Google Pay / PhonePe / QR)'
+          : 'Pay on Delivery (Cash / UPI on Arrival)',
       });
 
-      // 3. Open WhatsApp
-      openWhatsApp(storeWhatsAppNumber, message);
+      // 4. Smart UPI Routing vs COD
+      if (paymentMethod === 'upi') {
+        const upiUri = `upi://pay?pa=${STORE_UPI_ID}&pn=M%2FS.SAI%20DARSHAN%20SHOPPING%20MART&tr=${encodeURIComponent(orderId)}&am=${total.toFixed(2)}&cu=INR`;
 
-      // 4. Clear cart and redirect to confirmation
-      clearCart();
-      navigate(`/order/${orderId}`);
-
+        if (isMobileDevice) {
+          // Mobile: Native UPI Intent routing
+          haptics.success();
+          window.location.href = upiUri;
+          setTimeout(() => {
+            openWhatsApp(storeWhatsAppNumber, message);
+            clearCart();
+            navigate(`/order/${orderId}`);
+          }, 1500);
+        } else {
+          // Desktop: Open Desktop Themed Standee QR Modal
+          haptics.tap();
+          setPendingOrderDetails({
+            orderId,
+            total,
+            message,
+          });
+          setShowDesktopQrModal(true);
+        }
+      } else {
+        // Pay on Delivery (COD)
+        haptics.success();
+        openWhatsApp(storeWhatsAppNumber, message);
+        clearCart();
+        navigate(`/order/${orderId}`);
+      }
     } catch (error) {
       console.error('Error processing order:', error);
       showSnackbar('There was an error processing your order. Please try again.');
@@ -234,8 +367,20 @@ export function CheckoutPage() {
       <div className="checkout-page__content">
         <div className="checkout-page__form-section">
           <form className="checkout-form" id="checkout-form" onSubmit={handleSubmit}>
-            <h2 className="checkout-form__title">Delivery Details</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <h2 className="checkout-form__title" style={{ margin: 0 }}>Delivery Details</h2>
+            </div>
             
+            {/* Chrome 1-Tap Autofill via PaymentRequest / Contacts */}
+            <button
+              type="button"
+              className="checkout-chrome-autofill-btn"
+              onClick={handleChromeAutofill}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>bolt</span>
+              <span>1-Tap Autofill via Chrome Profile</span>
+            </button>
+
             <md-outlined-text-field
               className="checkout-form__field"
               label="Full Name"
@@ -431,6 +576,54 @@ export function CheckoutPage() {
           
           <DeliveryInfo rulesText={settings?.rules_text} />
 
+          {/* Payment Method Selector */}
+          <div className="checkout-payment-selector">
+            <label className="typescale-label-medium" style={{ fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>
+              Select Payment Method
+            </label>
+            <div
+              className={`checkout-payment-option ${paymentMethod === 'cod' ? 'checkout-payment-option--selected' : ''}`}
+              onClick={() => {
+                haptics.selection();
+                setPaymentMethod('cod');
+              }}
+            >
+              <input
+                type="radio"
+                name="payment_method"
+                value="cod"
+                checked={paymentMethod === 'cod'}
+                onChange={() => setPaymentMethod('cod')}
+                className="checkout-payment-option__radio"
+              />
+              <div className="checkout-payment-option__info">
+                <span className="checkout-payment-option__title">Pay on Delivery</span>
+                <span className="checkout-payment-option__sub">Pay with Cash or UPI when items arrive</span>
+              </div>
+            </div>
+
+            <div
+              className={`checkout-payment-option ${paymentMethod === 'upi' ? 'checkout-payment-option--selected' : ''}`}
+              onClick={() => {
+                haptics.selection();
+                setPaymentMethod('upi');
+              }}
+            >
+              <input
+                type="radio"
+                name="payment_method"
+                value="upi"
+                checked={paymentMethod === 'upi'}
+                onChange={() => setPaymentMethod('upi')}
+                className="checkout-payment-option__radio"
+              />
+              <div className="checkout-payment-option__info">
+                <span className="checkout-payment-option__title">Instant UPI Payment</span>
+                <span className="checkout-payment-option__sub">Google Pay, PhonePe, Paytm, or Standee QR</span>
+              </div>
+            </div>
+          </div>
+
           <div style={{ marginTop: '16px' }}>
             <button 
               className="sdm-btn sdm-btn--whatsapp checkout-page__submit-btn"
@@ -439,14 +632,75 @@ export function CheckoutPage() {
               disabled={isSubmitting}
             >
               <WhatsAppIcon size={20} />
-              <span>{isSubmitting ? 'Preparing Order...' : 'Send Order via WhatsApp'}</span>
+              <span>
+                {isSubmitting
+                  ? 'Preparing Order...'
+                  : paymentMethod === 'upi'
+                  ? (isMobileDevice ? 'Pay via UPI App & Confirm' : 'View QR & Confirm on WhatsApp')
+                  : 'Send Order via WhatsApp'}
+              </span>
             </button>
             <p className="checkout-page__whatsapp-notice">
-              You will be redirected to WhatsApp to send your order.
+              {paymentMethod === 'upi' && isMobileDevice
+                ? 'Launches your installed UPI app, then opens WhatsApp with order details.'
+                : 'You will be redirected to WhatsApp to send your order.'}
             </p>
           </div>
         </div>
       </div>
+
+      {/* Desktop Themed Standee QR Modal */}
+      {showDesktopQrModal && pendingOrderDetails && (
+        <div className="checkout-qr-modal-backdrop" onClick={() => setShowDesktopQrModal(false)}>
+          <div className="checkout-qr-modal-card" onClick={e => e.stopPropagation()}>
+            <button
+              type="button"
+              className="checkout-qr-modal-close"
+              onClick={() => setShowDesktopQrModal(false)}
+              aria-label="Close"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+
+            <span className="material-symbols-outlined" style={{ fontSize: '36px', color: 'var(--md-sys-color-primary)' }}>
+              qr_code_scanner
+            </span>
+            <h3 className="checkout-qr-modal-title">Scan & Pay via any UPI App</h3>
+            <p className="checkout-qr-modal-amount">₹{pendingOrderDetails.total.toFixed(2)}</p>
+
+            <img
+              src="/sai-darshan-upi-qr-card.svg"
+              alt="Sai Darshan Mart Themed UPI QR"
+              className="checkout-qr-modal-image"
+            />
+
+            <div className="checkout-qr-modal-upi-copy">
+              <span>UPI ID: <strong>{STORE_UPI_ID}</strong></span>
+              <button
+                type="button"
+                className="checkout-qr-modal-copy-btn"
+                onClick={handleCopyUpiId}
+              >
+                Copy
+              </button>
+            </div>
+
+            <p style={{ fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', margin: '12px 0 16px 0' }}>
+              Scan with Google Pay, PhonePe, Paytm or BHIM on your mobile phone to complete payment.
+            </p>
+
+            <button
+              type="button"
+              className="sdm-btn sdm-btn--whatsapp"
+              style={{ width: '100%', padding: '12px 20px', fontSize: '15px' }}
+              onClick={handleConfirmDesktopQrOrder}
+            >
+              <WhatsAppIcon size={20} />
+              <span>I Have Paid — Send Order to WhatsApp</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

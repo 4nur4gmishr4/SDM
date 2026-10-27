@@ -11,6 +11,8 @@ import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import { validateOrderInput } from '../../lib/validation';
 import { dispatchOrderWebhook } from '../../lib/webhookPipeline';
 import { uploadImageFile } from '../../lib/uploadImage';
+import { stageOrderInOutbox, markOrderSynced } from '../../lib/orderOutbox';
+import { haptics } from '../../lib/haptics';
 import type { QuickOrderFormData } from '../../types/order';
 import './CheckoutPage.css';
 import './QuickOrderPage.css';
@@ -58,6 +60,23 @@ export function QuickOrderPage() {
     map_link: getGoogleMapsNavigationUrl(location.lat, location.lng),
     shopping_list: '',
   });
+
+  // Handle Web Share Target API payload from WhatsApp / other apps
+  useEffect(() => {
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const sharedText = searchParams.get('text') || searchParams.get('shopping_list') || searchParams.get('title');
+      if (sharedText && sharedText.trim()) {
+        setFormData(prev => ({
+          ...prev,
+          shopping_list: sharedText.trim()
+        }));
+        showSnackbar('Shared grocery list loaded automatically!');
+      }
+    } catch {
+      // Ignore URL parsing errors
+    }
+  }, [showSnackbar]);
 
   useEffect(() => {
     if (location.formattedAddress) {
@@ -204,7 +223,23 @@ export function QuickOrderPage() {
         }
       }
 
-      // 1. Persist the quick order to Supabase if configured (non-blocking)
+      // 1. Google SRE Outbox: Stage quick order in local IndexedDB offline vault immediately
+      await stageOrderInOutbox({
+        id: orderId,
+        type: 'quick',
+        customer_name: finalCustomerName,
+        customer_phone: finalCustomerPhone,
+        delivery_address: finalDeliveryAddress,
+        map_link: formData.map_link || null,
+        subtotal: 0,
+        delivery_fee: settings?.flat_fee || 0,
+        total: settings?.flat_fee || 0,
+        items: [],
+        quick_order_text: finalShoppingList,
+        created_at: new Date().toISOString(),
+      });
+
+      // 2. Persist the quick order to Supabase if configured (non-blocking)
       if (isSupabaseConfigured) {
         try {
           await withTimeout(
@@ -223,8 +258,9 @@ export function QuickOrderPage() {
             }),
             3000
           );
+          await markOrderSynced(orderId);
         } catch (dbErr) {
-          console.warn('Database save skipped or timed out, proceeding to WhatsApp:', dbErr);
+          console.warn('Database save skipped or timed out, quick order preserved in Outbox vault:', dbErr);
         }
       }
 
@@ -243,7 +279,7 @@ export function QuickOrderPage() {
         quick_order_text: finalShoppingList,
       }).catch(() => {});
 
-      // 2. Build WhatsApp message (NO EMOJIS, NO ORDER NUMBER, LINE-BY-LINE FORMAT)
+      // 3. Build WhatsApp message (NO EMOJIS, NO ORDER NUMBER, LINE-BY-LINE FORMAT)
       const message = buildQuickOrderWhatsAppMessage({
         orderId,
         shoppingList: isPhoto ? formData.shopping_list : finalShoppingList,
@@ -255,10 +291,11 @@ export function QuickOrderPage() {
         hasAttachedImage: Boolean(listImageFile || listImagePreview),
       });
 
-      // 3. Open WhatsApp
+      // 4. Haptic success vibration & Open WhatsApp
+      haptics.success();
       openWhatsApp(storeWhatsAppNumber, message);
 
-      // 4. Redirect to confirmation
+      // 5. Redirect to confirmation
       navigate(`/order/${orderId}`);
 
     } catch (error) {

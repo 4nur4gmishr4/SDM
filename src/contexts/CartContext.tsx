@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer, useEffect, useMemo, useCallback, type ReactNode } from 'react';
 import type { CartItem } from '../types/order';
 import { useSnackbar } from './SnackbarContext';
+import { haptics } from '../lib/haptics';
 
 /* --------------------------------------------------------
    Cart State
@@ -130,6 +131,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [state.items]
   );
 
+  // Google Chrome App Icon Badging API
+  useEffect(() => {
+    try {
+      if (typeof navigator !== 'undefined') {
+        if ('setAppBadge' in navigator && itemCount > 0) {
+          (navigator as any).setAppBadge(itemCount).catch(() => {});
+        } else if ('clearAppBadge' in navigator && itemCount === 0) {
+          (navigator as any).clearAppBadge().catch(() => {});
+        }
+      }
+    } catch {
+      // Ignore unsupported platforms
+    }
+  }, [itemCount]);
+
   const subtotal = useMemo(
     () => state.items.reduce((sum, item) => sum + item.quantity * item.product_price, 0),
     [state.items]
@@ -149,16 +165,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const addItem = useCallback((item: CartItem) => {
+    haptics.tap();
     dispatch({ type: 'ADD_ITEM', payload: item });
     const variantSuffix = item.unit_size ? ` (${item.unit_size})` : '';
     showSnackbar(`Added ${item.product_name}${variantSuffix} to cart`);
   }, [showSnackbar]);
 
   const removeItem = useCallback((productId: string, itemKey?: string) => {
+    haptics.selection();
     dispatch({ type: 'REMOVE_ITEM', payload: { product_id: productId, item_key: itemKey } });
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number, itemKey?: string) => {
+    haptics.selection();
     dispatch({ type: 'UPDATE_QUANTITY', payload: { product_id: productId, quantity, item_key: itemKey } });
   }, []);
 
