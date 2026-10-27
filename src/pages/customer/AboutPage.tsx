@@ -7,6 +7,9 @@ import { StoreVisualsMasterShowcase } from '../../components/customer/StoreVisua
 import { 
   formatPrice, 
   STORE_NAME, 
+  STORE_LEGAL_NAME,
+  STORE_UPI_ID,
+  STORE_UPI_NUMBER,
   STORE_ADDRESS, 
   STORE_EMAIL, 
   STORE_WHATSAPP_CLEAN, 
@@ -187,6 +190,53 @@ export function AboutPage() {
                   </div>
                 </Link>
               </div>
+            </div>
+          </div>
+
+          {/* Card 3: Official Store Payment QR (ICICI Bank POS Standee) */}
+          <div className="about-compact-card" style={{ gridColumn: '1 / -1' }}>
+            <div className="about-compact-card__head">
+              <span className="material-symbols-outlined about-details-icon">qr_code_2</span>
+              <div>
+                <h3 className="about-compact-card__title">Official Store Payment QR (Scan &amp; Pay)</h3>
+                <span className="about-compact-card__sub">ICICI Bank POS Verified Merchant Standee • EP116181</span>
+              </div>
+            </div>
+
+            <div className="about-compact-card__body" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '14px', paddingTop: '10px' }}>
+              <div style={{ maxWidth: '300px', width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.1))' }}>
+                <img
+                  src="/sai-darshan-upi-qr-card.svg"
+                  alt={`${STORE_LEGAL_NAME} Official UPI Standee`}
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center' }}>
+                <a
+                  href={`upi://pay?pa=${encodeURIComponent(STORE_UPI_ID)}&pn=${encodeURIComponent(STORE_LEGAL_NAME)}&tr=EPYSSQREP116181&cu=INR`}
+                  className="about-details-action-btn"
+                  style={{ background: 'var(--md-sys-color-primary, #1E8E3E)', color: '#ffffff' }}
+                  title="Pay via UPI App"
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>payments</span>
+                  <span>Pay via UPI App</span>
+                </a>
+
+                <a
+                  href="/sai-darshan-upi-qr-card.svg"
+                  download="sai-darshan-upi-qr-standee.svg"
+                  className="about-details-action-btn"
+                  title="Download Standee QR"
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>download</span>
+                  <span>Download Standee (SVG)</span>
+                </a>
+              </div>
+
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+                <strong>Merchant UPI ID:</strong> <code style={{ userSelect: 'all', background: 'rgba(0,0,0,0.05)', padding: '2px 6px', borderRadius: '4px' }}>{STORE_UPI_ID}</code> • <strong>Phone / UPI No:</strong> +91 {STORE_UPI_NUMBER}
+              </p>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
-import { STORE_NAME, STORE_UPI_ID, STORE_UPI_NUMBER, getUpiPaymentUrl } from '../../lib/orderUtils';
+import { STORE_LEGAL_NAME, STORE_UPI_ID, STORE_UPI_NUMBER, STORE_UPI_TERMINAL, getUpiPaymentUrl } from '../../lib/orderUtils';
 import { WhatsAppIcon } from '../common';
 import './DynamicUpiPayment.css';
 
@@ -88,10 +88,10 @@ export const DynamicUpiPayment: React.FC<DynamicUpiPaymentProps> = ({
       <div className="dynamic-upi__header">
         <div className="dynamic-upi__brand-pill">
           <span className="material-symbols-outlined dynamic-upi__shield-icon">verified_user</span>
-          <span>100% Secure Instant UPI Payment</span>
+          <span>ICICI Bank POS Verified Merchant</span>
         </div>
-        <h3 className="dynamic-upi__title">{STORE_NAME}</h3>
-        <p className="dynamic-upi__subtitle">Direct Zero-Fee Bank Transfer</p>
+        <h3 className="dynamic-upi__title">{STORE_LEGAL_NAME}</h3>
+        <p className="dynamic-upi__subtitle">Scan and Pay • Zero Surcharge Instant Settlement</p>
       </div>
 
       {/* Amount Display */}
@@ -122,8 +122,8 @@ export const DynamicUpiPayment: React.FC<DynamicUpiPaymentProps> = ({
           </div>
         )}
         <div className="dynamic-upi__qr-hint">
-          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>photo_camera</span>
-          <span>Scan with Google Pay, PhonePe, Paytm, or BHIM</span>
+          <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>qr_code_scanner</span>
+          <span>POS-linked Static QR / {STORE_UPI_TERMINAL}</span>
         </div>
       </div>
 
@@ -146,7 +146,7 @@ export const DynamicUpiPayment: React.FC<DynamicUpiPaymentProps> = ({
       <div className="dynamic-upi__credentials">
         <div className="dynamic-upi__cred-row">
           <div className="dynamic-upi__cred-info">
-            <span className="dynamic-upi__cred-label">UPI ID (VPA)</span>
+            <span className="dynamic-upi__cred-label">Merchant UPI ID (VPA)</span>
             <span className="dynamic-upi__cred-val">{STORE_UPI_ID}</span>
           </div>
           <button
@@ -163,8 +163,8 @@ export const DynamicUpiPayment: React.FC<DynamicUpiPaymentProps> = ({
 
         <div className="dynamic-upi__cred-row">
           <div className="dynamic-upi__cred-info">
-            <span className="dynamic-upi__cred-label">UPI Number</span>
-            <span className="dynamic-upi__cred-val">{STORE_UPI_NUMBER}</span>
+            <span className="dynamic-upi__cred-label">UPI Number / Phone</span>
+            <span className="dynamic-upi__cred-val">+91 {STORE_UPI_NUMBER}</span>
           </div>
           <button
             type="button"
@@ -181,11 +181,35 @@ export const DynamicUpiPayment: React.FC<DynamicUpiPaymentProps> = ({
 
       {/* Supported UPI Apps Badges */}
       <div className="dynamic-upi__app-strip">
+        <span className="dynamic-upi__app-badge">BHIM UPI</span>
         <span className="dynamic-upi__app-badge">G Pay</span>
         <span className="dynamic-upi__app-badge">PhonePe</span>
         <span className="dynamic-upi__app-badge">Paytm</span>
-        <span className="dynamic-upi__app-badge">BHIM</span>
         <span className="dynamic-upi__app-badge">CRED</span>
+        <span className="dynamic-upi__app-badge">iMobile</span>
+      </div>
+
+      <div style={{ textAlign: 'center', marginTop: '10px' }}>
+        <a
+          href="/sai-darshan-upi-qr-card.svg"
+          download="sai-darshan-upi-qr-standee.svg"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '12px',
+            color: 'var(--md-sys-color-primary, #1E8E3E)',
+            fontWeight: 600,
+            textDecoration: 'none',
+            padding: '6px 12px',
+            borderRadius: '8px',
+            background: 'var(--md-sys-color-surface-container-high, #edf3ee)'
+          }}
+          title="Download Official Standee QR Card"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>file_download</span>
+          <span>Download Official Standee (SVG)</span>
+        </a>
       </div>
 
       {/* Optional UTR / Reference ID Field */}

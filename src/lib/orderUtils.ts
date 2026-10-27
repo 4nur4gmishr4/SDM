@@ -1,12 +1,14 @@
 import type { CartItem } from '../types/order';
 
 export const STORE_NAME = (import.meta.env.VITE_STORE_NAME as string) || 'Sai Darshan Shopping Mart';
+export const STORE_LEGAL_NAME = (import.meta.env.VITE_STORE_LEGAL_NAME as string) || 'M/S.SAI DARSHAN SHOPPING MART';
 export const STORE_WHATSAPP_NUMBER = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string) || '+91 73541 55669';
 export const STORE_WHATSAPP_CLEAN = STORE_WHATSAPP_NUMBER.replace(/\D/g, '') || '917354155669';
 export const STORE_PHONE_NUMBER = (import.meta.env.VITE_STORE_PHONE as string) || STORE_WHATSAPP_CLEAN.slice(-10);
 export const STORE_EMAIL = (import.meta.env.VITE_STORE_EMAIL as string) || 'saidarshanmart@gmail.com';
-export const STORE_UPI_ID = (import.meta.env.VITE_STORE_UPI_ID as string) || '7354155669@upi';
+export const STORE_UPI_ID = (import.meta.env.VITE_STORE_UPI_ID as string) || 'ibkPOS.EP116181@icici';
 export const STORE_UPI_NUMBER = (import.meta.env.VITE_STORE_UPI_NUMBER as string) || '7354155669';
+export const STORE_UPI_TERMINAL = 'EP116181';
 export const STORE_ADDRESS = (import.meta.env.VITE_STORE_ADDRESS as string) || '1117 Sanjeevni Nagar Main Road, Jabalpur, Madhya Pradesh, Pin: 482003';
 export const STORE_DELIVERY_RADIUS = (import.meta.env.VITE_STORE_DELIVERY_RADIUS as string) || '5–10 km across Jabalpur';
 export const STORE_TIMINGS = (import.meta.env.VITE_STORE_TIMINGS as string) || '8:00 AM to 10:30 PM';
@@ -14,16 +16,23 @@ export const STORE_DAYS = (import.meta.env.VITE_STORE_DAYS as string) || 'Open A
 
 /**
  * Generate standard UPI deep link for 1-tap payment in Google Pay / PhonePe / Paytm / BHIM.
+ * Fully compatible with ICICI Bank POS-linked Static QR format.
  */
 export function getUpiPaymentUrl(params?: { amount?: number; orderId?: string; note?: string }): string {
   const upiId = STORE_UPI_ID;
-  const payeeName = STORE_NAME;
-  let url = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&cu=INR`;
+  const payeeName = STORE_LEGAL_NAME;
+  let url = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}`;
+  if (params?.orderId) {
+    url += `&tr=${encodeURIComponent(`EPYSSQR${params.orderId}`)}`;
+  } else {
+    url += `&tr=EPYSSQREP116181`;
+  }
   if (params?.amount && params.amount > 0) {
     url += `&am=${params.amount.toFixed(2)}`;
   }
+  url += `&cu=INR`;
   if (params?.orderId) {
-    url += `&tr=${encodeURIComponent(params.orderId)}&tn=${encodeURIComponent(`Order ${params.orderId}`)}`;
+    url += `&tn=${encodeURIComponent(`Order ${params.orderId}`)}`;
   } else if (params?.note) {
     url += `&tn=${encodeURIComponent(params.note)}`;
   }
