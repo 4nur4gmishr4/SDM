@@ -93,14 +93,14 @@ export function ShopPage() {
     return filtered;
   }, [products, localQuery, sortBy, inStockOnly]);
 
-  const pageTitle = currentCategory ? `${currentCategory.name} - Sai Darshan Shopping Mart` : 'All Products - Sai Darshan Shopping Mart';
+  const pageTitle = currentCategory ? `${currentCategory.name} Online in Jabalpur | Sai Darshan Shopping Mart` : 'Shop All Groceries in Jabalpur | Sai Darshan Shopping Mart';
   const isInitialLoading = isLoading && products.length === 0;
 
   return (
     <div className="layout-container shop-page">
       <SeoHead
         title={pageTitle}
-        description={`Shop ${currentCategory ? currentCategory.name.toLowerCase() : 'all groceries'} at Sai Darshan Shopping Mart. Fast delivery in Jabalpur.`}
+        description={currentCategory ? `Buy ${currentCategory.name.toLowerCase()} online at lowest prices from Sai Darshan Shopping Mart Jabalpur. Fast doorstep grocery delivery. "There is only one Boss: The Customer."` : 'Order fresh groceries, daily staples, dairy & essentials online at Sai Darshan Shopping Mart Jabalpur with fast doorstep delivery. "There is only one Boss: The Customer."'}
         canonicalUrl={categorySlug ? `/shop/${categorySlug}` : '/shop'}
       />
 

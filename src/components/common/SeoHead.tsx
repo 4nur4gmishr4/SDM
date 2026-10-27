@@ -26,26 +26,31 @@ export function SeoHead({
   // Default LocalBusiness Schema for Google
   const defaultSchema = {
     '@context': 'https://schema.org',
-    '@type': 'GroceryStore',
+    '@type': ['GroceryStore', 'Supermarket'],
     name: STORE_NAME,
-    alternateName: 'Supermarket Near Me',
-    description: 'Best local grocery store and supermarket near me in Jabalpur for fresh daily essentials and fast home delivery.',
-    image: `${BASE_URL}/pwa-512x512.png`,
-    '@id': BASE_URL,
+    legalName: 'M/S. SAI DARSHAN SHOPPING MART',
+    slogan: 'There is only one Boss: The Customer.',
+    alternateName: ['Sai Darshan Shopping Mart Jabalpur', 'SDSM Jabalpur', 'Supermarket Near Me Jabalpur'],
+    description: 'Jabalpur premier supermarket for daily groceries, dry fruits, atta, dals, spices, and fast doorstep delivery. There is only one Boss: The Customer.',
+    image: 'https://otyojqnnwbrteknyqcpi.supabase.co/storage/v1/object/public/store-media/banners/Logo.png',
+    '@id': `${BASE_URL}/#store`,
     url: BASE_URL,
     telephone: STORE_PHONE_NUMBER,
+    currenciesAccepted: 'INR',
+    paymentAccepted: 'Cash, UPI, Google Pay, PhonePe, Paytm, BHIM, Cards',
+    priceRange: '₹₹',
     address: {
       '@type': 'PostalAddress',
       streetAddress: STORE_ADDRESS,
       addressLocality: 'Jabalpur',
       postalCode: '482003',
-      addressRegion: 'MP',
+      addressRegion: 'Madhya Pradesh',
       addressCountry: 'IN'
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 23.1815,
-      longitude: 79.9864
+      latitude: 23.1685,
+      longitude: 79.9550
     },
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',
@@ -54,8 +59,7 @@ export function SeoHead({
       ],
       opens: '08:00',
       closes: '22:30'
-    },
-    priceRange: '₹₹'
+    }
   };
 
   const finalSchema = jsonLdSchema 

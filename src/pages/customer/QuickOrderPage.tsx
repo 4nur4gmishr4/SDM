@@ -312,7 +312,7 @@ export function QuickOrderPage() {
         <title>{pageTitle}</title>
         <meta 
           name="description" 
-          content="Type, paste, or send a photo of your handwritten grocery shopping list for fast home delivery from Sai Darshan Shopping Mart Jabalpur." 
+          content="Type, paste, or send a photo of your handwritten grocery shopping list for fast home delivery from Sai Darshan Shopping Mart Jabalpur. &quot;There is only one Boss: The Customer.&quot;" 
         />
       </Helmet>
 

@@ -5,4 +5,5 @@ Disallow: /api
 Disallow: /checkout
 Disallow: /cart
 
+Host: https://saidarshanmart.com
 Sitemap: https://saidarshanmart.com/sitemap.xml

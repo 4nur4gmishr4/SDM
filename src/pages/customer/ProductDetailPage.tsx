@@ -134,6 +134,10 @@ export function ProductDetailPage() {
             price: activePrice,
             itemCondition: 'https://schema.org/NewCondition',
             availability: isAvailable ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+            seller: {
+              '@type': 'Supermarket',
+              name: STORE_NAME,
+            },
           },
         }}
       />

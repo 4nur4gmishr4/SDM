@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { STORE_NAME, STORE_PHONE_NUMBER, STORE_WHATSAPP_NUMBER, STORE_WHATSAPP_CLEAN, STORE_EMAIL, STORE_ADDRESS } from '../../lib/orderUtils';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import './Footer.css';
@@ -9,15 +10,29 @@ export function Footer() {
   return (
     <footer className="sdsm-footer" role="contentinfo">
       <div className="sdsm-footer__container">
-        {/* Main Content: Brand on Left, Address & Contacts on Right side-by-side */}
+        {/* Main Content: Brand info, Crawlable SEO Sitelinks, Address & Contacts */}
         <div className="sdsm-footer__row">
-          {/* Brand Info (No storefront icon, sleek title & tagline) */}
+          {/* Brand Info with Official Tagline and Crawlable Paragraph */}
           <div className="sdsm-footer__brand">
             <span className="sdsm-footer__brand-name">{STORE_NAME}</span>
-            <p className="sdsm-footer__brand-tagline">
-              Jabalpur&apos;s trusted neighborhood supermarket &bull; Daily fresh groceries &amp; doorstep delivery
+            <p className="sdsm-footer__brand-motto">&ldquo;There is only one Boss: The Customer.&rdquo;</p>
+            <p className="sdsm-footer__brand-desc">
+              Jabalpur&apos;s premier neighborhood supermarket. Order daily fresh groceries, staples, pure spices, dairy, dry fruits, and household essentials with fast doorstep delivery across Jabalpur.
             </p>
           </div>
+
+          {/* Crawlable Sitelinks for Google Search Bot & Users */}
+          <nav className="sdsm-footer__sitelinks" aria-label="Sitelinks Navigation">
+            <span className="sdsm-footer__sitelinks-heading">Quick Navigation</span>
+            <div className="sdsm-footer__sitelinks-grid">
+              <Link to="/shop" className="sdsm-footer__sitelink">Shop All Groceries</Link>
+              <Link to="/quick-order" className="sdsm-footer__sitelink">Quick Order via List</Link>
+              <Link to="/about" className="sdsm-footer__sitelink">Store Location &amp; Hours</Link>
+              <Link to="/shop/grocery-staples" className="sdsm-footer__sitelink">Grocery Staples &amp; Grains</Link>
+              <Link to="/shop/cooking-oils-ghee" className="sdsm-footer__sitelink">Cooking Oils &amp; Ghee</Link>
+              <Link to="/shop/spices-seasonings" className="sdsm-footer__sitelink">Pure Spices &amp; Masalas</Link>
+            </div>
+          </nav>
 
           {/* Action Row: Clickable Store Address Pill & 3 Contact Icons */}
           <div className="sdsm-footer__actions">
@@ -69,7 +84,10 @@ export function Footer() {
         {/* Minimal Compact Copyright Strip */}
         <div className="sdsm-footer__bottom">
           <span className="sdsm-footer__copyright">
-            &copy; {currentYear} {STORE_NAME} &bull; Sanjeevni Nagar, Jabalpur
+            &copy; {currentYear} {STORE_NAME} &bull; 1117 Sanjeevni Nagar, Garha, Jabalpur &bull; All Rights Reserved
+          </span>
+          <span className="sdsm-footer__slogan-badge">
+            Customer First Supermarket
           </span>
         </div>
       </div>
