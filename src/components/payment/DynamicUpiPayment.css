@@ -1,0 +1,356 @@
+/* Dynamic UPI Payment Card Styles */
+
+.dynamic-upi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.dynamic-upi--card {
+  background: var(--md-sys-color-surface, #ffffff);
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.12));
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 8px 32px rgba(13, 101, 45, 0.08);
+}
+
+.dynamic-upi__header {
+  text-align: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.dynamic-upi__brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22, 163, 74, 0.12);
+  color: #15803d;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dynamic-upi__shield-icon {
+  font-size: 14px;
+}
+
+.dynamic-upi__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--md-sys-color-on-surface, #1e293b);
+  letter-spacing: -0.3px;
+}
+
+.dynamic-upi__subtitle {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+}
+
+/* Amount Banner */
+.dynamic-upi__amount-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(30, 142, 62, 0.08) 0%, rgba(21, 62, 34, 0.14) 100%);
+  border: 1.5px dashed rgba(30, 142, 62, 0.4);
+  border-radius: 16px;
+  padding: 12px 20px;
+  width: 100%;
+  margin-bottom: 18px;
+  box-sizing: border-box;
+}
+
+.dynamic-upi__amount-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #15803d;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.dynamic-upi__amount-val {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0d652d;
+  line-height: 1.2;
+  margin: 2px 0 4px;
+  letter-spacing: -0.5px;
+}
+
+.dynamic-upi__ref-pill {
+  font-size: 11px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+/* QR Code Wrapper */
+.dynamic-upi__qr-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.dynamic-upi__qr-box {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  background: #ffffff;
+  border: 3px solid #0d652d;
+  border-radius: 20px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dynamic-upi__qr-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.dynamic-upi__center-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  background: #0d652d;
+  border: 3px solid #ffffff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dynamic-upi__center-badge .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.dynamic-upi__qr-skeleton {
+  width: 240px;
+  height: 240px;
+  background: var(--md-sys-color-surface-container-low, #f1f5f9);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  font-size: 12px;
+}
+
+.dynamic-upi__spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(13, 101, 45, 0.2);
+  border-top-color: #0d652d;
+  border-radius: 50%;
+  animation: dynamicUpiSpin 0.8s linear infinite;
+}
+
+@keyframes dynamicUpiSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dynamic-upi__qr-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  margin-top: 8px;
+}
+
+/* 1-Tap Mobile Button */
+.dynamic-upi__mobile-trigger {
+  width: 100%;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.dynamic-upi__tap-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #0d652d 0%, #1e8e3e 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  padding: 13px 20px;
+  font-size: 15.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(13, 101, 45, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dynamic-upi__tap-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(13, 101, 45, 0.45);
+}
+
+.dynamic-upi__tap-btn:active {
+  transform: translateY(0);
+}
+
+.dynamic-upi__tap-sub {
+  display: block;
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  margin-top: 6px;
+}
+
+/* Credentials Table */
+.dynamic-upi__credentials {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.dynamic-upi__cred-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.03));
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.dynamic-upi__cred-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.dynamic-upi__cred-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #64748b);
+  text-transform: uppercase;
+}
+
+.dynamic-upi__cred-val {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #1e293b);
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+.dynamic-upi__copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.15));
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--md-sys-color-primary, #1e8e3e);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dynamic-upi__copy-btn:hover {
+  background: rgba(30, 142, 62, 0.08);
+}
+
+.dynamic-upi__copy-btn--copied {
+  background: #16a34a !important;
+  color: #ffffff !important;
+  border-color: #16a34a !important;
+}
+
+/* Supported Apps Strip */
+.dynamic-upi__app-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.dynamic-upi__app-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--md-sys-color-surface-container, rgba(0, 0, 0, 0.05));
+  color: var(--md-sys-color-on-surface-variant, #475569);
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.06));
+}
+
+/* UTR input */
+.dynamic-upi__utr-box {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.dynamic-upi__utr-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface, #1e293b);
+  margin-bottom: 6px;
+}
+
+.dynamic-upi__utr-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--md-sys-color-outline-variant, #cbd5e1);
+  background: var(--md-sys-color-surface, #ffffff);
+  color: var(--md-sys-color-on-surface, #1e293b);
+  font-size: 13.5px;
+  outline: none;
+  font-family: ui-monospace, monospace;
+  transition: border-color 0.15s ease;
+}
+
+.dynamic-upi__utr-input:focus {
+  border-color: #0d652d;
+  box-shadow: 0 0 0 3px rgba(13, 101, 45, 0.15);
+}
+
+.dynamic-upi__confirm-btn {
+  width: 100%;
+  padding: 13px 20px;
+  font-size: 15px;
+  justify-content: center;
+  box-sizing: border-box;
+}
