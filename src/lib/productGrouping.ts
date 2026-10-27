@@ -147,21 +147,45 @@ export function groupProductsIntoVariants(products: Product[], requestedProductI
   for (const group of groups.values()) {
     const { baseProduct, baseName, candidates } = group;
 
-    // Filter out invalid items and obvious price anomalies
+    // Filter out obsolete/discontinued items and obvious market anomalies
     const validCandidates = candidates.filter(({ product, grams }) => {
-      if (grams !== null) {
-        // Discard tiny weights (< 25g) for standard packed FMCG goods (biscuits, noodles, flour, soaps)
-        // Only spices, saffron, and condiments have genuine < 25g retail packs
-        const isMicroItem = /heeng|hing|kesar|saffron|cardamom|elaichi|elichi|clove|laung|seasoning|masala-e-magic/i.test(baseName);
-        if (!isMicroItem && grams < 25) return false;
+      if (!product.price || product.price <= 0 || !product.mrp || product.mrp <= 0) return false;
+      if (isJunkUnit(product.unit_size)) return false;
 
-        // If noodles, reject sample sachets < 50g and absurd price rates (> 50 rs per 100g)
-        if (/noodle/i.test(baseName)) {
-          if (grams < 50) return false;
-          if ((product.price / grams) * 100 > 50) return false;
-        }
+      const lowerName = (baseName || '').toLowerCase();
+
+      // 1. Biscuits & Cookies: In modern retail (2024-2026), packs start at ₹5 (minimum ~40g).
+      // Ancient shrinkflation relics like ₹2 Parle-G (17.7g, 21g, 24.5g, 28g) are discontinued.
+      const isBiscuit = /biscuit|cookie|rusk|gluco|parle-g|parle g|50-50|good day|bourbon|bounce|cream/i.test(lowerName);
+      if (isBiscuit) {
+        if (product.price < 5) return false;
+        if (grams !== null && grams < 35) return false;
       }
-      return product.price > 0 && !isJunkUnit(product.unit_size);
+
+      // 2. Instant Noodles: Modern single packs start at ₹12 - ₹14 (minimum ~60g).
+      // Ancient promo samples (30g @ ₹5) are discontinued.
+      const isNoodle = /noodle|maggi|yippee|top ramen|wai wai/i.test(lowerName);
+      if (isNoodle) {
+        if (product.price < 10) return false;
+        if (grams !== null && grams < 50) return false;
+        if (grams !== null && (product.price / grams) * 100 > 50) return false; // reject corrupt cuppa noodle price leaks
+      }
+
+      // 3. Edible Cooking Oils & Ghee: Retail consumer packs start at 200ml/g or 500ml/1L.
+      // Ancient promo sachets (60g/75g) are obsolete.
+      const isCookingOil = (lowerName.includes('oil') || lowerName.includes('tel') || lowerName.includes('ghee')) &&
+        !/hair|massage|shampoo|baby|body|face|essential|olive/i.test(lowerName);
+      if (isCookingOil && grams !== null && grams < 150) {
+        return false;
+      }
+
+      // 4. Micro items check: Only spices, saffron, and condiments have genuine < 25g retail packs
+      if (grams !== null && grams < 25) {
+        const isMicroItem = /heeng|hing|kesar|saffron|cardamom|elaichi|elichi|clove|laung|seasoning|masala-e-magic|chilli|mirch|jeera|haldi/i.test(lowerName);
+        if (!isMicroItem) return false;
+      }
+
+      return true;
     });
 
     if (validCandidates.length === 0) {
