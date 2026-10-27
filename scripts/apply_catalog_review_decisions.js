@@ -36,11 +36,11 @@ async function applyDecisions() {
   const decisions = data.decisions || {};
 
   const rejectedIds = Object.entries(decisions)
-    .filter(([_, status]) => status === 'REJECTED')
+    .filter(([, status]) => status === 'REJECTED')
     .map(([id]) => id);
 
   const approvedIds = Object.entries(decisions)
-    .filter(([_, status]) => status === 'APPROVED')
+    .filter(([, status]) => status === 'APPROVED')
     .map(([id]) => id);
 
   console.log(`Total decisions found: ${Object.keys(decisions).length}`);

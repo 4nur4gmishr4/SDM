@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import { Helmet } from 'react-helmet-async';
 import { useCart, useLocationContext, useSnackbar } from '../../contexts';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
@@ -25,9 +24,6 @@ export function CheckoutPage() {
     // If the user already set their location previously, consider it primed but confirmable
     return hasLocationBeenSet;
   });
-  
-  // Idempotency Key: Guarantees exact-once processing even if user clicks twice on spotty connection
-  const [idempotencyKey] = useState(() => uuidv4());
 
   const pageTitle = 'Checkout & WhatsApp Order | Sai Darshan Shopping Mart';
 
@@ -147,19 +143,32 @@ export function CheckoutPage() {
               delivery_fee: deliveryFee,
               total_amount: total,
               status: 'pending',
-              idempotency_key: idempotencyKey // Prevents duplicate orders at database level
+              items: items.map(item => ({
+                product_id: item.product_id,
+                name: item.product_name,
+                sku: item.product_sku,
+                quantity: item.quantity,
+                price: item.product_price,
+                unit: item.unit_size
+              })),
+              is_quick_order: false
             }),
             3000
           );
 
-          const orderItems = items.map(item => ({
-            order_id: orderId,
-            product_id: item.product_id,
-            quantity: item.quantity,
-            price_at_time: item.product_price
-          }));
+          const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+          const orderItems = items
+            .filter(item => item.product_id && uuidRegex.test(item.product_id))
+            .map(item => ({
+              order_id: orderId,
+              product_id: item.product_id,
+              quantity: item.quantity,
+              price_at_time: item.product_price
+            }));
 
-          await withTimeout(supabase.from('order_items').insert(orderItems), 3000);
+          if (orderItems.length > 0) {
+            await withTimeout(supabase.from('order_items').insert(orderItems), 3000);
+          }
         } catch (dbErr) {
           console.warn('Database save skipped or timed out, proceeding to WhatsApp:', dbErr);
         }
