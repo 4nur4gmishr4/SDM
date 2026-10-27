@@ -604,22 +604,69 @@ export function ProductsPage() {
 
       {/* Excel Drag & Drop Importer Modal */}
       {isImportModalOpen && (
-        <div className="admin-modal-overlay">
-          <div className="admin-modal admin-modal--large">
+        <div
+          className="admin-modal-overlay"
+          onClick={() => setIsImportModalOpen(false)}
+        >
+          <div
+            className="admin-modal admin-modal--large admin-modal--excel-import"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: "1060px",
+              width: "96%",
+              maxHeight: "94vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <div className="admin-modal-header">
-              <h2 className="admin-modal-title">Bulk Import Excel Catalog</h2>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <span
+                  className="material-symbols-outlined"
+                  style={{
+                    color: "var(--md-sys-color-primary)",
+                    fontSize: "26px",
+                  }}
+                >
+                  upload_file
+                </span>
+                <div>
+                  <h2
+                    className="admin-modal-title"
+                    style={{ margin: 0, fontSize: "1.2rem" }}
+                  >
+                    Drag & Drop Excel Inventory Sync
+                  </h2>
+                  <p
+                    style={{
+                      margin: "2px 0 0",
+                      fontSize: "0.8rem",
+                      color: "var(--md-sys-color-on-surface-variant)",
+                    }}
+                  >
+                    Select or drop any supermarket spreadsheet (.xlsx, .xls, .csv) to preview items and sync into store catalog
+                  </p>
+                </div>
+              </div>
               <button
                 type="button"
                 className="sdm-btn sdm-btn--text admin-icon-btn"
                 onClick={() => setIsImportModalOpen(false)}
+                aria-label="Close modal"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
-            <div className="admin-modal-content">
+            <div
+              className="admin-modal-content"
+              style={{ overflowY: "auto", flex: 1, padding: "18px 20px" }}
+            >
               <ExcelImportWidget
                 categories={categories}
-                onImportComplete={fetchData}
+                onImportComplete={() => {
+                  fetchData();
+                  setIsImportModalOpen(false);
+                }}
                 onClose={() => setIsImportModalOpen(false)}
               />
             </div>

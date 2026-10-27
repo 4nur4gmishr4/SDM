@@ -287,6 +287,11 @@
   max-width: 780px;
 }
 
+.admin-modal--excel-import {
+  max-width: 1080px;
+  width: 96%;
+}
+
 .admin-modal--medium {
   max-width: 720px;
 }
