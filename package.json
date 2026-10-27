@@ -1,8 +1,24 @@
 {
   "name": "sdmweb",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "author": {
+    "name": "4nur4gmishr4",
+    "url": "https://github.com/4nur4gmishr4"
+  },
+  "contributors": [
+    {
+      "name": "4nur4gmishr4",
+      "url": "https://github.com/4nur4gmishr4",
+      "role": "Lead Architect & Main Contributor"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amit-saidarshan/SaiDarshanMart.git"
+  },
+
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

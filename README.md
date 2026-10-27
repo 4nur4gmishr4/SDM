@@ -1,5 +1,9 @@
 # Sai Darshan Shopping Mart — Web Storefront & Management System
 
+[![Lead Architect](https://img.shields.io/badge/Lead%20Architect-4nur4gmishr4-1E8E3E?style=for-the-badge&logo=github&logoColor=white)](https://github.com/4nur4gmishr4)
+[![Main Contributor](https://img.shields.io/badge/Main%20Contributor-4nur4gmishr4-F7C600?style=for-the-badge&logo=github&logoColor=black)](https://github.com/4nur4gmishr4)
+[![Repository](https://img.shields.io/badge/GitHub-SaiDarshanMart-blue?style=for-the-badge&logo=github)](https://github.com/amit-saidarshan/SaiDarshanMart)
+
 > **Store Address:** 1117 Sanjeevni Nagar Main Road, Jabalpur, MP 482003  
 > **Contact / WhatsApp:** +91 73541 55669  
 > **UPI ID:** 7354155669@upi  
@@ -18,6 +22,7 @@
 8. [Design System & Theme Engine](#phase-8-design-system--theme-engine)
 9. [Local Development & Environment Setup](#phase-9-local-development--environment-setup)
 10. [Production Build & Deployment](#phase-10-production-build--deployment)
+11. [Lead Architect & Primary Contributor](#lead-architect--primary-contributor)
 
 ---
 
@@ -490,3 +495,30 @@ The compiled production bundle is generated inside the `dist/` folder:
 Deploy `dist/` to any static web hosting provider (Cloudflare Pages, Vercel, Netlify):
 - Ensure `public/_redirects` or host rewrite rules redirect all paths to `/index.html` with HTTP status `200` to support client-side routing.
 - Set environment variables (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) in your hosting provider's dashboard.
+
+---
+
+## Lead Architect & Primary Contributor
+
+<div align="center">
+  <a href="https://github.com/4nur4gmishr4">
+    <img src="https://github.com/4nur4gmishr4.png" width="110px" style="border-radius: 50%; box-shadow: 0 6px 18px rgba(0,0,0,0.2);" alt="4nur4gmishr4" />
+    <br />
+    <br />
+    <b>@4nur4gmishr4</b>
+  </a>
+  <p><b>Lead Architect, Full-Stack Engineer & Core Maintainer</b></p>
+  <p>
+    Spearheaded the complete end-to-end architecture, responsive web storefront, interactive admin suite, database schemas, PWA implementation, offline transaction vault, dynamic UPI integration, and automated catalog purification engine for Sai Darshan Mart.
+  </p>
+  <p>
+    <a href="https://github.com/4nur4gmishr4">
+      <img src="https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github" alt="GitHub Profile" />
+    </a>
+    &nbsp;
+    <a href="https://github.com/4nur4gmishr4?tab=repositories">
+      <img src="https://img.shields.io/badge/Repositories-View%20Projects-1E8E3E?style=flat-square&logo=github" alt="Repositories" />
+    </a>
+  </p>
+</div>
+
