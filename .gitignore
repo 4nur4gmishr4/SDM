@@ -54,10 +54,8 @@ main_data
 !public/favicon.ico
 !public/apple-touch-icon.png
 !public/pwa-*.png
-!public/sai-darshan-upi-qr.png
 public/uploads/
 public/images/
 
 # Test results and artifacts
 test-results/
-process_photos.py
