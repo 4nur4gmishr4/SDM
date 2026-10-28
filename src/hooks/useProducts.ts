@@ -156,8 +156,8 @@ export function useProducts(options: UseProductsOptions = {}) {
 
   const allItems = queryResult.data || [];
   const totalCount = 40208;
-  const imagedCount = 1827;
-  const erpCount = 38381;
+  const imagedCount = 9053;
+  const erpCount = 31155;
 
   return {
     products: allItems,

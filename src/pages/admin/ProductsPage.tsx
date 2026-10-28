@@ -391,7 +391,7 @@ export function ProductsPage() {
           }}
         >
           <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>photo_library</span>
-          <span>Curated Catalog ({countImaged > 0 ? countImaged.toLocaleString() : '1,827'})</span>
+          <span>Curated Catalog ({countImaged > 0 ? countImaged.toLocaleString() : '9,053'})</span>
         </button>
         <button
           type="button"
@@ -402,7 +402,7 @@ export function ProductsPage() {
           }}
         >
           <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>receipt_long</span>
-          <span>Master Store Catalog ({countErp > 0 ? countErp.toLocaleString() : '38,381'})</span>
+          <span>Master Store Catalog ({countErp > 0 ? countErp.toLocaleString() : '31,155'})</span>
         </button>
         <button
           type="button"
