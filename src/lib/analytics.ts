@@ -241,31 +241,3 @@ function createDefaultTrafficData(): TrafficAnalyticsData {
   };
 }
 
-/**
- * Fetches traffic metrics for the Admin Analytics dashboard.
- */
-export async function fetchTrafficAnalytics(): Promise<TrafficAnalyticsData> {
-  if (!isSupabaseConfigured) {
-    return createDefaultTrafficData();
-  }
-
-  try {
-    const { data, error } = await withTimeout(
-      supabase
-        .from('store_settings')
-        .select('value')
-        .eq('key', 'site_analytics_traffic')
-        .single(),
-      5000
-    );
-
-    if (error) throw error;
-    if (data?.value) {
-      return JSON.parse(data.value);
-    }
-  } catch (err) {
-    console.error('Error fetching traffic analytics:', err);
-  }
-
-  return createDefaultTrafficData();
-}
