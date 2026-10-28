@@ -6,19 +6,6 @@ import { reverseGeocode, searchPlaces, DEFAULT_JABALPUR_LOCATION } from '../../l
 import type { DeliveryLocation, GeocodingSearchResult } from '../../types/location';
 import './LocationPickerModal.css';
 
-// Popular 1-tap quick localities in Jabalpur
-const QUICK_LOCALITIES = [
-  { name: 'Civil Lines', lat: 23.1646, lng: 79.9554 },
-  { name: 'Wright Town', lat: 23.1669, lng: 79.9255 },
-  { name: 'Napier Town', lat: 23.1685, lng: 79.9550 },
-  { name: 'Vijay Nagar', lat: 23.1892, lng: 79.9040 },
-  { name: 'Madan Mahal', lat: 23.1520, lng: 79.9140 },
-  { name: 'Sadar Bazar', lat: 23.1535, lng: 79.9494 },
-  { name: 'Gorakhpur', lat: 23.1538, lng: 79.9319 },
-  { name: 'Adhartal', lat: 23.2080, lng: 79.9450 },
-  { name: 'Tilhari', lat: 23.1290, lng: 79.9720 },
-];
-
 export function LocationPickerModal() {
   const { location, isModalOpen, closeModal, updateLocation } = useLocationContext();
 
@@ -239,18 +226,6 @@ export function LocationPickerModal() {
     }
   };
 
-  const handleQuickLocalityTap = (loc: { name: string; lat: number; lng: number }) => {
-    setShowDropdown(false);
-    setSearchQuery('');
-    setCurrentCoords({ lat: loc.lat, lng: loc.lng });
-    fetchAddressForCoords(loc.lat, loc.lng);
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo([loc.lat, loc.lng], 16.5, {
-        duration: 1.0,
-      });
-    }
-  };
-
   const handleLocateMe = () => {
     if (!navigator.geolocation) {
       alert('Geolocation is not supported by your browser.');
@@ -371,31 +346,6 @@ export function LocationPickerModal() {
               ))}
             </ul>
           )}
-
-          {/* Quick Locality Carousel Pills */}
-          <div className="location-quick-chips">
-            <button
-              type="button"
-              className="location-quick-chip location-quick-chip--gps"
-              onClick={handleLocateMe}
-              title="Use current GPS location"
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>my_location</span>
-              <span>Locate Me</span>
-            </button>
-            {QUICK_LOCALITIES.map((loc) => (
-              <button
-                key={loc.name}
-                type="button"
-                className={`location-quick-chip ${
-                  geocodedLocation.area === loc.name ? 'location-quick-chip--active' : ''
-                }`}
-                onClick={() => handleQuickLocalityTap(loc)}
-              >
-                {loc.name}
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* Interactive Map Area */}

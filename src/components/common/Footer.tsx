@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { STORE_NAME, STORE_PHONE_NUMBER, STORE_WHATSAPP_NUMBER, STORE_WHATSAPP_CLEAN, STORE_EMAIL, STORE_ADDRESS } from '../../lib/orderUtils';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import './Footer.css';
@@ -10,7 +9,7 @@ export function Footer() {
   return (
     <footer className="sdsm-footer" role="contentinfo">
       <div className="sdsm-footer__container">
-        {/* Main Content: Brand info, Crawlable SEO Sitelinks, Address & Contacts */}
+        {/* Main Content: Brand info, Address & Contacts */}
         <div className="sdsm-footer__row">
           {/* Brand Info with Official Tagline and Crawlable Paragraph */}
           <div className="sdsm-footer__brand">
@@ -20,19 +19,6 @@ export function Footer() {
               Jabalpur&apos;s premier neighborhood supermarket. Order daily fresh groceries, staples, pure spices, dairy, dry fruits, and household essentials with fast doorstep delivery across Jabalpur.
             </p>
           </div>
-
-          {/* Crawlable Sitelinks for Google Search Bot & Users */}
-          <nav className="sdsm-footer__sitelinks" aria-label="Sitelinks Navigation">
-            <span className="sdsm-footer__sitelinks-heading">Quick Navigation</span>
-            <div className="sdsm-footer__sitelinks-grid">
-              <Link to="/shop" className="sdsm-footer__sitelink">Shop All Groceries</Link>
-              <Link to="/quick-order" className="sdsm-footer__sitelink">Quick Order via List</Link>
-              <Link to="/about" className="sdsm-footer__sitelink">Store Location &amp; Hours</Link>
-              <Link to="/shop/grocery-staples" className="sdsm-footer__sitelink">Grocery Staples &amp; Grains</Link>
-              <Link to="/shop/cooking-oils-ghee" className="sdsm-footer__sitelink">Cooking Oils &amp; Ghee</Link>
-              <Link to="/shop/spices-seasonings" className="sdsm-footer__sitelink">Pure Spices &amp; Masalas</Link>
-            </div>
-          </nav>
 
           {/* Action Row: Clickable Store Address Pill & 3 Contact Icons */}
           <div className="sdsm-footer__actions">

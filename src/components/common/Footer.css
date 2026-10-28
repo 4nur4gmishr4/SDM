@@ -81,43 +81,6 @@
   line-height: 1.45;
 }
 
-/* ------------------------------------------------------------
-   Crawlable Sitelinks Navigation (Center Column)
-   ------------------------------------------------------------ */
-.sdsm-footer__sitelinks {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1 1 240px;
-}
-
-.sdsm-footer__sitelinks-heading {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--md-sys-color-on-surface, #1f2937);
-}
-
-.sdsm-footer__sitelinks-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(110px, 1fr));
-  gap: 6px 16px;
-}
-
-.sdsm-footer__sitelink {
-  font-size: 12px;
-  color: var(--md-sys-color-on-surface-variant, #4b5563);
-  text-decoration: none;
-  transition: color 0.15s ease, transform 0.15s ease;
-  line-height: 1.35;
-}
-
-.sdsm-footer__sitelink:hover {
-  color: var(--md-sys-color-primary, #1E8E3E);
-  text-decoration: underline;
-  transform: translateX(2px);
-}
 
 /* Actions Section: Address & Contact Icons (Right Side) */
 .sdsm-footer__actions {

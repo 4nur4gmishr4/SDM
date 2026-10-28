@@ -23,18 +23,6 @@ import type { QuickOrderFormData } from '../../types/order';
 import './CheckoutPage.css';
 import './QuickOrderPage.css';
 
-// Popular quick essentials for 1-tap addition
-const QUICK_SUGGESTIONS = [
-  '2kg Sugar',
-  '5kg Aashirvaad Atta',
-  '1L Amul Gold Milk',
-  '1L Fortune Sunflower Oil',
-  '1kg Toor Dal',
-  'Tata Salt 1kg',
-  'Maggi 4-Pack',
-  'Amul Butter 100g',
-];
-
 export function QuickOrderPage() {
   const { location, openModal } = useLocationContext();
   const { showSnackbar } = useSnackbar();
@@ -136,15 +124,6 @@ export function QuickOrderPage() {
     showSnackbar('Shopping list cleared.');
   };
 
-  // Add suggestion chip to list
-  const handleAddChip = (item: string) => {
-    setFormData(prev => ({
-      ...prev,
-      shopping_list: prev.shopping_list ? `${prev.shopping_list.trim()}\n• ${item}` : `• ${item}`,
-    }));
-    showSnackbar(`Added ${item} to list`);
-  };
-
   // Handle image capture or selection
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -234,7 +213,7 @@ export function QuickOrderPage() {
         customerName: finalCustomerName,
         customerPhone: finalCustomerPhone,
         deliveryAddress: finalDeliveryAddress,
-        mapLink: formData.map_link || null,
+        mapLink: formData.map_link || (location.lat && location.lng ? getGoogleMapsNavigationUrl(location.lat, location.lng) : null),
         isPhotoOrder: hasAttachedImage,
         hasAttachedImage,
         imageUrl: uploadedImageUrl && !uploadedImageUrl.startsWith('data:') ? uploadedImageUrl : null,
@@ -487,49 +466,50 @@ export function QuickOrderPage() {
                   </div>
                 </div>
 
-                <div className="quick-order-actions-bar">
+                {formData.shopping_list && (
                   <button
                     type="button"
-                    className="quick-paste-btn"
-                    onClick={() => cameraInputRef.current?.click()}
-                    title="Take photo of handwritten slip"
+                    className="quick-clear-btn"
+                    onClick={handleClearList}
+                    title="Clear text"
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>photo_camera</span>
-                    <span>Camera</span>
+                    <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>clear</span>
+                    <span>Clear</span>
                   </button>
+                )}
+              </div>
 
-                  <button
-                    type="button"
-                    className="quick-paste-btn"
-                    onClick={() => galleryInputRef.current?.click()}
-                    title="Upload photo from gallery"
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add_photo_alternate</span>
-                    <span>Gallery</span>
-                  </button>
+              {/* Symmetrical 3-Column Action Buttons: Camera, Gallery, Paste */}
+              <div className="quick-action-btns-grid">
+                <button
+                  type="button"
+                  className="quick-action-grid-btn"
+                  onClick={() => cameraInputRef.current?.click()}
+                  title="Take photo of handwritten slip"
+                >
+                  <span className="material-symbols-outlined">photo_camera</span>
+                  <span>Camera</span>
+                </button>
 
-                  <button
-                    type="button"
-                    className="quick-paste-btn"
-                    onClick={handleQuickPaste}
-                    title="Paste text from clipboard"
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>content_paste</span>
-                    <span>Paste</span>
-                  </button>
+                <button
+                  type="button"
+                  className="quick-action-grid-btn"
+                  onClick={() => galleryInputRef.current?.click()}
+                  title="Upload photo from gallery"
+                >
+                  <span className="material-symbols-outlined">add_photo_alternate</span>
+                  <span>Gallery</span>
+                </button>
 
-                  {formData.shopping_list && (
-                    <button
-                      type="button"
-                      className="quick-clear-btn"
-                      onClick={handleClearList}
-                      title="Clear text"
-                    >
-                      <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>clear</span>
-                      <span>Clear</span>
-                    </button>
-                  )}
-                </div>
+                <button
+                  type="button"
+                  className="quick-action-grid-btn"
+                  onClick={handleQuickPaste}
+                  title="Paste text from clipboard"
+                >
+                  <span className="material-symbols-outlined">content_paste</span>
+                  <span>Paste</span>
+                </button>
               </div>
 
               {/* Hidden File Inputs */}
@@ -608,30 +588,13 @@ export function QuickOrderPage() {
               <textarea
                 ref={textareaRef}
                 className="quick-order-textarea"
-                placeholder="Type or paste items here...&#10;E.g.,&#10;2kg Sugar&#10;1 packet Amul Butter&#10;500g Toor Dal&#10;5kg Aashirvaad Atta..."
+                placeholder="Type or paste items..."
                 name="shopping_list"
                 value={formData.shopping_list}
                 onChange={handleChange}
                 aria-label="Shopping list items"
-                rows={4}
+                rows={5}
               />
-
-              {/* 1-Tap Quick Suggestions */}
-              <div className="quick-chips-wrapper">
-                <span className="quick-chips-label">1-Tap Fast Essentials:</span>
-                <div className="quick-chips-container">
-                  {QUICK_SUGGESTIONS.map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className="quick-chip"
-                      onClick={() => handleAddChip(item)}
-                    >
-                      + {item}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </div>
 
             {/* Delivery Details Card (Shared for both Photo & Text modes) */}
@@ -719,22 +682,6 @@ export function QuickOrderPage() {
                     width: '100%'
                   }}
                 />
-              </div>
-
-              <div style={{ width: '100%' }}>
-                <md-outlined-text-field
-                  className="checkout-form__field"
-                  label="Google Maps Link (Optional)"
-                  name="map_link"
-                  type="url"
-                  value={formData.map_link || ''}
-                  onInput={handleChange}
-                >
-                  <md-icon slot="leading-icon">location_on</md-icon>
-                </md-outlined-text-field>
-                <p className="checkout-form__helper-text">
-                  Pasting a Google Maps link helps our delivery rider reach you directly.
-                </p>
               </div>
             </div>
           </form>

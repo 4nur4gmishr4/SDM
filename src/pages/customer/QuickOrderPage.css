@@ -156,37 +156,54 @@
   line-height: 1.4;
 }
 
-/* Quick Paste & Action Buttons */
-.quick-order-actions-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+/* Quick Action Buttons Grid (Camera, Gallery, Paste) */
+.quick-action-btns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+  width: 100%;
 }
 
-.quick-paste-btn {
+.quick-action-grid-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  height: 42px;
+  padding: 0 10px;
+  border-radius: 12px;
   background-color: var(--md-sys-color-primary-container, #CEEAD6);
   color: var(--md-sys-color-on-primary-container, #0D652D);
-  border: 1px solid rgba(30, 142, 62, 0.25);
-  border-radius: 9999px;
-  padding: 6px 14px;
-  font-size: 12.5px;
+  border: 1.5px solid rgba(30, 142, 62, 0.25);
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.12s ease;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.quick-paste-btn:hover {
+[data-theme="dark"] .quick-action-grid-btn {
+  background-color: rgba(30, 142, 62, 0.2);
+  color: #81c995;
+  border-color: rgba(129, 201, 149, 0.3);
+}
+
+.quick-action-grid-btn:hover {
   background-color: #bbf0cb;
+  border-color: var(--md-sys-color-primary, #1E8E3E);
   transform: translateY(-1px);
 }
 
-.quick-paste-btn:active {
+[data-theme="dark"] .quick-action-grid-btn:hover {
+  background-color: rgba(30, 142, 62, 0.32);
+}
+
+.quick-action-grid-btn:active {
   transform: translateY(0);
+}
+
+.quick-action-grid-btn .material-symbols-outlined {
+  font-size: 20px;
 }
 
 .quick-clear-btn {
@@ -206,54 +223,6 @@
 .quick-clear-btn:hover {
   color: var(--md-sys-color-error, #d93025);
   border-color: var(--md-sys-color-error, #d93025);
-}
-
-/* Quick Suggestion Chips */
-.quick-chips-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.quick-chips-label {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--md-sys-color-on-surface-variant);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.quick-chips-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.quick-chip {
-  background-color: var(--md-sys-color-surface-container, #f3f4f6);
-  color: var(--md-sys-color-on-surface, #374151);
-  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
-  border-radius: 9999px;
-  padding: 4px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.12s ease;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-[data-theme="dark"] .quick-chip {
-  background-color: var(--md-sys-color-surface-container-high, #2a2a2a);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #e5e7eb;
-}
-
-.quick-chip:hover {
-  background-color: var(--md-sys-color-primary-container, #CEEAD6);
-  color: var(--md-sys-color-on-primary-container, #0D652D);
-  border-color: rgba(30, 142, 62, 0.3);
-  transform: translateY(-1px);
 }
 
 /* Textarea Field */

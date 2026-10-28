@@ -449,63 +449,7 @@
   min-width: 0;
 }
 
-/* Quick Locality Carousel Chips */
-.location-quick-chips {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow-x: auto;
-  -ms-overflow-style: none;
-  padding: 10px 0 2px 0;
-}
 
-.location-quick-chips::-webkit-scrollbar {
-  display: none;
-}
-
-.location-quick-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  background-color: var(--md-sys-color-surface-container-low, #f1f3f4);
-  color: var(--md-sys-color-on-surface-variant, #444746);
-  border: 1px solid var(--md-sys-color-outline-variant, #e0e0e0);
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 180ms ease;
-  flex-shrink: 0;
-  outline: none !important;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.location-quick-chip:hover {
-  background-color: var(--md-sys-color-surface-container-high, #e8eaed);
-  color: var(--md-sys-color-on-surface, #1f1f1f);
-}
-
-.location-quick-chip--active {
-  background-color: #1E8E3E !important;
-  color: #ffffff !important;
-  border-color: #1E8E3E !important;
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(30, 142, 62, 0.25);
-}
-
-.location-quick-chip--gps {
-  background-color: #E6F4EA;
-  color: #137333;
-  border-color: #CEEAD6;
-  font-weight: 600;
-}
-
-.location-quick-chip--gps:hover {
-  background-color: #CEEAD6;
-}
 
 /* Bottom Sheet */
 .location-bottom-sheet {

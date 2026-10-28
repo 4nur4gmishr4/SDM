@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { SearchBar } from '../../components/customer/SearchBar';
 import { VirtualizedProductGrid } from '../../components/customer/VirtualizedProductGrid';
@@ -22,6 +22,7 @@ export function ShopPage() {
   const [sortBy, setSortBy] = useState('relevance');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [visibleCount, setVisibleCount] = useState(48);
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   const { categories, isLoading: categoriesLoading } = useCategories();
   const currentCategory = categories.find(c => c.slug === categorySlug);
@@ -92,6 +93,32 @@ export function ShopPage() {
 
     return filtered;
   }, [products, localQuery, sortBy, inStockOnly]);
+
+  // Automatic Infinite Scroll: automatically load next batch of products when scrolling near bottom
+  useEffect(() => {
+    if (visibleCount >= displayedProducts.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount(prev => Math.min(prev + 48, displayedProducts.length));
+        }
+      },
+      { rootMargin: '400px' }
+    );
+
+    const target = loaderRef.current;
+    if (target) {
+      observer.observe(target);
+    }
+
+    return () => {
+      if (target) {
+        observer.unobserve(target);
+      }
+      observer.disconnect();
+    };
+  }, [visibleCount, displayedProducts.length]);
 
   const pageTitle = currentCategory ? `${currentCategory.name} Online in Jabalpur | Sai Darshan Shopping Mart` : 'Shop All Groceries in Jabalpur | Sai Darshan Shopping Mart';
   const isInitialLoading = isLoading && products.length === 0;
@@ -243,30 +270,11 @@ export function ShopPage() {
             virtualizeThreshold={24}
           />
 
-          {/* Progressive Load More for Large Catalog */}
+          {/* Automatic Infinite Scroll Loader (No Manual Button) */}
           {visibleCount < displayedProducts.length && (
-            <div style={{ display: 'flex', justifyContent: 'center', margin: '36px 0 20px' }}>
-              <button
-                type="button"
-                className="btn btn--outline btn--lg"
-                style={{
-                  borderRadius: '30px',
-                  padding: '12px 32px',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-                onClick={() => setVisibleCount(prev => prev + 96)}
-              >
-                <span>Load More Products</span>
-                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>expand_more</span>
-                <span style={{ opacity: 0.7, fontSize: '13px', marginLeft: '4px' }}>
-                  ({displayedProducts.length - visibleCount} more)
-                </span>
-              </button>
+            <div ref={loaderRef} className="shop-page__infinite-loader" aria-live="polite">
+              <div className="shop-page__infinite-spinner" />
+              <span>Loading more groceries...</span>
             </div>
           )}
         </div>
