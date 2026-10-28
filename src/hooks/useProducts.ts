@@ -3,7 +3,7 @@ import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import type { Product } from '../types/product';
 import { expandSearchQuery, matchesSearchQuery } from '../lib/searchUtils';
 import { groupProductsIntoVariants, extractBaseNameAndUnit } from '../lib/productGrouping';
-import { fetchMasterCatalog, getMasterCatalogProduct } from '../lib/masterCatalog';
+import { fetchMasterCatalog, getMasterCatalogProduct, fetchImagedCatalog } from '../lib/masterCatalog';
 
 interface UseProductsOptions {
   categoryId?: string;
@@ -22,56 +22,24 @@ export function useProducts(options: UseProductsOptions = {}) {
       let imagedProducts: Product[] = [];
       if (isSupabaseConfigured) {
         if (options.fetchAll && !options.limit) {
-          // Overcome PostgREST 1000-row limit by fetching in pages
-          let from = 0;
-          const pageSize = 1000;
-          let hasMore = true;
+          // Instant high-performance retrieval from static imaged catalog (<50ms)
+          imagedProducts = await fetchImagedCatalog();
 
-          while (hasMore) {
-            let pageQuery = supabase
-              .from('products')
-              .select('*, category:categories(id, name, slug)')
-              .range(from, from + pageSize - 1)
-              .order('is_featured', { ascending: false });
-
-            if (options.categoryId) {
-              if (options.categoryId === 'ca000000-0000-0000-0000-000000000019') {
-                pageQuery = pageQuery.or('name.ilike.%offer%,name.ilike.%special%,name.ilike.%deal%');
-              } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000020') {
-                pageQuery = pageQuery.or('name.ilike.%1+1%,name.ilike.%free%,name.ilike.%buy 1%');
-              } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000021') {
-                pageQuery = pageQuery.or('name.ilike.%combo%,name.ilike.%saver%,name.ilike.%pack%');
-              } else {
-                pageQuery = pageQuery.eq('category_id', options.categoryId);
-              }
-            }
-
-            if (options.searchQuery && options.searchQuery.trim()) {
-              const clean = options.searchQuery.trim();
-              const terms = expandSearchQuery(clean).slice(0, 6);
-              const orConditions = terms.flatMap(t => [
-                `name.ilike.%${t}%`,
-                `brand.ilike.%${t}%`,
-                `sku.ilike.%${t}%`
-              ]).join(',');
-              pageQuery = pageQuery.or(orConditions);
-            }
-
-            const { data: pageData, error: pageErr } = await withTimeout(pageQuery, 8000);
-            if (pageErr) {
-              console.warn('Page fetch error from Supabase:', pageErr);
-              break;
-            }
-            if (!pageData || pageData.length === 0) {
-              hasMore = false;
+          if (options.categoryId) {
+            if (options.categoryId === 'ca000000-0000-0000-0000-000000000019') {
+              imagedProducts = imagedProducts.filter(p => /offer|special|deal/i.test(p.name));
+            } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000020') {
+              imagedProducts = imagedProducts.filter(p => /1\+1|free|buy 1/i.test(p.name));
+            } else if (options.categoryId === 'ca000000-0000-0000-0000-000000000021') {
+              imagedProducts = imagedProducts.filter(p => /combo|saver|pack/i.test(p.name));
             } else {
-              imagedProducts = imagedProducts.concat(pageData as Product[]);
-              if (pageData.length < pageSize) {
-                hasMore = false;
-              } else {
-                from += pageSize;
-              }
+              imagedProducts = imagedProducts.filter(p => p.category_id === options.categoryId);
             }
+          }
+
+          if (options.searchQuery && options.searchQuery.trim()) {
+            const clean = options.searchQuery.trim();
+            imagedProducts = imagedProducts.filter(p => matchesSearchQuery(p.name, p.brand, clean));
           }
         } else {
           let query = supabase.from('products').select('*, category:categories(id, name, slug)');

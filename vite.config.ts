@@ -172,6 +172,20 @@ export default defineConfig({
             }
           },
           {
+            urlPattern: /^https:\/\/m\.media-amazon\.com\/images\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'amazon-product-images-cache',
+              expiration: {
+                maxEntries: 500,
+                maxAgeSeconds: 60 * 60 * 24 * 30
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'StaleWhileRevalidate',
             options: {

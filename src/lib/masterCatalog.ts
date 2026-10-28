@@ -51,6 +51,23 @@ export async function fetchMasterCatalog(): Promise<Product[]> {
   return fetchPromise;
 }
 
+const IMAGED_CATEGORY_MAP: Record<string, string> = {
+  'Grocery & Staples': 'c2000000-0000-0000-0000-000000000002',
+  'Atta, Rice & Dals': 'c3333333-3333-3333-3333-333333333333',
+  'Dairy & Breakfast': 'c2222222-2222-2222-2222-222222222222',
+  'Edible Oils & Spices': 'c5555555-5555-5555-5555-555555555555',
+  'Snacks & Biscuits': 'c4444444-4444-4444-4444-444444444444',
+  'Chocolates & Sweets': 'c4444444-4444-4444-4444-444444444444',
+  'Beverages, Tea & Coffee': 'c6666666-6666-6666-6666-666666666666',
+  'Personal Care & Beauty': 'c8888888-8888-8888-8888-888888888888',
+  'Household & Cleaning': 'c7777777-7777-7777-7777-777777777777',
+  'Kitchenware & Utilities': 'caaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+  'Baby Care': 'c9999999-9999-9999-9999-999999999999',
+  'Dry Fruits & Nuts': 'c2000000-0000-0000-0000-000000000002',
+  'Instant Foods & Noodles': 'c4444444-4444-4444-4444-444444444444',
+  'Pooja Needs': 'c2000000-0000-0000-0000-000000000002',
+};
+
 /**
  * Loads the pre-compiled Imaged Catalog (7,226 Verified FMCG Products)
  */
@@ -66,7 +83,7 @@ export async function fetchImagedCatalog(): Promise<Product[]> {
         return [];
       }
       const tuples: [string, string, string, string, string, number, number, string, string][] = await res.json();
-      const products: Product[] = tuples.map(([id, sku, name, brand, unit_size, price, mrp, image_url]) => ({
+      const products: Product[] = tuples.map(([id, sku, name, brand, unit_size, price, mrp, image_url, category_name]) => ({
         id,
         sku,
         name,
@@ -74,7 +91,7 @@ export async function fetchImagedCatalog(): Promise<Product[]> {
         unit_size: unit_size || '1 unit',
         price,
         mrp: mrp || price,
-        category_id: '',
+        category_id: IMAGED_CATEGORY_MAP[category_name] || '',
         stock_quantity: 50,
         is_available: true,
         is_featured: false,

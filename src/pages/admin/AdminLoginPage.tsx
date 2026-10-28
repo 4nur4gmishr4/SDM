@@ -14,8 +14,6 @@ const AdminLoginSchema = z.object({
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCKOUT_DURATION_SECONDS = 60;
 
-// Injection detection patterns (SQL, script tags, suspicious payloads)
-const INJECTION_REGEX = /('|"|;|--|\/\*|\*\/|@@|char|nchar|varchar|nvarchar|alter|begin|cast|create|cursor|declare|delete|drop|end|exec|execute|fetch|insert|kill|open|select|sys|sysobjects|syscolumns|table|update|<script|<\/script>|javascript:|onerror=|onload=)/i;
 
 export function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -103,12 +101,6 @@ export function AdminLoginPage() {
       return;
     }
 
-    // Anti-injection strict validation
-    if (INJECTION_REGEX.test(cleanEmail)) {
-      console.warn('Suspicious characters detected in login attempt.');
-      setError('Invalid characters detected in login request.');
-      return;
-    }
 
     setIsSubmitting(true);
     setError('');

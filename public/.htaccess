@@ -12,12 +12,18 @@ ServerSignature Off
 # ------------------------------------------------------------------------------
 # 2. BLOCK ACCESS TO SENSITIVE FILES & EXTENSIONS
 # ------------------------------------------------------------------------------
-<FilesMatch "(^\.|\.(env|sql|bak|config|json|log|sh|md|yml|yaml|ts|tsx)$)">
+<FilesMatch "(^\.|\.(env|sql|bak|config|log|sh|md|yml|yaml|ts|tsx)$)">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Allow public manifest and sitemap
+# Explicitly block server package/config files
+<FilesMatch "^(package|package-lock|tsconfig.*)\.json$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow public manifest, catalog datasets, sitemap, and robots
 <Files "manifest.webmanifest">
     Order allow,deny
     Allow from all
@@ -30,6 +36,10 @@ ServerSignature Off
     Order allow,deny
     Allow from all
 </Files>
+<FilesMatch "^store-.*\.json$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
 
 # ------------------------------------------------------------------------------
 # 3. HTTP SECURITY HEADERS
@@ -57,7 +67,7 @@ ServerSignature Off
     Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
 
     # Content Security Policy (CSP)
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://apis.google.com https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.supabase.co https://*.tile.openstreetmap.org https://server.arcgisonline.com https://services.arcgisonline.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://geocode.arcgis.com https://api.bigdatacloud.net https://nominatim.openstreetmap.org; frame-src 'self' https://accounts.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://apis.google.com https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://geocode.arcgis.com https://api.bigdatacloud.net https://nominatim.openstreetmap.org; frame-src 'self' https://accounts.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;"
 
     # Cache Control for Static Assets
     <FilesMatch "\.(js|css|webp|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$">

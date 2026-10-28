@@ -105,19 +105,10 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function RawXmlViewer({ file }: { file: string }) {
   useEffect(() => {
-    fetch(file)
-      .then((r) => r.text())
-      .then((text) => {
-        document.open();
-        document.write(text);
-        document.close();
-      })
-      .catch(() => {
-        window.location.reload();
-      });
+    window.location.replace(file);
   }, [file]);
 
-  return <div style={{ padding: '24px', fontFamily: 'monospace' }}>Loading {file}...</div>;
+  return <div style={{ padding: '24px', fontFamily: 'monospace' }}>Redirecting to {file}...</div>;
 }
 
 function AppRoutes() {

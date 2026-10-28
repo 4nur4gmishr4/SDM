@@ -13,7 +13,7 @@ import { ImageUploadField } from "../../components/admin/ImageUploadField";
 import type { Product, ProductVariant } from "../../types/product";
 import type { Category } from "../../types/category";
 import { matchesSearchQuery } from "../../lib/searchUtils";
-import { fetchMasterCatalog } from "../../lib/masterCatalog";
+import { fetchMasterCatalog, fetchImagedCatalog } from "../../lib/masterCatalog";
 import "./AdminSharedTable.css"; // Reusing table styles
 import "./ProductsPage.css";
 
@@ -52,62 +52,53 @@ export function ProductsPage() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      let imagedProducts: Product[] = [];
-      let categoriesList: Category[] = [];
+      // 1. Fetch categories and pre-compiled catalogs in parallel
+      const [catsRes, imagedRes, erpRes] = await Promise.all([
+        isSupabaseConfigured
+          ? withTimeout(supabase.from("categories").select("*").order("name"), 5000)
+          : Promise.resolve({ data: [] }),
+        fetchImagedCatalog(),
+        fetchMasterCatalog(),
+      ]);
 
+      if (catsRes && 'data' in catsRes && catsRes.data) {
+        setCategories(catsRes.data as Category[]);
+      }
+
+      const imaged = (imagedRes || []).map(p => ({ ...p, catalog_source: 'imaged' as const }));
+      const erp = (erpRes || []).map(p => ({ ...p, catalog_source: 'erp' as const }));
+
+      // Render immediately in <100ms with full combined catalog
+      setProducts([...imaged, ...erp]);
+      setIsLoading(false);
+
+      // 2. Background sync recently modified items from Supabase (non-blocking)
       if (isSupabaseConfigured) {
-        // Fetch all categories
-        const { data: catData, error: catErr } = await withTimeout(
-          supabase.from("categories").select("*").order("name"),
-          5000
-        );
-        if (!catErr && catData) {
-          categoriesList = catData as Category[];
-          setCategories(categoriesList);
-        }
-
-        // Fetch all Supabase products beyond 1000 limit
-        let from = 0;
-        const pageSize = 1000;
-        let hasMore = true;
-
-        while (hasMore) {
-          const { data: pageData, error: pageErr } = await withTimeout(
+        try {
+          const { data: recentUpdates } = await withTimeout(
             supabase
               .from("products")
               .select("*, category:categories(id, name, slug)")
-              .range(from, from + pageSize - 1)
-              .order("name"),
-            8000
+              .order("updated_at", { ascending: false })
+              .limit(100),
+            4000
           );
-          if (pageErr) {
-            console.warn("Supabase fetch error:", pageErr);
-            break;
+          if (recentUpdates && recentUpdates.length > 0) {
+            setProducts(prev => {
+              const map = new Map(prev.map(p => [p.id, p]));
+              recentUpdates.forEach((up: any) => {
+                up.catalog_source = 'imaged';
+                map.set(up.id, up as Product);
+              });
+              return Array.from(map.values());
+            });
           }
-          if (!pageData || pageData.length === 0) {
-            hasMore = false;
-          } else {
-            imagedProducts = imagedProducts.concat(pageData as Product[]);
-            if (pageData.length < pageSize) hasMore = false;
-            else from += pageSize;
-          }
+        } catch {
+          // Non-blocking sync
         }
       }
-
-      imagedProducts.forEach((p) => { p.catalog_source = 'imaged'; });
-
-      // Fetch master store catalog (non-imaged ERP items)
-      let erpProducts: Product[] = [];
-      try {
-        erpProducts = await fetchMasterCatalog();
-      } catch (err) {
-        console.warn("Could not load ERP master catalog in admin:", err);
-      }
-
-      setProducts([...imagedProducts, ...erpProducts]);
     } catch (error) {
       console.error("Error fetching products in admin:", error);
-      setProducts([]);
     } finally {
       setIsLoading(false);
     }
@@ -251,19 +242,30 @@ export function ProductsPage() {
       };
 
       if (editingProduct.id) {
-        // Update
-        const { error } = await supabase
+        // Update in Supabase
+        const { data, error } = await supabase
           .from("products")
           .update(payload)
-          .eq("id", editingProduct.id);
+          .eq("id", editingProduct.id)
+          .select("*, category:categories(id, name, slug)")
+          .single();
         if (error) throw error;
+        const updated = (data || { ...editingProduct, ...payload }) as Product;
+        updated.catalog_source = 'imaged';
+        setProducts(prev => prev.map(p => p.id === editingProduct.id ? updated : p));
       } else {
-        // Insert
-        const { error } = await supabase.from("products").insert([payload]);
+        // Insert into Supabase
+        const { data, error } = await supabase
+          .from("products")
+          .insert([payload])
+          .select("*, category:categories(id, name, slug)")
+          .single();
         if (error) throw error;
+        const created = (data || { ...payload, id: `sdsm-${Date.now()}` }) as Product;
+        created.catalog_source = 'imaged';
+        setProducts(prev => [created, ...prev]);
       }
 
-      await fetchData();
       handleCloseModal();
     } catch (error: any) {
       console.error("Error saving product:", error);

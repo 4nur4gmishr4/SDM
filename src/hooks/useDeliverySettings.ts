@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase, isSupabaseConfigured, withTimeout } from '../lib/supabase';
 import type { DeliverySettings } from '../types/delivery';
 
@@ -11,21 +11,13 @@ const DEFAULT_SETTINGS: DeliverySettings = {
 };
 
 export function useDeliverySettings() {
-  const [settings, setSettings] = useState<DeliverySettings>(DEFAULT_SETTINGS);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const queryResult = useQuery({
+    queryKey: ['delivery_settings'],
+    queryFn: async (): Promise<DeliverySettings> => {
+      if (!isSupabaseConfigured) return DEFAULT_SETTINGS;
 
-  useEffect(() => {
-    let mounted = true;
-
-    if (!isSupabaseConfigured) {
-      setSettings(DEFAULT_SETTINGS);
-      setIsLoading(false);
-      return;
-    }
-
-    async function fetchSettings() {
       try {
-        const { data, error: fetchError } = await withTimeout(
+        const { data, error } = await withTimeout(
           supabase
             .from('delivery_settings')
             .select('*')
@@ -35,24 +27,19 @@ export function useDeliverySettings() {
           5000
         );
 
-        if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
-        
-        if (mounted && data) {
-          setSettings(data as DeliverySettings);
-        }
-      } catch (error) {
-        console.warn('Using standard delivery settings:', error);
-      } finally {
-        if (mounted) setIsLoading(false);
+        if (error && error.code !== 'PGRST116') throw error;
+        return (data as DeliverySettings) || DEFAULT_SETTINGS;
+      } catch (err) {
+        console.warn('Using standard delivery settings fallback:', err);
+        return DEFAULT_SETTINGS;
       }
-    }
+    },
+    staleTime: 1000 * 60 * 30, // 30 minutes cache
+    initialData: DEFAULT_SETTINGS,
+  });
 
-    fetchSettings();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  return { settings, isLoading };
+  return {
+    settings: queryResult.data,
+    isLoading: queryResult.isLoading,
+  };
 }

@@ -95,15 +95,15 @@ export function ProductDetailPage() {
 
   const handleAddToCart = () => {
     addItem({
-      product_id: product.id,
+      product_id: selectedVariant?.id || product.id,
       variant_id: selectedVariant?.id,
       product_name: finalItemName,
       product_sku: selectedVariant?.sku || product.sku,
       product_price: activePrice,
       original_price: activeMrp,
-      product_image_url: product.image_url,
+      product_image_url: activeImage || product.image_url,
       unit_size: activeUnitSize,
-      quantity: quantity,
+      quantity,
     });
     
     // Reset quantity back to 1 after adding
