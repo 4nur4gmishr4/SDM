@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CartProvider, AuthProvider, useAuth, ThemeProvider, SnackbarProvider, LocationProvider } from './contexts';
 import { HelmetProvider } from 'react-helmet-async';
@@ -105,12 +105,35 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function RawXmlViewer({ file }: { file: string }) {
+  useEffect(() => {
+    fetch(file)
+      .then((r) => r.text())
+      .then((text) => {
+        document.open();
+        document.write(text);
+        document.close();
+      })
+      .catch(() => {
+        window.location.reload();
+      });
+  }, [file]);
+
+  return <div style={{ padding: '24px', fontFamily: 'monospace' }}>Loading {file}...</div>;
+}
+
 function AppRoutes() {
   useTrafficTracker();
 
   return (
     <Suspense fallback={<PageLoadingFallback />}>
       <Routes>
+        {/* ================================================
+            RAW SEO DIRECT ACCESS
+            ================================================ */}
+        <Route path="/sitemap.xml" element={<RawXmlViewer file="/sitemap.xml" />} />
+        <Route path="/robots.txt" element={<RawXmlViewer file="/robots.txt" />} />
+
         {/* ================================================
             CUSTOMER ROUTES
             ================================================ */}
