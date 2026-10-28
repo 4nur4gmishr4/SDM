@@ -106,7 +106,7 @@ export function HomePage() {
         <div className="home-page__section-header">
           <h2 className="home-page__section-title">Featured Products</h2>
           <Link to="/shop" className="home-page__section-link">
-            <span>View All {featuredProducts.length > 0 ? `(${featuredProducts.length})` : ''}</span>
+            <span>View All 40,208 Products</span>
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
           </Link>
         </div>

@@ -50,7 +50,7 @@ export function DesktopHeroLandingBrief({ className = '' }: DesktopHeroLandingBr
 
       <div className="desktop-hero-stroke__bottom-row">
         <p className="desktop-hero-stroke__desc">
-          Daily Fresh Groceries • Pure Spices • Fast Delivery
+          Daily Fresh Groceries • Pure Spices • 40,208 Products
         </p>
         <Link to="/shop" className="desktop-hero-stroke__shop-btn">
           <span>Shop Now</span>

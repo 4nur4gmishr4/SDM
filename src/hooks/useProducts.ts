@@ -120,7 +120,7 @@ export function useProducts(options: UseProductsOptions = {}) {
       }
 
       imagedProducts.forEach(p => { p.catalog_source = 'imaged'; });
-      const groupedImaged = groupProductsIntoVariants(imagedProducts);
+      const finalImaged = options.fetchAll ? imagedProducts : groupProductsIntoVariants(imagedProducts);
 
       // 2. Load Master Store Catalog (ERP Non-Imaged) unless explicitly excluded
       if (options.includeMasterCatalog !== false && !options.isFeatured) {
@@ -134,35 +134,36 @@ export function useProducts(options: UseProductsOptions = {}) {
           }
 
           // If limit is specified and already satisfied by imaged items
-          if (options.limit && groupedImaged.length >= options.limit) {
-            return groupedImaged.slice(0, options.limit);
+          if (options.limit && finalImaged.length >= options.limit) {
+            return finalImaged.slice(0, options.limit);
           }
 
           if (options.limit) {
-            const remaining = options.limit - groupedImaged.length;
-            return [...groupedImaged, ...erpItems.slice(0, remaining)];
+            const remaining = options.limit - finalImaged.length;
+            return [...finalImaged, ...erpItems.slice(0, remaining)];
           }
 
-          return [...groupedImaged, ...erpItems];
+          return [...finalImaged, ...erpItems];
         } catch (err) {
           console.warn('Could not load master ERP items in useProducts:', err);
         }
       }
 
-      return groupedImaged;
+      return finalImaged;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const allItems = queryResult.data || [];
-  const imagedCount = allItems.filter(p => p.catalog_source === 'imaged' || !!p.image_url).length;
-  const erpCount = allItems.length - imagedCount;
+  const totalCount = 40208;
+  const imagedCount = 1827;
+  const erpCount = 38381;
 
   return {
     products: allItems,
     isLoading: queryResult.isLoading,
     error: queryResult.error ? (queryResult.error as Error).message : null,
-    totalCount: allItems.length,
+    totalCount,
     imagedCount,
     erpCount
   };

@@ -181,6 +181,50 @@
   font-weight: 600;
 }
 
+.shop-category-count-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background-color: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.08));
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
+  letter-spacing: 0.2px;
+}
+
+.shop-page__category-link--active .shop-category-count-badge {
+  background-color: #1E8E3E;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .shop-category-count-badge {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #E8EAED;
+}
+
+[data-theme="dark"] .shop-page__category-link--active .shop-category-count-badge {
+  background-color: #81C995;
+  color: #121212;
+}
+
+.shop-page__total-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  background-color: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  color: var(--md-sys-color-primary, #1E8E3E);
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid rgba(30, 142, 62, 0.2);
+}
+
+[data-theme="dark"] .shop-page__total-badge {
+  background-color: rgba(129, 201, 149, 0.18);
+  color: #81C995;
+  border-color: rgba(129, 201, 149, 0.3);
+}
+
 /* Main Content Area */
 .shop-page__main {
   display: flex;

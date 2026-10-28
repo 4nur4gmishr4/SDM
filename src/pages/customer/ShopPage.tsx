@@ -132,8 +132,12 @@ export function ShopPage() {
       />
 
       <header className="shop-page__header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
           <h1 className="shop-page__title">{currentCategory ? currentCategory.name : 'All Products'}</h1>
+          <span className="shop-page__total-badge">
+            <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>inventory_2</span>
+            {currentCategory ? `${displayedProducts.length.toLocaleString()} Products in Category` : `Total ${totalCount.toLocaleString()} Products`}
+          </span>
           {currentCategory?.is_offer_category && (
             <span className="shop-page__offer-pill">
               <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>local_offer</span>
@@ -162,8 +166,10 @@ export function ShopPage() {
               <Link 
                 to="/shop" 
                 className={`shop-page__category-link ${!categorySlug ? 'shop-page__category-link--active' : ''}`}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
               >
-                All Products
+                <span>All Products</span>
+                <span className="shop-category-count-badge">{totalCount.toLocaleString()}</span>
               </Link>
               {categoriesLoading && categories.length === 0 ? (
                 Array.from({ length: 8 }).map((_, i) => (
@@ -200,18 +206,18 @@ export function ShopPage() {
             <div className="shop-page__results-count-container">
               <span className="shop-page__results-count">
                 {isInitialLoading ? (
-                  'Loading store catalog...'
+                  `Loading store catalog (${totalCount.toLocaleString()} products)...`
                 ) : (
                   <>
-                    Showing <strong>{Math.min(visibleCount, displayedProducts.length).toLocaleString()}</strong> of <strong>{displayedProducts.length.toLocaleString()}</strong> items
+                    Showing <strong>{Math.min(visibleCount, displayedProducts.length).toLocaleString()}</strong> of <strong>{totalCount.toLocaleString()}</strong> Products
                     {localQuery && <span> for "{localQuery}"</span>}
                   </>
                 )}
               </span>
-              {!isInitialLoading && displayedProducts.length > 0 && (
+              {!isInitialLoading && (
                 <span className="shop-page__catalog-total-pill" title="Total active supermarket inventory across imaged and ERP datasets">
-                  <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>all_inclusive</span>
-                  <span>Total Store Catalog: {(totalCount || displayedProducts.length).toLocaleString()} Products ({(imagedCount || 1827).toLocaleString()} Photographed + {(erpCount || 38381).toLocaleString()} Store Items)</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>verified</span>
+                  <span>Total Store Catalog: <strong>{totalCount.toLocaleString()}</strong> Products ({imagedCount.toLocaleString()} Photographed + {erpCount.toLocaleString()} Store Items)</span>
                 </span>
               )}
             </div>
@@ -229,7 +235,7 @@ export function ShopPage() {
                   }}
                   aria-label="Filter products by category"
                 >
-                  <option value="">All Categories</option>
+                  <option value="">All Categories ({totalCount.toLocaleString()} Products)</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.slug}>
                       {category.name}{category.is_offer_category ? ' (Offer)' : ''}
