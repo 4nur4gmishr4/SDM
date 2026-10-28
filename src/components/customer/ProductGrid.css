@@ -7,7 +7,7 @@
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
-  gap: var(--md-sys-spacing-2);
+  gap: 6px;
   width: 100%;
 }
 

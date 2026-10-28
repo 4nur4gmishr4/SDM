@@ -236,8 +236,8 @@
      -------------------------------------------------------- */
 
   --sdsm-layout-max-width: 1560px;
-  --sdsm-layout-content-padding-mobile: 16px;
-  --sdsm-layout-content-padding-tablet: 20px;
+  --sdsm-layout-content-padding-mobile: 10px;
+  --sdsm-layout-content-padding-tablet: 16px;
   --sdsm-layout-content-padding-desktop: 24px;
 
   /* --------------------------------------------------------

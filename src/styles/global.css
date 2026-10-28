@@ -422,6 +422,50 @@ md-filled-icon-button {
   cursor: pointer;
 }
 
+/* Ergonomic Mobile Button Scaling — Exact Flipkart/Blinkit phone sizing */
+@media (max-width: 640px) {
+  .sdsm-btn {
+    min-height: 38px !important;
+    padding: 0 16px !important;
+    font-size: 0.84rem !important;
+    gap: 6px !important;
+    border-radius: 8px !important;
+  }
+
+  .sdsm-btn--text {
+    padding: 0 12px !important;
+  }
+
+  md-filled-button,
+  md-outlined-button,
+  md-filled-tonal-button,
+  md-elevated-button,
+  md-text-button {
+    --md-filled-button-container-height: 38px;
+    --md-outlined-button-container-height: 38px;
+    --md-filled-tonal-button-container-height: 38px;
+    --md-elevated-button-container-height: 38px;
+    --md-text-button-container-height: 38px;
+
+    --md-filled-button-leading-space: 14px;
+    --md-filled-button-trailing-space: 14px;
+    --md-outlined-button-leading-space: 14px;
+    --md-outlined-button-trailing-space: 14px;
+    --md-filled-tonal-button-leading-space: 14px;
+    --md-filled-tonal-button-trailing-space: 14px;
+    --md-elevated-button-leading-space: 14px;
+    --md-elevated-button-trailing-space: 14px;
+    --md-text-button-leading-space: 10px;
+    --md-text-button-trailing-space: 10px;
+
+    --md-filled-button-label-text-size: 0.85rem;
+    --md-outlined-button-label-text-size: 0.85rem;
+    --md-filled-tonal-button-label-text-size: 0.85rem;
+    --md-elevated-button-label-text-size: 0.85rem;
+    --md-text-button-label-text-size: 0.85rem;
+  }
+}
+
 /* --------------------------------------------------------
    Material Web Select & Menu Dropdown Theme Overrides
    Ensures active/selected option indicators use brand green

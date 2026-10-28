@@ -319,3 +319,28 @@
 .shop-category-select-wrap:has(.shop-select-input--active) .shop-select-icon {
   color: var(--md-sys-color-primary, #1E8E3E);
 }
+
+/* ============================================================
+   Mobile Responsiveness (<= 600px)
+   ============================================================ */
+@media (max-width: 600px) {
+  .shop-page__header {
+    padding-top: 4px;
+    margin-bottom: 6px;
+  }
+
+  .shop-page__title {
+    font-size: 1.25rem;
+  }
+
+  .shop-category-chip {
+    padding: 4px 10px;
+    font-size: 0.78rem;
+  }
+
+  .shop-sort-select {
+    padding: 4px 24px 4px 8px;
+    font-size: 0.78rem;
+    max-width: 140px;
+  }
+}

@@ -111,7 +111,13 @@
   .home-page__hero-split-section {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  /* On mobile phones, hide the 380px desktop text card so banners and products come up immediately */
+  .desktop-hero-stroke-card {
+    display: none !important;
   }
 
   .home-page__hero-banner-wrap {
@@ -121,6 +127,39 @@
   .home-page__hero-banner-wrap .ios-banner-container {
     max-width: 100%;
     margin-inline: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-page {
+    padding-bottom: var(--md-sys-spacing-4);
+  }
+
+  .home-page__search-section {
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+
+  .home-page__hero-split-section {
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+
+  .home-page__section {
+    margin-bottom: 16px;
+  }
+
+  .home-page__section-header {
+    margin-bottom: 8px;
+  }
+
+  .home-page__section-title {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .home-page__section-link {
+    font-size: 12px;
   }
 }
 

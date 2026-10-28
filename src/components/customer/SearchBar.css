@@ -114,3 +114,39 @@
 .search-bar__submit-btn:active {
   transform: scale(0.94);
 }
+
+/* ============================================================
+   Flipkart-Style Mobile Search Bar (<= 600px)
+   ============================================================ */
+@media (max-width: 600px) {
+  .search-bar__form {
+    min-height: 40px;
+    padding: 2px 6px 2px 12px;
+    border-radius: 9999px !important;
+  }
+
+  .search-bar__leading-icon {
+    font-size: 19px;
+    margin-right: 6px;
+  }
+
+  .search-bar__input {
+    font-size: 13px;
+    padding: 5px 0;
+  }
+
+  .search-bar__input::placeholder {
+    font-size: 12px;
+  }
+
+  .search-bar__clear-btn,
+  .search-bar__submit-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .search-bar__clear-btn .material-symbols-outlined,
+  .search-bar__submit-btn .material-symbols-outlined {
+    font-size: 18px;
+  }
+}

@@ -125,26 +125,31 @@ export function buildQuickOrderWhatsAppMessage(params: {
   mapLink: string | null;
   hasAttachedImage?: boolean;
   isPhotoOrder?: boolean;
+  imageUrl?: string | null;
 }): string {
-  const { orderId, shoppingList, customerName, customerPhone, deliveryAddress, mapLink, hasAttachedImage, isPhotoOrder } = params;
+  const { orderId, shoppingList, customerName, customerPhone, deliveryAddress, mapLink, hasAttachedImage, isPhotoOrder, imageUrl } = params;
 
   let msg = `${STORE_NAME} - Quick Order\n`;
   if (orderId) {
-    msg += `Order ID: ${orderId}\n`;
+    msg += `Order Ref: ${orderId}\n`;
   }
   msg += `\n`;
 
-  if (isPhotoOrder || hasAttachedImage) {
-    msg += `Order Type: Handwritten List Photo\n`;
-    msg += `Note: I am sending the photo of my grocery shopping list in this chat. Please check the items, pack them, and confirm the order.\n\n`;
+  if (isPhotoOrder || hasAttachedImage || imageUrl) {
+    msg += `Order Type: Handwritten List / Parchi Photo\n`;
+    if (imageUrl) {
+      msg += `📸 Parchi Photo Link:\n${imageUrl}\n\n`;
+    } else {
+      msg += `Note: I am sending the photo of my grocery shopping list in this chat. Please check the items, pack them, and confirm the order.\n\n`;
+    }
   }
 
   const cleanedText = shoppingList
-    ? shoppingList.replace('(Handwritten grocery list photo attached)', '').trim()
+    ? shoppingList.replace('(Handwritten grocery list photo attached)', '').replace('[Handwritten List Photo Attached]', '').trim()
     : '';
 
   if (cleanedText) {
-    msg += `Shopping List:\n`;
+    msg += `Items / Notes:\n`;
     msg += `${cleanedText}\n\n`;
   }
 

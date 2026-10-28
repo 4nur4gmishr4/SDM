@@ -1,17 +1,23 @@
 import { useState, useEffect, useRef, type ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useLocationContext, useSnackbar } from '../../contexts';
 import { useDeliverySettings } from '../../hooks/useDeliverySettings';
-import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { WhatsAppIcon } from '../../components/common';
-import { generateOrderId, buildQuickOrderWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER } from '../../lib/orderUtils';
+import { 
+  generateOrderId, 
+  buildQuickOrderWhatsAppMessage, 
+  openWhatsApp, 
+  STORE_WHATSAPP_NUMBER,
+  STORE_UPI_ID,
+  STORE_UPI_NUMBER,
+  STORE_LEGAL_NAME,
+  getUpiPaymentUrl 
+} from '../../lib/orderUtils';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import { validateOrderInput } from '../../lib/validation';
-import { dispatchOrderWebhook } from '../../lib/webhookPipeline';
 import { uploadImageFile } from '../../lib/uploadImage';
-import { stageOrderInOutbox, markOrderSynced } from '../../lib/orderOutbox';
 import { haptics } from '../../lib/haptics';
 import type { QuickOrderFormData } from '../../types/order';
 import './CheckoutPage.css';
@@ -32,9 +38,15 @@ const QUICK_SUGGESTIONS = [
 export function QuickOrderPage() {
   const { location, openModal } = useLocationContext();
   const { showSnackbar } = useSnackbar();
-  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Post-submission 3 payment options states (Zero admin db insertion)
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedOrderId, setSubmittedOrderId] = useState('');
+  const [submittedMessage, setSubmittedMessage] = useState('');
+  const [selectedPaymentTab, setSelectedPaymentTab] = useState<'upi_app' | 'upi_qr' | 'cod'>('upi_app');
+  const [codConfirmed, setCodConfirmed] = useState(false);
+  const [copiedUpi, setCopiedUpi] = useState(false);
 
   // Handwritten / manual list photo states
   const [listImageFile, setListImageFile] = useState<File | null>(null);
@@ -203,100 +215,44 @@ export function QuickOrderPage() {
       const finalCustomerName = validation.cleanedName!;
       const finalCustomerPhone = validation.cleanedPhone!;
       const finalDeliveryAddress = validation.cleanedAddress!;
-      let finalShoppingList = validation.cleanedList || '';
-      if (hasAttachedImage) {
-        finalShoppingList = finalShoppingList
-          ? `[Handwritten List Photo Attached]\nNotes / Extra Items: ${finalShoppingList}`
-          : '[Handwritten List Photo Attached]';
-      }
 
-      // Upload image to storage if a file was provided (non-blocking fallback)
+      // Upload image to storage if provided so a permanent public URL is generated
       let uploadedImageUrl: string | null = null;
       if (listImageFile) {
         try {
-          uploadedImageUrl = await uploadImageFile(listImageFile);
-          if (uploadedImageUrl && !uploadedImageUrl.startsWith('data:')) {
-            finalShoppingList = `${finalShoppingList}\n[Photo URL: ${uploadedImageUrl}]`.trim();
-          }
+          showSnackbar('Uploading parchi photo...');
+          uploadedImageUrl = await uploadImageFile(listImageFile, { folder: 'order-lists' });
         } catch (uploadErr) {
           console.warn('Image upload skipped or timed out, will share via WhatsApp:', uploadErr);
         }
       }
 
-      // 1. Google SRE Outbox: Stage quick order in local IndexedDB offline vault immediately
-      await stageOrderInOutbox({
-        id: orderId,
-        type: 'quick',
-        customer_name: finalCustomerName,
-        customer_phone: finalCustomerPhone,
-        delivery_address: finalDeliveryAddress,
-        map_link: formData.map_link || null,
-        subtotal: 0,
-        delivery_fee: settings?.flat_fee || 0,
-        total: settings?.flat_fee || 0,
-        items: [],
-        quick_order_text: finalShoppingList,
-        created_at: new Date().toISOString(),
-      });
-
-      // 2. Persist the quick order to Supabase if configured (non-blocking)
-      if (isSupabaseConfigured) {
-        try {
-          await withTimeout(
-            supabase.from('orders').insert({
-              id: orderId,
-              customer_name: finalCustomerName,
-              customer_phone: finalCustomerPhone,
-              delivery_address: finalDeliveryAddress,
-              map_link: formData.map_link || null,
-              subtotal_amount: 0,
-              delivery_fee: settings?.flat_fee || 0,
-              total_amount: settings?.flat_fee || 0,
-              status: 'pending',
-              is_quick_order: true,
-              quick_order_text: finalShoppingList,
-            }),
-            3000
-          );
-          await markOrderSynced(orderId);
-        } catch (dbErr) {
-          console.warn('Database save skipped or timed out, quick order preserved in Outbox vault:', dbErr);
-        }
-      }
-
-      // Non-blocking outbound order webhook pipeline
-      dispatchOrderWebhook({
-        id: orderId,
-        customer_name: finalCustomerName,
-        customer_phone: finalCustomerPhone,
-        delivery_address: finalDeliveryAddress,
-        map_link: formData.map_link || null,
-        subtotal: 0,
-        delivery_fee: settings?.flat_fee || 0,
-        total: settings?.flat_fee || 0,
-        items: [],
-        is_quick_order: true,
-        quick_order_text: finalShoppingList,
-      }).catch(() => {});
-
-      // 3. Build WhatsApp message (NO EMOJIS, NO ORDER NUMBER, LINE-BY-LINE FORMAT)
+      // Build WhatsApp message with direct public photo link
       const message = buildQuickOrderWhatsAppMessage({
         orderId,
-        shoppingList: hasAttachedImage ? (formData.shopping_list || '[Handwritten List Attached]') : finalShoppingList,
+        shoppingList: formData.shopping_list || '',
         customerName: finalCustomerName,
         customerPhone: finalCustomerPhone,
         deliveryAddress: finalDeliveryAddress,
         mapLink: formData.map_link || null,
         isPhotoOrder: hasAttachedImage,
         hasAttachedImage,
+        imageUrl: uploadedImageUrl && !uploadedImageUrl.startsWith('data:') ? uploadedImageUrl : null,
       });
 
-      // 4. Haptic success vibration & Open WhatsApp
+      // Haptic success vibration & Open WhatsApp directly
       haptics.success();
       openWhatsApp(storeWhatsAppNumber, message);
 
-      // 5. Redirect to confirmation
-      navigate(`/order/${orderId}`);
+      // ADMIN BYPASS: DO NOT insert into 'orders' table in Supabase!
+      // Admin orders page will not receive quick orders as requested by user.
+      // All order details and photos are shared directly via WhatsApp.
+
+      // Transition immediately to the 3 Payment Options view (NO redirect to confirmation page)
+      setSubmittedOrderId(orderId);
+      setSubmittedMessage(message);
+      setIsSubmitted(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
     } catch (error) {
       console.error('Error processing quick order:', error);
@@ -305,6 +261,189 @@ export function QuickOrderPage() {
       setIsSubmitting(false);
     }
   };
+
+  // Immediate 3 Payment Options view after WhatsApp order send
+  if (isSubmitted) {
+    return (
+      <div className="layout-container quick-order-page quick-order-success-screen">
+        <Helmet>
+          <title>Order Sent on WhatsApp — Payment Options | Sai Darshan Shopping Mart</title>
+        </Helmet>
+
+        {/* Success Banner */}
+        <div className="qo-success-banner">
+          <div className="qo-success-icon-wrap">
+            <WhatsAppIcon size={32} />
+            <span className="material-symbols-outlined qo-success-check-badge">check_circle</span>
+          </div>
+          <h1 className="qo-success-title">Order WhatsApp Par Bhej Diya Gaya Hai!</h1>
+          <p className="qo-success-subtitle">
+            Aapki parchi photo aur order details Sai Darshan Mart ke WhatsApp par share ho gayi hain. Ab payment ka tareeka chuniye:
+          </p>
+          <div className="qo-success-ref">Ref: <strong>{submittedOrderId}</strong></div>
+        </div>
+
+        {/* 3 Payment Options Tabs */}
+        <div className="qo-payment-box">
+          <div className="qo-payment-tabs">
+            <button
+              type="button"
+              className={`qo-payment-tab ${selectedPaymentTab === 'upi_app' ? 'qo-payment-tab--active' : ''}`}
+              onClick={() => setSelectedPaymentTab('upi_app')}
+            >
+              <span className="material-symbols-outlined">payments</span>
+              <span>1. Pay via UPI App</span>
+            </button>
+            <button
+              type="button"
+              className={`qo-payment-tab ${selectedPaymentTab === 'upi_qr' ? 'qo-payment-tab--active' : ''}`}
+              onClick={() => setSelectedPaymentTab('upi_qr')}
+            >
+              <span className="material-symbols-outlined">qr_code_scanner</span>
+              <span>2. Scan QR Code</span>
+            </button>
+            <button
+              type="button"
+              className={`qo-payment-tab ${selectedPaymentTab === 'cod' ? 'qo-payment-tab--active' : ''}`}
+              onClick={() => setSelectedPaymentTab('cod')}
+            >
+              <span className="material-symbols-outlined">local_shipping</span>
+              <span>3. Cash on Delivery</span>
+            </button>
+          </div>
+
+          {/* Option 1: Pay with UPI App */}
+          {selectedPaymentTab === 'upi_app' && (
+            <div className="qo-tab-content">
+              <div className="qo-tab-lead">
+                <span className="material-symbols-outlined" style={{ color: '#1E8E3E', fontSize: '28px' }}>mobile_friendly</span>
+                <div>
+                  <h3 className="qo-tab-heading">1-Tap Direct UPI Payment</h3>
+                  <p className="qo-tab-desc">Neeche diye button par tap karein, aapke mobile me PhonePe / GPay / Paytm seedha khul jayega.</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="sdsm-btn sdsm-btn--primary qo-upi-app-btn"
+                onClick={() => {
+                  const upiUrl = getUpiPaymentUrl({ orderId: submittedOrderId, note: `Quick Order ${submittedOrderId}` });
+                  window.location.href = upiUrl;
+                }}
+              >
+                <span className="material-symbols-outlined">account_balance_wallet</span>
+                <span>Open UPI App to Pay</span>
+              </button>
+
+              <div className="qo-upi-app-logos">
+                <span className="qo-app-pill">Google Pay</span>
+                <span className="qo-app-pill">PhonePe</span>
+                <span className="qo-app-pill">Paytm</span>
+                <span className="qo-app-pill">BHIM UPI</span>
+                <span className="qo-app-pill">CRED</span>
+              </div>
+            </div>
+          )}
+
+          {/* Option 2: Scan QR Code */}
+          {selectedPaymentTab === 'upi_qr' && (
+            <div className="qo-tab-content qo-tab-content--qr">
+              <h3 className="qo-tab-heading">{STORE_LEGAL_NAME}</h3>
+              <p className="qo-tab-desc">Kisi bhi UPI app se scanner kholkar neeche diya official QR code scan karein:</p>
+              
+              <div className="qo-qr-image-wrapper">
+                <img
+                  src="/sai-darshan-upi-qr.png"
+                  alt="Sai Darshan Shopping Mart UPI QR Code"
+                  className="qo-qr-image"
+                />
+                <div className="qo-qr-merchant-info">
+                  <strong>Sai Darshan Shopping Mart</strong>
+                  <span>UPI ID: <code>{STORE_UPI_ID}</code></span>
+                  <span>Phone / Number: <code>+91 {STORE_UPI_NUMBER}</code></span>
+                </div>
+              </div>
+
+              <div className="qo-copy-row">
+                <button
+                  type="button"
+                  className="sdsm-btn sdsm-btn--outlined"
+                  onClick={() => {
+                    navigator.clipboard.writeText(STORE_UPI_ID);
+                    setCopiedUpi(true);
+                    setTimeout(() => setCopiedUpi(false), 2000);
+                  }}
+                >
+                  <span className="material-symbols-outlined">{copiedUpi ? 'check' : 'content_copy'}</span>
+                  <span>{copiedUpi ? 'Copied!' : 'Copy UPI ID'}</span>
+                </button>
+                <a
+                  href="/sai-darshan-upi-qr.png"
+                  download="Sai-Darshan-Mart-QR.png"
+                  className="sdsm-btn sdsm-btn--tonal"
+                >
+                  <span className="material-symbols-outlined">download</span>
+                  <span>Download QR</span>
+                </a>
+              </div>
+            </div>
+          )}
+
+          {/* Option 3: Cash on Delivery (COD) */}
+          {selectedPaymentTab === 'cod' && (
+            <div className="qo-tab-content">
+              <div className="qo-tab-lead">
+                <span className="material-symbols-outlined" style={{ color: '#F9AB00', fontSize: '32px' }}>home_pin</span>
+                <div>
+                  <h3 className="qo-tab-heading">Cash on Delivery (COD) / Pay at Doorstep</h3>
+                  <p className="qo-tab-desc">Ghar par delivery partner ke pahunchne par cash ya QR scanner se payment karein.</p>
+                </div>
+              </div>
+
+              {codConfirmed ? (
+                <div className="qo-cod-confirmed-banner">
+                  <span className="material-symbols-outlined" style={{ fontSize: '28px', color: '#1E8E3E' }}>task_alt</span>
+                  <div>
+                    <strong>✓ Cash on Delivery (COD) Confirm Ho Gaya!</strong>
+                    <p>Hamara delivery rider aapka rashan pack karke aapke address par deliver karega. Doorstep par payment cash ya scanner se karein.</p>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="sdsm-btn sdsm-btn--primary qo-cod-confirm-btn"
+                  onClick={() => {
+                    setCodConfirmed(true);
+                    haptics.success();
+                    showSnackbar('Cash on Delivery confirmed!');
+                  }}
+                >
+                  <span className="material-symbols-outlined">check_circle</span>
+                  <span>Confirm Cash on Delivery</span>
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Helpful Bottom Actions */}
+        <div className="qo-bottom-actions">
+          <button
+            type="button"
+            className="sdsm-btn sdsm-btn--whatsapp"
+            onClick={() => openWhatsApp(storeWhatsAppNumber, submittedMessage)}
+          >
+            <WhatsAppIcon size={18} />
+            <span>Open WhatsApp Chat Again</span>
+          </button>
+          <Link to="/" className="sdsm-btn sdsm-btn--tonal">
+            <span className="material-symbols-outlined">home</span>
+            <span>Return to Home</span>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="layout-container quick-order-page">
