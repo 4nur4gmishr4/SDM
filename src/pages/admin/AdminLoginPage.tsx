@@ -189,7 +189,7 @@ export function AdminLoginPage() {
                 maxLength={80}
                 autoComplete="username"
                 className="admin-input-field"
-                placeholder="admin@saidarshanmart.com"
+                placeholder={import.meta.env.VITE_ADMIN_EMAIL || "Enter registered admin email"}
                 value={email}
                 disabled={isSubmitting || lockoutRemaining > 0}
                 onChange={(e) => setEmail(e.target.value)}
