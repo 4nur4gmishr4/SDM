@@ -331,7 +331,7 @@ export function ProductsPage() {
             Products ({isLoading ? '40,208' : (filteredProducts.length > 0 ? filteredProducts.length.toLocaleString() : '40,208')})
           </h1>
           <div style={{ fontSize: '12.5px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '3px', fontWeight: 500 }}>
-            Store Total: <strong>40,208</strong> items across 2 catalog datasets (1,827 Photographed + 38,381 Store ERP Items)
+            Store Total: <strong>40,208</strong> Products in Catalog
           </div>
         </div>
         <div className="admin-products-header__actions">
@@ -391,7 +391,7 @@ export function ProductsPage() {
           }}
         >
           <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>photo_library</span>
-          <span>Curated Imaged Dataset ({countImaged > 0 ? countImaged.toLocaleString() : '1,827'})</span>
+          <span>Curated Catalog ({countImaged > 0 ? countImaged.toLocaleString() : '1,827'})</span>
         </button>
         <button
           type="button"
@@ -402,7 +402,7 @@ export function ProductsPage() {
           }}
         >
           <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>receipt_long</span>
-          <span>Master Store Catalog (ERP Non-Imaged) ({countErp > 0 ? countErp.toLocaleString() : '38,381'})</span>
+          <span>Master Store Catalog ({countErp > 0 ? countErp.toLocaleString() : '38,381'})</span>
         </button>
         <button
           type="button"
@@ -413,7 +413,7 @@ export function ProductsPage() {
           }}
         >
           <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>all_inclusive</span>
-          <span>All Datasets Combined ({products.length > 0 ? products.length.toLocaleString() : '40,208'})</span>
+          <span>All Products Combined ({products.length > 0 ? products.length.toLocaleString() : '40,208'})</span>
         </button>
       </div>
 
@@ -581,7 +581,7 @@ export function ProductsPage() {
                           SKU: {product.sku || "N/A"}
                         </span>
                         <span className={`admin-dataset-pill admin-dataset-pill--${product.catalog_source === 'erp' ? 'erp' : 'imaged'}`}>
-                          {product.catalog_source === 'erp' ? 'ERP Non-Imaged' : 'Photographed'}
+                          {product.catalog_source === 'erp' ? 'Store ERP' : 'Curated'}
                         </span>
                         {variantsCount > 1 ? (
                           <span className="admin-product-variants-badge">

@@ -28,7 +28,7 @@ export function ShopPage() {
   const currentCategory = categories.find(c => c.slug === categorySlug);
 
   // Fetch all products for the category with server-side search capability
-  const { products, isLoading, totalCount, imagedCount, erpCount } = useProducts({
+  const { products, isLoading, totalCount } = useProducts({
     categoryId: currentCategory?.id,
     searchQuery: localQuery.trim() || undefined,
     fetchAll: true
@@ -215,9 +215,9 @@ export function ShopPage() {
                 )}
               </span>
               {!isInitialLoading && (
-                <span className="shop-page__catalog-total-pill" title="Total active supermarket inventory across imaged and ERP datasets">
+                <span className="shop-page__catalog-total-pill" title="Total active supermarket inventory">
                   <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>verified</span>
-                  <span>Total Store Catalog: <strong>{totalCount.toLocaleString()}</strong> Products ({imagedCount.toLocaleString()} Photographed + {erpCount.toLocaleString()} Store Items)</span>
+                  <span>Total Store Catalog: <strong>{totalCount.toLocaleString()}</strong> Products</span>
                 </span>
               )}
             </div>
