@@ -19,11 +19,9 @@ const NotFoundPage = lazy(() => import('./pages/customer/NotFoundPage').then(m =
 // Lazy-loaded admin pages (keeps XLSX and admin tables out of customer initial bundle)
 const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage').then(m => ({ default: m.AdminLoginPage })));
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage').then(m => ({ default: m.AdminDashboardPage })));
-const OrdersPage = lazy(() => import('./pages/admin/OrdersPage').then(m => ({ default: m.OrdersPage })));
 const ProductsPage = lazy(() => import('./pages/admin/ProductsPage').then(m => ({ default: m.ProductsPage })));
 const CategoriesPage = lazy(() => import('./pages/admin/CategoriesPage').then(m => ({ default: m.CategoriesPage })));
 const BannersPage = lazy(() => import('./pages/admin/BannersPage').then(m => ({ default: m.BannersPage })));
-const AnalyticsPage = lazy(() => import('./pages/admin/AnalyticsPage').then(m => ({ default: m.AnalyticsPage })));
 const SettingsPage = lazy(() => import('./pages/admin/SettingsPage').then(m => ({ default: m.SettingsPage })));
 
 import { useTrafficTracker } from './hooks/useTrafficTracker';
@@ -58,7 +56,7 @@ function AdminLoadingShellSkeleton() {
           <Skeleton width={36} height={36} variant="rounded" style={{ borderRadius: '8px' }} />
         </div>
         <div className="admin-shell__nav-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 5 }).map((_, i) => (
             <Skeleton key={i} width={44} height={44} variant="rounded" style={{ borderRadius: '12px' }} />
           ))}
         </div>
@@ -164,11 +162,9 @@ function AppRoutes() {
           }
         >
           <Route index element={<AdminDashboardPage />} />
-          <Route path="orders" element={<OrdersPage />} />
           <Route path="products" element={<ProductsPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="banners" element={<BannersPage />} />
-          <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>

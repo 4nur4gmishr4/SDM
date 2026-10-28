@@ -204,11 +204,11 @@ export function AboutPage() {
             </div>
 
             <div className="about-compact-card__body" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '14px', paddingTop: '10px' }}>
-              <div style={{ maxWidth: '300px', width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.1))' }}>
+              <div style={{ maxWidth: '280px', width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.1))', padding: '12px', background: '#ffffff' }}>
                 <img
-                  src="/sai-darshan-upi-qr-card.svg"
-                  alt={`${STORE_LEGAL_NAME} Official UPI Standee`}
-                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                  src="/sai-darshan-upi-qr.png"
+                  alt={`${STORE_LEGAL_NAME} Official UPI QR`}
+                  style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '8px' }}
                 />
               </div>
 
@@ -224,13 +224,13 @@ export function AboutPage() {
                 </a>
 
                 <a
-                  href="/sai-darshan-upi-qr-card.svg"
-                  download="sai-darshan-upi-qr-standee.svg"
+                  href="/sai-darshan-upi-qr.png"
+                  download="sai-darshan-upi-qr.png"
                   className="about-details-action-btn"
-                  title="Download Standee QR"
+                  title="Download Official QR"
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>download</span>
-                  <span>Download Standee (SVG)</span>
+                  <span>Download QR</span>
                 </a>
               </div>
 

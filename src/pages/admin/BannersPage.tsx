@@ -7,7 +7,7 @@ import { useStoreMedia } from '../../hooks/useStoreMedia';
 import { useDefaultLogoBanner } from '../../hooks/useDefaultLogoBanner';
 import type { StoreMediaItem } from '../../data/storeMedia';
 import { ImageUploadField } from '../../components/admin/ImageUploadField';
-import './OrdersPage.css';
+import './AdminSharedTable.css';
 import './ProductsPage.css';
 import './BannersPage.css';
 

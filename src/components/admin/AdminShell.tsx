@@ -14,11 +14,9 @@ export function AdminShell() {
 
   const navItems = [
     { label: 'Dashboard', path: '/admin', icon: 'dashboard' },
-    { label: 'Orders', path: '/admin/orders', icon: 'shopping_bag' },
     { label: 'Products', path: '/admin/products', icon: 'inventory_2' },
     { label: 'Categories', path: '/admin/categories', icon: 'category' },
     { label: 'Banners', path: '/admin/banners', icon: 'view_carousel' },
-    { label: 'Analytics', path: '/admin/analytics', icon: 'monitoring' },
     { label: 'Settings', path: '/admin/settings', icon: 'settings' },
   ];
 

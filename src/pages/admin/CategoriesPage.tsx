@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
 import { AdminTableSkeleton } from '../../components/common';
 import type { Category } from '../../types/category';
-import './OrdersPage.css'; // Reusing table styles
+import './AdminSharedTable.css'; // Reusing table styles
 import './ProductsPage.css'; // Reusing modal/layout styles
 
 export function CategoriesPage() {

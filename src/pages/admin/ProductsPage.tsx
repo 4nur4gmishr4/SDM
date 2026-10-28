@@ -13,7 +13,7 @@ import { ImageUploadField } from "../../components/admin/ImageUploadField";
 import type { Product, ProductVariant } from "../../types/product";
 import type { Category } from "../../types/category";
 import { matchesSearchQuery } from "../../lib/searchUtils";
-import "./OrdersPage.css"; // Reusing table styles
+import "./AdminSharedTable.css"; // Reusing table styles
 import "./ProductsPage.css";
 
 export function ProductsPage() {

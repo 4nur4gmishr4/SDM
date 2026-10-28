@@ -56,45 +56,45 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           fontFamily: 'var(--md-sys-typescale-font-family, sans-serif)',
         }}>
           <div style={{
-            maxWidth: '520px',
+            maxWidth: '480px',
             width: '100%',
             textAlign: 'center',
             padding: '36px 24px',
-            borderRadius: '16px',
+            borderRadius: '20px',
             background: 'var(--md-sys-color-surface-container, #f9fafb)',
-            border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.1))',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+            border: '1px solid var(--md-sys-color-outline-variant, rgba(0,0,0,0.08))',
+            boxShadow: '0 8px 30px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               width: '64px',
               height: '64px',
               margin: '0 auto 16px',
               borderRadius: '50%',
-              backgroundColor: 'var(--md-sys-color-error-container, #ffebee)',
-              color: 'var(--md-sys-color-error, #b00020)',
+              backgroundColor: 'var(--md-sys-color-primary-container, #CEEAD6)',
+              color: 'var(--md-sys-color-primary, #1E8E3E)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '36px' }}>error_outline</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '32px' }}>refresh</span>
             </div>
 
             <h1 style={{
               fontSize: '22px',
               fontWeight: 700,
-              margin: '0 0 8px',
+              margin: '0 0 10px',
               color: 'var(--md-sys-color-on-surface, #111827)'
             }}>
-              Something went wrong
+              Kuch Gadbad Ho Gayi (Something Went Wrong)
             </h1>
 
             <p style={{
               fontSize: '14px',
               color: 'var(--md-sys-color-on-surface-variant, #6b7280)',
-              lineHeight: 1.5,
+              lineHeight: 1.6,
               margin: '0 0 24px'
             }}>
-              An unexpected error occurred while rendering this page. Our team has been notified. You can try refreshing or return to the main storefront.
+              Chinta mat kijiye, aapka cart data bilkul safe hai. Page reload karke dekhein ya storefront par wapas jayein.
             </p>
 
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -102,7 +102,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 type="button"
                 className="sdsm-btn sdsm-btn--primary"
                 onClick={this.handleReload}
-                style={{ padding: '10px 20px' }}
+                style={{ padding: '10px 22px' }}
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>refresh</span>
                 <span>Reload Page</span>
@@ -112,41 +112,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 type="button"
                 className="sdsm-btn sdsm-btn--outlined"
                 onClick={this.handleGoHome}
-                style={{ padding: '10px 20px' }}
+                style={{ padding: '10px 22px' }}
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>home</span>
                 <span>Back to Home</span>
               </button>
             </div>
-
-            {this.state.error && (
-              <details style={{
-                marginTop: '24px',
-                textAlign: 'left',
-                background: 'var(--md-sys-color-surface, #ffffff)',
-                border: '1px solid var(--md-sys-color-outline-variant, #e5e7eb)',
-                borderRadius: '8px',
-                padding: '12px 14px',
-                fontSize: '12px',
-                color: 'var(--md-sys-color-on-surface-variant, #4b5563)'
-              }}>
-                <summary style={{ cursor: 'pointer', fontWeight: 600, userSelect: 'none' }}>
-                  Technical Details (Debug Log)
-                </summary>
-                <pre style={{
-                  marginTop: '10px',
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-word',
-                  fontSize: '11px',
-                  fontFamily: 'monospace',
-                  color: 'var(--md-sys-color-error, #b00020)'
-                }}>
-                  {this.state.error.toString()}
-                  {'\n'}
-                  {this.state.errorInfo?.componentStack}
-                </pre>
-              </details>
-            )}
           </div>
         </div>
       );

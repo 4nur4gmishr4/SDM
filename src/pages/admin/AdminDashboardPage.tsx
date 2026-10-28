@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase';
-import { fetchTrafficAnalytics } from '../../lib/analytics';
 import { useAuth } from '../../contexts/AuthContext';
 import { AdminDashboardSkeleton } from '../../components/common';
 import './AdminDashboardPage.css';
@@ -13,8 +12,6 @@ export function AdminDashboardPage() {
     totalProducts: 0,
     totalCategories: 0,
     activeOffers: 0,
-    todayVisitors: 0,
-    totalPageViews: 0
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,31 +31,20 @@ export function AdminDashboardPage() {
       
       setIsLoading(true);
       try {
-        const [productsRes, categoriesRes, offersRes, trafficData] = await Promise.allSettled([
+        const [productsRes, categoriesRes, offersRes] = await Promise.allSettled([
           withTimeout(supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_archived', false), 5000),
           withTimeout(supabase.from('categories').select('*', { count: 'exact', head: true }), 5000),
           withTimeout(supabase.from('banners').select('*', { count: 'exact', head: true }).eq('is_active', true), 5000),
-          fetchTrafficAnalytics()
         ]);
 
         const totalProducts = productsRes.status === 'fulfilled' ? productsRes.value.count : 0;
         const totalCategories = categoriesRes.status === 'fulfilled' ? categoriesRes.value.count : 0;
         const activeOffers = offersRes.status === 'fulfilled' ? offersRes.value.count : 0;
-
-        let todayVisitors = 0;
-        let totalViews = 0;
-        if (trafficData.status === 'fulfilled' && trafficData.value) {
-          const todayStr = new Date().toISOString().split('T')[0];
-          todayVisitors = trafficData.value.daily_visitors?.[todayStr] || 0;
-          totalViews = trafficData.value.total_page_views || 0;
-        }
           
         setStats({
           totalProducts: totalProducts || 0,
           totalCategories: totalCategories || 0,
           activeOffers: activeOffers || 0,
-          todayVisitors,
-          totalPageViews: totalViews
         });
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
@@ -89,11 +75,11 @@ export function AdminDashboardPage() {
       <div className="admin-dashboard-header">
         <h1 className="admin-dashboard-title">Dashboard Overview</h1>
         <p className="admin-dashboard-subtitle">
-          Real-time catalog management, promotional banners, and WhatsApp order routing.
+          Real-time catalog management, promotional banners, and store configuration.
         </p>
       </div>
 
-      <div className="admin-dashboard-grid">
+      <div className="admin-dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <div className="admin-stat-card">
           <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--primary">
             <span className="material-symbols-outlined admin-stat-card__icon">inventory_2</span>
@@ -123,55 +109,54 @@ export function AdminDashboardPage() {
             <span className="admin-stat-card__label">Active Banners</span>
           </div>
         </div>
-
-        <div className="admin-stat-card">
-          <div className="admin-stat-card__icon-wrapper admin-stat-card__icon-wrapper--error">
-            <span className="material-symbols-outlined admin-stat-card__icon">group</span>
-          </div>
-          <div className="admin-stat-card__content">
-            <span className="admin-stat-card__value">{stats.todayVisitors}</span>
-            <span className="admin-stat-card__label">Today's Visitors</span>
-          </div>
-        </div>
       </div>
 
       <div className="admin-dashboard-section">
         <div className="admin-dashboard-section__header">
           <div>
-            <h2 className="admin-dashboard-section__title">Website Activity & Traffic Summary</h2>
+            <h2 className="admin-dashboard-section__title">Store Management Quick Actions</h2>
             <p className="admin-dashboard-section__subtitle">
-              Real-time impressions, visitor count, and order status counts (PRD 4.2 #33 compliant).
+              Manage groceries, update categories, configure banners, or change delivery fees.
             </p>
           </div>
-          <Link
-            to="/admin/analytics"
-            className="admin-dashboard-analytics-link"
-          >
-            <span>View Full Analytics</span>
-            <span className="material-symbols-outlined admin-dashboard-analytics-icon">arrow_forward</span>
-          </Link>
         </div>
 
-        <div className="admin-dashboard-summary-grid">
-          <div className="admin-dashboard-summary-item">
-            <span className="admin-dashboard-summary-item__label">
-              All-Time Page Views
-            </span>
-            <div className="admin-dashboard-summary-item__value">
-              {stats.totalPageViews.toLocaleString('en-IN')}
-            </div>
-          </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginTop: '14px' }}>
+          <Link
+            to="/admin/products"
+            className="sdsm-btn sdsm-btn--outlined"
+            style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', borderRadius: '12px' }}
+          >
+            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>inventory_2</span>
+            <span style={{ fontWeight: 600 }}>Manage Products</span>
+          </Link>
 
-          <div className="admin-dashboard-summary-item">
-            <span className="admin-dashboard-summary-item__label">
-              Active Promotional Banners
-            </span>
-            <div className="admin-dashboard-summary-item__value admin-dashboard-summary-item__value--primary">
-              {stats.activeOffers}
-            </div>
-          </div>
+          <Link
+            to="/admin/categories"
+            className="sdsm-btn sdsm-btn--outlined"
+            style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', borderRadius: '12px' }}
+          >
+            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>category</span>
+            <span style={{ fontWeight: 600 }}>Manage Categories</span>
+          </Link>
 
+          <Link
+            to="/admin/banners"
+            className="sdsm-btn sdsm-btn--outlined"
+            style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', borderRadius: '12px' }}
+          >
+            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>view_carousel</span>
+            <span style={{ fontWeight: 600 }}>Manage Banners</span>
+          </Link>
 
+          <Link
+            to="/admin/settings"
+            className="sdsm-btn sdsm-btn--outlined"
+            style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', borderRadius: '12px' }}
+          >
+            <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>settings</span>
+            <span style={{ fontWeight: 600 }}>Store Settings</span>
+          </Link>
         </div>
       </div>
     </div>
