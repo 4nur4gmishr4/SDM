@@ -20,20 +20,8 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Action Row: Clickable Store Address Pill & 3 Contact Icons */}
+          {/* Action Row: 3 Contact Icons */}
           <div className="sdsm-footer__actions">
-            <a
-              href={mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="sdsm-footer__address"
-              title={`Open ${STORE_NAME} location in Google Maps`}
-            >
-              <span className="material-symbols-outlined sdsm-footer__address-icon">location_on</span>
-              <span className="sdsm-footer__address-text">{STORE_ADDRESS}</span>
-              <span className="material-symbols-outlined sdsm-footer__address-arrow">open_in_new</span>
-            </a>
-
             <div className="sdsm-footer__contact-icons" role="group" aria-label="Store contact options">
               <a
                 href={`tel:${STORE_PHONE_NUMBER}`}
@@ -67,11 +55,22 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Minimal Compact Copyright Strip */}
+        {/* Minimal Compact Copyright Strip with Direct Google Maps Arrow */}
         <div className="sdsm-footer__bottom">
-          <span className="sdsm-footer__copyright">
-            &copy; {currentYear} {STORE_NAME} &bull; 1117 Sanjeevni Nagar, Garha, Jabalpur &bull; All Rights Reserved
-          </span>
+          <div className="sdsm-footer__copyright">
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sdsm-footer__location-link"
+              title={`Open ${STORE_NAME} Jabalpur location in Google Maps`}
+            >
+              <span>&copy; {currentYear} {STORE_NAME} &bull; {STORE_ADDRESS}</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>open_in_new</span>
+            </a>
+            <span>&bull;</span>
+            <span>All Rights Reserved</span>
+          </div>
           <span className="sdsm-footer__slogan-badge">
             Customer First Supermarket
           </span>

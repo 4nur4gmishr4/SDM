@@ -176,8 +176,22 @@ export function ProductDetailPage() {
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <div className="product-detail__placeholder">
-                  <span className="material-symbols-outlined product-detail__placeholder-icon">image</span>
+                <div className="product-detail__erp-hero">
+                  <div className="product-detail__erp-badge">
+                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>verified</span>
+                    <span>Sai Darshan Store Stock</span>
+                  </div>
+                  <div className="product-detail__erp-icon-container">
+                    <span className="material-symbols-outlined" style={{ fontSize: '72px', color: 'var(--md-sys-color-primary, #1E8E3E)' }}>
+                      inventory_2
+                    </span>
+                  </div>
+                  <div className="product-detail__erp-unit-tag">
+                    {activeUnitSize || product.unit_size}
+                  </div>
+                  <div className="product-detail__erp-subtext">
+                    Official In-Store Retail Stock • 100% Genuine Guaranteed
+                  </div>
                 </div>
               )}
             </div>

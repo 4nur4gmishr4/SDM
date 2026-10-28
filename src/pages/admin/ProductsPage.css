@@ -45,6 +45,90 @@
   margin-bottom: var(--md-sys-spacing-4);
 }
 
+/* Dataset View Tabs (Curated Imaged vs Master ERP Non-Imaged) */
+.admin-dataset-tabs {
+  display: flex;
+  gap: 8px;
+  background-color: var(--md-sys-color-surface-container-low, #f0f4f0);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.08));
+  margin-bottom: var(--md-sys-spacing-3);
+  flex-wrap: wrap;
+}
+
+[data-theme="dark"] .admin-dataset-tabs {
+  background-color: var(--md-sys-color-surface-container-high, #222523);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.admin-dataset-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant, #5f6368);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.admin-dataset-tab:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--md-sys-color-on-surface);
+}
+
+[data-theme="dark"] .admin-dataset-tab:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.admin-dataset-tab--active {
+  background-color: #1E8E3E !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(30, 142, 62, 0.25);
+}
+
+/* Dataset Pill in Table */
+.admin-dataset-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.admin-dataset-pill--imaged {
+  background-color: rgba(30, 142, 62, 0.12);
+  color: #137333;
+}
+
+[data-theme="dark"] .admin-dataset-pill--imaged {
+  background-color: rgba(129, 201, 149, 0.2);
+  color: #81C995;
+}
+
+.admin-dataset-pill--erp {
+  background-color: rgba(25, 103, 210, 0.12);
+  color: #1a73e8;
+}
+
+[data-theme="dark"] .admin-dataset-pill--erp {
+  background-color: rgba(138, 180, 248, 0.2);
+  color: #8ab4f8;
+}
+
+.admin-product-image-placeholder--erp {
+  background-color: rgba(25, 103, 210, 0.08) !important;
+  color: #1a73e8 !important;
+}
+
 /* Modal Form */
 .admin-modal-overlay {
   position: fixed;

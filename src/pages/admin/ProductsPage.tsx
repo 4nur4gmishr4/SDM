@@ -13,6 +13,7 @@ import { ImageUploadField } from "../../components/admin/ImageUploadField";
 import type { Product, ProductVariant } from "../../types/product";
 import type { Category } from "../../types/category";
 import { matchesSearchQuery } from "../../lib/searchUtils";
+import { fetchMasterCatalog } from "../../lib/masterCatalog";
 import "./AdminSharedTable.css"; // Reusing table styles
 import "./ProductsPage.css";
 
@@ -21,6 +22,9 @@ export function ProductsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
+
+  // Dataset filter: Curated Imaged vs Master ERP Non-Imaged vs All
+  const [datasetFilter, setDatasetFilter] = useState<"all" | "imaged" | "erp">("imaged");
 
   // Filters & Pagination
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,38 +50,64 @@ export function ProductsPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchData = async () => {
-    if (!isSupabaseConfigured) {
-      setProducts([]);
-      setCategories([]);
-      setIsLoading(false);
-      return;
-    }
-
     setIsLoading(true);
     try {
-      const [productsRes, categoriesRes] = await Promise.all([
-        withTimeout(
-          supabase
-            .from("products")
-            .select("*, category:categories(id, name, slug)")
-            .order("name"),
-          5000,
-        ),
-        withTimeout(
+      let imagedProducts: Product[] = [];
+      let categoriesList: Category[] = [];
+
+      if (isSupabaseConfigured) {
+        // Fetch all categories
+        const { data: catData, error: catErr } = await withTimeout(
           supabase.from("categories").select("*").order("name"),
-          5000,
-        ),
-      ]);
+          5000
+        );
+        if (!catErr && catData) {
+          categoriesList = catData as Category[];
+          setCategories(categoriesList);
+        }
 
-      if (productsRes.error) throw productsRes.error;
-      if (categoriesRes.error) throw categoriesRes.error;
+        // Fetch all Supabase products beyond 1000 limit
+        let from = 0;
+        const pageSize = 1000;
+        let hasMore = true;
 
-      setProducts((productsRes.data as Product[]) || []);
-      setCategories((categoriesRes.data as Category[]) || []);
+        while (hasMore) {
+          const { data: pageData, error: pageErr } = await withTimeout(
+            supabase
+              .from("products")
+              .select("*, category:categories(id, name, slug)")
+              .range(from, from + pageSize - 1)
+              .order("name"),
+            8000
+          );
+          if (pageErr) {
+            console.warn("Supabase fetch error:", pageErr);
+            break;
+          }
+          if (!pageData || pageData.length === 0) {
+            hasMore = false;
+          } else {
+            imagedProducts = imagedProducts.concat(pageData as Product[]);
+            if (pageData.length < pageSize) hasMore = false;
+            else from += pageSize;
+          }
+        }
+      }
+
+      imagedProducts.forEach((p) => { p.catalog_source = 'imaged'; });
+
+      // Fetch master store catalog (non-imaged ERP items)
+      let erpProducts: Product[] = [];
+      try {
+        erpProducts = await fetchMasterCatalog();
+      } catch (err) {
+        console.warn("Could not load ERP master catalog in admin:", err);
+      }
+
+      setProducts([...imagedProducts, ...erpProducts]);
     } catch (error) {
       console.error("Error fetching products in admin:", error);
       setProducts([]);
-      setCategories([]);
     } finally {
       setIsLoading(false);
     }
@@ -243,9 +273,25 @@ export function ProductsPage() {
     }
   };
 
+  const countImaged = useMemo(
+    () => products.filter((p) => p.catalog_source === "imaged" || !!p.image_url).length,
+    [products]
+  );
+  const countErp = useMemo(
+    () => products.filter((p) => p.catalog_source === "erp" || !p.image_url).length,
+    [products]
+  );
+
   const filteredProducts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     return products.filter((p) => {
+      // Filter by dataset: imaged vs erp vs all
+      if (datasetFilter === "imaged") {
+        if (p.catalog_source === "erp" || !p.image_url) return false;
+      } else if (datasetFilter === "erp") {
+        if (p.catalog_source !== "erp" && p.image_url) return false;
+      }
+
       const matchesSearch =
         !query ||
         matchesSearchQuery(p.name, p.brand, query) ||
@@ -264,7 +310,7 @@ export function ProductsPage() {
 
       return matchesSearch && matchesCategory && matchesStatus;
     });
-  }, [products, searchQuery, selectedCategory, statusFilter]);
+  }, [products, searchQuery, selectedCategory, statusFilter, datasetFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / pageSize));
   const safePage = Math.min(currentPage, totalPages);
@@ -280,7 +326,12 @@ export function ProductsPage() {
         <title>{pageTitle}</title>
       </Helmet>
       <div className="admin-products-header">
-        <h1 className="admin-products-title">Products ({products.length})</h1>
+        <div>
+          <h1 className="admin-products-title">Products ({filteredProducts.length.toLocaleString()})</h1>
+          <div style={{ fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '2px' }}>
+            Store Total: {products.length.toLocaleString()} items across 2 catalog datasets
+          </div>
+        </div>
         <div className="admin-products-header__actions">
           <button
             type="button"
@@ -325,6 +376,43 @@ export function ProductsPage() {
             <span>Add Product</span>
           </button>
         </div>
+      </div>
+
+      {/* Two Datasets Switcher Tabs */}
+      <div className="admin-dataset-tabs">
+        <button
+          type="button"
+          className={`admin-dataset-tab ${datasetFilter === "imaged" ? "admin-dataset-tab--active" : ""}`}
+          onClick={() => {
+            setDatasetFilter("imaged");
+            setCurrentPage(1);
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>photo_library</span>
+          <span>Curated Imaged Dataset ({countImaged.toLocaleString()})</span>
+        </button>
+        <button
+          type="button"
+          className={`admin-dataset-tab ${datasetFilter === "erp" ? "admin-dataset-tab--active" : ""}`}
+          onClick={() => {
+            setDatasetFilter("erp");
+            setCurrentPage(1);
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>receipt_long</span>
+          <span>Master Store Catalog (ERP Non-Imaged) ({countErp.toLocaleString()})</span>
+        </button>
+        <button
+          type="button"
+          className={`admin-dataset-tab ${datasetFilter === "all" ? "admin-dataset-tab--active" : ""}`}
+          onClick={() => {
+            setDatasetFilter("all");
+            setCurrentPage(1);
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>all_inclusive</span>
+          <span>All Datasets Combined ({products.length.toLocaleString()})</span>
+        </button>
       </div>
 
       <div className="admin-toolbar-row">
@@ -475,9 +563,9 @@ export function ProductsPage() {
                           className="admin-product-image"
                         />
                       ) : (
-                        <div className="admin-product-image-placeholder">
+                        <div className="admin-product-image-placeholder admin-product-image-placeholder--erp" title="ERP Non-Imaged Store Product">
                           <span className="material-symbols-outlined admin-btn-icon">
-                            image
+                            receipt_long
                           </span>
                         </div>
                       )}
@@ -489,6 +577,9 @@ export function ProductsPage() {
                       <div className="admin-product-meta">
                         <span className="admin-product-meta-text">
                           SKU: {product.sku || "N/A"}
+                        </span>
+                        <span className={`admin-dataset-pill admin-dataset-pill--${product.catalog_source === 'erp' ? 'erp' : 'imaged'}`}>
+                          {product.catalog_source === 'erp' ? 'ERP Non-Imaged' : 'Photographed'}
                         </span>
                         {variantsCount > 1 ? (
                           <span className="admin-product-variants-badge">

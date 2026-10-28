@@ -110,6 +110,16 @@ select {
   color: inherit;
 }
 
+[data-theme="dark"] textarea {
+  background-color: var(--md-sys-color-surface-container-high, #303134);
+  color: var(--md-sys-color-on-surface, #E8EAED);
+  border-color: var(--md-sys-color-outline-variant, #3C4043);
+}
+
+[data-theme="dark"] textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant, #9AA0A6);
+}
+
 a {
   color: var(--md-sys-color-primary);
   text-decoration: none;

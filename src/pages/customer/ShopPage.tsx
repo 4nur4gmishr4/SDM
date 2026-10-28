@@ -28,7 +28,7 @@ export function ShopPage() {
   const currentCategory = categories.find(c => c.slug === categorySlug);
 
   // Fetch all products for the category with server-side search capability
-  const { products, isLoading } = useProducts({
+  const { products, isLoading, totalCount, imagedCount, erpCount } = useProducts({
     categoryId: currentCategory?.id,
     searchQuery: localQuery.trim() || undefined,
     fetchAll: true
@@ -197,16 +197,24 @@ export function ShopPage() {
         <div className="shop-page__main">
           {/* Quick Filter & Sort Toolbar */}
           <div className="shop-page__results-header">
-            <span className="shop-page__results-count">
-              {isInitialLoading ? (
-                'Loading fresh products...'
-              ) : (
-                <>
-                  Showing {displayedProducts.length} {displayedProducts.length === 1 ? 'item' : 'items'}
-                  {localQuery && <span> for "{localQuery}"</span>}
-                </>
+            <div className="shop-page__results-count-container">
+              <span className="shop-page__results-count">
+                {isInitialLoading ? (
+                  'Loading store catalog...'
+                ) : (
+                  <>
+                    Showing <strong>{Math.min(visibleCount, displayedProducts.length).toLocaleString()}</strong> of <strong>{displayedProducts.length.toLocaleString()}</strong> items
+                    {localQuery && <span> for "{localQuery}"</span>}
+                  </>
+                )}
+              </span>
+              {!isInitialLoading && displayedProducts.length > 0 && (
+                <span className="shop-page__catalog-total-pill" title="Total active supermarket inventory across imaged and ERP datasets">
+                  <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>all_inclusive</span>
+                  <span>Total Store Catalog: {(totalCount || displayedProducts.length).toLocaleString()} Products ({(imagedCount || 1827).toLocaleString()} Photographed + {(erpCount || 38381).toLocaleString()} Store Items)</span>
+                </span>
               )}
-            </span>
+            </div>
             
             <div className="shop-page__filters">
               {/* Category Dropdown for Mobile & Tablet (matches Relevance dropdown style) */}

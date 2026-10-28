@@ -16,6 +16,23 @@ function optimizeImageUrl(url: string | null | undefined): string | undefined {
   return url;
 }
 
+function getCategoryOrItemIcon(name: string, brand?: string): string {
+  const text = `${name} ${brand || ''}`.toLowerCase();
+  if (/tea|chai|coffee|nescafe|bru/i.test(text)) return 'local_cafe';
+  if (/drink|juice|coke|pepsi|frooti|maaza|sprite|limca|soda|beverage/i.test(text)) return 'local_bar';
+  if (/biscuit|rusk|cookie|chikki|cake|toast|wafer/i.test(text)) return 'cookie';
+  if (/noodle|maggi|pasta|macaroni|yippee|chings/i.test(text)) return 'ramen_dining';
+  if (/chocolate|cadbury|candy|toffee|lollipop|sweet|gems/i.test(text)) return 'lunch_dining';
+  if (/milk|paneer|butter|cheese|ghee|curd|dahi|dairy/i.test(text)) return 'egg_alt';
+  if (/oil|mustard|soyabean|sunflower/i.test(text)) return 'water_drop';
+  if (/atta|rice|dal|wheat|flour|grain|pulse|besan|poha|suji/i.test(text)) return 'grain';
+  if (/soap|shampoo|paste|colgate|dettol|facewash|cream|lotion|deo|perfume/i.test(text)) return 'soap';
+  if (/surf|vim|cleaner|detergent|harpic|colin|lizol|rin|ariel|comfort/i.test(text)) return 'cleaning_services';
+  if (/bottle|bucket|mug|container|plastic|tray|bowl|box/i.test(text)) return 'kitchen';
+  if (/agarbatti|pooja|kapoor|diya|dhoop/i.test(text)) return 'flare';
+  return 'inventory_2';
+}
+
 interface ProductTileProps {
   product: Product;
 }
@@ -83,7 +100,7 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
         aria-label={`View details for ${product.name}`}
         tabIndex={-1}
       >
-        {currentImage && (
+        {currentImage ? (
           <img 
             src={optimizeImageUrl(currentImage)} 
             alt={product.name} 
@@ -100,17 +117,29 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
                 return;
               }
               target.style.display = 'none';
-              const icon = target.parentElement?.querySelector('.product-tile__placeholder-icon') as HTMLElement;
-              if (icon) icon.style.display = 'block';
+              const erpCard = target.parentElement?.querySelector('.product-tile__erp-card') as HTMLElement;
+              if (erpCard) erpCard.style.display = 'flex';
             }}
           />
-        )}
-        <span 
-          className="material-symbols-outlined product-tile__placeholder-icon"
-          style={{ display: currentImage ? 'none' : 'block' }}
+        ) : null}
+        
+        <div 
+          className="product-tile__erp-card"
+          style={{ display: currentImage ? 'none' : 'flex' }}
         >
-          image
-        </span>
+          <div className="product-tile__erp-badge">
+            <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>verified</span>
+            <span>Store Stock</span>
+          </div>
+          <div className="product-tile__erp-icon-wrap">
+            <span className="material-symbols-outlined product-tile__erp-icon">
+              {getCategoryOrItemIcon(product.name, product.brand)}
+            </span>
+          </div>
+          <div className="product-tile__erp-pack-pill">
+            {currentUnit || product.unit_size || 'Pack'}
+          </div>
+        </div>
       </Link>
 
       <div className="product-tile__content">

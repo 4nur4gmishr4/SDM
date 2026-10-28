@@ -381,23 +381,12 @@ export function CheckoutPage() {
             </md-outlined-text-field>
 
             {/* Delivery Location Confirmation Card */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              padding: '14px 16px',
-              borderRadius: '12px',
-              backgroundColor: 'var(--md-sys-color-primary-container, #CEEAD6)',
-              color: 'var(--md-sys-color-on-primary-container, #0D652D)',
-              border: '1.5px solid rgba(30, 142, 62, 0.3)',
-              width: '100%',
-              boxSizing: 'border-box'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px' }}>
+            <div className="checkout-gps-banner">
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px', width: '100%' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', minWidth: 0 }}>
                   <span className="material-symbols-outlined" style={{
                     fontSize: '24px',
-                    color: '#1E8E3E',
+                    color: 'var(--md-sys-color-primary, #1E8E3E)',
                     flexShrink: 0,
                     marginTop: '2px'
                   }}>
@@ -406,7 +395,7 @@ export function CheckoutPage() {
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: '13.5px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span>GPS Delivery Pin</span>
-                      <span style={{ fontSize: '11px', background: '#1E8E3E', color: '#fff', padding: '1px 6px', borderRadius: '4px' }}>
+                      <span style={{ fontSize: '11px', background: 'var(--md-sys-color-primary, #1E8E3E)', color: '#fff', padding: '1px 6px', borderRadius: '4px' }}>
                         CONFIRMED
                       </span>
                     </div>
@@ -421,14 +410,7 @@ export function CheckoutPage() {
 
                 <button
                   type="button"
-                  className="sdsm-btn sdsm-btn--outlined"
-                  style={{
-                    padding: '4px 12px',
-                    fontSize: '11.5px',
-                    background: 'var(--md-sys-color-surface, #fff)',
-                    flexShrink: 0,
-                    height: '30px'
-                  }}
+                  className="sdsm-btn sdsm-btn--outlined checkout-gps-btn"
                   onClick={openModal}
                 >
                   Change Pin
@@ -439,22 +421,12 @@ export function CheckoutPage() {
             {/* Optional Specific Delivery Address (Flat / House No / Landmark) */}
             <div style={{ width: '100%' }}>
               <textarea
-                className="checkout-form__field"
+                className="checkout-form__field checkout-delivery-address-input"
                 placeholder="House / Flat No., Landmark, Building Name (Optional)"
                 name="delivery_address"
                 value={formData.delivery_address}
                 onChange={handleChange}
-                style={{
-                  minHeight: '80px',
-                  padding: '14px',
-                  border: '1px solid var(--md-sys-color-outline)',
-                  borderRadius: 'var(--md-sys-shape-corner-extra-small)',
-                  fontFamily: 'inherit',
-                  fontSize: 'inherit',
-                  resize: 'vertical',
-                  width: '100%',
-                  boxSizing: 'border-box'
-                }}
+                rows={3}
               />
               <p className="checkout-form__helper-text" style={{ fontSize: '11.5px', color: 'var(--md-sys-color-on-surface-variant)', margin: '4px 0 0 0' }}>
                 Optional. Leave blank if your GPS location above is exact.

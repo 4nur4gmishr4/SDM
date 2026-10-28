@@ -51,6 +51,7 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
   const [parsedItems, setParsedItems] = useState<ParsedProductItem[]>([]);
   const [rawProducts, setRawProducts] = useState<RawExtractedRow[]>([]);
   const [groupVariants, setGroupVariants] = useState(true);
+  const [targetDataset, setTargetDataset] = useState<'erp' | 'imaged'>('erp');
 
   // Search & Filter state for preview table
   const [searchQuery, setSearchQuery] = useState('');
@@ -587,23 +588,30 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
         const end = Math.min(start + batchSize, parsedItems.length);
         const batch = parsedItems.slice(start, end);
 
-        const payload = batch.map((item, i) => ({
-          sku: item.sku || `SDSM-${start + i + 100}`,
-          name: item.name,
-          brand: item.brand || null,
-          category_id: item.category_id || categories[0]?.id || null,
-          price: item.price,
-          mrp: item.mrp || item.price,
-          unit_size: item.pack || '1 unit',
-          stock_quantity: item.stock_quantity ?? 50,
-          is_available: true,
-          is_featured: false,
-          is_archived: false,
-          image_url: item.image_url || null,
-          variants: item.variants || [],
-          description: `${item.name} available for fast same-day delivery at Sai Darshan Shopping Mart Jabalpur.`,
-          updated_at: new Date().toISOString()
-        }));
+        const payload = batch.map((item, i) => {
+          let finalSku = item.sku || `SDSM-${start + i + 100}`;
+          if (targetDataset === 'erp' && !finalSku.startsWith('SDM-ERP-')) {
+            finalSku = `SDM-ERP-${finalSku.replace(/^SDSM-/, '')}`;
+          }
+
+          return {
+            sku: finalSku,
+            name: item.name,
+            brand: item.brand || null,
+            category_id: item.category_id || categories[0]?.id || null,
+            price: item.price,
+            mrp: item.mrp || item.price,
+            unit_size: item.pack || '1 unit',
+            stock_quantity: item.stock_quantity ?? 50,
+            is_available: true,
+            is_featured: false,
+            is_archived: false,
+            image_url: targetDataset === 'erp' ? null : (item.image_url || null),
+            variants: item.variants || [],
+            description: `${item.name} available for fast same-day delivery at Sai Darshan Shopping Mart Jabalpur.`,
+            updated_at: new Date().toISOString()
+          };
+        });
 
         const { error } = await withTimeout(
           supabase.from('products').upsert(payload, { onConflict: 'sku' }),
@@ -776,6 +784,31 @@ export function ExcelImportWidget({ categories, onImportComplete, onClose }: Exc
             <div className="excel-stat-card">
               <span className="excel-stat-card__value">{itemsWithImagesCount.toLocaleString()}</span>
               <span className="excel-stat-card__label">With Photos</span>
+            </div>
+          </div>
+
+          {/* Target Dataset Selection (Curated Imaged vs ERP Non-Imaged) */}
+          <div className="excel-dataset-selector">
+            <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>
+              Import Into Dataset:
+            </span>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className={`excel-dataset-btn ${targetDataset === 'erp' ? 'excel-dataset-btn--active' : ''}`}
+                onClick={() => setTargetDataset('erp')}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>receipt_long</span>
+                <span>Master Store Catalog (ERP Non-Imaged)</span>
+              </button>
+              <button
+                type="button"
+                className={`excel-dataset-btn ${targetDataset === 'imaged' ? 'excel-dataset-btn--active' : ''}`}
+                onClick={() => setTargetDataset('imaged')}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>photo_library</span>
+                <span>Curated Imaged Dataset</span>
+              </button>
             </div>
           </div>
 

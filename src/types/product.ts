@@ -25,8 +25,9 @@ export interface Product {
   is_archived: boolean;
   is_featured: boolean;
   variants?: ProductVariant[]; // Multiple content quantity options per item
-  created_at: string;
-  updated_at: string;
+  catalog_source?: 'imaged' | 'erp';
+  created_at?: string;
+  updated_at?: string;
   /** Joined from categories table in queries */
   category?: {
     id: string;

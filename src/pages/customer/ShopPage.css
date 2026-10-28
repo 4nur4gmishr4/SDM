@@ -196,10 +196,36 @@
   margin-bottom: var(--md-sys-spacing-4);
 }
 
+.shop-page__results-count-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .shop-page__results-count {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface-variant, #5f6368);
+}
+
+.shop-page__catalog-total-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--md-sys-color-primary, #1E8E3E);
+  background-color: var(--md-sys-color-primary-container, rgba(30, 142, 62, 0.12));
+  padding: 3px 10px;
+  border-radius: 999px;
+  width: fit-content;
+  border: 1px solid rgba(30, 142, 62, 0.15);
+}
+
+[data-theme="dark"] .shop-page__catalog-total-pill {
+  background-color: rgba(129, 201, 149, 0.16);
+  color: #81C995;
+  border-color: rgba(129, 201, 149, 0.25);
 }
 
 .shop-page__filters {

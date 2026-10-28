@@ -71,6 +71,97 @@
   width: 100%;
 }
 
+/* Delivery Address Textarea (Under GPS Pin / Change Pin Banner) */
+.checkout-delivery-address-input,
+textarea.checkout-form__field {
+  width: 100%;
+  min-height: 80px;
+  padding: 14px 16px;
+  background-color: var(--md-sys-color-surface, #ffffff);
+  color: var(--md-sys-color-on-surface, #1f2937);
+  border: 1.5px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.15));
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+[data-theme="dark"] .checkout-delivery-address-input,
+[data-theme="dark"] textarea.checkout-form__field {
+  background-color: var(--md-sys-color-surface-container-high, #303134) !important;
+  border-color: var(--md-sys-color-outline, #5F6368) !important;
+  color: var(--md-sys-color-on-surface, #E8EAED) !important;
+}
+
+.checkout-delivery-address-input:focus,
+textarea.checkout-form__field:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary, #1E8E3E);
+  box-shadow: 0 0 0 3px rgba(30, 142, 62, 0.15);
+}
+
+[data-theme="dark"] .checkout-delivery-address-input:focus,
+[data-theme="dark"] textarea.checkout-form__field:focus {
+  border-color: var(--md-sys-color-primary, #81C995) !important;
+  box-shadow: 0 0 0 3px rgba(129, 201, 149, 0.25) !important;
+}
+
+.checkout-delivery-address-input::placeholder,
+textarea.checkout-form__field::placeholder {
+  color: var(--md-sys-color-on-surface-variant, #757575);
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .checkout-delivery-address-input::placeholder,
+[data-theme="dark"] textarea.checkout-form__field::placeholder {
+  color: var(--md-sys-color-on-surface-variant, #9AA0A6) !important;
+}
+
+/* GPS Pin Banner & Button */
+.checkout-gps-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background-color: var(--md-sys-color-primary-container, #CEEAD6);
+  color: var(--md-sys-color-on-primary-container, #0D652D);
+  border: 1px solid rgba(30, 142, 62, 0.2);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+[data-theme="dark"] .checkout-gps-banner {
+  background-color: rgba(30, 142, 62, 0.2) !important;
+  color: var(--md-sys-color-on-primary-container, #CEEAD6) !important;
+  border-color: rgba(129, 201, 149, 0.3) !important;
+}
+
+.checkout-gps-btn {
+  padding: 4px 12px !important;
+  font-size: 11.5px !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+  height: 30px !important;
+  background-color: var(--md-sys-color-surface, #ffffff) !important;
+  color: var(--md-sys-color-primary, #1E8E3E) !important;
+  border: 1px solid var(--md-sys-color-primary, #1E8E3E) !important;
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.2s ease !important;
+}
+
+[data-theme="dark"] .checkout-gps-btn {
+  background-color: var(--md-sys-color-surface-container-high, #303134) !important;
+  color: var(--md-sys-color-primary, #81C995) !important;
+  border-color: var(--md-sys-color-primary, #81C995) !important;
+}
+
 .checkout-form__helper-text {
   font-size: var(--md-sys-typescale-body-small-size);
   color: var(--md-sys-color-on-surface-variant);

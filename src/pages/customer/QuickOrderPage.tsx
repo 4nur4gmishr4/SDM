@@ -628,18 +628,7 @@ export function QuickOrderPage() {
               </md-outlined-text-field>
 
               {/* Live GPS Pinned Address Banner */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '12px',
-                padding: '12px 16px',
-                borderRadius: '12px',
-                backgroundColor: 'var(--md-sys-color-primary-container, #CEEAD6)',
-                color: 'var(--md-sys-color-on-primary-container, #0D652D)',
-                border: '1px solid rgba(30, 142, 62, 0.2)',
-                width: '100%'
-              }}>
+              <div className="gps-location-banner">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
                   <span className="material-symbols-outlined" style={{ fontSize: '24px', flexShrink: 0 }}>location_on</span>
                   <div style={{ minWidth: 0 }}>
@@ -653,8 +642,7 @@ export function QuickOrderPage() {
                 </div>
                 <button
                   type="button"
-                  className="sdsm-btn sdsm-btn--outlined"
-                  style={{ padding: '6px 14px', fontSize: '12px', whiteSpace: 'nowrap', flexShrink: 0, background: 'var(--md-sys-color-surface, #fff)' }}
+                  className="sdsm-btn sdsm-btn--outlined gps-change-map-btn"
                   onClick={openModal}
                 >
                   Change on Map
@@ -663,24 +651,13 @@ export function QuickOrderPage() {
 
               <div style={{ width: '100%' }}>
                 <textarea
-                  className="checkout-form__field"
+                  className="checkout-form__field checkout-delivery-address-input"
                   placeholder="Complete Delivery Address with Landmark *"
                   name="delivery_address"
                   required
                   value={formData.delivery_address}
                   onChange={handleChange}
-                  style={{
-                    minHeight: '90px',
-                    padding: '14px 16px',
-                    border: '1.5px solid var(--md-sys-color-outline-variant, rgba(0, 0, 0, 0.15))',
-                    borderRadius: '12px',
-                    fontFamily: 'inherit',
-                    fontSize: '14px',
-                    lineHeight: '1.5',
-                    resize: 'vertical',
-                    boxSizing: 'border-box',
-                    width: '100%'
-                  }}
+                  rows={3}
                 />
               </div>
             </div>
