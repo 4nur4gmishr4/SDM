@@ -114,8 +114,8 @@ export async function drainOutboxQueue(): Promise<number> {
     let syncedCount = 0;
     for (const order of pending) {
       try {
-        await withTimeout(
-          supabase.from('orders').upsert({
+        const res: any = await withTimeout(
+          supabase.from('orders').insert({
             id: order.id,
             customer_name: order.customer_name,
             customer_phone: order.customer_phone,
@@ -128,9 +128,14 @@ export async function drainOutboxQueue(): Promise<number> {
             items: order.items,
             is_quick_order: order.type === 'quick',
             quick_order_text: order.quick_order_text || null,
-          }, { onConflict: 'id' }),
+          }),
           4000
         );
+
+        // 23505 is PostgreSQL unique constraint violation (order already exists in Supabase)
+        if (res?.error && res.error.code !== '23505') {
+          throw res.error;
+        }
 
         await markOrderSynced(order.id);
         syncedCount++;

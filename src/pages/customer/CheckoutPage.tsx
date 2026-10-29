@@ -151,7 +151,7 @@ export function CheckoutPage() {
     openWhatsApp(storeWhatsAppNumber, finalMsg);
     clearCart();
     setShowDesktopQrModal(false);
-    navigate(`/order/${pendingOrderDetails.orderId}`);
+    try { sessionStorage.setItem(`sdsm_last_order_${pendingOrderDetails.orderId}`, String(pendingOrderDetails.total)); } catch {} navigate(`/order/${pendingOrderDetails.orderId}`, { state: { total: pendingOrderDetails.total } });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -303,7 +303,7 @@ export function CheckoutPage() {
           setTimeout(() => {
             openWhatsApp(storeWhatsAppNumber, message);
             clearCart();
-            navigate(`/order/${orderId}`);
+            try { sessionStorage.setItem(`sdsm_last_order_${orderId}`, String(total)); } catch {} navigate(`/order/${orderId}`, { state: { total } });
           }, 1500);
         } else {
           // Desktop: Open Desktop Themed Standee QR Modal
@@ -320,7 +320,7 @@ export function CheckoutPage() {
         haptics.success();
         openWhatsApp(storeWhatsAppNumber, message);
         clearCart();
-        navigate(`/order/${orderId}`);
+        try { sessionStorage.setItem(`sdsm_last_order_${orderId}`, String(total)); } catch {} navigate(`/order/${orderId}`, { state: { total } });
       }
     } catch (error) {
       console.error('Error processing order:', error);

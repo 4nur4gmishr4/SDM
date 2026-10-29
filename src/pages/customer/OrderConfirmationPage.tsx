@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { 
   formatOrderId, 
@@ -17,8 +17,20 @@ import './OrderConfirmationPage.css';
 
 export function OrderConfirmationPage() {
   const { orderId } = useParams<{ orderId: string }>();
+  const location = useLocation();
   const pageTitle = `Order Confirmed | ${STORE_NAME}`;
-  const [orderTotal, setOrderTotal] = useState<number>(0);
+  const [orderTotal, setOrderTotal] = useState<number>(() => {
+    if (location.state && typeof location.state.total === 'number') {
+      return location.state.total;
+    }
+    if (orderId && typeof window !== 'undefined') {
+      try {
+        const saved = sessionStorage.getItem(`sdsm_last_order_${orderId}`);
+        if (saved) return Number(saved) || 0;
+      } catch {}
+    }
+    return 0;
+  });
 
   useEffect(() => {
     document.title = pageTitle;
