@@ -155,7 +155,7 @@ export default defineConfig({
       },
       workbox: {
         navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/, /^\/api\/.*/],
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,xml,txt}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,xml,txt,woff2}'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/otyojqnnwbrteknyqcpi\.supabase\.co\/storage\/v1\/object\/public\/.*/i,
