@@ -45,7 +45,11 @@
   -webkit-tap-highlight-color: transparent !important;
 }
 
-a, button, input, select, textarea {
+a,
+button,
+input,
+select,
+textarea {
   -webkit-tap-highlight-color: transparent !important;
 }
 
@@ -191,8 +195,8 @@ svg,
   transition: opacity 150ms ease !important;
 }
 
-*:hover > img:not([class*="leaflet"]):not(.leaflet-tile),
-*:hover > picture:not([class*="leaflet"]):not(.leaflet-tile),
+*:hover>img:not([class*="leaflet"]):not(.leaflet-tile),
+*:hover>picture:not([class*="leaflet"]):not(.leaflet-tile),
 *:hover img:not([class*="leaflet"]):not(.leaflet-tile),
 *:hover picture:not([class*="leaflet"]):not(.leaflet-tile),
 .product-tile:hover .product-tile__image,
@@ -770,6 +774,7 @@ md-select-option[aria-selected="true"] {
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -781,6 +786,7 @@ md-select-option[aria-selected="true"] {
     opacity: 0;
     transform: scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -791,9 +797,11 @@ md-select-option[aria-selected="true"] {
   0% {
     transform: scale(0.88);
   }
+
   50% {
     transform: scale(1.05);
   }
+
   100% {
     transform: scale(1);
   }
@@ -803,9 +811,11 @@ md-select-option[aria-selected="true"] {
   0% {
     transform: scale(0.85);
   }
+
   50% {
     transform: scale(1.18);
   }
+
   100% {
     transform: scale(1);
   }
@@ -815,35 +825,34 @@ md-select-option[aria-selected="true"] {
   0% {
     transform: scale(0.5);
   }
+
   70% {
     transform: scale(1.15);
   }
+
   100% {
     transform: scale(1);
   }
 }
 
-  /* Native Mobile App Tactile Feedback */
-  button:active,
-  a.sdsm-btn:active,
-  .sdsm-footer__icon-btn:active,
-  .app-shell__bottom-nav-item:active,
-  .category-nav__item:active,
-  .app-shell__action-btn:active {
-    transform: scale(0.96);
-    transition: transform 90ms cubic-bezier(0.2, 0, 0, 1);
-  }
+/* Native Mobile App Tactile Feedback */
+button:active,
+a.sdsm-btn:active,
+.sdsm-footer__icon-btn:active,
+.app-shell__bottom-nav-item:active,
+.category-nav__item:active,
+.app-shell__action-btn:active {
+  transform: scale(0.96);
+  transition: transform 90ms cubic-bezier(0.2, 0, 0, 1);
+}
 
-  /* Native touch-callout prevention on mobile app chrome */
-  .app-shell__top-bar,
-  .app-shell__bottom-nav,
-  .category-nav,
-  .ios-banner-container,
-  .watermark-banner {
-    -webkit-touch-callout: none !important;
-    -webkit-user-select: none !important;
-    user-select: none !important;
-  }
-
-
-
+/* Native touch-callout prevention on mobile app chrome */
+.app-shell__top-bar,
+.app-shell__bottom-nav,
+.category-nav,
+.ios-banner-container,
+.watermark-banner {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
