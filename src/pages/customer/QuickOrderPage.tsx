@@ -9,6 +9,7 @@ import {
   generateOrderId, 
   buildQuickOrderWhatsAppMessage, 
   openWhatsApp, 
+  openSms, 
   STORE_WHATSAPP_NUMBER,
   STORE_UPI_ID,
   STORE_UPI_NUMBER,
@@ -27,6 +28,7 @@ export function QuickOrderPage() {
   const { location, openModal } = useLocationContext();
   const { showSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderChannel, setOrderChannel] = useState<'whatsapp' | 'sms'>('whatsapp');
 
   // Post-submission 3 payment options states (Zero admin db insertion)
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -221,7 +223,7 @@ export function QuickOrderPage() {
 
       // Haptic success vibration & Open WhatsApp directly
       haptics.success();
-      openWhatsApp(storeWhatsAppNumber, message);
+      if (orderChannel === 'sms') { openSms(storeWhatsAppNumber, message); } else { openWhatsApp(storeWhatsAppNumber, message); }
 
       // ADMIN BYPASS: DO NOT insert into 'orders' table in Supabase!
       // Admin orders page will not receive quick orders as requested by user.
@@ -414,6 +416,25 @@ export function QuickOrderPage() {
           >
             <WhatsAppIcon size={18} />
             <span>Open WhatsApp Chat Again</span>
+          </button>
+          <button
+            type="button"
+            className="sdsm-btn"
+            style={{
+              backgroundColor: 'var(--md-sys-color-surface-container-high, #e8f0fe)',
+              color: 'var(--md-sys-color-primary, #0D652D)',
+              border: '1.5px solid var(--md-sys-color-outline-variant, #1E8E3E)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '10px 16px',
+              borderRadius: '8px',
+              fontWeight: 600
+            }}
+            onClick={() => openSms(storeWhatsAppNumber, submittedMessage)}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>sms</span>
+            <span>Send Details via SMS</span>
           </button>
           <Link to="/" className="sdsm-btn sdsm-btn--tonal">
             <span className="material-symbols-outlined">home</span>
@@ -688,24 +709,51 @@ export function QuickOrderPage() {
             </ol>
           </div>
 
-          <div style={{ marginTop: '8px' }}>
+          <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <button 
               className="sdsm-btn sdsm-btn--whatsapp checkout-page__submit-btn"
               type="submit"
               form="quick-order-form"
+              onClick={() => setOrderChannel('whatsapp')}
               disabled={isSubmitting}
             >
               <WhatsAppIcon size={20} />
               <span>
-                {isSubmitting 
+                {isSubmitting && orderChannel === 'whatsapp'
                   ? 'Opening WhatsApp...' 
                   : listImageFile || listImagePreview
                     ? 'Send Photo Order via WhatsApp' 
-                    : 'Send Quick Order via WhatsApp'}
+                    : 'Place Quick Order on WhatsApp'}
               </span>
             </button>
-            <p className="checkout-page__whatsapp-notice">
-              WhatsApp will open with your order details and delivery GPS location.
+
+            <button 
+              className="sdsm-btn checkout-page__submit-btn"
+              type="submit"
+              form="quick-order-form"
+              onClick={() => setOrderChannel('sms')}
+              disabled={isSubmitting}
+              style={{
+                backgroundColor: 'var(--md-sys-color-surface-container-high, #e8f0fe)',
+                color: 'var(--md-sys-color-primary, #0D652D)',
+                border: '1.5px solid var(--md-sys-color-outline-variant, #1E8E3E)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                fontWeight: 600
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>sms</span>
+              <span>
+                {isSubmitting && orderChannel === 'sms'
+                  ? 'Opening SMS...' 
+                  : 'Send Quick Order via Normal SMS'}
+              </span>
+            </button>
+
+            <p className="checkout-page__whatsapp-notice" style={{ textAlign: 'center', marginTop: '4px' }}>
+              Customers without WhatsApp can tap <strong>"Send Quick Order via Normal SMS"</strong> to send their shopping list via default text messenger.
             </p>
           </div>
         </div>

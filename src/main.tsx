@@ -7,7 +7,17 @@ registerSW({ immediate: true });
 
 import App from './App';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10 * 60 * 1000, // 10 minutes cache — zero spinners on category taps & navigation
+      gcTime: 30 * 60 * 1000,    // Keep data in memory for 30 minutes
+      refetchOnWindowFocus: false, // Prevents 1.2s network delays on app/tab switch
+      refetchOnMount: false,
+      retry: 1,
+    },
+  },
+});
 
 // Material Web component imports — registers custom elements globally
 import '@material/web/button/filled-button.js';

@@ -7,7 +7,7 @@ import { supabase, isSupabaseConfigured, withTimeout } from '../../lib/supabase'
 import { OrderSummary } from '../../components/customer/OrderSummary';
 import { DeliveryInfo } from '../../components/customer/DeliveryInfo';
 import { WhatsAppIcon } from '../../components/common';
-import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, STORE_WHATSAPP_NUMBER, getUpiPaymentUrl } from '../../lib/orderUtils';
+import { generateOrderId, buildCartWhatsAppMessage, openWhatsApp, openSms, STORE_WHATSAPP_NUMBER, getUpiPaymentUrl } from '../../lib/orderUtils';
 import { DynamicUpiPayment } from '../../components/payment/DynamicUpiPayment';
 import { getGoogleMapsNavigationUrl } from '../../lib/geocoding';
 import { validateOrderInput } from '../../lib/validation';
@@ -25,11 +25,13 @@ export function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'upi'>('cod');
+  const [orderChannel, setOrderChannel] = useState<'whatsapp' | 'sms'>('whatsapp');
   const [showDesktopQrModal, setShowDesktopQrModal] = useState(false);
   const [pendingOrderDetails, setPendingOrderDetails] = useState<{
     orderId: string;
     total: number;
     message: string;
+    channel?: 'whatsapp' | 'sms';
   } | null>(null);
 
   const isMobileDevice = typeof window !== 'undefined' && /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
@@ -141,14 +143,18 @@ export function CheckoutPage() {
   };
 
 
-  const handleConfirmDesktopQrOrder = (utr?: string) => {
+  const handleConfirmDesktopQrOrder = (utr?: string, channel: 'whatsapp' | 'sms' = pendingOrderDetails?.channel || 'whatsapp') => {
     if (!pendingOrderDetails) return;
     haptics.success();
     let finalMsg = pendingOrderDetails.message;
     if (utr && utr.trim()) {
       finalMsg += `\n*UPI Ref / UTR:* ${utr.trim()}`;
     }
-    openWhatsApp(storeWhatsAppNumber, finalMsg);
+    if (channel === 'sms') {
+      openSms(storeWhatsAppNumber, finalMsg);
+    } else {
+      openWhatsApp(storeWhatsAppNumber, finalMsg);
+    }
     clearCart();
     setShowDesktopQrModal(false);
     try { sessionStorage.setItem(`sdsm_last_order_${pendingOrderDetails.orderId}`, String(pendingOrderDetails.total)); } catch {} navigate(`/order/${pendingOrderDetails.orderId}`, { state: { total: pendingOrderDetails.total } });
@@ -301,7 +307,11 @@ export function CheckoutPage() {
           haptics.success();
           window.location.href = upiUri;
           setTimeout(() => {
-            openWhatsApp(storeWhatsAppNumber, message);
+            if (orderChannel === 'sms') {
+              openSms(storeWhatsAppNumber, message);
+            } else {
+              openWhatsApp(storeWhatsAppNumber, message);
+            }
             clearCart();
             try { sessionStorage.setItem(`sdsm_last_order_${orderId}`, String(total)); } catch {} navigate(`/order/${orderId}`, { state: { total } });
           }, 1500);
@@ -312,13 +322,18 @@ export function CheckoutPage() {
             orderId,
             total,
             message,
+            channel: orderChannel,
           });
           setShowDesktopQrModal(true);
         }
       } else {
         // Pay on Delivery (COD)
         haptics.success();
-        openWhatsApp(storeWhatsAppNumber, message);
+        if (orderChannel === 'sms') {
+          openSms(storeWhatsAppNumber, message);
+        } else {
+          openWhatsApp(storeWhatsAppNumber, message);
+        }
         clearCart();
         try { sessionStorage.setItem(`sdsm_last_order_${orderId}`, String(total)); } catch {} navigate(`/order/${orderId}`, { state: { total } });
       }
@@ -536,26 +551,55 @@ export function CheckoutPage() {
             </div>
           </div>
 
-          <div style={{ marginTop: '16px' }}>
+          <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {/* Primary Option: WhatsApp */}
             <button 
               className="sdsm-btn sdsm-btn--whatsapp checkout-page__submit-btn"
               type="submit"
               form="checkout-form"
+              onClick={() => setOrderChannel('whatsapp')}
               disabled={isSubmitting}
             >
               <WhatsAppIcon size={20} />
               <span>
-                {isSubmitting
+                {isSubmitting && orderChannel === 'whatsapp'
                   ? 'Preparing Order...'
                   : paymentMethod === 'upi'
-                  ? (isMobileDevice ? 'Pay via UPI App & Confirm' : 'View QR & Confirm on WhatsApp')
-                  : 'Send Order via WhatsApp'}
+                  ? (isMobileDevice ? 'Pay via UPI App & Order on WhatsApp' : 'View QR & Order on WhatsApp')
+                  : 'Place Order on WhatsApp'}
               </span>
             </button>
-            <p className="checkout-page__whatsapp-notice">
-              {paymentMethod === 'upi' && isMobileDevice
-                ? 'Launches your installed UPI app, then opens WhatsApp with order details.'
-                : 'You will be redirected to WhatsApp to send your order.'}
+
+            {/* Secondary Option: Native SMS (Text Message) for customers without WhatsApp */}
+            <button 
+              className="sdsm-btn checkout-page__submit-btn"
+              type="submit"
+              form="checkout-form"
+              onClick={() => setOrderChannel('sms')}
+              disabled={isSubmitting}
+              style={{
+                backgroundColor: 'var(--md-sys-color-surface-container-high, #e8f0fe)',
+                color: 'var(--md-sys-color-primary, #0D652D)',
+                border: '1.5px solid var(--md-sys-color-outline-variant, #1E8E3E)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                fontWeight: 600
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>sms</span>
+              <span>
+                {isSubmitting && orderChannel === 'sms'
+                  ? 'Preparing Order...'
+                  : paymentMethod === 'upi'
+                  ? (isMobileDevice ? 'Pay via UPI App & Send via SMS' : 'View QR & Send via SMS')
+                  : 'Send Order via Normal SMS (Text Message)'}
+              </span>
+            </button>
+
+            <p className="checkout-page__whatsapp-notice" style={{ textAlign: 'center', marginTop: '4px' }}>
+              Customers without WhatsApp can tap <strong>"Send Order via Normal SMS"</strong> to send the grocery list directly from phone messages.
             </p>
           </div>
         </div>

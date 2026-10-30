@@ -8,7 +8,8 @@ import {
   STORE_WHATSAPP_NUMBER,
   STORE_WHATSAPP_CLEAN, 
   STORE_ADDRESS,
-  STORE_DELIVERY_RADIUS 
+  STORE_DELIVERY_RADIUS,
+  openSms
 } from '../../lib/orderUtils';
 import { WhatsAppIcon } from '../../components/common';
 import { DynamicUpiPayment } from '../../components/payment/DynamicUpiPayment';
@@ -84,7 +85,7 @@ export function OrderConfirmationPage() {
           {formatOrderId(orderId || 'UNKNOWN')}
         </div>
 
-        {/* WhatsApp & Call Direct Action Buttons */}
+        {/* WhatsApp, SMS & Call Direct Action Buttons */}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '24px' }}>
           <a
             href={`https://wa.me/${STORE_WHATSAPP_CLEAN}?text=${encodeURIComponent(`Hello ${STORE_NAME}, following up on my Order ID: ${orderId || ''}`)}`}
@@ -96,6 +97,30 @@ export function OrderConfirmationPage() {
             <WhatsAppIcon size={20} />
             <span>Open WhatsApp Chat</span>
           </a>
+
+          <button
+            type="button"
+            className="sdsm-btn"
+            style={{
+              textDecoration: 'none',
+              padding: '10px 18px',
+              gap: '6px',
+              backgroundColor: 'var(--md-sys-color-surface-container-high, #e8f0fe)',
+              color: 'var(--md-sys-color-primary, #0D652D)',
+              border: '1.5px solid var(--md-sys-color-outline-variant, #1E8E3E)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              fontWeight: 600,
+              borderRadius: '8px'
+            }}
+            onClick={() => {
+              const smsMsg = `Hello ${STORE_NAME}, following up on my Order ID: #${orderId || ''}${orderTotal > 0 ? ` (Amount: ₹${orderTotal.toFixed(2)})` : ''}`;
+              openSms(STORE_WHATSAPP_NUMBER, smsMsg);
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>sms</span>
+            <span>Send Details via SMS</span>
+          </button>
 
           <a
             href={`tel:${STORE_PHONE_NUMBER}`}

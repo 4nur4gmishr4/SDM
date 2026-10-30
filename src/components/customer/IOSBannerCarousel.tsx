@@ -12,6 +12,17 @@ interface IOSBannerCarouselProps {
   slideDuration?: number; // in milliseconds (default 5000ms)
 }
 
+function optimizeBannerImageUrl(url: string | null | undefined): string | undefined {
+  if (!url) return undefined;
+  if (url.includes('/storage/v1/object/public/store-media/')) {
+    return url.replace(
+      '/storage/v1/object/public/store-media/', 
+      '/storage/v1/render/image/public/store-media/'
+    ) + '?width=1200&resize=contain&quality=80&format=webp';
+  }
+  return url;
+}
+
 export function IOSBannerCarousel({
   banners,
   isLoading = false,
@@ -191,7 +202,7 @@ export function IOSBannerCarousel({
                   style={{ display: 'block', width: '100%', height: '100%' }}
                 >
                   <img
-                    src={banner.image_url}
+                    src={optimizeBannerImageUrl(banner.image_url) || banner.image_url}
                     alt={banner.title}
                     className="ios-banner-image"
                     loading={idx === 0 ? 'eager' : 'lazy'}

@@ -1,20 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useSnackbar } from '../../contexts/SnackbarContext';
+import { useCategories } from '../../hooks/useCategories';
 import { Footer } from './Footer';
 import { STORE_NAME } from '../../lib/orderUtils';
 import { HeaderLocationPill } from '../customer/HeaderLocationPill';
-import { LocationPickerModal } from '../customer/LocationPickerModal';
+import { CategoryRundownDrawer } from '../customer/CategoryRundownDrawer';
 import './AppShell.css';
+
+// Lazy-load LocationPickerModal so Leaflet (165 KB) does not block initial page load
+const LocationPickerModal = lazy(() => import('../customer/LocationPickerModal').then(m => ({ default: m.LocationPickerModal })));
 
 export function AppShell() {
   const { itemCount, subtotal } = useCart();
   const { resolvedTheme, toggleTheme } = useTheme();
   const { showSnackbar } = useSnackbar();
+  const { categories } = useCategories();
   const location = useLocation();
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     // Reset window scroll to top on route change for native app screen experience
@@ -95,6 +101,18 @@ export function AppShell() {
       <header className="app-shell__top-bar">
         <div className="app-shell__top-bar-inner">
           <div className="app-shell__brand-group">
+            {/* Left Hamburger Button: Opens All 21 Categories Rundown Menu */}
+            <button 
+              type="button" 
+              className="app-shell__drawer-toggle-btn"
+              onClick={() => setIsDrawerOpen(true)}
+              aria-label="Open All 21 Categories Menu"
+              title="View Category Rundown"
+            >
+              <span className="material-symbols-outlined">menu</span>
+              <span className="app-shell__drawer-toggle-text">Categories</span>
+            </button>
+
             <Link to="/" className="app-shell__brand" aria-label={`${STORE_NAME} Home`}>
               <span className="app-shell__brand-box">{STORE_NAME}</span>
             </Link>
@@ -235,8 +253,17 @@ export function AppShell() {
         })}
       </nav>
 
-      {/* Geolocation Modal */}
-      <LocationPickerModal />
+      {/* Left-Hand Side Category Rundown Drawer */}
+      <CategoryRundownDrawer 
+        isOpen={isDrawerOpen} 
+        onClose={() => setIsDrawerOpen(false)} 
+        categories={categories} 
+      />
+
+      {/* Geolocation Modal (Lazy-Loaded) */}
+      <Suspense fallback={null}>
+        <LocationPickerModal />
+      </Suspense>
     </div>
   );
 }

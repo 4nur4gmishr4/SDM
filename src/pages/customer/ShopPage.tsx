@@ -5,6 +5,7 @@ import { VirtualizedProductGrid } from '../../components/customer/VirtualizedPro
 import { WatermarkBanner, Skeleton, SeoHead } from '../../components/common';
 import { useCategories } from '../../hooks/useCategories';
 import { useProducts } from '../../hooks/useProducts';
+import { getCategoryMaterialIcon } from '../../components/customer/CategoryNav';
 import './ShopPage.css';
 
 import { matchesSearchQuery, scoreProductMatch } from '../../lib/searchUtils';
@@ -168,7 +169,10 @@ export function ShopPage() {
                 className={`shop-page__category-link ${!categorySlug ? 'shop-page__category-link--active' : ''}`}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
               >
-                <span>All Products</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: !categorySlug ? 'inherit' : 'var(--md-sys-color-primary, #0D652D)' }}>apps</span>
+                  <span>All Products</span>
+                </div>
                 <span className="shop-category-count-badge">{totalCount.toLocaleString()}</span>
               </Link>
               {categoriesLoading && categories.length === 0 ? (
@@ -182,19 +186,25 @@ export function ShopPage() {
                   />
                 ))
               ) : (
-                categories.map(category => (
-                  <Link 
-                    key={category.id} 
-                    to={`/shop/${category.slug}`} 
-                    className={`shop-page__category-link ${category.slug === categorySlug ? 'shop-page__category-link--active' : ''}`}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                  >
-                    <span>{category.name}</span>
-                    {category.is_offer_category && (
-                      <span className="shop-category-badge--offer">Offer</span>
-                    )}
-                  </Link>
-                ))
+                categories.map(category => {
+                  const icon = getCategoryMaterialIcon(category);
+                  return (
+                    <Link 
+                      key={category.id} 
+                      to={`/shop/${category.slug}`} 
+                      className={`shop-page__category-link ${category.slug === categorySlug ? 'shop-page__category-link--active' : ''}`}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px', color: category.slug === categorySlug ? 'inherit' : 'var(--md-sys-color-primary, #0D652D)' }}>{icon}</span>
+                        <span>{category.name}</span>
+                      </div>
+                      {category.is_offer_category && (
+                        <span className="shop-category-badge--offer">Offer</span>
+                      )}
+                    </Link>
+                  );
+                })
               )}
             </div>
           </div>

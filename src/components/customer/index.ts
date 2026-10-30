@@ -1,5 +1,6 @@
 export { CartLineItem } from './CartLineItem';
-export { CategoryNav } from './CategoryNav';
+export { CategoryNav, getCategoryMaterialIcon } from './CategoryNav';
+export { CategoryRundownDrawer } from './CategoryRundownDrawer';
 export { DeliveryInfo } from './DeliveryInfo';
 export { DesktopHeroLandingBrief } from './DesktopHeroLandingBrief';
 export { HeaderLocationPill } from './HeaderLocationPill';

@@ -38,8 +38,44 @@
 .app-shell__brand-group {
   display: flex;
   align-items: center;
-  gap: var(--md-sys-spacing-4);
+  gap: var(--md-sys-spacing-2);
   flex-shrink: 0;
+}
+
+.app-shell__drawer-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--md-sys-color-surface-container-high, #f1f3f4);
+  color: var(--md-sys-color-on-surface, #1f1f1f);
+  border: 1px solid var(--md-sys-color-outline-variant, #e0e0e0);
+  border-radius: 8px;
+  padding: 6px 9px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 140ms ease;
+  flex-shrink: 0;
+}
+
+.app-shell__drawer-toggle-btn:hover {
+  background: var(--md-sys-color-surface-container-highest, #e8f5e9);
+  color: var(--md-sys-color-primary, #0D652D);
+  border-color: var(--md-sys-color-primary, #0D652D);
+}
+
+.app-shell__drawer-toggle-btn .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.app-shell__drawer-toggle-text {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .app-shell__drawer-toggle-text {
+    display: inline;
+  }
 }
 
 .app-shell__brand {

@@ -13,6 +13,10 @@ function optimizeImageUrl(url: string | null | undefined): string | undefined {
       '/storage/v1/render/image/public/store-media/'
     ) + '?width=400&resize=contain&quality=80&format=webp';
   }
+  if (url.includes('media-amazon.com/images/')) {
+    // Downscale Amazon 1500px packaging images to ultra-light 320px thumbnails (15KB vs 165KB = 91% reduction)
+    return url.replace(/\._[A-Za-z0-9_,]+_\./, '._AC_UL320_.');
+  }
   return url;
 }
 

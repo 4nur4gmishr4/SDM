@@ -10,43 +10,45 @@ interface CategoryNavProps {
   isLoading?: boolean;
 }
 
+export function getCategoryMaterialIcon(category: { slug?: string; name?: string }): string {
+  const slug = (category.slug || '').toLowerCase();
+  const name = (category.name || '').toLowerCase();
+
+  // 1. Promotional & Special Categories
+  if (slug === 'sai-darshan-specials' || name.includes('special')) return 'stars';
+  if (slug === 'mid-month-offer' || name.includes('mid month') || name.includes('month offer')) return 'calendar_month';
+  if (slug === 'buy-1-get-1' || name.includes('buy 1') || name.includes('bogo')) return 'redeem';
+  if (slug === 'buy-more-get-more' || name.includes('buy more') || name.includes('save more')) return 'savings';
+
+  // 2. Departmental & Everyday Grocery Categories
+  if (slug === 'grocery-staples' || name.includes('grocery') || name.includes('staple')) return 'shopping_basket';
+  if (slug === 'food-grains-atta-dals' || name.includes('grain') || name.includes('atta') || name.includes('dal')) return 'grain';
+  if (slug === 'dairy-products' || name.includes('dairy')) return 'egg';
+  if (slug === 'bakery-products' || name.includes('bakery')) return 'bakery_dining';
+  if (slug === 'cooking-oils-ghee' || name.includes('oil') || name.includes('ghee')) return 'water_drop';
+  if (slug === 'spices-seasonings' || name.includes('spice') || name.includes('seasoning')) return 'soup_kitchen';
+  if (slug === 'beverages-drinks' || name.includes('beverage') || name.includes('drink')) return 'local_cafe';
+  if (slug === 'chocolates-confectionery' || name.includes('chocolate') || name.includes('confectionery')) return 'cookie';
+  if (slug === 'personal-care' || name.includes('personal')) return 'face';
+  if (slug === 'baby-care' || name.includes('baby')) return 'child_care';
+  if (slug === 'home-cleaners' || name.includes('cleaner') || name.includes('cleaning')) return 'cleaning_services';
+  if (slug === 'plastic-items-storage' || name.includes('plastic') || name.includes('storage')) return 'inventory_2';
+  if (slug === 'stationery-supplies' || name.includes('stationery') || name.includes('supplies')) return 'edit_document';
+  if (slug === 'appliances' || name.includes('appliance')) return 'blender';
+  if (slug === 'electricals-electronics' || name.includes('electrical')) return 'bolt';
+  if (slug === 'dining-chairs-furniture' || name.includes('chair') || name.includes('furniture')) return 'chair';
+  if (slug === 'pet-supplies' || name.includes('pet')) return 'pets';
+
+  return 'category';
+}
+
 export function CategoryNav({ categories, activeSlug, basePath = '/shop', isLoading = false }: CategoryNavProps) {
   if (isLoading && categories.length === 0) {
     return <CategoryNavSkeleton count={8} />;
   }
 
   // Curated Material Symbols icons for all store categories
-  const getCategoryIcon = (category: Category): string => {
-    const slug = (category.slug || '').toLowerCase();
-    const name = (category.name || '').toLowerCase();
-
-    // 1. Promotional & Special Categories
-    if (slug === 'sai-darshan-specials' || name.includes('special')) return 'stars';
-    if (slug === 'mid-month-offer' || name.includes('mid month') || name.includes('month offer')) return 'calendar_month';
-    if (slug === 'buy-1-get-1' || name.includes('buy 1') || name.includes('bogo')) return 'redeem';
-    if (slug === 'buy-more-get-more' || name.includes('buy more') || name.includes('save more')) return 'savings';
-
-    // 2. Departmental & Everyday Grocery Categories
-    if (slug === 'grocery-staples' || name.includes('grocery') || name.includes('staple')) return 'shopping_basket';
-    if (slug === 'food-grains-atta-dals' || name.includes('grain') || name.includes('atta') || name.includes('dal')) return 'grain';
-    if (slug === 'dairy-products' || name.includes('dairy')) return 'egg';
-    if (slug === 'bakery-products' || name.includes('bakery')) return 'bakery_dining';
-    if (slug === 'cooking-oils-ghee' || name.includes('oil') || name.includes('ghee')) return 'water_drop';
-    if (slug === 'spices-seasonings' || name.includes('spice') || name.includes('seasoning')) return 'soup_kitchen';
-    if (slug === 'beverages-drinks' || name.includes('beverage') || name.includes('drink')) return 'local_cafe';
-    if (slug === 'chocolates-confectionery' || name.includes('chocolate') || name.includes('confectionery')) return 'cookie';
-    if (slug === 'personal-care' || name.includes('personal')) return 'face';
-    if (slug === 'baby-care' || name.includes('baby')) return 'child_care';
-    if (slug === 'home-cleaners' || name.includes('cleaner') || name.includes('cleaning')) return 'cleaning_services';
-    if (slug === 'plastic-items-storage' || name.includes('plastic') || name.includes('storage')) return 'inventory_2';
-    if (slug === 'stationery-supplies' || name.includes('stationery') || name.includes('supplies')) return 'edit_document';
-    if (slug === 'appliances' || name.includes('appliance')) return 'blender';
-    if (slug === 'electricals-electronics' || name.includes('electrical')) return 'bolt';
-    if (slug === 'dining-chairs-furniture' || name.includes('chair') || name.includes('furniture')) return 'chair';
-    if (slug === 'pet-supplies' || name.includes('pet')) return 'pets';
-
-    return 'category';
-  };
+  const getCategoryIcon = getCategoryMaterialIcon;
 
   return (
     <nav className="category-nav" aria-label="Product categories">

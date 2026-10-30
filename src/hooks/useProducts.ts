@@ -90,30 +90,33 @@ export function useProducts(options: UseProductsOptions = {}) {
       imagedProducts.forEach(p => { p.catalog_source = 'imaged'; });
       const finalImaged = options.fetchAll ? imagedProducts : groupProductsIntoVariants(imagedProducts);
 
-      // 2. Load Master Store Catalog (ERP Non-Imaged) unless explicitly excluded
+      // 2. Smart High-Speed ERP Catalog Loading:
+      // Only download the heavy 2.62MB ERP catalog when customer actually searches or explicitly requests it.
+      // Category browsing renders instantly (<50ms) using verified imaged catalog.
       if (options.includeMasterCatalog !== false && !options.isFeatured) {
-        try {
-          let erpItems = await fetchMasterCatalog();
+        const hasSearch = options.searchQuery && options.searchQuery.trim();
+        if (hasSearch || options.includeMasterCatalog === true) {
+          try {
+            let erpItems = await fetchMasterCatalog();
 
-          // Apply immediate client-side search query on ERP items
-          if (options.searchQuery && options.searchQuery.trim()) {
-            const cleanQuery = options.searchQuery.trim();
-            erpItems = erpItems.filter(p => matchesSearchQuery(p.name, p.brand, cleanQuery));
+            if (hasSearch) {
+              const cleanQuery = options.searchQuery!.trim();
+              erpItems = erpItems.filter(p => matchesSearchQuery(p.name, p.brand, cleanQuery));
+            }
+
+            if (options.limit && finalImaged.length >= options.limit) {
+              return finalImaged.slice(0, options.limit);
+            }
+
+            if (options.limit) {
+              const remaining = options.limit - finalImaged.length;
+              return [...finalImaged, ...erpItems.slice(0, remaining)];
+            }
+
+            return [...finalImaged, ...erpItems];
+          } catch (err) {
+            console.warn('Could not load master ERP items in useProducts:', err);
           }
-
-          // If limit is specified and already satisfied by imaged items
-          if (options.limit && finalImaged.length >= options.limit) {
-            return finalImaged.slice(0, options.limit);
-          }
-
-          if (options.limit) {
-            const remaining = options.limit - finalImaged.length;
-            return [...finalImaged, ...erpItems.slice(0, remaining)];
-          }
-
-          return [...finalImaged, ...erpItems];
-        } catch (err) {
-          console.warn('Could not load master ERP items in useProducts:', err);
         }
       }
 

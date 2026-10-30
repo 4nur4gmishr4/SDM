@@ -182,6 +182,19 @@ export function openWhatsApp(phoneNumber: string, message: string): void {
 }
 
 /**
+ * Open native SMS text messaging app with pre-filled message and recipient store number.
+ * Allows customers without WhatsApp to send their order via standard text message.
+ */
+export function openSms(phoneNumber: string, message: string): void {
+  const cleanPhone = phoneNumber.replace(/\D/g, '');
+  const encodedMessage = encodeURIComponent(message);
+  const isIos = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const separator = isIos ? '&' : '?';
+  const url = `sms:${cleanPhone}${separator}body=${encodedMessage}`;
+  window.location.href = url;
+}
+
+/**
  * Format price for display in INR.
  */
 export function formatPrice(amount: number): string {

@@ -9,6 +9,20 @@ import { useProduct } from '../../hooks/useProducts';
 import { useCategories } from '../../hooks/useCategories';
 import './ProductDetailPage.css';
 
+function optimizeDetailImageUrl(url: string | null | undefined): string | undefined {
+  if (!url) return undefined;
+  if (url.includes('/storage/v1/object/public/store-media/')) {
+    return url.replace(
+      '/storage/v1/object/public/store-media/', 
+      '/storage/v1/render/image/public/store-media/'
+    ) + '?width=600&resize=contain&quality=85&format=webp';
+  }
+  if (url.includes('media-amazon.com/images/')) {
+    return url.replace(/\._[A-Za-z0-9_,]+_\./, '._AC_UL600_.');
+  }
+  return url;
+}
+
 export function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { addItem } = useCart();
@@ -169,7 +183,7 @@ export function ProductDetailPage() {
             <div className="product-detail__image-box">
               {activeImage ? (
                 <img 
-                  src={activeImage} 
+                  src={optimizeDetailImageUrl(activeImage) || activeImage} 
                   alt={`${product.name} - ${activeUnitSize}`} 
                   className="product-detail__image" 
                   loading="eager"
