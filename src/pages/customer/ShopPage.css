@@ -328,32 +328,43 @@
 .shop-page__filters {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 0;
 }
 
-/* In-Stock Pill Chip */
+.shop-page__filters::-webkit-scrollbar {
+  display: none;
+}
+
+/* In-Stock Pill Chip (Flipkart Modern Style) */
 .shop-pill-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 38px;
-  padding: 0 14px;
-  border-radius: 9999px;
-  background-color: var(--md-sys-color-surface-container-low, #f1f3f4);
-  color: var(--md-sys-color-on-surface-variant, #444746);
-  border: 1px solid var(--md-sys-color-outline-variant, #e0e0e0);
-  font-size: 0.85rem;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface, #ffffff);
+  color: var(--md-sys-color-on-surface, #212121);
+  border: 1px solid var(--md-sys-color-outline-variant, #dadce0);
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 180ms cubic-bezier(0.2, 0, 0, 1);
   outline: none !important;
   -webkit-user-select: none;
   user-select: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .shop-pill-chip:hover {
-  background-color: var(--md-sys-color-surface-container-high, #e8eaed);
+  background-color: var(--md-sys-color-surface-container-high, #f1f3f4);
   border-color: #c4c7c5;
 }
 
@@ -368,12 +379,13 @@
   color: var(--md-sys-color-on-primary-container, #1E8E3E);
 }
 
-/* Sort & Category Select Pills */
+/* Sort & Category Select Pills (Flipkart Modern Style with Zero Icon Overlap) */
 .shop-select-wrap,
 .shop-sort-wrap {
   position: relative;
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .shop-category-select-wrap {
@@ -390,38 +402,40 @@
 .shop-select-icon,
 .shop-sort-icon {
   position: absolute;
-  left: 12px;
-  font-size: 18px;
+  left: 10px;
+  font-size: 17px;
   color: var(--md-sys-color-on-surface-variant, #5f6368);
   pointer-events: none;
+  z-index: 2;
 }
 
 .shop-select-input,
 .shop-sort-select {
-  height: 38px;
-  padding: 0 32px 0 36px;
-  border-radius: 9999px;
-  background-color: var(--md-sys-color-surface-container-low, #f1f3f4);
-  color: var(--md-sys-color-on-surface, #1f1f1f);
-  border: 1px solid var(--md-sys-color-outline-variant, #e0e0e0);
-  font-size: 0.85rem;
+  height: 36px;
+  padding: 0 28px 0 34px;
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface, #ffffff);
+  color: var(--md-sys-color-on-surface, #212121);
+  border: 1px solid var(--md-sys-color-outline-variant, #dadce0);
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
   outline: none !important;
   -webkit-appearance: none;
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%235f6368%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%235f6368%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
-  background-position: right 10px center;
+  background-position: right 8px center;
   transition: all 180ms ease;
-  max-width: 175px;
+  max-width: 170px;
   text-overflow: ellipsis;
   white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .shop-select-input:hover,
 .shop-sort-select:hover {
-  background-color: var(--md-sys-color-surface-container-high, #e8eaed);
+  background-color: var(--md-sys-color-surface-container-high, #f1f3f4);
   border-color: #c4c7c5;
 }
 
@@ -443,6 +457,20 @@
   color: var(--md-sys-color-primary, #1E8E3E);
 }
 
+[data-theme="dark"] .shop-pill-chip,
+[data-theme="dark"] .shop-select-input,
+[data-theme="dark"] .shop-sort-select {
+  background-color: var(--md-sys-color-surface-container, #1e1e1e);
+  color: #e3e3e3;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .shop-pill-chip:hover,
+[data-theme="dark"] .shop-select-input:hover,
+[data-theme="dark"] .shop-sort-select:hover {
+  background-color: var(--md-sys-color-surface-container-high, #2a2a2a);
+}
+
 /* ============================================================
    Mobile Responsiveness (<= 600px)
    ============================================================ */
@@ -461,10 +489,36 @@
     font-size: 0.78rem;
   }
 
+  .shop-page__results-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: var(--md-sys-spacing-2);
+  }
+
+  .shop-page__filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .shop-select-input,
   .shop-sort-select {
-    padding: 4px 24px 4px 8px;
-    font-size: 0.78rem;
-    max-width: 140px;
+    padding: 0 24px 0 32px !important;
+    font-size: 0.8rem;
+    height: 34px;
+    max-width: 150px;
+  }
+
+  .shop-pill-chip {
+    height: 34px;
+    padding: 0 10px;
+    font-size: 0.8rem;
   }
 }
 

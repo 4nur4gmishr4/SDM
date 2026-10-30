@@ -180,6 +180,8 @@ export const ProductTile = memo(function ProductTile({ product }: ProductTilePro
           ) : (
             <div className="product-tile__variant-select-wrap">
               <select
+                id={`variant-select-${targetId}`}
+                name="variant"
                 className="product-tile__variant-select"
                 value={selectedVariantIdx}
                 onClick={(e) => e.stopPropagation()}

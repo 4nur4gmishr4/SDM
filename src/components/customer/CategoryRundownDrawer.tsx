@@ -123,7 +123,7 @@ export function CategoryRundownDrawer({
             </div>
             <div className="category-drawer-item-label">
               <strong>All Supermarket Products</strong>
-              <span>Browse entire 9,000+ grocery catalog</span>
+              <span>Browse entire 40,000+ supermarket catalog</span>
             </div>
             <span className="material-symbols-outlined category-drawer-chevron">chevron_right</span>
           </Link>

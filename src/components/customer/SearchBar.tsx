@@ -32,6 +32,8 @@ export function SearchBar({ initialQuery = '', placeholder = 'Search products...
       <form onSubmit={handleSearch} role="search" className="search-bar__form">
         <span className="material-symbols-outlined search-bar__leading-icon">search</span>
         <input
+          id="search-products-input"
+          name="q"
           type="search"
           className="search-bar__input"
           placeholder={placeholder}

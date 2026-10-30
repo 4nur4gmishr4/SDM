@@ -226,7 +226,7 @@ export function ShopPage() {
             <div className="shop-page__results-count-container">
               <span className="shop-page__results-count">
                 {isInitialLoading ? (
-                  `Loading store catalog (${totalCount.toLocaleString()} products)...`
+                  `Loading catalog...`
                 ) : (
                   <>
                     Showing <strong>{Math.min(visibleCount, displayedProducts.length).toLocaleString()}</strong> of <strong>{totalCount.toLocaleString()}</strong> Products
@@ -234,19 +234,15 @@ export function ShopPage() {
                   </>
                 )}
               </span>
-              {!isInitialLoading && (
-                <span className="shop-page__catalog-total-pill" title="Total active supermarket inventory">
-                  <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>verified</span>
-                  <span>Total Store Catalog: <strong>{totalCount.toLocaleString()}</strong> Products</span>
-                </span>
-              )}
             </div>
             
             <div className="shop-page__filters">
-              {/* Category Dropdown for Mobile & Tablet (matches Relevance dropdown style) */}
+              {/* Category Dropdown for Mobile & Tablet (Flipkart-style horizontal pill) */}
               <div className="shop-select-wrap shop-category-select-wrap">
                 <span className="material-symbols-outlined shop-select-icon">grid_view</span>
                 <select 
+                  id="shop-category-select"
+                  name="category"
                   className={`shop-select-input ${categorySlug ? 'shop-select-input--active' : ''}`}
                   value={categorySlug || ''}
                   onChange={(e) => {
@@ -255,7 +251,7 @@ export function ShopPage() {
                   }}
                   aria-label="Filter products by category"
                 >
-                  <option value="">All Categories ({totalCount.toLocaleString()} Products)</option>
+                  <option value="">All Categories</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.slug}>
                       {category.name}{category.is_offer_category ? ' (Offer)' : ''}
@@ -277,10 +273,12 @@ export function ShopPage() {
                 <span>In Stock Only</span>
               </button>
 
-              {/* Native Google Pill Sort Select */}
+              {/* Native Pill Sort Select */}
               <div className="shop-select-wrap shop-sort-wrap">
                 <span className="material-symbols-outlined shop-select-icon">sort</span>
                 <select 
+                  id="shop-sort-select"
+                  name="sortBy"
                   className="shop-select-input shop-sort-select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
