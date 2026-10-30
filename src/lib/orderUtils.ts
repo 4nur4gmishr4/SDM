@@ -2,8 +2,8 @@ import type { CartItem } from '../types/order';
 
 export const STORE_NAME = (import.meta.env.VITE_STORE_NAME as string) || 'Sai Darshan Shopping Mart';
 export const STORE_LEGAL_NAME = (import.meta.env.VITE_STORE_LEGAL_NAME as string) || 'M/S.SAI DARSHAN SHOPPING MART';
-export const STORE_WHATSAPP_NUMBER = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string) || '+91 73541 55669';
-export const STORE_WHATSAPP_CLEAN = STORE_WHATSAPP_NUMBER.replace(/\D/g, '') || '917354155669';
+export const STORE_WHATSAPP_NUMBER = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string) || '+91 79991 57430';
+export const STORE_WHATSAPP_CLEAN = STORE_WHATSAPP_NUMBER.replace(/\D/g, '') || '917999157430';
 export const STORE_PHONE_NUMBER = (import.meta.env.VITE_STORE_PHONE as string) || STORE_WHATSAPP_CLEAN.slice(-10);
 export const STORE_EMAIL = (import.meta.env.VITE_STORE_EMAIL as string) || 'saidarshanmart@gmail.com';
 export const STORE_UPI_ID = (import.meta.env.VITE_STORE_UPI_ID as string) || 'ibkPOS.EP116181@icici';

@@ -135,7 +135,7 @@ export function AboutPage() {
                 <p className="about-details-text">
                   <a href={`tel:${STORE_PHONE_NUMBER}`} className="about-details-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                     <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--md-sys-color-primary)' }}>phone</span>
-                    <span>+91 {STORE_WHATSAPP_NUMBER}</span>
+                    <span>{STORE_WHATSAPP_NUMBER}</span>
                   </a>
                   <br />
                   <a href={`mailto:${STORE_EMAIL}`} className="about-details-link">
