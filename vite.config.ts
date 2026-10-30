@@ -140,6 +140,7 @@ export default defineConfig({
         share_target: {
           action: '/quick-order',
           method: 'GET',
+          enctype: 'application/x-www-form-urlencoded',
           params: {
             title: 'title',
             text: 'text',
