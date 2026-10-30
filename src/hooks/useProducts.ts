@@ -35,6 +35,28 @@ export function useProducts(options: UseProductsOptions = {}) {
             } else {
               imagedProducts = imagedProducts.filter(p => p.category_id === options.categoryId);
             }
+
+            if (imagedProducts.length < 20) {
+              try {
+                const { data: supaCatProducts } = await withTimeout(
+                  supabase
+                    .from('products')
+                    .select('*, category:categories(id, name, slug)')
+                    .eq('category_id', options.categoryId)
+                    .eq('is_archived', false)
+                    .limit(100),
+                  4000
+                );
+                if (supaCatProducts && supaCatProducts.length > 0) {
+                  const supaList = supaCatProducts as Product[];
+                  const existingIds = new Set(imagedProducts.map(p => p.id));
+                  const newItems = supaList.filter(p => !existingIds.has(p.id));
+                  imagedProducts = [...imagedProducts, ...newItems];
+                }
+              } catch (e) {
+                console.warn('Could not supplement category from Supabase:', e);
+              }
+            }
           }
 
           if (options.searchQuery && options.searchQuery.trim()) {
@@ -146,9 +168,27 @@ export function useProduct(id?: string) {
     queryFn: async () => {
       if (!id) return null;
 
-      // 1. If it is an ERP product from the master catalog
-      if (id.startsWith('sdm-erp-')) {
-        return await getMasterCatalogProduct(id);
+      // 1. If it is an ERP or static imaged catalog product
+      if (id.startsWith('sdm-erp-') || id.startsWith('SDM-ERP-')) {
+        const item = await getMasterCatalogProduct(id);
+        if (item) {
+          try {
+            const imaged = await fetchImagedCatalog();
+            const { baseName } = extractBaseNameAndUnit(item);
+            const siblings = imaged.filter(p => {
+              const { baseName: sibBase } = extractBaseNameAndUnit(p);
+              return sibBase.toLowerCase() === baseName.toLowerCase();
+            });
+            if (siblings.length > 1) {
+              const grouped = groupProductsIntoVariants(siblings, id);
+              const matchedGroup = grouped.find(g => g.name.toLowerCase() === baseName.toLowerCase());
+              if (matchedGroup) return matchedGroup;
+            }
+          } catch (e) {
+            console.warn('Could not group variants for product:', e);
+          }
+          return item;
+        }
       }
 
       if (!isSupabaseConfigured) return null;

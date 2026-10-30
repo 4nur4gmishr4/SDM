@@ -7,17 +7,22 @@ import './ProductTile.css';
 
 function optimizeImageUrl(url: string | null | undefined): string | undefined {
   if (!url) return undefined;
-  if (url.includes('/storage/v1/object/public/store-media/')) {
-    return url.replace(
+  let target = url;
+  if (target.includes('bigbasket.com/media/')) {
+    target = target.replace('www.bigbasket.com/media/', 'www.bbassets.com/media/').replace('bigbasket.com/media/', 'www.bbassets.com/media/');
+  }
+  if (target.includes('/storage/v1/object/public/store-media/')) {
+    return target.replace(
       '/storage/v1/object/public/store-media/', 
       '/storage/v1/render/image/public/store-media/'
     ) + '?width=400&resize=contain&quality=80&format=webp';
   }
-  if (url.includes('media-amazon.com/images/')) {
-    // Downscale Amazon 1500px packaging images to ultra-light 320px thumbnails (15KB vs 165KB = 91% reduction)
-    return url.replace(/\._[A-Za-z0-9_,]+_\./, '._AC_UL320_.');
+  if (target.includes('media-amazon.com/images/')) {
+    if (/\._[A-Za-z0-9_,]+_\./.test(target)) {
+      return target.replace(/\._[A-Za-z0-9_,]+_\./, '._AC_UL320_.');
+    }
   }
-  return url;
+  return target;
 }
 
 function getCategoryOrItemIcon(name: string, brand?: string): string {

@@ -11,16 +11,22 @@ import './ProductDetailPage.css';
 
 function optimizeDetailImageUrl(url: string | null | undefined): string | undefined {
   if (!url) return undefined;
-  if (url.includes('/storage/v1/object/public/store-media/')) {
-    return url.replace(
+  let target = url;
+  if (target.includes('bigbasket.com/media/')) {
+    target = target.replace('www.bigbasket.com/media/', 'www.bbassets.com/media/').replace('bigbasket.com/media/', 'www.bbassets.com/media/');
+  }
+  if (target.includes('/storage/v1/object/public/store-media/')) {
+    return target.replace(
       '/storage/v1/object/public/store-media/', 
       '/storage/v1/render/image/public/store-media/'
     ) + '?width=600&resize=contain&quality=85&format=webp';
   }
-  if (url.includes('media-amazon.com/images/')) {
-    return url.replace(/\._[A-Za-z0-9_,]+_\./, '._AC_UL600_.');
+  if (target.includes('media-amazon.com/images/')) {
+    if (/\._[A-Za-z0-9_,]+_\./.test(target)) {
+      return target.replace(/\._[A-Za-z0-9_,]+_\./, '._AC_UL600_.');
+    }
   }
-  return url;
+  return target;
 }
 
 export function ProductDetailPage() {
@@ -181,33 +187,45 @@ export function ProductDetailPage() {
           {/* Left Column: Sticky Image Viewport & Action Buttons */}
           <div className="product-detail__left-col">
             <div className="product-detail__image-box">
-              {activeImage ? (
+              {activeImage && (
                 <img 
                   src={optimizeDetailImageUrl(activeImage) || activeImage} 
                   alt={`${product.name} - ${activeUnitSize}`} 
                   className="product-detail__image" 
                   loading="eager"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (activeImage && target.src !== activeImage) {
+                      target.src = activeImage;
+                      return;
+                    }
+                    target.style.display = 'none';
+                    const erpHero = target.parentElement?.querySelector('.product-detail__erp-hero') as HTMLElement;
+                    if (erpHero) erpHero.style.display = 'flex';
+                  }}
                 />
-              ) : (
-                <div className="product-detail__erp-hero">
-                  <div className="product-detail__erp-badge">
-                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>verified</span>
-                    <span>Sai Darshan Store Stock</span>
-                  </div>
-                  <div className="product-detail__erp-icon-container">
-                    <span className="material-symbols-outlined" style={{ fontSize: '72px', color: 'var(--md-sys-color-primary, #1E8E3E)' }}>
-                      inventory_2
-                    </span>
-                  </div>
-                  <div className="product-detail__erp-unit-tag">
-                    {activeUnitSize || product.unit_size}
-                  </div>
-                  <div className="product-detail__erp-subtext">
-                    Official In-Store Retail Stock • 100% Genuine Guaranteed
-                  </div>
-                </div>
               )}
+              <div 
+                className="product-detail__erp-hero"
+                style={{ display: activeImage ? 'none' : 'flex' }}
+              >
+                <div className="product-detail__erp-badge">
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>verified</span>
+                  <span>Sai Darshan Store Stock</span>
+                </div>
+                <div className="product-detail__erp-icon-container">
+                  <span className="material-symbols-outlined" style={{ fontSize: '72px', color: 'var(--md-sys-color-primary, #1E8E3E)' }}>
+                    inventory_2
+                  </span>
+                </div>
+                <div className="product-detail__erp-unit-tag">
+                  {activeUnitSize || product.unit_size}
+                </div>
+                <div className="product-detail__erp-subtext">
+                  Official In-Store Retail Stock • 100% Genuine Guaranteed
+                </div>
+              </div>
             </div>
 
             {/* Action Buttons Directly Under Image (Flipkart Signature) */}
