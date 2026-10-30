@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import type { Category } from '../../types/category';
 import { getCategoryMaterialIcon } from './CategoryNav';
@@ -20,10 +20,16 @@ export function CategoryRundownDrawer({
   activeSlug,
 }: CategoryRundownDrawerProps) {
   const location = useLocation();
+  const activeItemRef = useRef<HTMLAnchorElement>(null);
+  const prevPathRef = useRef(location.pathname);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
-  // Close drawer automatically when user navigates
+  // Close drawer only when route pathname actually changes
   useEffect(() => {
-    onClose();
+    if (prevPathRef.current !== location.pathname) {
+      prevPathRef.current = location.pathname;
+      onClose();
+    }
   }, [location.pathname, onClose]);
 
   // Lock body scroll when drawer is open
@@ -49,11 +55,43 @@ export function CategoryRundownDrawer({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
+  // Auto-scroll active category into view smoothly when drawer opens
+  useEffect(() => {
+    if (isOpen && activeItemRef.current) {
+      activeItemRef.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [isOpen, activeSlug]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const currentX = e.touches[0].clientX;
+    const diff = touchStartX - currentX;
+    // If swiped left by more than 55px on phone, smoothly dismiss drawer
+    if (diff > 55) {
+      setTouchStartX(null);
+      onClose();
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setTouchStartX(null);
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="category-drawer-backdrop" onClick={onClose} role="dialog" aria-modal="true" aria-label="Categories Rundown">
-      <div className="category-drawer-panel" onClick={(e) => e.stopPropagation()}>
+      <div 
+        className="category-drawer-panel" 
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Drawer Header */}
         <div className="category-drawer-header">
           <div className="category-drawer-brand">
@@ -101,6 +139,7 @@ export function CategoryRundownDrawer({
             return (
               <Link
                 key={category.id}
+                ref={isActive ? activeItemRef : undefined}
                 to={`/shop/${category.slug}`}
                 className={`category-drawer-item ${isActive ? 'category-drawer-item--active' : ''}`}
                 onClick={onClose}

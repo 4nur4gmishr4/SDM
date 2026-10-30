@@ -26,6 +26,7 @@
   width: 100%;
   max-width: 360px;
   height: 100%;
+  height: 100dvh;
   background-color: var(--md-sys-color-surface, #ffffff);
   color: var(--md-sys-color-on-surface, #1f1f1f);
   display: flex;
@@ -108,10 +109,53 @@
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 3px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(30, 142, 62, 0.4) transparent;
+}
+
+.category-drawer-list:hover {
+  scrollbar-color: var(--md-sys-color-primary, #0D652D) rgba(0, 0, 0, 0.04);
+}
+
+.category-drawer-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.category-drawer-list::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 999px;
+}
+
+.category-drawer-list::-webkit-scrollbar-thumb {
+  background: rgba(30, 142, 62, 0.25);
+  border-radius: 999px;
+  transition: background 150ms ease;
+}
+
+.category-drawer-list:hover::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-primary, #0D652D);
+}
+
+[data-theme="dark"] .category-drawer-list {
+  scrollbar-color: rgba(129, 201, 149, 0.4) transparent;
+}
+
+[data-theme="dark"] .category-drawer-list:hover {
+  scrollbar-color: #81C995 rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .category-drawer-list::-webkit-scrollbar-thumb {
+  background: rgba(129, 201, 149, 0.25);
+}
+
+[data-theme="dark"] .category-drawer-list:hover::-webkit-scrollbar-thumb {
+  background: #81C995;
 }
 
 .category-drawer-section-label {

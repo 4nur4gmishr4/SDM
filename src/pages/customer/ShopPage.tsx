@@ -24,6 +24,7 @@ export function ShopPage() {
   const [inStockOnly, setInStockOnly] = useState(false);
   const [visibleCount, setVisibleCount] = useState(48);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const activeSidebarCatRef = useRef<HTMLAnchorElement>(null);
 
   const { categories, isLoading: categoriesLoading } = useCategories();
   const currentCategory = categories.find(c => c.slug === categorySlug);
@@ -44,6 +45,13 @@ export function ShopPage() {
   useEffect(() => {
     setVisibleCount(48);
   }, [categorySlug, localQuery, sortBy, inStockOnly]);
+
+  // Auto-scroll active category in desktop sidebar rundown smoothly
+  useEffect(() => {
+    if (activeSidebarCatRef.current) {
+      activeSidebarCatRef.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [categorySlug]);
 
   // Client-side filtering and sorting
   const displayedProducts = useMemo(() => {
@@ -165,6 +173,7 @@ export function ShopPage() {
             <h3 className="shop-page__sidebar-title">Categories</h3>
             <div className="shop-page__category-list">
               <Link 
+                ref={!categorySlug ? activeSidebarCatRef : undefined}
                 to="/shop" 
                 className={`shop-page__category-link ${!categorySlug ? 'shop-page__category-link--active' : ''}`}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
@@ -191,6 +200,7 @@ export function ShopPage() {
                   return (
                     <Link 
                       key={category.id} 
+                      ref={category.slug === categorySlug ? activeSidebarCatRef : undefined}
                       to={`/shop/${category.slug}`} 
                       className={`shop-page__category-link ${category.slug === categorySlug ? 'shop-page__category-link--active' : ''}`}
                       style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}

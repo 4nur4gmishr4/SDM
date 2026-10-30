@@ -139,7 +139,60 @@
     padding: var(--md-sys-spacing-4);
     position: sticky;
     top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(30, 142, 62, 0.4) transparent;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
   }
+
+  .shop-page__sidebar:hover {
+    border-color: rgba(30, 142, 62, 0.35);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    scrollbar-color: var(--md-sys-color-primary, #0D652D) rgba(0, 0, 0, 0.04);
+  }
+
+  .shop-page__sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .shop-page__sidebar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 999px;
+  }
+
+  .shop-page__sidebar::-webkit-scrollbar-thumb {
+    background: rgba(30, 142, 62, 0.25);
+    border-radius: 999px;
+    transition: background 150ms ease;
+  }
+
+  .shop-page__sidebar:hover::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-primary, #0D652D);
+  }
+}
+
+[data-theme="dark"] .shop-page__sidebar {
+  background-color: var(--md-sys-color-surface-container-low, #1e1e1e);
+  border-color: rgba(255, 255, 255, 0.12);
+  scrollbar-color: rgba(129, 201, 149, 0.4) transparent;
+}
+
+[data-theme="dark"] .shop-page__sidebar:hover {
+  border-color: rgba(129, 201, 149, 0.35);
+  scrollbar-color: #81C995 rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .shop-page__sidebar::-webkit-scrollbar-thumb {
+  background: rgba(129, 201, 149, 0.25);
+}
+
+[data-theme="dark"] .shop-page__sidebar:hover::-webkit-scrollbar-thumb {
+  background: #81C995;
 }
 
 .shop-page__sidebar-section {

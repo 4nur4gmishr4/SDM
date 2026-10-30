@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -21,6 +21,10 @@ export function AppShell() {
   const location = useLocation();
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleCloseDrawer = useCallback(() => {
+    setIsDrawerOpen(false);
+  }, []);
 
   useEffect(() => {
     // Reset window scroll to top on route change for native app screen experience
@@ -256,7 +260,7 @@ export function AppShell() {
       {/* Left-Hand Side Category Rundown Drawer */}
       <CategoryRundownDrawer 
         isOpen={isDrawerOpen} 
-        onClose={() => setIsDrawerOpen(false)} 
+        onClose={handleCloseDrawer} 
         categories={categories} 
       />
 
