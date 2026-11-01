@@ -116,12 +116,17 @@ function getInitialCart(): CartState {
             item.quantity > 0
           ))
           .map(item => ({
-            ...item,
-            quantity: Math.max(1, Math.min(999, Math.floor(item.quantity))),
+            product_id: String(item.product_id).slice(0, 100),
+            product_name: String(item.product_name).slice(0, 200),
+            product_sku: item.product_sku ? String(item.product_sku).slice(0, 100) : '',
             product_price: Math.max(0, Number(item.product_price.toFixed(2))),
             original_price: (item.original_price != null && Number.isFinite(item.original_price))
               ? Math.max(item.product_price, Number(item.original_price.toFixed(2)))
               : item.product_price,
+            product_image_url: item.product_image_url ? String(item.product_image_url).slice(0, 500) : null,
+            unit_size: item.unit_size ? String(item.unit_size).slice(0, 50) : '',
+            variant_id: item.variant_id ? String(item.variant_id).slice(0, 100) : null,
+            quantity: Math.max(1, Math.min(999, Math.floor(item.quantity))),
           }));
         return { items: sanitized };
       }

@@ -89,6 +89,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = async () => {
     try {
       localStorage.removeItem('sdsm_admin_session');
+      sessionStorage.removeItem('sdsm_admin_fails');
+      sessionStorage.removeItem('sdsm_admin_lockout_until');
     } catch {
       // ignore
     }

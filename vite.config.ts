@@ -185,7 +185,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/, /^\/api\/.*/],
+        navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/, /^\/api\/.*/, /^\/admin(\/.*)?$/],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,xml,txt,woff2}'],
         runtimeCaching: [
           {
