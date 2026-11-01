@@ -22,6 +22,9 @@ if (fs.existsSync(envPath)) {
   }
 }
 
+const ALLOWED_UPLOAD_EXTS = new Set(['.webp', '.png', '.jpg', '.jpeg', '.gif', '.svg'])
+const MAX_UPLOAD_BYTES = 5 * 1024 * 1024 // 5MB limit for dev uploads
+
 function uploadApiPlugin(): Plugin {
   return {
     name: 'sdsm-upload-api',
@@ -34,8 +37,23 @@ function uploadApiPlugin(): Plugin {
         }
 
         let body = ''
-        req.on('data', chunk => { body += chunk })
+        let bodySize = 0
+        let payloadTooLarge = false
+
+        req.on('data', chunk => {
+          bodySize += chunk.length
+          if (bodySize > MAX_UPLOAD_BYTES) {
+            payloadTooLarge = true
+            res.statusCode = 413
+            res.end(JSON.stringify({ error: 'Payload Too Large: Maximum allowed upload size is 5MB' }))
+            req.destroy()
+            return
+          }
+          body += chunk
+        })
+
         req.on('end', async () => {
+          if (payloadTooLarge) return
           try {
             const { fileName, fileData, mimeType } = JSON.parse(body)
             if (!fileData) {
@@ -44,10 +62,22 @@ function uploadApiPlugin(): Plugin {
               return
             }
 
+            const rawExt = (path.extname(fileName || '') || '.jpg').toLowerCase()
+            if (!ALLOWED_UPLOAD_EXTS.has(rawExt)) {
+              res.statusCode = 400
+              res.end(JSON.stringify({ error: 'Invalid file extension. Only image formats (.webp, .png, .jpg, .jpeg, .gif, .svg) are allowed.' }))
+              return
+            }
+
             const buffer = Buffer.from(fileData, 'base64')
-            const ext = path.extname(fileName || '') || '.jpg'
-            const base = path.basename(fileName || 'image', ext).replace(/[^a-zA-Z0-9_-]/g, '_')
-            const cleanName = `${Date.now()}_${base}${ext}`
+            if (buffer.length > MAX_UPLOAD_BYTES) {
+              res.statusCode = 413
+              res.end(JSON.stringify({ error: 'Decoded file exceeds 5MB size limit' }))
+              return
+            }
+
+            const base = path.basename(fileName || 'image', rawExt).replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 50)
+            const cleanName = `${Date.now()}_${base}${rawExt}`
 
             // 1. Save local copy in public/uploads/
             const uploadsDir = path.resolve(baseDir, 'public/uploads')

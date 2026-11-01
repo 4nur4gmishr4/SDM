@@ -48,12 +48,37 @@ function openOutboxDB(): Promise<IDBDatabase> {
  * Stage an order locally into IndexedDB Outbox before network dispatch
  */
 export async function stageOrderInOutbox(order: Omit<OutboxOrder, 'status' | 'retry_count'>): Promise<void> {
+  if (!order || !order.id) return;
+
   try {
     const db = await openOutboxDB();
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
+
+    // Prune stale synced records if storage grows over 50 items
+    const countReq = store.count();
+    countReq.onsuccess = () => {
+      if (countReq.result > 50) {
+        const cursorReq = store.openCursor();
+        let deleted = 0;
+        cursorReq.onsuccess = () => {
+          const cursor = cursorReq.result;
+          if (cursor && deleted < 20) {
+            const val = cursor.value as OutboxOrder;
+            if (val.status === 'synced') {
+              cursor.delete();
+              deleted++;
+            }
+            cursor.continue();
+          }
+        };
+      }
+    };
+
     const entry: OutboxOrder = {
       ...order,
+      subtotal: Number.isFinite(order.subtotal) ? Math.max(0, order.subtotal) : 0,
+      total: Number.isFinite(order.total) ? Math.max(0, order.total) : 0,
       status: 'pending_sync',
       retry_count: 0
     };

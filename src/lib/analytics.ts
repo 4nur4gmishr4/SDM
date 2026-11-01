@@ -7,8 +7,15 @@ let gaInitialized = false;
  */
 export function initGA4(): void {
   if (typeof window === 'undefined') return;
-  const gaId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string) || '';
+  const rawId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string) || '';
+  const gaId = rawId.trim();
   if (!gaId || gaInitialized) return;
+
+  // Validate format to prevent malformed script generation
+  if (!/^[A-Z0-9-]+$/i.test(gaId)) {
+    console.warn('Invalid Google Analytics Measurement ID format');
+    return;
+  }
 
   // Prevent multiple script tags
   if (document.getElementById('ga4-script')) return;
@@ -16,11 +23,11 @@ export function initGA4(): void {
   const script = document.createElement('script');
   script.id = 'ga4-script';
   script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
   document.head.appendChild(script);
 
   const initScript = document.createElement('script');
-  initScript.innerHTML = `
+  initScript.textContent = `
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
