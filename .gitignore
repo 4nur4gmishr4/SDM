@@ -60,3 +60,4 @@ public/images/
 
 # Test results and artifacts
 test-results/
+.agents/

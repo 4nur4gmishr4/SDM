@@ -101,7 +101,29 @@ function getInitialCart(): CartState {
     if (stored) {
       const parsed = JSON.parse(stored) as CartItem[];
       if (Array.isArray(parsed)) {
-        return { items: parsed };
+        // Sanitize and validate items from storage to prevent poisoned cart injection
+        const sanitized: CartItem[] = parsed
+          .filter(item => (
+            item &&
+            typeof item.product_id === 'string' &&
+            item.product_id.trim().length > 0 &&
+            typeof item.product_name === 'string' &&
+            typeof item.product_price === 'number' &&
+            Number.isFinite(item.product_price) &&
+            item.product_price >= 0 &&
+            typeof item.quantity === 'number' &&
+            Number.isFinite(item.quantity) &&
+            item.quantity > 0
+          ))
+          .map(item => ({
+            ...item,
+            quantity: Math.max(1, Math.min(999, Math.floor(item.quantity))),
+            product_price: Math.max(0, Number(item.product_price.toFixed(2))),
+            original_price: (item.original_price != null && Number.isFinite(item.original_price))
+              ? Math.max(item.product_price, Number(item.original_price.toFixed(2)))
+              : item.product_price,
+          }));
+        return { items: sanitized };
       }
     }
   } catch {
@@ -147,14 +169,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [itemCount]);
 
   const subtotal = useMemo(
-    () => state.items.reduce((sum, item) => sum + item.quantity * item.product_price, 0),
+    () => state.items.reduce((sum, item) => {
+      const price = Number.isFinite(item.product_price) ? Math.max(0, item.product_price) : 0;
+      const qty = Number.isFinite(item.quantity) ? Math.max(1, Math.min(999, Math.floor(item.quantity))) : 1;
+      return sum + (price * qty);
+    }, 0),
     [state.items]
   );
 
   const originalTotal = useMemo(
     () => state.items.reduce((sum, item) => {
-      const orig = (item.original_price && item.original_price > item.product_price) ? item.original_price : item.product_price;
-      return sum + item.quantity * orig;
+      const orig = (item.original_price && Number.isFinite(item.original_price) && item.original_price > item.product_price)
+        ? item.original_price
+        : item.product_price;
+      const price = Number.isFinite(orig) ? Math.max(0, orig) : 0;
+      const qty = Number.isFinite(item.quantity) ? Math.max(1, Math.min(999, Math.floor(item.quantity))) : 1;
+      return sum + (price * qty);
     }, 0),
     [state.items]
   );
@@ -165,10 +195,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const addItem = useCallback((item: CartItem) => {
+    if (!item || !item.product_id || typeof item.product_price !== 'number' || item.product_price < 0) {
+      return;
+    }
+    const cleanItem: CartItem = {
+      ...item,
+      quantity: Math.max(1, Math.min(999, Math.floor(item.quantity || 1))),
+      product_price: Math.max(0, Number(item.product_price.toFixed(2))),
+      original_price: (item.original_price != null && Number.isFinite(item.original_price) && item.original_price > item.product_price)
+        ? Number(item.original_price.toFixed(2))
+        : item.product_price,
+    };
     haptics.tap();
-    dispatch({ type: 'ADD_ITEM', payload: item });
-    const variantSuffix = item.unit_size ? ` (${item.unit_size})` : '';
-    showSnackbar(`Added ${item.product_name}${variantSuffix} to cart`);
+    dispatch({ type: 'ADD_ITEM', payload: cleanItem });
+    const variantSuffix = cleanItem.unit_size ? ` (${cleanItem.unit_size})` : '';
+    showSnackbar(`Added ${cleanItem.product_name}${variantSuffix} to cart`);
   }, [showSnackbar]);
 
   const removeItem = useCallback((productId: string, itemKey?: string) => {
@@ -178,7 +219,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const updateQuantity = useCallback((productId: string, quantity: number, itemKey?: string) => {
     haptics.selection();
-    dispatch({ type: 'UPDATE_QUANTITY', payload: { product_id: productId, quantity, item_key: itemKey } });
+    const cleanQty = Number.isFinite(quantity) ? Math.max(0, Math.min(999, Math.floor(quantity))) : 0;
+    dispatch({ type: 'UPDATE_QUANTITY', payload: { product_id: productId, quantity: cleanQty, item_key: itemKey } });
   }, []);
 
   const clearCart = useCallback(() => {

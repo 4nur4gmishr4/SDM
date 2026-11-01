@@ -187,8 +187,40 @@ export function CheckoutPage() {
     setIsSubmitting(true);
 
     try {
+      if (!items || items.length === 0) {
+        showSnackbar('Your cart is empty.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Strictly validate and recalculate subtotal & totals to prevent client tampering
+      const sanitizedItems = items.map(item => ({
+        product_id: String(item.product_id || '').slice(0, 100),
+        name: String(item.product_name || '').slice(0, 200),
+        sku: item.product_sku ? String(item.product_sku).slice(0, 100) : '',
+        quantity: Math.max(1, Math.min(999, Math.floor(Number(item.quantity) || 1))),
+        price: Math.max(0, Number(Number(item.product_price || 0).toFixed(2))),
+        unit: item.unit_size ? String(item.unit_size).slice(0, 50) : '',
+      }));
+
+      const verifiedSubtotal = Number(
+        sanitizedItems.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2)
+      );
+
+      if (verifiedSubtotal <= 0) {
+        showSnackbar('Order subtotal must be greater than zero.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const verifiedDeliveryFee = (freeThreshold > 0 && verifiedSubtotal >= freeThreshold)
+        ? 0
+        : Math.max(0, Number(deliveryFee.toFixed(2)));
+
+      const total = Number((verifiedSubtotal + verifiedDeliveryFee).toFixed(2));
+      const subtotal = verifiedSubtotal;
+
       const orderId = generateOrderId();
-      const total = subtotal + deliveryFee;
       const finalCustomerName = validation.cleanedName!;
       const finalCustomerPhone = validation.cleanedPhone!;
       const finalDeliveryAddress = validation.cleanedAddress!;
@@ -202,16 +234,9 @@ export function CheckoutPage() {
         delivery_address: finalDeliveryAddress,
         map_link: formData.map_link || null,
         subtotal,
-        delivery_fee: deliveryFee,
+        delivery_fee: verifiedDeliveryFee,
         total,
-        items: items.map(item => ({
-          product_id: item.product_id,
-          name: item.product_name,
-          sku: item.product_sku,
-          quantity: item.quantity,
-          price: item.product_price,
-          unit: item.unit_size,
-        })),
+        items: sanitizedItems,
         created_at: new Date().toISOString(),
       });
 
@@ -226,30 +251,23 @@ export function CheckoutPage() {
               delivery_address: finalDeliveryAddress,
               map_link: formData.map_link || null,
               subtotal_amount: subtotal,
-              delivery_fee: deliveryFee,
+              delivery_fee: verifiedDeliveryFee,
               total_amount: total,
               status: 'pending',
-              items: items.map(item => ({
-                product_id: item.product_id,
-                name: item.product_name,
-                sku: item.product_sku,
-                quantity: item.quantity,
-                price: item.product_price,
-                unit: item.unit_size
-              })),
+              items: sanitizedItems,
               is_quick_order: false
             }),
             3000
           );
 
           const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-          const orderItems = items
+          const orderItems = sanitizedItems
             .filter(item => item.product_id && uuidRegex.test(item.product_id))
             .map(item => ({
               order_id: orderId,
               product_id: item.product_id,
               quantity: item.quantity,
-              price_at_time: item.product_price
+              price_at_time: item.price
             }));
 
           if (orderItems.length > 0) {
@@ -271,13 +289,13 @@ export function CheckoutPage() {
         delivery_address: finalDeliveryAddress,
         map_link: formData.map_link || null,
         subtotal,
-        delivery_fee: deliveryFee,
+        delivery_fee: verifiedDeliveryFee,
         total,
-        items: items.map(item => ({
-          name: item.product_name,
+        items: sanitizedItems.map(item => ({
+          name: item.name,
           quantity: item.quantity,
-          price: item.product_price,
-          unit_size: item.unit_size
+          price: item.price,
+          unit_size: item.unit
         })),
         is_quick_order: false
       }).catch(() => {});
@@ -287,7 +305,7 @@ export function CheckoutPage() {
         orderId,
         items,
         subtotal,
-        deliveryFee,
+        deliveryFee: verifiedDeliveryFee,
         total,
         customerName: finalCustomerName,
         customerPhone: finalCustomerPhone,

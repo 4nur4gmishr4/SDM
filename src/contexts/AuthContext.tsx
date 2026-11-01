@@ -18,30 +18,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check live Supabase session
+    // Proactively purge any unauthenticated legacy admin session key
+    try {
+      localStorage.removeItem('sdsm_admin_session');
+    } catch {
+      // ignore storage access errors
+    }
+
+    // Check live Supabase session strictly from Supabase Auth
     supabase.auth.getSession().then(({ data: { session: s } }) => {
-      if (s) {
-        setSession(s);
-      } else {
-        const saved = localStorage.getItem('sdsm_admin_session');
-        if (saved) {
-          try {
-            setSession(JSON.parse(saved));
-          } catch {
-            localStorage.removeItem('sdsm_admin_session');
-          }
-        }
-      }
+      setSession(s);
       setIsLoading(false);
     }).catch(() => {
-      const saved = localStorage.getItem('sdsm_admin_session');
-      if (saved) {
-        try {
-          setSession(JSON.parse(saved));
-        } catch {
-          localStorage.removeItem('sdsm_admin_session');
-        }
-      }
+      setSession(null);
       setIsLoading(false);
     });
 
@@ -98,7 +87,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    localStorage.removeItem('sdsm_admin_session');
+    try {
+      localStorage.removeItem('sdsm_admin_session');
+    } catch {
+      // ignore
+    }
     try {
       await supabase.auth.signOut();
     } catch {
